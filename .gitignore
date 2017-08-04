@@ -137,6 +137,7 @@ cmake-build-debug/
 
 ## File-based project format:
 *.iws
+*.iml
 
 ## Plugin-specific files:
 
@@ -466,6 +467,9 @@ $RECYCLE.BIN/
 
 ### Gradle ###
 .gradle
+gradle
+gradlew
+gradlew.bat
 /build/
 
 # Ignore Gradle GUI config
