@@ -8,8 +8,8 @@ Zusätzlich soll ersichtlich sein wieviel für jeden Einkauf an den Verkäufer a
 
 ## Akzeptanzkriterien:
 
--	Erfassung der Artikel zu jedem Verkäufer
--	Angabe des Preises
--	Berechnung für den Gewinn der Kindergartens
--	Berechnung für die Auszahlung an den Verkäufer
+- Erfassung der Artikel zu jedem Verkäufer
+- Angabe des Preises
+- Berechnung für den Gewinn der Kindergartens
+- Berechnung für die Auszahlung an den Verkäufer
 
