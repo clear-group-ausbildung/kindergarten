@@ -1,8 +1,8 @@
 # User Story - Kassenprogramm für den Basar – Verkäuferdaten
 
-## Beschreibung: 
+## Beschreibung:
 
-Als Benutzer möchte ich, dass alle Verkäufer mit Namen, Adresse, und Telefonnummer erfasst werden.  Zusätzlich benötigt man ein Zusatzfeld  und Angaben zur Ware, ob gebracht, dreckig und abgeholt. Bei jedem Verkäufer soll man auch einen Vermerk machen können ob das Geld bereits erhalten wurde .
+Als Benutzer möchte ich, dass alle Verkäufer mit Verkäufer-ID, Namen, Zusatz, Adresse, und Telefonnummer erfasst werden.  Zusätzlich benötigt man ein Zusatzfeld und Angaben zur Ware, ob gebracht, dreckig und abgeholt. Bei jedem Verkäufer soll man auch einen Vermerk machen können ob das Geld bereits erhalten wurde .
 
 ## Akzeptanzkriterien:
 
