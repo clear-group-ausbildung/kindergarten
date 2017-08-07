@@ -12,4 +12,4 @@ Schlussendlich soll es eine Druckoption geben, worin jeder Verkäufer mit seinem
 - Gesamtumsatz
 - Anteil der KiGa
 - Auszahlung an den Verkäufer
-- automatische generierung
+- automatische Generierung
