@@ -11,4 +11,4 @@ Zusätzlich soll hier dann auch der komplette Prozentuale Abzug an die KiGa aufg
 - Gesamtumsatz zu jedem Verkäufer
 - Anteil des Kindergartens
 - Betrag den der Verkäufer erhält
-- Zusatzfeld ob und wieviel Geld bereits erhalten wurde
+- Checkbox ob Betrag erhalten oder nicht
