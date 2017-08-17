@@ -13,3 +13,4 @@ Zusätzlich soll ersichtlich sein wieviel jeder Artikel gekostet hat und wieviel
 - Berechnung für den Gewinn des Kindergartens
 - Berechnung für die Auszahlung an den Verkäufer
 - Erfassung der Artikel pro Käufer
+- Jede Artikelnummer soll einzigartig sein
