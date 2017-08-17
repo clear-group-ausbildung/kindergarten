@@ -3,7 +3,7 @@
 ## Beschreibung:
 
 Auf der Abrechnungsseite soll von dem Benutzer ersichtlich sein, welcher Verkäufer wieviel Gesamtumsatz erwirtschaftet hat.
-Zusätzlich soll hier dann auch der komplette Prozentuale Abzug an die Kindergarten aufgelistet sein und die Auszahlung an den Verkäufer.
+Zusätzlich soll hier dann auch der komplette Prozentuale Abzug an die KiGa aufgelistet sein und die Auszahlung an den Verkäufer.
 
 ## Akzeptanzkriterien:
 
