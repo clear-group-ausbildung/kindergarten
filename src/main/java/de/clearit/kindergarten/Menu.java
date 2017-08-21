@@ -4,15 +4,19 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class FewPanel extends JPanel {
+public class Menu extends JPanel {
 
-  private Toolbar toolbar;
+  private Toolbar toolbarPanel;
+  private JLabel header;
 
-  public FewPanel() {
-    toolbar = new Toolbar();
-
+  public Menu() {
+    toolbarPanel = new Toolbar();
+    header = new JLabel("Kindergarten St. Anna");
+    
     setLayout(new GridBagLayout());
     GridBagConstraints gc = new GridBagConstraints();
 
@@ -24,7 +28,7 @@ public class FewPanel extends JPanel {
     gc.insets = new Insets(5, 5, 5, 5);
     gc.gridx = 0;
     gc.gridy = 0;
-    add(toolbar, gc);
+    add(toolbarPanel, gc);
   }
   
 }

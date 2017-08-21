@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class Toolbar extends JPanel implements ActionListener {
+public class Toolbar extends JPanel implements ActionListener{
 
   private JButton menu;
   private JButton config;
@@ -19,7 +19,7 @@ public class Toolbar extends JPanel implements ActionListener {
   private int importcounter, configcounter, clickcounter;
 
   public Toolbar() {
-    menu = new JButton("MenÃ¼");
+    menu = new JButton("Menü");
     config = new JButton("Bearbeiten");
     importcounter = 1;
     configcounter = 1;
@@ -35,10 +35,9 @@ public class Toolbar extends JPanel implements ActionListener {
 
     add(menu);
     add(config);
-
   }
 
-  /// PrÃ¼ft ob eine/welche Aktion getÃ¤tigt wurde - wÃ¤hlt aus was der User sehen mÃ¶chte ///
+  /// Prüft ob eine/welche Aktion getätigt wurde - wählt aus was der User sehen möchte ///
 
   @Override
   public void actionPerformed(ActionEvent e) {
@@ -50,6 +49,7 @@ public class Toolbar extends JPanel implements ActionListener {
         configcounter = 1;
         if(clickcounter == 2) {
           remove(configBtn);
+          revalidate();
         }
         clickcounter = 1;
 
@@ -65,7 +65,8 @@ public class Toolbar extends JPanel implements ActionListener {
         gc.gridx = 0;
         gc.gridy = 1;
         add(naviBtn, gc);
-        System.out.printf("MenÃ¼ wurde betÃ¤tigt\n");
+        revalidate();
+        System.out.printf("Menü wurde betätigt\n");
       }
     }
     if(configcounter == 1) {
@@ -75,6 +76,7 @@ public class Toolbar extends JPanel implements ActionListener {
         importcounter = 1;
         if(clickcounter == 1) {
           remove(naviBtn);
+          revalidate();
         }
         clickcounter= 2;
 
@@ -89,7 +91,8 @@ public class Toolbar extends JPanel implements ActionListener {
         gc.gridx = 0;
         gc.gridy = 1;
         add(configBtn, gc);
-        System.out.printf("Bearbeiten wurde betÃ¤tigt\n");
+        revalidate();
+        System.out.printf("Bearbeiten wurde betätigt\n");
       }
     }
   }

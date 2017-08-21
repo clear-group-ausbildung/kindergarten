@@ -9,10 +9,20 @@ public class App {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        new FewFenster();
+        new ShowFenster();
       }
-
     });
   }
   
 }
+
+
+/*
+Git konsole
+
+git add --all
+
+git commit -m "feat: updated gui"
+
+git push origin kevin
+*/
