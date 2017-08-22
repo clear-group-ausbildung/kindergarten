@@ -6,19 +6,27 @@ apply plugin: 'java'
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+   flatDir {
+       dirs 'lib'
+   }
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/com.jgoodies/jgoodies-binding
-    compile group: 'com.jgoodies', name: 'jgoodies-binding', version: '2.13.0'
-    // https://mvnrepository.com/artifact/com.jgoodies/jgoodies-common
-    compile group: 'com.jgoodies', name: 'jgoodies-common', version: '1.8.1'
-    // https://mvnrepository.com/artifact/com.jgoodies/jgoodies-forms
-    compile group: 'com.jgoodies', name: 'jgoodies-forms', version: '1.9.0'
-    // https://mvnrepository.com/artifact/com.jgoodies/jgoodies-looks
-    compile group: 'com.jgoodies', name: 'jgoodies-looks', version: '2.7.0'
-    // https://mvnrepository.com/artifact/com.jgoodies/jgoodies-validation
-    compile group: 'com.jgoodies', name: 'jgoodies-validation', version: '2.5.1'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+   compile name: 'animation-1.2.0'
+   compile name: 'AppleJavaExtensions-1.4'
+   compile name: 'application-0.9.12'
+   compile name: 'binding-2.0.6'
+   compile name: 'completion-1.1.2'
+   compile name: 'desktop-0.9.16'
+   compile name: 'forms-1.3.0pre4'
+   compile name: 'hamcrest-core-1.3'
+   compile name: 'help-0.9.23'
+   compile name: 'jsdl-core-0.9.10'
+   compile name: 'junit-4.12'
+   compile name: 'looks-2.2.2'
+   compile name: 'quicksearch-0.7.8'
+   compile name: 'swing-worker'
+   compile name: 'uif2-0.9.18'
+   compile name: 'validation-2.0.1'
 }
+
