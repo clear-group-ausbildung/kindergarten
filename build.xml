@@ -1,0 +1,325 @@
+<?xml version="1.0"?>
+<!--
+
+   This is a build file for use with the Jakarta Ant build tool, see
+   http://jakarta.apache.org/ant/index.html
+
+   To build, go to the directory where this file is located and run
+     ant <target>
+   with one of the following targets:
+   
+     clean               removes temporary files and directories
+     compile             compiles the sources
+     javadoc             creates the JavaDocs
+     jar                 creates the application jar
+     package-source      builds the source distribution tree: docs, sources, jar
+     package-source-zip  builds a zipped source distribution
+     package-binary      builds the binary distribution tree: jar, text files
+     package-binary-zip  builds a zipped binary distribution
+     package-binary-win  builds a binary distribution for Windows
+     
+-->
+
+<project default="package-all" basedir="." name="Kassenverwaltung">
+
+	<!-- ***************************************************************** -->
+	<!-- Give users a chance to override build properties.                 -->
+	<!-- ***************************************************************** -->
+	<property file="${user.home}/kindergarten.build.properties" />
+	<property file="${user.home}/build.properties" />
+	<property file="${basedir}/build.properties" />
+	<property file="${basedir}/default.properties" />
+
+
+	<!-- ***************************************************************** -->
+	<!-- P A T H S                                                         -->
+	<!-- ***************************************************************** -->
+	<path id="classpath.main">
+		<pathelement location="${lib.application.jar}" />
+		<pathelement location="${lib.binding.jar}" />
+		<pathelement location="${lib.completion.jar}" />
+		<pathelement location="${lib.desktop.jar}" />
+		<pathelement location="${lib.forms.jar}" />
+		<pathelement location="${lib.help.jar}" />
+		<pathelement location="${lib.jsdl-core.jar}" />
+		<pathelement location="${lib.looks.jar}" />
+		<pathelement location="${lib.quicksearch.jar}" />
+		<pathelement location="${lib.uif2.jar}" />
+		<pathelement location="${lib.validation.jar}" />
+		<pathelement location="${lib.worker.jar}" />
+	</path>
+
+
+	<!-- ***************************************************************** -->
+	<!-- C L E A N                                                         -->
+	<!-- ***************************************************************** -->
+	<target name="clean" description="Removes all temporary files and directories.">
+
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.source.dir}" />
+		<delete dir="${dist.binary.dir}" />
+		<delete dir="${dist.jnlp.dir}" />
+	</target>
+
+
+	<!-- ***************************************************************** -->
+	<!-- P R E P A R A T I O N                                             -->
+	<!-- ***************************************************************** -->
+	<target name="prepare" description="Prepares the build and distribution targets.">
+
+		<tstamp>
+			<format property="DATE" pattern="yyyy-MM-dd hh:mm:ss" />
+		</tstamp>
+
+		<mkdir dir="${build.main.dir}" />
+		<mkdir dir="${build.dir}/shrinked" />
+
+		<available property="jarbundler.present" classname="com.loomcom.ant.tasks.jarbundler.JarBundler" />
+	</target>
+
+
+	<!-- ***************************************************************** -->
+	<!-- C O M P I L A T I O N                                             -->
+	<!-- ***************************************************************** -->
+	<target name="compile" depends="compile-main" description="Compiles the main sources." />
+
+	<!-- ***************************************************************** -->
+	<target name="compile-main" depends="prepare" description="Compiles the main sources.">
+		<javac srcdir="${src.java.dir}" destdir="${build.main.dir}" encoding="${build.encoding}" executable="${build.compile.executable}" fork="${build.compile.fork}" debug="${build.compile.debug}" depend="${build.compile.depend}" deprecation="${build.compile.deprecation}" nowarn="${build.compile.nowarn}" optimize="${build.compile.optimize}" source="${build.compile.source}" target="${build.compile.target}" verbose="${build.compile.verbose}" bootclasspath="${build.boot.classpath}" classpathref="classpath.main">
+			<!--			<compilerarg value="-Xlint:unchecked" /> -->
+		</javac>
+	</target>
+
+
+	<!-- ***************************************************************** -->
+	<!-- J A V A D O C                                                     -->
+	<!-- ***************************************************************** -->
+	<target name="javadoc" depends="prepare" description="Creates the JavaDocs.">
+		<mkdir dir="${build.javadocs.dir}" />
+		<javadoc sourcepath="${src.java.dir}" packagenames="${javadoc.packages}" destdir="${build.javadocs.dir}" encoding="${build.encoding}" access="protected" author="true" version="true" use="true" link="${javadoc.link}" windowtitle="${Name} ${impl.version}" doctitle="${Name} ${impl.version}" bottom="${copyright.message}">
+			<classpath refid="classpath.main" />
+		</javadoc>
+	</target>
+
+
+	<!-- ***************************************************************** -->
+	<!-- J A R                                       				       -->
+	<!-- ***************************************************************** -->
+	<target name="jar" depends="compile" description="Creates the raw application jar.">
+		<manifest file="${build.manifest}">
+			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Main-Class" value="${main.class}" />
+
+			<attribute name="Implementation-Title" value="${Name}" />
+			<attribute name="Implementation-Version" value="${impl.version} ${DATE}" />
+			<attribute name="Implementation-Vendor" value="${vendor}" />
+		</manifest>
+		<jar destfile="${build.main.jar}" manifest="${build.manifest}">
+			<fileset dir="${build.main.dir}" />
+			<fileset dir="${src.java.dir}" excludes="**/*.java" />
+			<zipfileset src="${lib.application.jar}" />
+			<zipfileset src="${lib.binding.jar}" />
+			<zipfileset src="${lib.completion.jar}" />
+			<zipfileset src="${lib.desktop.jar}" />
+			<zipfileset src="${lib.forms.jar}" />
+			<zipfileset src="${lib.help.jar}" />
+			<zipfileset src="${lib.jsdl-core.jar}" />
+			<zipfileset src="${lib.looks.jar}" />
+			<zipfileset src="${lib.quicksearch.jar}" />
+			<zipfileset src="${lib.uif2.jar}" />
+			<zipfileset src="${lib.validation.jar}" />
+			<zipfileset src="${lib.worker.jar}" />
+		</jar>
+	</target>
+
+	<!-- ***************************************************************** -->
+	<target name="shrink" depends="jar" description="Shrinkes the raw jar and creates a shrinked jar">
+
+		<move file="${build.main.jar}" toFile="${build.shrinked.jar}" />
+		<!--
+        <shrink 
+            scriptFileName="${basedir}/conf/shrink-script.txt" 
+            logFileName="${build.dir}/shrink.log"
+            isVerbose="true"
+        />
+        <move 
+            file="${build.shrinked-out.jar}"
+            toFile="${build.shrinked.jar}.tmp"
+        />
+        <jar destfile="${build.shrinked.jar}"  
+             compress="false"         
+             manifest="${build.manifest}" >
+            <zipfileset src="${build.shrinked.jar}.tmp" />
+        </jar>
+        // -->
+		<jar destfile="${build.shrinked.compressed.jar}" compress="true" manifest="${build.manifest}">
+			<zipfileset src="${build.shrinked.jar}" />
+		</jar>
+		<!--      
+	    <move 
+	    	file="${build.dir}/shrinked/shrink.log"
+	    	toDir="${build.dir}"
+	    />
+  // -->
+	</target>
+
+
+	<!-- ***************************************************************** -->
+	<target name="sign-jar" depends="shrink" description="Signs the shrinked Jar.">
+		<signjar jar="${build.shrinked.jar}" signedjar="${build.signed.jar}" keystore="${sign.keystore}" alias="${sign.alias}" storepass="${sign.storepass}" />
+		<signjar jar="${build.shrinked.compressed.jar}" signedjar="${build.signed.compressed.jar}" keystore="${sign.keystore}" alias="${sign.alias}" storepass="${sign.storepass}" />
+	</target>
+
+
+	<!-- ***************************************************************** -->
+	<!-- P A C K A G E                                                     -->
+	<!-- ***************************************************************** -->
+	<target name="package-all" depends="package-source-zip" description="Creates all packages.">
+	</target>
+
+	<!-- ***************************************************************** -->
+	<target name="package-source" depends="clean, javadoc" description="Creates the source distribution directory tree.">
+
+		<mkdir dir="${dist.source.dir}" />
+
+		<!-- Compile the documentation. -->
+		<copy todir="${dist.source.docs.dir}">
+			<fileset dir="${docs.dir}" />
+		</copy>
+		<move todir="${dist.source.docs.dir}" file="${build.javadocs.dir}" />
+
+		<!-- Copy the source directories. -->
+		<copy todir="${dist.source.src.dir}">
+			<fileset dir="${src.dir}" excludes="unused/**/*" />
+		</copy>
+
+		<!-- Copy the distribution files. -->
+		<copy todir="${dist.source.dir}" filtering="true">
+			<fileset dir="${top.dir}" includes="RELEASE-NOTES.txt, LICENSE-src.txt, build.xml, default.properties" />
+			<filterset>
+				<filter token="impl.version" value="${impl.version}" />
+				<filter token="version.name" value="${version.name}" />
+				<filter token="copyright.message" value="${copyright.message}" />
+				<filter token="copyright.short" value="${copyright.short}" />
+			</filterset>
+		</copy>
+		<!--
+		<copy toFile="${dist.source.dir}/README.html" filtering="true" > 
+			<fileset file="${top.dir}/README-src.html" />
+			<filterset>
+				<filter token="impl.version"      value="${impl.version}"      />
+				<filter token="version.name"      value="${version.name}"      />
+				<filter token="copyright.message" value="${copyright.message}" />
+				<filter token="copyright.short"   value="${copyright.short}"   />
+			</filterset>
+		</copy>
+-->
+
+		<!-- Copy the jar file. -->
+		<!--
+		<copy toFile="${dist.source.main.jar}" 
+			  file="${build.signed.jar}" />
+			  -->
+
+	</target>
+
+	<!-- ***************************************************************** -->
+	<target name="package-source-zip" depends="package-source" description="Packages the source distribution as a zip file.">
+
+		<zip destfile="${dist.source.zip}" basedir="${dist.root.dir}" includes="${dist.source.subdir}/**/*" />
+	</target>
+
+	<!-- ***************************************************************** -->
+	<target name="package-binary" depends="package-source" description="Creates the binary distribution directory tree.">
+
+		<mkdir dir="${dist.binary.dir}" />
+
+		<!-- Copy the distribution files. -->
+		<copy toDir="${dist.binary.dir}" filtering="true">
+			<fileset dir="${top.dir}" includes="LICENSE.txt, README.txt, RELEASE-NOTES.txt" />
+			<filterset>
+				<filter token="impl.version" value="${impl.version}" />
+				<filter token="version.name" value="${version.name}" />
+				<filter token="copyright.message" value="${copyright.message}" />
+				<filter token="copyright.short" value="${copyright.short}" />
+			</filterset>
+		</copy>
+
+		<!-- Copy the jar file. -->
+		<!--
+		<copy tofile="${dist.binary.main.jar}" 
+			  file="${build.signed.jar}" />
+			  -->
+
+	</target>
+
+	<!-- ***************************************************************** -->
+	<target name="package-binary-zip" depends="package-binary" description="Creates the general binary distribution.">
+		<zip destfile="${dist.binary.zip}" basedir="${dist.root.dir}" includes="${dist.binary.subdir}/" />
+	</target>
+
+
+	<!-- ***************************************************************** -->
+	<target name="package-binary-win" depends="package-binary" description="Creates the Windows native installer.">
+
+		<echo file="${nsis.script}">
+OutFile ${dist.binary.win.name}
+
+!define PROGRAMNAME        "Skeleton Pro"
+!define PROGRAMVERSION     "${spec.version}"
+!define PROGRAMFULLVERSION "${impl.version}"
+!define PROGRAMFULLNAME    "$${PROGRAMNAME} $${PROGRAMVERSION}"
+!define JARFILENAME        ${dist.name}.jar
+!define ICONPATH           ${top.dir}/conf
+!define ICONFILENAME       ${name}.ico
+
+!define NSISPATH           ${nsis.dir}
+!include "${nsis.dir}\modern.nss"
+; eof		
+		</echo>
+
+		<exec dir="${dist.binary.dir}" executable="${nsis.exe}" output="${build.dir}/nsis.log">
+			<arg value="/NOCD" />
+			<arg value="${nsis.script}" />
+		</exec>
+		<move todir="${dist.root.dir}">
+			<fileset dir="${dist.binary.dir}" includes="*.exe" />
+		</move>
+
+	</target>
+
+	<!-- ***************************************************************** -->
+	<target name="package-binary-mac" depends="package-binary" if="jarbundler.present" description="Creates a Mac OS X binary distribution directory.">
+
+		<taskdef name="jarbundler" classname="com.loomcom.ant.tasks.jarbundler.JarBundler" />
+
+		<jarbundler dir="${build.dir}" name="${Shortname}" mainclass="${main.class}" icon="${top.dir}/conf/${name}.icns" jars="${dist.binary.main.jar}" version="${spec.version}" infostring="${impl.version}, ${copyright.message}" aboutmenuname="${Shortname}" jvmversion="1.4+" smalltabs="false" antialiasedgraphics="true" antialiasedtext="true" liveresize="true" growboxintrudes="true" stubfile="${top.dir}/conf/JavaApplicationStub" />
+		<!--
+                vmoptions="-Xmx500m"
+                execs="${exec}/file1 ${exec}/file2"
+                screenmenu="true"
+-->
+		<zip destfile="${dist.binary.zip.mac}">
+			<zipfileset dir="${top.dir}" prefix="${dist.name.mac}" includes="LICENSE.txt, README.txt, RELEASE-NOTES.txt" />
+			<zipfileset dir="${build.dir}" prefix="${dist.name.mac}" includes="*.app/**/*" filemode="555" dirmode="777" />
+
+		</zip>
+	</target>
+
+	<!-- ***************************************************************** -->
+	<target name="package-jnlp" depends="package-binary" description="Creates the jnlp distribution directory tree.">
+
+		<mkdir dir="${dist.jnlp.dir}" />
+
+		<!-- Copy the distribution files. -->
+		<copy toDir="${dist.jnlp.dir}">
+			<fileset dir="${top.dir}/conf/jnlp" />
+		</copy>
+
+		<!-- Copy the jar file. -->
+		<copy tofile="${dist.jnlp.main.jar}" file="${build.signed.compressed.jar}" />
+
+	</target>
+
+
+</project>
