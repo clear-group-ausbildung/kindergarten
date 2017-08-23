@@ -4,6 +4,8 @@ import javax.swing.table.AbstractTableModel;
 
 public class PersonTableModel extends AbstractTableModel {
 
+  private static final long serialVersionUID = 1L;
+
   @Override
   public int getColumnCount() {
     return 0;
