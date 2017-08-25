@@ -1,0 +1,8 @@
+
+Git konsole
+
+git add --all
+
+git commit -m "feat: updated gui"
+
+git push origin kevin

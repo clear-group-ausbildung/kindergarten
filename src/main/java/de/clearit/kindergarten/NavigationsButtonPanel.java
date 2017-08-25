@@ -1,5 +1,7 @@
 package de.clearit.kindergarten;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,16 +11,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class NavigationsBtn extends JPanel implements ActionListener {
+public class NavigationsButtonPanel extends JPanel implements ActionListener {
 
   private JButton verkaufer;
   private JButton einkauf;
   private JButton abrechnung;
   private JButton drucken;
-  private VerkaeuferErfassung vk;
+  private VerkaeuferErfassungsPanel vk;
   private int clicker;
 
-  public NavigationsBtn() {
+  public NavigationsButtonPanel() {
+    JPanel panel = new JPanel();
+    
+    /// Erstellung der verschiedenen Reiter ///
+    
     verkaufer = new JButton("Verkäufer");
     einkauf = new JButton("Einkauf");
     abrechnung = new JButton("Abrechnung");
@@ -34,99 +40,95 @@ public class NavigationsBtn extends JPanel implements ActionListener {
     abrechnung.addActionListener(this);
     drucken.addActionListener(this);
     
-    setLayout(new GridBagLayout());
+    
+    
+    /// Positionierung der Reiter untereinander ///
+    
+    panel.setLayout(new GridBagLayout());
     GridBagConstraints grid = new GridBagConstraints();
-
+    
     grid.weightx = 1;
-    grid.weighty = 0;
+    grid.weighty = 0.1;
+    
+    grid.anchor = GridBagConstraints.FIRST_LINE_START;
+    grid.fill = GridBagConstraints.NONE;
+    grid.gridwidth = 1;
+    grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 0;
-    add(verkaufer, grid);
+    panel.add(verkaufer, grid);
 
     grid.weightx = 1;
-    grid.weighty = 0;
+    grid.weighty = 0.1;
+    
+    grid.anchor = GridBagConstraints.LINE_START;
+    grid.gridwidth = 1;
+    grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 1;
-    add(einkauf, grid);
+    panel.add(einkauf, grid);
 
     grid.weightx = 1;
-    grid.weighty = 0;
+    grid.weighty = 0.1;
+    
+    grid.anchor = GridBagConstraints.LINE_START;
+    grid.gridwidth = 1;
+    grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 2;
-    add(abrechnung, grid);
-
+    panel.add(abrechnung, grid);
+    
     grid.weightx = 1;
-    grid.weighty = 0;
+    grid.weighty = 0.1;
+    
+    grid.anchor = GridBagConstraints.FIRST_LINE_START;
+    grid.gridwidth = 1;
+    grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 3;
-    add(drucken, grid);
+    panel.add(drucken, grid);
+    add(panel, BorderLayout.NORTH);
+
     clicker = 0;
   }
  
+  
+  /// ActionListener der Reiter Button ///
+  
   @Override
   public void actionPerformed(ActionEvent e) {
     JButton clicked = (JButton)e.getSource();
-    if(clicker != 1) {
+     //remove(alles andere von anderen Buttons falls vorhanden);
       
-      //remove(alles andere von anderen Buttons falls vorhanden);
-      
-      if(clicked == verkaufer) {
-        vk = new VerkaeuferErfassung();
+     if(clicked == verkaufer) {
+       if(clicker != 1) {
+        vk = new VerkaeuferErfassungsPanel();
         clicker = 1;
-        setLayout(new GridBagLayout());
-        GridBagConstraints grid = new GridBagConstraints();
-        /// Menüleiste soll sich nicht verändern ///
-        grid.weightx = 1;
-        grid.weighty = 0;
-        grid.gridx = 0;
-        grid.gridy = 0;
-        add(verkaufer, grid);
-  
-        grid.weightx = 1;
-        grid.weighty = 0;
-        grid.gridx = 0;
-        grid.gridy = 1;
-        add(einkauf, grid);
-  
-        grid.weightx = 1;
-        grid.weighty = 0;
-        grid.gridx = 0;
-        grid.gridy = 2;
-        add(abrechnung, grid);
-  
-        grid.weightx = 1;
-        grid.weighty = 0;
-        grid.gridx = 0;
-        grid.gridy = 3;
-        add(drucken, grid);
         
-        /// Verkäufer Erfassungs Maske ///
-        
-        grid.weightx = 1;
-        grid.weighty = 0;
-        grid.gridx = 1;
-        grid.gridy = 0;
-        add(vk, grid);
+        add(vk, BorderLayout.SOUTH);
         revalidate();
         
         System.out.println("Verkäufer übersicht!");
-      }
-    }
-    if(clicker != 2) {
-      if(clicked == einkauf) {
-        
+       }
+     }
+     if(clicked == einkauf) {
+       if(clicker != 2) {
+        remove(vk);
+        clicker = 2;
+        revalidate();
         System.out.println("Einkauf übersicht!");
       }
-    }
-    if(clicker != 3)
+     }
+     if(clicker != 3) {
       if(clicked == abrechnung) {
-        
+        clicker = 3;
         
         System.out.println("Abrechnung übersicht!");
       }
-    if(clicker != 4) {
+     }
+     if(clicker != 4) {
       if(clicked == drucken) {
-        
+        clicker = 4;
         System.out.println("Drucken!");
       }
     }
