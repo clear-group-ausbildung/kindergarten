@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,8 +21,13 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
   private VerkaeuferErfassungsPanel vk;
   private int clicker;
 
+  private JPanel panel = new JPanel();
+  private JPanel showPanel = new JPanel();
+  private GridBagConstraints grid = new GridBagConstraints();
+  
   public NavigationsButtonPanel() {
-    JPanel panel = new JPanel();
+    
+    panel.setLayout(new GridBagLayout());
     
     /// Erstellung der verschiedenen Reiter ///
     
@@ -41,54 +47,61 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
     drucken.addActionListener(this);
     
     
-    
     /// Positionierung der Reiter untereinander ///
     
-    panel.setLayout(new GridBagLayout());
-    GridBagConstraints grid = new GridBagConstraints();
-    
     grid.weightx = 1;
-    grid.weighty = 0.1;
+    grid.weighty = 0;
     
     grid.anchor = GridBagConstraints.FIRST_LINE_START;
     grid.fill = GridBagConstraints.NONE;
-    grid.gridwidth = 1;
+    grid.gridwidth = 2;
     grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 0;
+
     panel.add(verkaufer, grid);
 
     grid.weightx = 1;
-    grid.weighty = 0.1;
+    grid.weighty = 0;
     
     grid.anchor = GridBagConstraints.LINE_START;
-    grid.gridwidth = 1;
+    grid.gridwidth = 2;
     grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 1;
+
     panel.add(einkauf, grid);
 
     grid.weightx = 1;
-    grid.weighty = 0.1;
+    grid.weighty = 0;
     
     grid.anchor = GridBagConstraints.LINE_START;
-    grid.gridwidth = 1;
+    grid.gridwidth = 2;
     grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 2;
+
     panel.add(abrechnung, grid);
     
     grid.weightx = 1;
-    grid.weighty = 0.1;
+    grid.weighty = 0;
     
     grid.anchor = GridBagConstraints.FIRST_LINE_START;
-    grid.gridwidth = 1;
+    grid.gridwidth = 2;
     grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 3;
-    panel.add(drucken, grid);
-    add(panel, BorderLayout.NORTH);
 
+    panel.add(drucken, grid);
+    
+    grid.weightx = 0;
+    grid.weighty = 0.1;
+    grid.gridwidth = 6;
+    grid.gridheight = 1;
+    grid.anchor = GridBagConstraints.LINE_START;
+    grid.gridx = 0;
+    grid.gridy = 1;
+    add(panel, grid);
     clicker = 0;
   }
  
@@ -98,6 +111,7 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     JButton clicked = (JButton)e.getSource();
+    //showPanel.setBackground(Color.ORANGE);
      //remove(alles andere von anderen Buttons falls vorhanden);
       
      if(clicked == verkaufer) {
@@ -105,20 +119,35 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
         vk = new VerkaeuferErfassungsPanel();
         clicker = 1;
         
-        add(vk, BorderLayout.SOUTH);
+        showPanel.add(vk, BorderLayout.CENTER);
+        
+        grid.weightx = 1;
+        grid.weighty = 0.1;
+        
+        grid.anchor = GridBagConstraints.LINE_START;
+        grid.gridwidth = 4;
+        grid.gridheight = 8;
+        grid.gridx = 3;
+        grid.gridy = 0;
+        panel.add(showPanel, grid);
         revalidate();
         
         System.out.println("Verkäufer übersicht!");
        }
      }
+     
+     // EINKAUFSERFASSUNG 
      if(clicked == einkauf) {
        if(clicker != 2) {
-        remove(vk);
+        showPanel.removeAll();
         clicker = 2;
         revalidate();
+        System.out.println("REMOVE");
+       }
         System.out.println("Einkauf übersicht!");
-      }
      }
+     
+     // ABRECHNUNSÜBERSICHT
      if(clicker != 3) {
       if(clicked == abrechnung) {
         clicker = 3;
@@ -126,6 +155,8 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
         System.out.println("Abrechnung übersicht!");
       }
      }
+     
+     //DRUCKOPTION
      if(clicker != 4) {
       if(clicked == drucken) {
         clicker = 4;

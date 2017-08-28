@@ -1,25 +1,27 @@
 package de.clearit.kindergarten;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class ShowPanel extends JPanel {
+public class MainFrame extends JPanel {
 
   public JFrame frame;
-  private MainPanel mainPanel;
+  private ToolbarPanel menuPanel;
 
-  public ShowPanel() {
+  public MainFrame() {
     frame = new JFrame("Kassenprogramm V. 1.0.0");
     
     Container c = frame.getContentPane();
     c.setLayout(new BorderLayout());
-    mainPanel = new MainPanel();
-    c.add(mainPanel, BorderLayout.WEST);
+    menuPanel = new ToolbarPanel();
+    menuPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+    menuPanel.setBackground(Color.BLACK);
+    c.add(menuPanel, BorderLayout.NORTH);
 
     
     frame.setSize(1000, 900);

@@ -1,3 +1,11 @@
+/*
+
+Noch zu erledigen ist das sich die Buttons Verkäufer, Einkauf, Abrechnung und Drucken - NICHT mit nach unten
+verschieben. 
+
+Habe bis jetzt leider keine Lösung gefunden und werde dies erstmal Pausieren.
+
+*/
 package de.clearit.kindergarten;
 
 import java.awt.BorderLayout;
@@ -17,15 +25,14 @@ public class ToolbarPanel extends JPanel implements ActionListener{
 
   private JButton menu;
   private JButton config;
-  private NavigationsPanel navigationsPanel;
+  private NavigationsButtonPanel navigationsButtonPanel;
   private ConfigBtn configBtn;
   private int importcounter, configcounter, clickcounter;
 
   private JPanel panel = new JPanel();
+  private GridBagConstraints grid = new GridBagConstraints();
   
   public ToolbarPanel() {
-    
-    panel.setBackground(Color.BLACK);
     
     /// Button für Auswahl Menü oder Bearbeiten ///
     menu = new JButton("Menü");
@@ -45,10 +52,39 @@ public class ToolbarPanel extends JPanel implements ActionListener{
     configcounter = 1;
     clickcounter = 0;
     
+    panel.setLayout(new GridBagLayout());
     
-    panel.add(menu);
-    panel.add(config);
-    add(panel, BorderLayout.NORTH);
+    grid.weightx = 0;
+    grid.weighty = 0.1;
+    grid.gridwidth = 1;
+    grid.gridheight = 1;
+    grid.anchor = GridBagConstraints.FIRST_LINE_START;
+    grid.fill = GridBagConstraints.NONE;
+    grid.insets = new Insets(0, 5, 0, 0);
+    grid.gridx = 0;
+    grid.gridy = 0;
+    panel.add(menu, grid);
+    
+    grid.weightx = 0;
+    grid.weighty = 0.1;
+    grid.gridwidth = 1;
+    grid.gridheight = 1;
+    grid.anchor = GridBagConstraints.LINE_START;
+    grid.fill = GridBagConstraints.NONE;
+    grid.insets = new Insets(0, 0, 0, 0);
+    grid.gridx = 1;
+    grid.gridy = 0;
+    panel.add(config, grid);
+    
+    grid.weightx = 0;
+    grid.weighty = 0.1;
+    grid.gridwidth = 8;
+    grid.gridheight = 1;
+    grid.anchor = GridBagConstraints.FIRST_LINE_START;
+    grid.insets = new Insets(5, 0, 0, 0);
+    grid.gridx = 1;
+    grid.gridy = 0;
+    add(panel, grid);
   }
 
   /// Prüft ob eine/welche Aktion getätigt wurde - wählt aus was der User sehen möchte ///
@@ -58,28 +94,27 @@ public class ToolbarPanel extends JPanel implements ActionListener{
     JButton clicked = (JButton)e.getSource();
     if(importcounter == 1) {
       if(clicked == menu) {
-        navigationsPanel = new NavigationsPanel();
-        navigationsPanel.setBackground(Color.BLUE);
+        navigationsButtonPanel = new NavigationsButtonPanel();
+        //navigationsPanel.setBackground(Color.BLUE);
         importcounter++;
         configcounter = 1;
         if(clickcounter == 2) {
-          remove(configBtn);
+          panel.remove(configBtn);
           revalidate();
         }
         clickcounter = 1;
-
-        setLayout(new GridBagLayout());
-        GridBagConstraints gc = new GridBagConstraints();
-
+        
         /// Positionierung der Navigations Button - für das Menü///
 
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.gridwidth = 2;
-        gc.insets = new Insets(5, 0, 0, 0);
-        gc.gridx = 0;
-        gc.gridy = 1;
-        add(navigationsPanel, gc);
+        grid.weightx = 0;
+        grid.weighty = 0.1;
+        grid.gridwidth = 2;
+        grid.gridheight = 1;
+        grid.anchor = GridBagConstraints.NORTH;
+        grid.insets = new Insets(5, 0, 0, 0);
+        grid.gridx = 0;
+        grid.gridy = 3;
+        panel.add(navigationsButtonPanel, grid);
         revalidate();
         System.out.printf("Menü wurde betätigt\n");
       }
@@ -93,22 +128,20 @@ public class ToolbarPanel extends JPanel implements ActionListener{
         configcounter++;
         importcounter = 1;
         if(clickcounter == 1) {
-          remove(navigationsPanel);
+          panel.remove(navigationsButtonPanel);
           revalidate();
         }
         clickcounter= 2;
 
-        setLayout(new GridBagLayout());
-        GridBagConstraints gc = new GridBagConstraints();
         /// Positionierung der Navigations Button - fÃ¼r die Bearbeitung///
 
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.gridwidth = 2;
-        gc.insets = new Insets(5, 0, 0, 0);
-        gc.gridx = 0;
-        gc.gridy = 1;
-        add(configBtn, gc);
+        grid.weightx = 0;
+        grid.weighty = 0.1;
+        grid.gridwidth = 2;
+        grid.insets = new Insets(5, 0, 0, 0);
+        grid.gridx = 0;
+        grid.gridy = 1;
+        panel.add(configBtn, grid);
         revalidate();
         System.out.printf("Bearbeiten wurde betätigt\n");
       }
