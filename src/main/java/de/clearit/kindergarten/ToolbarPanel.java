@@ -18,6 +18,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -34,7 +35,7 @@ public class ToolbarPanel extends JPanel implements ActionListener{
   
   public ToolbarPanel() {
     
-    /// Button f¸r Auswahl Men¸ oder Bearbeiten ///
+    // Button f¸r Auswahl Men¸ oder Bearbeiten
     menu = new JButton("Men¸");
     config = new JButton("Bearbeiten");
     
@@ -46,7 +47,7 @@ public class ToolbarPanel extends JPanel implements ActionListener{
     
     menu.setSelected(true);
     
-    /// Counter zum z‰hlen der Klicks ///
+    // Counter zum z‰hlen der Klicks
     
     importcounter = 1;
     configcounter = 1;
@@ -81,13 +82,13 @@ public class ToolbarPanel extends JPanel implements ActionListener{
     grid.gridwidth = 8;
     grid.gridheight = 1;
     grid.anchor = GridBagConstraints.FIRST_LINE_START;
-    grid.insets = new Insets(5, 0, 0, 0);
+    grid.insets = new Insets(0, 0, 0, 0);
     grid.gridx = 1;
     grid.gridy = 0;
     add(panel, grid);
   }
 
-  /// Pr¸ft ob eine/welche Aktion get‰tigt wurde - w‰hlt aus was der User sehen mˆchte ///
+  // Pr¸ft ob eine/welche Aktion get‰tigt wurde - w‰hlt aus was der User sehen mˆchte
 
   @Override
   public void actionPerformed(ActionEvent e) {
@@ -104,7 +105,7 @@ public class ToolbarPanel extends JPanel implements ActionListener{
         }
         clickcounter = 1;
         
-        /// Positionierung der Navigations Button - f¸r das Men¸///
+        // Positionierung der Navigations Button - f¸r das Men¸
 
         grid.weightx = 0;
         grid.weighty = 0.1;
@@ -120,7 +121,7 @@ public class ToolbarPanel extends JPanel implements ActionListener{
       }
     }
     
-    /// Bearbeiten Button -> ActionListener///
+    // Bearbeiten Button -> ActionListener
     
     if(configcounter == 1) {
       if(clicked == config) {
@@ -133,7 +134,7 @@ public class ToolbarPanel extends JPanel implements ActionListener{
         }
         clickcounter= 2;
 
-        /// Positionierung der Navigations Button - f√ºr die Bearbeitung///
+        // Positionierung der Navigations Button - f√ºr die Bearbeitung
 
         grid.weightx = 0;
         grid.weighty = 0.1;

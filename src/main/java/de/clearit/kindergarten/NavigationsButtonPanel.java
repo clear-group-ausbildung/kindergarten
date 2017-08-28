@@ -9,18 +9,19 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class NavigationsButtonPanel extends JPanel implements ActionListener {
-
+  
   private JButton verkaufer;
   private JButton einkauf;
   private JButton abrechnung;
   private JButton drucken;
   private VerkaeuferErfassungsPanel vk;
   private int clicker;
-
+  
   private JPanel panel = new JPanel();
   private JPanel showPanel = new JPanel();
   private GridBagConstraints grid = new GridBagConstraints();
@@ -29,25 +30,25 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
     
     panel.setLayout(new GridBagLayout());
     
-    /// Erstellung der verschiedenen Reiter ///
+    // Erstellung der verschiedenen Reiter 
     
     verkaufer = new JButton("Verkäufer");
     einkauf = new JButton("Einkauf");
     abrechnung = new JButton("Abrechnung");
     drucken = new JButton("Drucken");
-
+    
     verkaufer.setPreferredSize(new Dimension(200, 35));
     einkauf.setPreferredSize(new Dimension(200, 35));
     abrechnung.setPreferredSize(new Dimension(200, 35));
     drucken.setPreferredSize(new Dimension(200, 35));
-
+    
     verkaufer.addActionListener(this);
     einkauf.addActionListener(this);
     abrechnung.addActionListener(this);
     drucken.addActionListener(this);
     
     
-    /// Positionierung der Reiter untereinander ///
+    // Positionierung der Reiter untereinander
     
     grid.weightx = 1;
     grid.weighty = 0;
@@ -58,9 +59,9 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
     grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 0;
-
+    
     panel.add(verkaufer, grid);
-
+    
     grid.weightx = 1;
     grid.weighty = 0;
     
@@ -69,9 +70,9 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
     grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 1;
-
+    
     panel.add(einkauf, grid);
-
+    
     grid.weightx = 1;
     grid.weighty = 0;
     
@@ -80,7 +81,7 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
     grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 2;
-
+    
     panel.add(abrechnung, grid);
     
     grid.weightx = 1;
@@ -91,8 +92,10 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
     grid.gridheight = 1;
     grid.gridx = 0;
     grid.gridy = 3;
-
+    
     panel.add(drucken, grid);
+    
+    panel.setBorder(BorderFactory.createEtchedBorder());
     
     grid.weightx = 0;
     grid.weighty = 0.1;
@@ -106,7 +109,7 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
   }
  
   
-  /// ActionListener der Reiter Button ///
+  // ActionListener der Reiter Button
   
   @Override
   public void actionPerformed(ActionEvent e) {
@@ -151,7 +154,7 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
      if(clicker != 3) {
       if(clicked == abrechnung) {
         clicker = 3;
-        
+        // abrechnungsPanel = new AbrechnunsPanel();
         System.out.println("Abrechnung übersicht!");
       }
      }

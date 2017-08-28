@@ -1,6 +1,7 @@
 package de.clearit.kindergarten;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -9,6 +10,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,45 +32,49 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
   private String textzusatz;
   
   private final JLabel vorname = new JLabel("Vorname:");
-  private JTextField textFieldVorname = new JTextField(15);
+  private JTextField textFieldVorname = new JTextField(14);
   private final JLabel nachname = new JLabel("Familienname:");
-  private JTextField textFieldNachname = new JTextField(15);
+  private JTextField textFieldNachname = new JTextField(14);
   private final JLabel telefon = new JLabel("Telefon:");
-  private JTextField telefonField = new JTextField(15);
+  private JTextField telefonField = new JTextField(14);
   private final JLabel zusatz = new JLabel("Zusatz:");
-  private JTextField zusatzField = new JTextField(15);
+  private JTextField zusatzField = new JTextField(14);
+  private Checkbox checkBox;
   
   private JTable tabelle;
   private DefaultTableModel dataTabelle;
   private JPanel tablePanel;
+  private Object[][] verkaeuferDaten;
+  
+  int clickCounter = 0;
   
     public VerkaeuferErfassungsPanel() {
       
       verkaeuferErfassungsPanel = new JPanel();
-      verkaeuferErfassungsPanel.setBackground(Color.LIGHT_GRAY);
+      //verkaeuferErfassungsPanel.setBackground(Color.LIGHT_GRAY);
       
       verkaeuferErfassungsPanel.setLayout(new GridBagLayout());
       GridBagConstraints gc = new GridBagConstraints();
       
-      /// Tabelle für die Anzeige der Erfassten Verkäufer ///
+      
+      // Tabelle für die Anzeige der Erfassten Verkäufer
       
       tablePanel = new JPanel();
       
       String [] spalten = {"Vorname", "Familienname", "Telefon", "Zusatz"};
       
-      Object gruppeA[][] = {
-          {"Kevin", "Adam", new Integer(473391), "keinen"},
-          {"Kenan", "Horoz", new Integer(475691), "keinen"},
-          {"Kevin", "Dauemler", new Integer(56789), "keinen"}
-      };
-      
-      dataTabelle = new DefaultTableModel(gruppeA, spalten);
+      dataTabelle = new DefaultTableModel(verkaeuferDaten, spalten);
       
       tabelle = new JTable(dataTabelle);
-      
+      tabelle.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+      tabelle.setPreferredSize(new Dimension(500,500)); //width, height
+      tabelle.getAutoscrolls();
+      tabelle.setPreferredScrollableViewportSize(tabelle.getPreferredSize());
+      tabelle.setFillsViewportHeight(true);
       tablePanel.add(new JScrollPane(tabelle));
       
-      /// Buttons ///
+      
+      // Buttons
       
       neu = new JButton("Neu");
       config = new JButton("Bearbeiten");
@@ -85,12 +91,13 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
       delete.setPreferredSize(new Dimension(100, 20));
       save.setPreferredSize(new Dimension(100, 20));
       
+      
       // Grid aufbau
       
       gc.weightx = 1;
-      gc.weighty = 0.1;
+      gc.weighty = 0;
       gc.fill = GridBagConstraints.HORIZONTAL;
-      gc.anchor = GridBagConstraints.LINE_START;
+      gc.anchor = GridBagConstraints.FIRST_LINE_START;
       gc.gridwidth = 4;
       gc.gridheight = 1;
       gc.insets = new Insets(0, 0, 0, 0);
@@ -99,18 +106,18 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
       verkaeuferErfassungsPanel.add(tablePanel, gc);
       
       gc.weightx = 0;
-      gc.weighty = 0.1;
+      gc.weighty = 0;
       gc.fill = GridBagConstraints.NONE;
       gc.anchor = GridBagConstraints.LINE_START;
       gc.gridwidth = 1;
       gc.gridheight = 1;
-      gc.insets = new Insets(5, 0, 0, 0);
+      gc.insets = new Insets(5, 4, 0, 0);
       gc.gridx = 0;
       gc.gridy = 1;
       verkaeuferErfassungsPanel.add(neu, gc);
       
       gc.weightx = 0;
-      gc.weighty = 0.1;
+      gc.weighty = 0;
       gc.fill = GridBagConstraints.NONE;
       gc.anchor = GridBagConstraints.LINE_START;
       gc.gridwidth = 1;
@@ -121,7 +128,7 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
       verkaeuferErfassungsPanel.add(config, gc);
       
       gc.weightx = 0;
-      gc.weighty = 0.1;
+      gc.weighty = 0;
       gc.fill = GridBagConstraints.NONE;
       gc.anchor = GridBagConstraints.LINE_START;
       gc.gridwidth = 1;
@@ -131,7 +138,7 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
       gc.gridy = 1;
       verkaeuferErfassungsPanel.add(delete, gc);
       
-      /// Setze Save Button hinter delete! ///
+      // Setze Save Button hinter delete!
       verkaeuferErfassungsPanel.add(save, gc);
       
       add(verkaeuferErfassungsPanel, BorderLayout.CENTER);
@@ -141,147 +148,224 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
       JButton clicked = (JButton)e.getSource();
       JPanel erfassungsPanel = new JPanel();
-      
-      
+      JPanel checkBoxPanel = new JPanel();
       
       if(clicked == neu) {
-        
-        /// Labels + Save Button ///
-        
-        erfassungsPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gc = new GridBagConstraints();
-        
-        /// 4 Elemente in erster Reihe ///
-        
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(5, 0, 0, 0);
-        gc.gridwidth = 1;
-        gc.gridheight = 1;
-        gc.gridx = 0;
-        gc.gridy = 2;
-        erfassungsPanel.add(vorname, gc);
-        
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(5, 0, 0, 5);
-        gc.gridwidth = 1;
-        gc.gridheight = 1;
-        gc.gridx = 1;
-        gc.gridy = 2;
-        erfassungsPanel.add(textFieldVorname, gc);
-        
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(5, 0, 0, 5);
-        gc.gridwidth = 1;
-        gc.gridheight = 1;
-        gc.gridx = 2;
-        gc.gridy = 2;
-        erfassungsPanel.add(nachname, gc);
-        
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(5, 0, 0, 0);
-        gc.gridwidth = 1;
-        gc.gridheight = 1;
-        gc.gridx = 3;
-        gc.gridy = 2;
-        erfassungsPanel.add(textFieldNachname, gc);
-        
-        /// 4 Elemente in zweiter Reihe ///
-        
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(5, 0, 0, 0);
-        gc.gridwidth = 1;
-        gc.gridheight = 1;
-        gc.gridx = 0;
-        gc.gridy = 3;
-        erfassungsPanel.add(telefon, gc);
-        
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(5, 0, 0, 5);
-        gc.gridwidth = 1;
-        gc.gridheight = 1;
-        gc.gridx = 1;
-        gc.gridy = 3;
-        erfassungsPanel.add(telefonField, gc);
-        
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(5, 0, 0, 5);
-        gc.gridwidth = 1;
-        gc.gridheight = 1;
-        gc.gridx = 2;
-        gc.gridy = 3;
-        erfassungsPanel.add(zusatz, gc);
-        
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(5, 0, 0, 0);
-        gc.gridwidth = 1;
-        gc.gridheight = 1;
-        gc.gridx = 3;
-        gc.gridy = 3;
-        erfassungsPanel.add(zusatzField, gc);
-        
-        remove(save);
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(5, 0, 0, 0);
-        gc.gridwidth = 1;
-        gc.gridheight = 1;
-        gc.gridx = 0;
-        gc.gridy = 4;
-        erfassungsPanel.add(save, gc);
-        
-        gc.weightx = 0;
-        gc.weighty = 0.1;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(5, 0, 0, 0);
-        gc.gridwidth = 3;
-        gc.gridheight = 1;
-        gc.gridx = 0;
-        gc.gridy = 2;
-        verkaeuferErfassungsPanel.add(erfassungsPanel, gc);
-        
-        revalidate();
-        
-        System.out.println("Neu anlegen wurde gestartet!");
+        if(clickCounter != 1) {
+          // Labels + Save Button
+          erfassungsPanel.setBorder(BorderFactory.createEtchedBorder());
+          
+          erfassungsPanel.setLayout(new GridBagLayout());
+          GridBagConstraints gc = new GridBagConstraints();
+          
+          // 4 Elemente in erster Reihe
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 0);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 0;
+          gc.gridy = 2;
+          erfassungsPanel.add(vorname, gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 5);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 1;
+          gc.gridy = 2;
+          erfassungsPanel.add(textFieldVorname, gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 5);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 2;
+          gc.gridy = 2;
+          erfassungsPanel.add(nachname, gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 0);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 3;
+          gc.gridy = 2;
+          erfassungsPanel.add(textFieldNachname, gc);
+          
+          // 4 Elemente in zweiter Reihe
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 0);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 0;
+          gc.gridy = 3;
+          erfassungsPanel.add(telefon, gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 5);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 1;
+          gc.gridy = 3;
+          erfassungsPanel.add(telefonField, gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 5);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 2;
+          gc.gridy = 3;
+          erfassungsPanel.add(zusatz, gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 0);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 3;
+          gc.gridy = 3;
+          erfassungsPanel.add(zusatzField, gc);
+          
+          // Angaben zur Ware - CheckBox
+          
+          checkBoxPanel.setLayout(new GridBagLayout());
+          
+          checkBox = new Checkbox();
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 0);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 0;
+          gc.gridy = 0;
+          checkBoxPanel.add(new Checkbox("gebracht"), gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 0);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 0;
+          gc.gridy = 1;
+          checkBoxPanel.add(new Checkbox("dreckig"), gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 0);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 0;
+          gc.gridy = 2;
+          checkBoxPanel.add(new Checkbox("abgeholt"), gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 0);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 0;
+          gc.gridy = 3;
+          checkBoxPanel.add(new Checkbox("Geld erh."), gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 0);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 0;
+          gc.gridy = 4;
+          erfassungsPanel.add(checkBoxPanel, gc);
+          
+          remove(save);
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 0, 0, 0);
+          gc.gridwidth = 1;
+          gc.gridheight = 1;
+          gc.gridx = 0;
+          gc.gridy = 5;
+          erfassungsPanel.add(save, gc);
+          
+          gc.weightx = 0;
+          gc.weighty = 0.1;
+          gc.anchor = GridBagConstraints.LINE_START;
+          gc.insets = new Insets(5, 4, 0, 0);
+          gc.gridwidth = 3;
+          gc.gridheight = 1;
+          gc.gridx = 0;
+          gc.gridy = 2;
+          verkaeuferErfassungsPanel.add(erfassungsPanel, gc);
+          
+          clickCounter = 1;
+          
+          revalidate();
+          
+          System.out.println("Neu anlegen wurde gestartet!");
+          }
+        }
+        if(clicked == save) {
+          
+          /* TODO TODO TODO TODO
+           * Überprüfung ob Felder Leer sind
+           * Meldung noch einfügen - das Feld XX leer
+           * 
+           * mindestens 1 Feld Vorname oder Nachname muss 
+           * beschrieben sein!
+           */
+          
+          textVorname = textFieldVorname.getText();
+          textNachname = textFieldNachname.getText();
+          nummer = Integer.parseInt(telefonField.getText());
+          textzusatz = zusatzField.getText();
+          
+          textFieldVorname.setText("");
+          textFieldNachname.setText("");
+          telefonField.setText("");
+          zusatzField.setText("");
+          
+          // JTable
+          dataTabelle.addRow(new Object[]{textVorname, textNachname, nummer, textzusatz});
+          
+          /* Würde hier gerne ein neues Object (new Verkaeufer())
+           * anlegen allerdings versteh ich nicht wie ich dann 
+           * textVorname etc auslesen kann und in der JTable darstellen kann...
+          */
+          revalidate();
+          System.out.println("Verkäufer wurde gespeichert!");
       }
-      if(clicked == save) {
-        textVorname = textFieldVorname.getText();
-        textNachname = textFieldNachname.getText();
-        nummer = Integer.parseInt(telefonField.getText());
-        textzusatz = zusatzField.getText();
-        
-        /*verkaeuferErfassungsPanel.remove(save);
-        verkaeuferErfassungsPanel.remove(vorname);
-        verkaeuferErfassungsPanel.remove(textFieldVorname);
-        verkaeuferErfassungsPanel.remove(nachname);
-        verkaeuferErfassungsPanel.remove(textFieldNachname);
-        verkaeuferErfassungsPanel.remove(telefon);
-        verkaeuferErfassungsPanel.remove(telefonField);
-        verkaeuferErfassungsPanel.remove(zusatz);
-        verkaeuferErfassungsPanel.remove(zusatzField);
-        */
-        // JTable
-        
-        
-        
-        revalidate();
-        System.out.println("Verkäufer wurde gespeichert!");
-      }
-    }
+        if(clicked == config) {
+          /* Nimm Row Index X und setze es in das richtige Label -> Save button 
+           * wird auch wieder benötigt!
+           * 
+           * kein remove nötig!
+           */
+        }
+        if(clicked == delete) {
+          /* Lösche Zeile X - Auswahl muss getroffen sein!
+           */
+        }
+    } 
 }

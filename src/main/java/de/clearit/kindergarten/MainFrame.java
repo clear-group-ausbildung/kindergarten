@@ -20,11 +20,11 @@ public class MainFrame extends JPanel {
     c.setLayout(new BorderLayout());
     menuPanel = new ToolbarPanel();
     menuPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-    menuPanel.setBackground(Color.BLACK);
+   // menuPanel.setBackground(Color.BLACK);
     c.add(menuPanel, BorderLayout.NORTH);
 
     
-    frame.setSize(1000, 900);
+    frame.setSize(800, 900);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
   }  
