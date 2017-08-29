@@ -9,16 +9,13 @@ Habe bis jetzt leider keine Lösung gefunden und werde dies erstmal Pausieren.
 package de.clearit.kindergarten;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -96,7 +93,6 @@ public class ToolbarPanel extends JPanel implements ActionListener{
     if(importcounter == 1) {
       if(clicked == menu) {
         navigationsButtonPanel = new NavigationsButtonPanel();
-        //navigationsPanel.setBackground(Color.BLUE);
         importcounter++;
         configcounter = 1;
         if(clickcounter == 2) {

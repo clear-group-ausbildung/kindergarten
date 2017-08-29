@@ -3,7 +3,9 @@ package de.clearit.kindergarten;
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
   private JButton neu;
@@ -44,7 +47,9 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
   private JTable tabelle;
   private DefaultTableModel dataTabelle;
   private JPanel tablePanel;
+  private static final String [] spalten = {"Vorname", "Familienname", "Telefon", "Zusatz"};
   private Object[][] verkaeuferDaten;
+  private int indexTabelle = 0;
   
   int clickCounter = 0;
   
@@ -61,18 +66,27 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
       
       tablePanel = new JPanel();
       
-      String [] spalten = {"Vorname", "Familienname", "Telefon", "Zusatz"};
-      
       dataTabelle = new DefaultTableModel(verkaeuferDaten, spalten);
       
       tabelle = new JTable(dataTabelle);
       tabelle.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+      tabelle.setShowGrid(true);
+      tabelle.setShowVerticalLines(true);
+      
+      JTableHeader header = tabelle.getTableHeader();
+      tabelle.setBackground(new Color(252,252,252));
+      tabelle.setEnabled(true);
+      header.setFont(new Font("Dialog", Font.BOLD, 12));
+      header.setBackground(new Color(212, 212, 212));
+      header.setForeground(Color.BLACK);
+      
+      tabelle.setGridColor(Color.DARK_GRAY);
       tabelle.setPreferredSize(new Dimension(500,500)); //width, height
       tabelle.getAutoscrolls();
       tabelle.setPreferredScrollableViewportSize(tabelle.getPreferredSize());
       tabelle.setFillsViewportHeight(true);
-      tablePanel.add(new JScrollPane(tabelle));
       
+      tablePanel.add(new JScrollPane(tabelle));
       
       // Buttons
       
@@ -149,6 +163,7 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
       JButton clicked = (JButton)e.getSource();
       JPanel erfassungsPanel = new JPanel();
       JPanel checkBoxPanel = new JPanel();
+      String number;
       
       if(clicked == neu) {
         if(clickCounter != 1) {
@@ -336,36 +351,71 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
            * beschrieben sein!
            */
           
-          textVorname = textFieldVorname.getText();
-          textNachname = textFieldNachname.getText();
-          nummer = Integer.parseInt(telefonField.getText());
-          textzusatz = zusatzField.getText();
-          
-          textFieldVorname.setText("");
-          textFieldNachname.setText("");
-          telefonField.setText("");
-          zusatzField.setText("");
-          
-          // JTable
-          dataTabelle.addRow(new Object[]{textVorname, textNachname, nummer, textzusatz});
-          
-          /* Würde hier gerne ein neues Object (new Verkaeufer())
-           * anlegen allerdings versteh ich nicht wie ich dann 
-           * textVorname etc auslesen kann und in der JTable darstellen kann...
-          */
-          revalidate();
-          System.out.println("Verkäufer wurde gespeichert!");
+          if(clickCounter == 1 ) {
+            textVorname = textFieldVorname.getText();
+            textNachname = textFieldNachname.getText();
+            
+            // This not work...
+            if(telefonField.getText() == null) {
+              nummer = 0;
+            }else {
+              nummer = Integer.parseInt(telefonField.getText());
+            }
+            textzusatz = zusatzField.getText();
+            
+            textFieldVorname.setText("");
+            textFieldNachname.setText("");
+            telefonField.setText("");
+            zusatzField.setText("");
+            
+            // JTable
+            dataTabelle.addRow(new Object[]{textVorname, textNachname, nummer, textzusatz});
+            
+            clickCounter = 1;
+            /* Würde hier gerne ein neues Object (new Verkaeufer())
+             * anlegen allerdings versteh ich nicht wie ich dann 
+             * textVorname etc auslesen kann und in der JTable darstellen kann...
+            */
+            revalidate();
+            System.out.println("Verkäufer wurde gespeichert!");
+          }else {
+            textVorname = textFieldVorname.getText();
+            textNachname = textFieldNachname.getText();
+            nummer = Integer.parseInt(telefonField.getText());
+            textzusatz = zusatzField.getText();
+            
+            textFieldVorname.setText("");
+            textFieldNachname.setText("");
+            telefonField.setText("");
+            zusatzField.setText("");
+            
+            // JTable Daten abändern
+            dataTabelle.removeRow(tabelle.getSelectedRow());
+            dataTabelle.insertRow(indexTabelle, new Object[]{textVorname, textNachname, nummer, textzusatz});
+            clickCounter = 1;
+          }
       }
         if(clicked == config) {
-          /* Nimm Row Index X und setze es in das richtige Label -> Save button 
-           * wird auch wieder benötigt!
-           * 
-           * kein remove nötig!
+          /*
+           * Bearbeiten von bereits angelegten Verkäufern
            */
+          indexTabelle = tabelle.getSelectedRow();
+          
+          
+          textFieldVorname.setText((String) tabelle.getValueAt(indexTabelle, 0));
+          textFieldNachname.setText((String) tabelle.getValueAt(indexTabelle, 1));
+          
+          //number = (Integer) tabelle.getValueAt(indexTabelle, 2);
+          //number = Integer.parseInt(telefonField.getText());
+          //telefonField.setText((String) tabelle.getValueAt(indexTabelle, 2));
+          
+          zusatzField.setText((String) tabelle.getValueAt(indexTabelle, 3));
+          clickCounter = 2;
         }
         if(clicked == delete) {
           /* Lösche Zeile X - Auswahl muss getroffen sein!
            */
+          dataTabelle.removeRow(tabelle.getSelectedRow());
         }
     } 
 }
