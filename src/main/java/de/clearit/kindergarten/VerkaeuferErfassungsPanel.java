@@ -47,10 +47,14 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
   private JTable tabelle;
   private DefaultTableModel dataTabelle;
   private JPanel tablePanel;
-  private static final String [] spalten = {"Vorname", "Familienname", "Telefon", "Zusatz"};
+  private static final String [] spalten = {"ID", "Vorname", "Familienname", "Telefon", "Zusatz"};
   private Object[][] verkaeuferDaten;
   private int indexTabelle = 0;
-  
+  private Integer ID = 0;
+  private String id;
+  private Integer configId = 0;
+  private Integer zwischenspeicher = 0;
+
   int clickCounter = 0;
   
     public VerkaeuferErfassungsPanel() {
@@ -77,7 +81,7 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
       tabelle.setBackground(new Color(252,252,252));
       tabelle.setEnabled(true);
       header.setFont(new Font("Dialog", Font.BOLD, 12));
-      header.setBackground(new Color(212, 212, 212));
+      header.setBackground(new Color(253, 249, 253));
       header.setForeground(Color.BLACK);
       
       tabelle.setGridColor(Color.DARK_GRAY);
@@ -163,7 +167,6 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
       JButton clicked = (JButton)e.getSource();
       JPanel erfassungsPanel = new JPanel();
       JPanel checkBoxPanel = new JPanel();
-      String number;
       
       if(clicked == neu) {
         if(clickCounter != 1) {
@@ -343,18 +346,18 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
         }
         if(clicked == save) {
           
-          /* TODO TODO TODO TODO
+          /* TODO
            * Überprüfung ob Felder Leer sind
            * Meldung noch einfügen - das Feld XX leer
            * 
-           * mindestens 1 Feld Vorname oder Nachname muss 
+           * mindestens 1 Feld Vorname ODER Nachname muss 
            * beschrieben sein!
            */
           
           if(clickCounter == 1 ) {
             textVorname = textFieldVorname.getText();
             textNachname = textFieldNachname.getText();
-            
+            ID++;
             // This not work...
             if(telefonField.getText() == null) {
               nummer = 0;
@@ -369,7 +372,7 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
             zusatzField.setText("");
             
             // JTable
-            dataTabelle.addRow(new Object[]{textVorname, textNachname, nummer, textzusatz});
+            dataTabelle.addRow(new Object[]{ID, textVorname, textNachname, nummer, textzusatz});
             
             clickCounter = 1;
             /* Würde hier gerne ein neues Object (new Verkaeufer())
@@ -384,6 +387,9 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
             nummer = Integer.parseInt(telefonField.getText());
             textzusatz = zusatzField.getText();
             
+            //id = (String) tabelle.getValueAt(indexTabelle,  0);
+            //id = ID.toString();
+            
             textFieldVorname.setText("");
             textFieldNachname.setText("");
             telefonField.setText("");
@@ -391,7 +397,11 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
             
             // JTable Daten abändern
             dataTabelle.removeRow(tabelle.getSelectedRow());
-            dataTabelle.insertRow(indexTabelle, new Object[]{textVorname, textNachname, nummer, textzusatz});
+            dataTabelle.insertRow(indexTabelle, new Object[]{ID, textVorname, textNachname, nummer, textzusatz});
+            if(zwischenspeicher != 0) {
+              ID = zwischenspeicher;
+            }
+            zwischenspeicher = 0;
             clickCounter = 1;
           }
       }
@@ -401,15 +411,20 @@ public class VerkaeuferErfassungsPanel extends JPanel implements ActionListener{
            */
           indexTabelle = tabelle.getSelectedRow();
           
+          zwischenspeicher = ID;
           
-          textFieldVorname.setText((String) tabelle.getValueAt(indexTabelle, 0));
-          textFieldNachname.setText((String) tabelle.getValueAt(indexTabelle, 1));
+          ID = (int) tabelle.getValueAt(indexTabelle,  0);
+          id = ID.toString();
           
-          //number = (Integer) tabelle.getValueAt(indexTabelle, 2);
+
+          textFieldVorname.setText((String) tabelle.getValueAt(indexTabelle, 1));
+          textFieldNachname.setText((String) tabelle.getValueAt(indexTabelle, 2));
+          
+          //number = (Integer) tabelle.getValueAt(indexTabelle, 3);
           //number = Integer.parseInt(telefonField.getText());
-          //telefonField.setText((String) tabelle.getValueAt(indexTabelle, 2));
+          //telefonField.setText((String) tabelle.getValueAt(indexTabelle, 3));
           
-          zusatzField.setText((String) tabelle.getValueAt(indexTabelle, 3));
+          zusatzField.setText((String) tabelle.getValueAt(indexTabelle, 4));
           clickCounter = 2;
         }
         if(clicked == delete) {

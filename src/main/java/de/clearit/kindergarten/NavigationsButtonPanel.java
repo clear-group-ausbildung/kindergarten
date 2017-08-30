@@ -20,6 +20,7 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
   private JButton abrechnung;
   private JButton drucken;
   private VerkaeuferErfassungsPanel vk;
+  private EinkaufsErfassungsPanel ek;
   private int clicker;
   
   private JPanel panel = new JPanel();
@@ -120,6 +121,7 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
      if(clicked == verkaufer) {
        if(clicker != 1) {
         vk = new VerkaeuferErfassungsPanel();
+        showPanel.removeAll();
         clicker = 1;
         
         showPanel.add(vk, BorderLayout.CENTER);
@@ -133,6 +135,7 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
         grid.gridx = 3;
         grid.gridy = 0;
         panel.add(showPanel, grid);
+        
         revalidate();
         
         System.out.println("Verkäufer übersicht!");
@@ -142,8 +145,22 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
      // EINKAUFSERFASSUNG 
      if(clicked == einkauf) {
        if(clicker != 2) {
-        showPanel.removeAll();
+        ek = new EinkaufsErfassungsPanel();
         clicker = 2;
+        showPanel.removeAll();
+        
+        showPanel.add(ek, BorderLayout.CENTER);
+        
+        grid.weightx = 1;
+        grid.weighty = 0.1;
+        
+        grid.anchor = GridBagConstraints.LINE_START;
+        grid.gridwidth = 4;
+        grid.gridheight = 8;
+        grid.gridx = 3;
+        grid.gridy = 0;
+        panel.add(showPanel, grid);
+        
         revalidate();
         System.out.println("REMOVE");
        }
@@ -153,8 +170,10 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
      // ABRECHNUNSÜBERSICHT
      if(clicker != 3) {
       if(clicked == abrechnung) {
+        showPanel.removeAll();
         clicker = 3;
         // abrechnungsPanel = new AbrechnunsPanel();
+        revalidate();
         System.out.println("Abrechnung übersicht!");
       }
      }
@@ -162,7 +181,9 @@ public class NavigationsButtonPanel extends JPanel implements ActionListener {
      //DRUCKOPTION
      if(clicker != 4) {
       if(clicked == drucken) {
+        showPanel.removeAll();
         clicker = 4;
+        revalidate();
         System.out.println("Drucken!");
       }
     }
