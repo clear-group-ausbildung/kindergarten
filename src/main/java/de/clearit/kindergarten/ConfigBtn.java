@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 /**
  * Diese Klasse stellt ein Panel bereit, welches die Buttons fuer die Konfiguration enthaelt.
  * 
+ * @author Kevin.Adam
  * @author Kenan.Horoz
  */
 public class ConfigBtn extends JPanel {
