@@ -7,11 +7,19 @@ import java.awt.GridBagLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+/**
+ * Diese Klasse stellt ein Panel bereit, welches die Buttons fuer die Konfiguration enthaelt.
+ * 
+ * @author Kenan.Horoz
+ */
 public class ConfigBtn extends JPanel {
 
   private JButton importBtn;
   private JButton exportBtn;
 
+  /**
+   * Konstruktor. Erzeugt ein neues ConfigBtn Panel.
+   */
   public ConfigBtn() {
     importBtn = new JButton("Import");
     exportBtn = new JButton("Export");
