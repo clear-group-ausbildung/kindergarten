@@ -128,16 +128,15 @@ public final class DesktopView extends AbstractView {
     initComponents();
     initEventHandling();
 
-    FormLayout layout = new FormLayout("[80dlu,pref], 2px, [400px,pref]:grow", "fill:36px, fill:200px:grow, 2px, pref");
+    FormLayout layout = new FormLayout("[80dlu,pref], 2px, [400px,pref]:grow", "fill:200px:grow, 2px, pref");
     PanelBuilder builder = new PanelBuilder(layout);
     builder.setOpaque(false);
 
-    builder.add(buildHeader(), CC.xyw(1, 1, 3));
-    builder.add(buildNavigation(), CC.xywh(1, 2, 1, 3));
-    builder.add(buildVerticalSeparator(), CC.xy(2, 2));
-    builder.add(contentContainer, CC.xy(3, 2));
-    builder.add(buildHorizontalSeparator(), CC.xyw(2, 3, 2));
-    builder.add(buildBottom(), CC.xyw(2, 4, 2));
+    builder.add(buildNavigation(), CC.xywh(1, 1, 1, 3));
+    builder.add(buildVerticalSeparator(), CC.xy(2, 1));
+    builder.add(contentContainer, CC.xy(3, 1));
+    builder.add(buildHorizontalSeparator(), CC.xyw(2, 2, 2));
+    builder.add(buildBottom(), CC.xyw(2, 3, 2));
     return builder.getPanel();
   }
 

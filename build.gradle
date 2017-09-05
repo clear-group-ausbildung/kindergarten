@@ -1,32 +1,57 @@
 group 'de.clearit'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'org.javalite.activejdbc'
+apply plugin: 'eclipse'
 
 sourceCompatibility = 1.8
 
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'http://repo.javalite.io' }
+    }
+    dependencies {
+        classpath group: 'org.javalite', name: 'activejdbc-gradle-plugin', version: '1.4.13'
+    }
+}
+
 repositories {
-   flatDir {
-       dirs 'lib'
-   }
+	mavenCentral()
+   	maven { url 'http://repo.javalite.io' }
+   	flatDir {
+    	dirs 'lib'
+   	}
 }
 
 dependencies {
-   compile name: 'animation-1.2.0'
-   compile name: 'AppleJavaExtensions-1.4'
-   compile name: 'application-0.9.12'
-   compile name: 'binding-2.0.6'
-   compile name: 'completion-1.1.2'
-   compile name: 'desktop-0.9.16'
-   compile name: 'forms-1.3.0pre4'
-   compile name: 'hamcrest-core-1.3'
-   compile name: 'help-0.9.23'
-   compile name: 'jsdl-core-0.9.10'
-   compile name: 'junit-4.12'
-   compile name: 'looks-2.2.2'
-   compile name: 'quicksearch-0.7.8'
-   compile name: 'swing-worker'
-   compile name: 'uif2-0.9.18'
-   compile name: 'validation-2.0.1'
+  	// https://mvnrepository.com/artifact/com.google.guava/guava
+  	compile group: 'com.google.guava', name: 'guava', version: '23.0'
+	// https://mvnrepository.com/artifact/org.javalite/activejdbc
+   	compile group: 'org.javalite', name: 'activejdbc', version: '1.4.13.j7'
+   	// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+   	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.8.0-alpha2'
+   	// https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+   	compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-alpha2'
+   	// https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
+   	compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.20.0'
+   	compile name: 'animation-1.2.0'
+   	compile name: 'AppleJavaExtensions-1.4'
+   	compile name: 'application-0.9.12'
+   	compile name: 'binding-2.0.6'
+   	compile name: 'completion-1.1.2'
+   	compile name: 'desktop-0.9.16'
+   	compile name: 'forms-1.3.0pre4'
+   	compile name: 'hamcrest-core-1.3'
+   	compile name: 'help-0.9.23'
+   	compile name: 'jsdl-core-0.9.10'
+   	compile name: 'junit-4.12'
+   	compile name: 'looks-2.2.2'
+   	compile name: 'quicksearch-0.7.8'
+   	compile name: 'swing-worker'
+   	compile name: 'uif2-0.9.18'
+   	compile name: 'validation-2.0.1'
 }
 
+mainClassName = "de.clearit.kindergarten.application.KindergartenLauncher"

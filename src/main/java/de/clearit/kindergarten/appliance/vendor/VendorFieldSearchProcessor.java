@@ -13,7 +13,7 @@ import com.jgoodies.completion.text.DefaultCompletion.CaretPosition;
 import com.jgoodies.uif2.search.AbstractFieldSearchProcessor;
 import com.jgoodies.uif2.util.UIFStringUtils;
 
-import de.clearit.kindergarten.domain.Vendor;
+import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorBroker;
 
 /**
@@ -41,13 +41,13 @@ public final class VendorFieldSearchProcessor extends AbstractFieldSearchProcess
       CompletionPublisher publisher, CompletionState state) {
     String trimmedContent = content.trim();
     sleep(1000);
-    Format format = new VendorAppliance.AddressHTMLFormat();
-    List<Vendor> vendors = new ArrayList<Vendor>(VendorBroker.INSTANCE.getList());
+    Format format = new VendorAppliance.ExtrasHTMLFormat();
+    List<VendorBean> vendors = new ArrayList<VendorBean>(VendorBroker.INSTANCE.getList());
 
     // Check the name
-    for (Iterator<Vendor> i = vendors.iterator(); i.hasNext();) {
-      Vendor vendor = i.next();
-      String name = vendor.getName();
+    for (Iterator<VendorBean> i = vendors.iterator(); i.hasNext();) {
+      VendorBean vendor = i.next();
+      String name = vendor.getFirstName();
       sleep(100);
       if (UIFStringUtils.startsWithIgnoreCase(name, trimmedContent)) {
         Completion completion = new DefaultCompletion(name, null, null, format.format(vendor), null, 0, name.equals(
@@ -57,8 +57,8 @@ public final class VendorFieldSearchProcessor extends AbstractFieldSearchProcess
       }
     }
     // Check the display string
-    for (Iterator<Vendor> i = vendors.iterator(); i.hasNext();) {
-      Vendor vendor = i.next();
+    for (Iterator<VendorBean> i = vendors.iterator(); i.hasNext();) {
+      VendorBean vendor = i.next();
       String display = getDisplayString(vendor);
       sleep(100);
       if (display.equals(trimmedContent)) {
@@ -82,8 +82,8 @@ public final class VendorFieldSearchProcessor extends AbstractFieldSearchProcess
     if (value == null) {
       return "";
     }
-    Vendor vendor = (Vendor) value;
-    return vendor.getCode() + " - " + vendor.getName();
+    VendorBean vendor = (VendorBean) value;
+    return vendor.getLastName() + ", " + vendor.getFirstName();
   }
 
   /**
@@ -92,12 +92,18 @@ public final class VendorFieldSearchProcessor extends AbstractFieldSearchProcess
   @Override
   public Object valueFor(Completion completion) {
     String displayString = completion.getDisplayString();
-    int dashIndex = displayString.indexOf('-');
-    if (dashIndex == -1) {
-      return VendorBroker.INSTANCE.findByName(displayString);
+    int commaIndex = displayString.indexOf(',');
+    String[] name = new String[] {};
+    if (commaIndex == -1) {
+      // Input was in format "Ritter Mark"
+      name = displayString.split(" ");
+      // e.g. name = { "Ritter", "Mark };
     }
-    String code = displayString.substring(0, dashIndex - 1);
-    return VendorBroker.INSTANCE.findByCode(code);
+    // Input was in format "Ritter, Mark"
+    name = displayString.split(",");
+    // e.g. name = { "Ritter", "Mark };
+    // name[0] is the last name, name[1] is the first name
+    return VendorBroker.INSTANCE.findByName(name[0], name[1]);
   }
 
   // Helper Code ************************************************************

@@ -14,12 +14,12 @@ import com.jgoodies.uif2.application.UIFPresentationModel;
 import com.jgoodies.uif2.util.TextComponentUtils;
 
 import de.clearit.kindergarten.application.Dialogs;
-import de.clearit.kindergarten.domain.Vendor;
+import de.clearit.kindergarten.domain.VendorBean;
 
 /**
  * The editor model for the vendor.
  */
-public final class VendorEditorModel extends UIFPresentationModel<Vendor> implements FormPaneModel {
+public final class VendorEditorModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
 
   private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public final class VendorEditorModel extends UIFPresentationModel<Vendor> implem
 
   // Instance Creation ******************************************************
 
-  VendorEditorModel(Vendor vendor, CommitCallback<CommandValue> callback) {
+  VendorEditorModel(VendorBean vendor, CommitCallback<CommandValue> callback) {
     super(vendor);
     this.commitCallback = callback;
     this.creationTime = System.currentTimeMillis();
@@ -93,7 +93,7 @@ public final class VendorEditorModel extends UIFPresentationModel<Vendor> implem
       cancelOp.run();
       return;
     }
-    String objectName = getBean().getName();
+    String objectName = getBean().getLastName() + ", " + getBean().getFirstName();
     Object commitValue = Dialogs.showUnsavedChangesDialog(e, objectName);
     if (commitValue == CommandValue.CANCEL) {
       return;
