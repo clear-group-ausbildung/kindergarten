@@ -14,16 +14,12 @@ import com.jgoodies.desktop.view.DesktopViews;
 import com.jgoodies.jsdl.core.CloseHandler;
 import com.jgoodies.jsdl.core.JSDLSetup;
 import com.jgoodies.jsdl.core.pane.AbstractStyledPane;
-import com.jgoodies.looks.LookUtils;
 import com.jgoodies.looks.Options;
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
-import com.jgoodies.looks.windows.WindowsLookAndFeel;
 import com.jgoodies.uif2.application.UIFApplication;
 import com.jgoodies.uif2.splash.SplashWindow;
 
 import de.clearit.kindergarten.appliance.documents.DocumentsAppliance;
 import de.clearit.kindergarten.appliance.vendor.VendorAppliance;
-import de.clearit.kindergarten.domain.SampleEntityFactory;
 
 /**
  * The main application class.
@@ -82,14 +78,15 @@ public final class KindergartenApplication extends UIFApplication {
     try {
       // UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
       // UIManager.setLookAndFeel(new NimbusLookAndFeel());
-      UIManager.setLookAndFeel(new WindowsLookAndFeel());
-      if (LookUtils.IS_OS_MAC) {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      } else if ((LookUtils.IS_OS_WINDOWS_XP || LookUtils.IS_OS_WINDOWS_VISTA) && LookUtils.IS_LAF_WINDOWS_XP_ENABLED) {
-        UIManager.setLookAndFeel(new WindowsLookAndFeel());
-      } else {
-        UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-      }
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      // if (LookUtils.IS_OS_MAC) {
+      // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      // } else if ((LookUtils.IS_OS_WINDOWS_XP || LookUtils.IS_OS_WINDOWS_VISTA) &&
+      // LookUtils.IS_LAF_WINDOWS_XP_ENABLED) {
+      // UIManager.setLookAndFeel(new WindowsLookAndFeel());
+      // } else {
+      // UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+      // }
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -139,7 +136,7 @@ public final class KindergartenApplication extends UIFApplication {
 
   private void createSampleEntities() {
     // Splash.setNote("Creating Sample Entities");
-    SampleEntityFactory.INSTANCE.addSampleData();
+    // SampleEntityFactory.INSTANCE.addSampleData();
   }
 
   private void registerAppliances() {

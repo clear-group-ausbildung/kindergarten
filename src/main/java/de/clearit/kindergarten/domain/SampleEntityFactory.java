@@ -20,8 +20,8 @@ public final class SampleEntityFactory {
   }
 
   private void addVendors() {
-    Vendor[] allVendors = new Vendor[] { new Vendor("MUELLER", "Hans Müller"), new Vendor("MEYER", "Rita Meyer"),
-        new Vendor("SCHULZ", "Gernot Schulz") };
+    VendorBean[] allVendors = new VendorBean[] { new VendorBean("Hans", "Mueller"), new VendorBean("Rita", "Meyer"),
+        new VendorBean("Gernot", "Schulz") };
     Arrays.asList(allVendors).stream().forEach(vendor -> VendorBroker.INSTANCE.add(vendor));
   }
 

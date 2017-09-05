@@ -18,7 +18,7 @@ import com.jgoodies.uif2.util.TableUtils;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.appliance.HomeViewBuilder;
-import de.clearit.kindergarten.domain.Vendor;
+import de.clearit.kindergarten.domain.VendorBean;
 
 /**
  * The home view for the vendor.
@@ -56,7 +56,7 @@ final class VendorHomeView extends AbstractView {
 
     table = new StripedTable(new VendorTableModel(model.getSelectionInList()));
     table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
-    TableUtils.configureColumns(table, "[30dlu,60dlu], [50dlu,pref], [50dlu,pref], [20dlu,70dlu,150dlu]");
+    TableUtils.configureColumns(table, "[30dlu,60dlu], [50dlu,pref], [50dlu,pref]");
 
     Action editAction = model.getAction(VendorHomeModel.ACTION_EDIT_ITEM);
     ComponentUtils.registerDoubleClickAction(table, editAction);
@@ -81,7 +81,7 @@ final class VendorHomeView extends AbstractView {
 
   // TableModel *************************************************************
 
-  private static final class VendorTableModel extends AbstractTableAdapter<Vendor> {
+  private static final class VendorTableModel extends AbstractTableAdapter<VendorBean> {
 
     private static final long serialVersionUID = 1L;
 
@@ -90,25 +90,22 @@ final class VendorHomeView extends AbstractView {
     }
 
     private static String[] getColumnNames() {
-      return new String[] { RESOURCES.getString("vendor.table.code"), RESOURCES.getString("vendor.table.name"),
-          RESOURCES.getString("vendor.table.street"), RESOURCES.getString("vendor.table.city") };
+      return new String[] { RESOURCES.getString("vendor.table.firstName"), RESOURCES.getString("vendor.table.lastName"),
+          RESOURCES.getString("vendor.table.phoneNumber") };
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-      Vendor vendor = getRow(rowIndex);
+      VendorBean vendor = getRow(rowIndex);
       switch (columnIndex) {
       case 0:
-        return vendor.getCode();
+        return vendor.getFirstName();
 
       case 1:
-        return vendor.getName();
+        return vendor.getLastName();
 
       case 2:
-        return vendor.getStreet1();
-
-      case 3:
-        return vendor.getCity();
+        return vendor.getPhoneNumber();
 
       default:
         throw new IllegalStateException("Can't handle column index " + columnIndex);

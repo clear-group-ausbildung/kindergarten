@@ -4,7 +4,7 @@ import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 
-import de.clearit.kindergarten.domain.Vendor;
+import de.clearit.kindergarten.domain.VendorBean;
 
 /**
  * The views of the vendor appliance.
@@ -29,8 +29,8 @@ public final class VendorViews {
 
     @Override
     public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-      Vendor vendor = (Vendor) obj;
-      toAppendTo.append(vendor.getName());
+      VendorBean vendor = (VendorBean) obj;
+      toAppendTo.append(vendor.getLastName() + ", " + vendor.getFirstName());
       return toAppendTo;
     }
 

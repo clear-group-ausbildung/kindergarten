@@ -14,12 +14,10 @@ import com.jgoodies.desktop.DesktopManager;
 import com.jgoodies.desktop.spec.MenuSpec;
 import com.jgoodies.desktop.spec.NavigationBarSpec;
 import com.jgoodies.jsdl.core.CommandValue;
-import com.jgoodies.uif2.util.UIFStringUtils;
 
 import de.clearit.kindergarten.desktop.DefaultAppliance;
 import de.clearit.kindergarten.desktop.DefaultDesktopFrame;
-import de.clearit.kindergarten.domain.Address;
-import de.clearit.kindergarten.domain.Vendor;
+import de.clearit.kindergarten.domain.VendorBean;
 
 /**
  * The appliance for the vendor.
@@ -46,8 +44,8 @@ public final class VendorAppliance extends DefaultAppliance {
 
   // Public API *************************************************************
 
-  public void newVendor(String title, final CommitCallback<Vendor> outerCallback) {
-    final Vendor newVendor = new Vendor();
+  public void newVendor(String title, final CommitCallback<VendorBean> outerCallback) {
+    final VendorBean newVendor = new VendorBean();
     final CommitCallback<CommandValue> callback = new CommitCallback<CommandValue>() {
       @Override
       public void committed(CommandValue result) {
@@ -58,7 +56,7 @@ public final class VendorAppliance extends DefaultAppliance {
     openVendorEditor(title, model, true);
   }
 
-  public void editVendor(final String title, final Vendor vendor, final CommitCallback<CommandValue> callback) {
+  public void editVendor(final String title, final VendorBean vendor, final CommitCallback<CommandValue> callback) {
     VendorEditorModel model = new VendorEditorModel(vendor, callback);
     openVendorEditor(title, model, false);
   }
@@ -97,7 +95,7 @@ public final class VendorAppliance extends DefaultAppliance {
 
   // Conversion *************************************************************
 
-  public static final class AddressHTMLFormat extends Format {
+  public static final class ExtrasHTMLFormat extends Format {
 
     private static final long serialVersionUID = 1L;
 
@@ -106,27 +104,15 @@ public final class VendorAppliance extends DefaultAppliance {
       if (obj == null) {
         return toAppendTo;
       }
-      Address address = (Address) obj;
+      VendorBean vendor = (VendorBean) obj;
       toAppendTo.append("<html>");
-      toAppendTo.append(address.getLine1());
-      if (UIFStringUtils.isNotBlank(address.getLine2())) {
-        toAppendTo.append("<br>");
-        toAppendTo.append(address.getLine2());
-      }
-      if (UIFStringUtils.isNotBlank(address.getStreet1())) {
-        toAppendTo.append("<br>");
-        toAppendTo.append(address.getStreet1());
-      }
-      if (UIFStringUtils.isNotBlank(address.getStreet2())) {
-        toAppendTo.append("<br>");
-        toAppendTo.append(address.getStreet2());
-      }
-      if (UIFStringUtils.isNotBlank(address.getZipCode()) || UIFStringUtils.isNotBlank(address.getCity())) {
-        toAppendTo.append("<br>");
-        toAppendTo.append(address.getZipCode());
-        toAppendTo.append(" ");
-        toAppendTo.append(address.getCity());
-      }
+      toAppendTo.append("Geliefert: " + (vendor.getDelivered() ? "Ja" : "Nein"));
+      toAppendTo.append("<br>");
+      toAppendTo.append("Dreckig: " + (vendor.getDirty() ? "Ja" : "Nein"));
+      toAppendTo.append("<br>");
+      toAppendTo.append("Abgeholt: " + (vendor.getFetched() ? "Ja" : "Nein"));
+      toAppendTo.append("<br>");
+      toAppendTo.append("Geld erhalten: " + (vendor.getReceivedMoney() ? "Ja" : "Nein"));
       toAppendTo.append("</html>");
       return toAppendTo;
     }
@@ -138,7 +124,7 @@ public final class VendorAppliance extends DefaultAppliance {
 
   }
 
-  public static final class AddressFormat extends Format {
+  public static final class ExtrasFormat extends Format {
 
     private static final long serialVersionUID = 1L;
 
@@ -147,26 +133,14 @@ public final class VendorAppliance extends DefaultAppliance {
       if (obj == null) {
         return toAppendTo;
       }
-      Address address = (Address) obj;
-      toAppendTo.append(address.getLine1());
-      if (UIFStringUtils.isNotBlank(address.getLine2())) {
-        toAppendTo.append("\n");
-        toAppendTo.append(address.getLine2());
-      }
-      if (UIFStringUtils.isNotBlank(address.getStreet1())) {
-        toAppendTo.append("\n");
-        toAppendTo.append(address.getStreet1());
-      }
-      if (UIFStringUtils.isNotBlank(address.getStreet2())) {
-        toAppendTo.append("\n");
-        toAppendTo.append(address.getStreet2());
-      }
-      if (UIFStringUtils.isNotBlank(address.getZipCode()) || UIFStringUtils.isNotBlank(address.getCity())) {
-        toAppendTo.append("\n");
-        toAppendTo.append(address.getZipCode());
-        toAppendTo.append(" ");
-        toAppendTo.append(address.getCity());
-      }
+      VendorBean vendor = (VendorBean) obj;
+      toAppendTo.append("Geliefert: " + (vendor.getDelivered() ? "Ja" : "Nein"));
+      toAppendTo.append("\n");
+      toAppendTo.append("Dreckig: " + (vendor.getDirty() ? "Ja" : "Nein"));
+      toAppendTo.append("\n");
+      toAppendTo.append("Abgeholt: " + (vendor.getFetched() ? "Ja" : "Nein"));
+      toAppendTo.append("\n");
+      toAppendTo.append("Geld erhalten: " + (vendor.getReceivedMoney() ? "Ja" : "Nein"));
       return toAppendTo;
     }
 

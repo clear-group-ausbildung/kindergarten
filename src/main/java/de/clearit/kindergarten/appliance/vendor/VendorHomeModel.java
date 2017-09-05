@@ -16,13 +16,13 @@ import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
-import de.clearit.kindergarten.domain.Vendor;
+import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorBroker;
 
 /**
  * The home model for the vendor.
  */
-public final class VendorHomeModel extends AbstractHomeModel<Vendor> {
+public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
   private static final long serialVersionUID = 1L;
 
@@ -72,7 +72,7 @@ public final class VendorHomeModel extends AbstractHomeModel<Vendor> {
   @Action
   public void newItem(ActionEvent e) {
     String title = RESOURCES.getString("newVendor.title");
-    editItem(e, title, new Vendor(), true);
+    editItem(e, title, new VendorBean(), true);
   }
 
   @Action
@@ -86,7 +86,7 @@ public final class VendorHomeModel extends AbstractHomeModel<Vendor> {
     editItem(e, title, getSelection(), false);
   }
 
-  private void editItem(EventObject e, String title, final Vendor vendor, final boolean newItem) {
+  private void editItem(EventObject e, String title, final VendorBean vendor, final boolean newItem) {
     VendorEditorModel model = new VendorEditorModel(vendor, new CommitCallback<CommandValue>() {
       @Override
       public void committed(CommandValue value) {
@@ -100,8 +100,9 @@ public final class VendorHomeModel extends AbstractHomeModel<Vendor> {
 
   @Action(enabled = false)
   public void deleteItem(ActionEvent e) {
-    Vendor vendor = getSelection();
-    String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", vendor.getName());
+    VendorBean vendor = getSelection();
+    String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", vendor.getLastName() + ", " + vendor
+        .getFirstName());
     TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
     pane.setPreferredWidth(PreferredWidth.MEDIUM);
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
