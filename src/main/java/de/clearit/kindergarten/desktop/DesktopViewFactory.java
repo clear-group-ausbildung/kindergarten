@@ -52,39 +52,13 @@ public final class DesktopViewFactory {
 
   // Panels *****************************************************************
 
-  static JPanel createHeaderPanel() {
-    JPanel panel = ImageBackgroundPanel.createFrom(RESOURCES.getImage("header.background"));
-    panel.setBorder(new HeaderBorder());
-    return panel;
-  }
-
-  static JPanel createNavigationPanel() {
-    return ImageBackgroundPanel.createFrom(RESOURCES.getImage("navigation.background"));
-    // Color startColor = new Color( 30, 22, 63);
-    // Color midColor = new Color(34, 78, 153);
-    // return new VerticalGradientPanel(startColor, midColor);
-  }
-
   static JPanel createStatusPanel() {
-    // Color sideColor = new Color(30, 22, 63);
-    // Color midColor = new Color(34, 78, 153);
     Color sideColor = RESOURCES.getColor("status.sideColor");
     Color midColor = RESOURCES.getColor("status.midColor");
     return new HorizontalGradientPanel(sideColor, midColor);
   }
 
   // Components *************************************************************
-
-  static JComponent createHorizontalSeparator() {
-    return GradientSeparator.createHorizontalGradient(
-        // new Color(44, 88, 173),
-        new Color(32, 56, 118), new Color(33, 68, 143), Color.BLACK);
-    // new Color(30, 22, 63));
-  }
-
-  static JComponent createVerticalSeparator() {
-    return GradientSeparator.createVerticalGradient(new Color(32, 56, 118), new Color(30, 22, 63), Color.BLACK);
-  }
 
   static JComponent createActionSeparator() {
     GridLayout layout = new GridLayout(2, 1);
@@ -171,12 +145,6 @@ public final class DesktopViewFactory {
     @Override
     public void add(SplitButtonSpec splitButtonSpec) {
       throw new UnsupportedOperationException("Not yet implemented");
-      // Action action = splitButtonSpec.getAction();
-      // JPopupMenu popupMenu = splitButtonSpec.getPopupMenuSpec().buildPopupMenu(
-      // new DefaultPopupMenuBuilder());
-      // addDefaultGap();
-      // builder.addFixed(createToolBarSplitButton(action, popupMenu);
-      // hasComponent = true;
     }
 
     @Override
@@ -326,70 +294,6 @@ public final class DesktopViewFactory {
         g2.setPaint(new GradientPaint(mid, height, midColor, width, height, sideColor, true));
         g2.fillRect(start, y, myW, h);
       }
-    }
-  }
-
-  // Painting Helper Code ***************************************************
-
-  public static final class HeaderBorder extends AbstractBorder {
-
-    private static final long serialVersionUID = 1L;
-
-    static final Insets INSETS = new Insets(1, 1, 2, 1);
-
-    private final Color outerS;
-    private final Color innerWuNuE;
-    private final Color innerS;
-    private final Color innerNWuNE;
-    private final Color innerSWuSE;
-
-    public HeaderBorder() {
-      outerS = RESOURCES.getColor("header.border.outerS");
-      innerWuNuE = RESOURCES.getColor("header.border.innerWuNuE");
-      innerS = RESOURCES.getColor("header.border.innerS");
-      innerNWuNE = RESOURCES.getColor("header.border.innerNWuNE");
-      innerSWuSE = RESOURCES.getColor("header.border.innerSWuSE");
-    }
-
-    @Override
-    public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-      g.translate(x, y);
-
-      g.setColor(outerS);
-      g.fillRect(1, h - 1, w - 2, 1);
-
-      g.setColor(innerWuNuE);
-      g.fillRect(1, 0, w - 2, 1);
-      g.fillRect(0, 1, 1, h - 2);
-      g.fillRect(w - 1, 1, 1, h - 2);
-
-      g.setColor(innerS);
-      g.fillRect(1, h - 2, w - 2, 1);
-
-      // Inner Corners
-      g.setColor(innerNWuNE);
-      g.fillRect(0, 0, 1, 1);
-      g.fillRect(w - 1, 0, 1, 1);
-
-      g.setColor(innerSWuSE);
-      g.fillRect(0, h - 1, 1, 1);
-      g.fillRect(w - 1, h - 1, 1, 1);
-
-      g.translate(-x, -y);
-    }
-
-    @Override
-    public Insets getBorderInsets(Component c) {
-      return INSETS;
-    }
-
-    @Override
-    public Insets getBorderInsets(Component c, Insets newInsets) {
-      newInsets.top = INSETS.top;
-      newInsets.left = INSETS.left;
-      newInsets.bottom = INSETS.bottom;
-      newInsets.right = INSETS.right;
-      return newInsets;
     }
   }
 

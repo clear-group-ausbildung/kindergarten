@@ -30,7 +30,6 @@ import com.jgoodies.uif2.component.ToolBarButton;
 import com.jgoodies.uif2.util.ComponentUtils;
 
 import de.clearit.kindergarten.application.KindergartenApplication;
-import de.clearit.kindergarten.application.MainModel;
 import de.clearit.kindergarten.desktop.component.ImageBackgroundPanel;
 
 /**
@@ -87,11 +86,6 @@ public final class DesktopView extends AbstractView {
     QuickSearchManager manager = new QuickSearchManager(new DesktopQuickSearchProcessor());
     Action searchAction = new QuickSearchView(manager).getQuickSearchAction();
     searchButton = DesktopViewFactory.createToolBarButton(searchAction);
-    // searchButton.setBorder(new
-    // DesktopViewFactory.ToolbarButtonHighlightBorder());
-    // searchButton.setBorder(new LineBorder(Color.GRAY));
-    // searchButton.setContentAreaFilled(false);
-    // searchButton.setRolloverEnabled(false);
     searchButton.setText("");
     searchButton.setPreferredSize(new Dimension(30, 26));
 
@@ -103,7 +97,6 @@ public final class DesktopView extends AbstractView {
     documentActionContainer.setOpaque(false);
 
     contentContainer = new JPanel(new BorderLayout());
-    // contentContainer.setOpaque(false);
     contentContainer.setBackground(RESOURCES.getColor("content.background"));
     statusContainer = new JPanel(new BorderLayout());
     statusContainer.setOpaque(false);
@@ -142,52 +135,10 @@ public final class DesktopView extends AbstractView {
 
   private JComponent buildHorizontalSeparator() {
     return ImageBackgroundPanel.createFrom(RESOURCES.getImage("statusbar.separator"));
-    // return GradientSeparator.createHorizontalGradient(
-    // //new Color(44, 88, 173),
-    // new Color(32, 56, 118),
-    // new Color(33, 68, 143),
-    // Color.BLACK);
-    // new Color(30, 22, 63));
   }
 
   private JComponent buildVerticalSeparator() {
     return ImageBackgroundPanel.createFrom(RESOURCES.getImage("navigation.separator"));
-    // return GradientSeparator.createVerticalGradient(
-    // new Color(32, 56, 118),
-    // new Color(30, 22, 63),
-    // Color.BLACK);
-  }
-
-  private JComponent buildHeader() {
-    FormLayout layout = new FormLayout("fill:0:grow", "fill:0:grow");
-    PanelBuilder builder = new PanelBuilder(layout, DesktopViewFactory.createHeaderPanel());
-    builder.add(buildHeaderContent(), CC.xy(1, 1));
-    return builder.getPanel();
-  }
-
-  private JComponent buildHeaderContent() {
-    FormLayout layout = new FormLayout("p, 4dlu, p, 14dlu:grow, p, 9dlu, p", "fill:pref:grow");
-    PanelBuilder builder = new PanelBuilder(layout);
-    builder.setBorder(Borders.createEmptyBorder("1px, 4dlu, 2px, 3px"));
-    builder.setOpaque(false);
-    builder.add(buildBackNextToolBar(), CC.xy(1, 1));
-    builder.add(buildMenuBar(), CC.xy(3, 1));
-    builder.add(contextActionContainer, CC.xy(5, 1));
-    builder.add(searchButton, CC.xy(7, 1));
-    return builder.getPanel();
-  }
-
-  private JComponent buildBackNextToolBar() {
-    FormLayout layout = new FormLayout("p, p", "center:p:grow");
-    PanelBuilder builder = new PanelBuilder(layout);
-    builder.setOpaque(false);
-    builder.add(backButton, CC.xy(1, 1));
-    builder.add(nextButton, CC.xy(2, 1));
-    return builder.getPanel();
-  }
-
-  private JComponent buildMenuBar() {
-    return DesktopViewFactory.createToolBar(MainModel.getInstance().createApplicationToolBarSpec());
   }
 
   private JComponent buildNavigation() {
