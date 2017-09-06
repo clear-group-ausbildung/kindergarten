@@ -7,8 +7,7 @@ import com.jgoodies.application.ResourceMap;
 import com.jgoodies.desktop.AbstractAppliance;
 
 /**
- *
- *
+ * The default appliance provides basic functionalities.
  */
 public abstract class DefaultAppliance extends AbstractAppliance {
 

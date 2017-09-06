@@ -61,8 +61,6 @@ public final class Dialogs {
     TaskPane pane = new TaskPane(MessageType.PLAIN, // Routine confirmations have no icon.
         mainInstruction, CommandValue.SAVE, CommandValue.DONT_SAVE, CommandValue.CANCEL);
     pane.setPreferredWidth(PreferredWidth.LARGE);
-    // pane.setMarginContentTop(4);
-    // pane.setMarginContentBottom(14);
     pane.showDialog(e, title);
     return pane.getCommitValue();
   }

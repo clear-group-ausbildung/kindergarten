@@ -57,7 +57,7 @@ public final class DocumentsAppliance extends DefaultAppliance {
     DocumentsHomeModel model = DocumentsHomeModel.getInstance();
     DocumentsHomeView view = DocumentsHomeView.getInstance();
 
-    DesktopFrame parent = null; // MaintenanceHubAppliance.getInstance().homeContext();
+    DesktopFrame parent = null;
     NavigationBarSpec navigationSpec = null;
     JComponent statusPane = null;
 

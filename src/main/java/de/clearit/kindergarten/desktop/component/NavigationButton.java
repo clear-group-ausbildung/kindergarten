@@ -21,6 +21,9 @@ import javax.swing.plaf.basic.BasicGraphicsUtils;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 
+/**
+ *
+ */
 public final class NavigationButton extends JButton {
 
   private static final long serialVersionUID = 1L;

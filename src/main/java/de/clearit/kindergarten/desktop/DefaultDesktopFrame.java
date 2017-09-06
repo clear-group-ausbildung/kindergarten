@@ -92,7 +92,7 @@ public final class DefaultDesktopFrame extends DesktopFrame {
    * 
    * @return the ToolBarSpec
    */
-  public ToolBarSpec contextSpec() {
+  ToolBarSpec contextSpec() {
     return contextSpec;
   }
 
@@ -102,7 +102,7 @@ public final class DefaultDesktopFrame extends DesktopFrame {
    * 
    * @return the NavigationBarSpec
    */
-  public NavigationBarSpec navigationSpec() {
+  NavigationBarSpec navigationSpec() {
     return navigationSpec;
   }
 
@@ -111,7 +111,7 @@ public final class DefaultDesktopFrame extends DesktopFrame {
    *
    * @return this context's status view
    */
-  public JComponent statusPane() {
+  JComponent statusPane() {
     return statusPane;
   }
 

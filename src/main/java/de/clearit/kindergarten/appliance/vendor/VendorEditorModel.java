@@ -46,14 +46,6 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
 
   // Actions ****************************************************************
 
-  @Action
-  public void newCountry(ActionEvent e) {
-    // Country newCountry = ImporterAppliance.getInstance().createCountry(e);
-    // if (newCountry != null) {
-    // getBean().setCountry(newCountry);
-    // }
-  }
-
   // FormPaneModel Implementation *******************************************
 
   @Override

@@ -15,6 +15,9 @@ import javax.swing.border.EmptyBorder;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 
+/**
+ *
+ */
 public final class ToolBarMenuButton extends AbstractToolBarButton {
 
   private static final long serialVersionUID = 1L;
@@ -69,8 +72,6 @@ public final class ToolBarMenuButton extends AbstractToolBarButton {
     int height = getHeight();
     int x = width - (insets.right - 3) - downIcon.getIconWidth();
     int y = insets.top + 1 + (height - insets.top - insets.bottom - downIcon.getIconHeight()) / 2;
-    // System.out.println("width=" + width + "; insets.right=" + insets.right + ";
-    // iconWidth=" + downIcon.getIconWidth() + "; x=" + x);
     downIcon.paintIcon(this, g, x, y);
   }
 

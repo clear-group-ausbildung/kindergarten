@@ -47,10 +47,10 @@ public final class VendorBean extends Model {
     bean.setFirstName(entity.getString(toSnakeCase(PROPERTY_FIRST_NAME)));
     bean.setLastName(entity.getString(toSnakeCase(PROPERTY_LAST_NAME)));
     bean.setPhoneNumber(entity.getString(toSnakeCase(PROPERTY_PHONE_NUMBER)));
-    bean.setDelivered(Boolean.valueOf(entity.getInteger(PROPERTY_DELIVERED) != 0));
-    bean.setDirty(Boolean.valueOf(entity.getInteger(PROPERTY_DIRTY) != 0));
-    bean.setFetched(Boolean.valueOf(entity.getInteger(PROPERTY_FETCHED) != 0));
-    bean.setReceivedMoney(Boolean.valueOf(entity.getInteger(toSnakeCase(PROPERTY_RECEIVED_MONEY)) != 0));
+    bean.setDelivered(entity.getInteger(PROPERTY_DELIVERED) != 0);
+    bean.setDirty(entity.getInteger(PROPERTY_DIRTY) != 0);
+    bean.setFetched(entity.getInteger(PROPERTY_FETCHED) != 0);
+    bean.setReceivedMoney(entity.getInteger(toSnakeCase(PROPERTY_RECEIVED_MONEY)) != 0);
     return bean;
   }
 

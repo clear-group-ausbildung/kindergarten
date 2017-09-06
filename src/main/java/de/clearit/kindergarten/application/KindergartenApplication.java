@@ -36,31 +36,12 @@ public final class KindergartenApplication extends UIFApplication {
 
   public NavigationBarSpec applicationActions() {
     NavigationBarSpec spec = new NavigationBarSpec();
-    // ActionGroup listGroup = new ActionGroup(
-    // getResourceMap().getString("navigation.lists"),
-    // new Action[][]{
-    // { Desktop.getActivationAction(PendingInvoicesAppliance.getInstance()),
-    // Desktop.getActivationAction(LastTwoDaysInvoicesAppliance.getInstance()) }
-    // });
 
     Action action;
     spec.add(getResourceMap().getString("navigation.applications"));
     action = DesktopManager.createActivationAction(VendorAppliance.getInstance());
     action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 1"));
     spec.add(action);
-
-    // spec.addUnrelatedGap();
-    // spec.add(getResourceMap().getString("navigation.maintenance"));
-    // action =
-    // DesktopManager.createActivationAction(ImporterAppliance.getInstance());
-    // action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl
-    // 2"));
-    // spec.add(action);
-    // action =
-    // DesktopManager.createActivationAction(ExporterAppliance.getInstance());
-    // action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl
-    // 3"));
-    // spec.add(action);
 
     spec.addUnrelatedGap();
     spec.add(getResourceMap().getString("navigation.help"));
@@ -76,23 +57,10 @@ public final class KindergartenApplication extends UIFApplication {
     Options.setPopupDropShadowEnabled(true);
     super.configureUI();
     try {
-      // UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-      // UIManager.setLookAndFeel(new NimbusLookAndFeel());
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      // if (LookUtils.IS_OS_MAC) {
-      // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      // } else if ((LookUtils.IS_OS_WINDOWS_XP || LookUtils.IS_OS_WINDOWS_VISTA) &&
-      // LookUtils.IS_LAF_WINDOWS_XP_ENABLED) {
-      // UIManager.setLookAndFeel(new WindowsLookAndFeel());
-      // } else {
-      // UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-      // }
     } catch (Exception e) {
       e.printStackTrace();
     }
-    // JSDLSetup.setEnhancedAccessibility(true);
-    // UIFLayoutFocusTraversalPolicy.setAcceptNonEditableTextComponents(true);
-    // UIFContainerOrderFocusTraversalPolicy.setAcceptNonEditableTextComponents(true);
   }
 
   @Override
@@ -108,7 +76,6 @@ public final class KindergartenApplication extends UIFApplication {
   @Override
   protected void preCreateAndShowGUI() {
     super.preCreateAndShowGUI();
-    createSampleEntities();
     registerAppliances();
   }
 
@@ -116,16 +83,14 @@ public final class KindergartenApplication extends UIFApplication {
 
   @Override
   protected void createAndShowGUI() {
-    // Splash.setNote("Initializing Desktop");
     initializeDesktop();
 
-    // Splash.setNote("Initializing Frame");
     JFrame frame = buildFrame();
     JOptionPane.setRootFrame(frame);
 
     VendorAppliance.getInstance().activate();
 
-    // frame.pack();
+
     frame.setSize(950, 720);
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
@@ -134,13 +99,7 @@ public final class KindergartenApplication extends UIFApplication {
 
   // Helper Code ************************************************************
 
-  private void createSampleEntities() {
-    // Splash.setNote("Creating Sample Entities");
-    // SampleEntityFactory.INSTANCE.addSampleData();
-  }
-
   private void registerAppliances() {
-    // Splash.setNote("Registering Appliances");
     // Appliances
     DesktopManager.register(VendorAppliance.getInstance());
 
@@ -163,23 +122,6 @@ public final class KindergartenApplication extends UIFApplication {
   private JFrame buildFrame() {
     JFrame frame = DesktopViews.buildDefaultFrame();
     frame.add(new MainView(MainModel.getInstance()).getPanel());
-
-    // KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
-    // "focusOwner", new PropertyChangeListener() {
-    // public void propertyChange(PropertyChangeEvent evt) {
-    // System.out.println("Focus owner changed. ");
-    // System.out.println(" old=" + evt.getOldValue());
-    // System.out.println(" new=" + evt.getNewValue());
-    // }
-    // });
-    // frame.getRootPane().addPropertyChangeListener("defaultButton",
-    // new PropertyChangeListener() {
-    // public void propertyChange(PropertyChangeEvent evt) {
-    // System.out.println("Default button changed.");
-    // System.out.println("Old=" + evt.getOldValue());
-    // System.out.println("New=" + evt.getNewValue());
-    // }
-    // });
     return frame;
   }
 
