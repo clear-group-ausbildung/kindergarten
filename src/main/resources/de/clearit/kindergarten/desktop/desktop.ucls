@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="de.clearit.kindergarten.desktop.DesktopViewFactory.SideBarBuilder" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DesktopViewFactory.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="225" width="178" x="1295" y="909"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="de.clearit.kindergarten.desktop.DesktopViewFactory.HorizontalGradientPanel" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DesktopViewFactory.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="262" x="1513" y="909"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="de.clearit.kindergarten.desktop.DesktopView.FrameChangeHandler" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DesktopView.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="240" x="638" y="626"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="de.clearit.kindergarten.desktop.DesktopViewFactory.ContextToolBarBuilder" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DesktopViewFactory.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="151" x="1104" y="909"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="de.clearit.kindergarten.desktop.component.ToolBarButton" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/component/ToolBarButton.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="187" x="2077" y="909"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="de.clearit.kindergarten.desktop.component.NavigationButton" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/component/NavigationButton.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="243" width="317" x="747" y="909"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="de.clearit.kindergarten.desktop.component.ToolBarButtonBorder" 
+    project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/component/ToolBarButtonBorder.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="279" width="270" x="2304" y="909"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <package id="8" language="java" name="de.clearit.kindergarten.desktop.component" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/component" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="50" width="269" x="807" y="37"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="9" language="java" name="de.clearit.kindergarten.desktop.component.NavigationButtonBorder" 
+    project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/component/NavigationButtonBorder.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="270" x="747" y="1228"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" 
+    name="de.clearit.kindergarten.desktop.component.ToolBarMenuButton.ShowMenuActionListener" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/component/ToolBarMenuButton.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="194" x="1815" y="1228"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="de.clearit.kindergarten.desktop.DefaultAppliance" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DefaultAppliance.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="189" width="238" x="2614" y="909"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="de.clearit.kindergarten.desktop.DefaultDesktopFrame" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DefaultDesktopFrame.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="261" width="663" x="44" y="909"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="de.clearit.kindergarten.desktop.DesktopView.OpenDocumentsChangeHandler" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DesktopView.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="240" x="952" y="626"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="de.clearit.kindergarten.desktop.DesktopUtils" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DesktopUtils.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="358" x="292" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="de.clearit.kindergarten.desktop.component.ToolBarMenuButton" 
+    project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/component/ToolBarMenuButton.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="279" width="222" x="1815" y="909"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="de.clearit.kindergarten.desktop.DesktopView" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DesktopView.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="549" width="272" x="1232" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="de.clearit.kindergarten.desktop.component.ImageBackgroundPanel" 
+    project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/component/ImageBackgroundPanel.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="225" width="232" x="1232" y="626"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="de.clearit.kindergarten.desktop.DesktopUtils.ValidationFeedbackPanel" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DesktopUtils.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="262" x="292" y="626"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="de.clearit.kindergarten.desktop.DesktopViewFactory" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DesktopViewFactory.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="243" width="257" x="1504" y="626"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="de.clearit.kindergarten.desktop.component.AbstractToolBarButton" 
+    project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/component/AbstractToolBarButton.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="207" width="187" x="2077" y="626"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="de.clearit.kindergarten.desktop.DesktopQuickSearchProcessor" 
+    project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/desktop/DesktopQuickSearchProcessor.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="335" x="2304" y="626"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <dependency id="22">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="23">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="19"/>  
+  </dependency>  
+  <nesting id="24">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="10"/>  
+  </nesting>  
+  <nesting id="25">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <dependency id="26">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <nesting id="27">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="1"/>  
+  </nesting>  
+  <nesting id="28">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="3"/>  
+  </nesting>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <generalization id="30">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="20"/>  
+  </generalization>  
+  <dependency id="31">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <nesting id="32">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="18"/>  
+  </nesting>  
+  <nesting id="33">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <nesting id="34">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="13"/>  
+  </nesting>  
+  <dependency id="35">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="17"/>  
+  </dependency>  
+  <dependency id="36">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="12"/>  
+  </dependency>  
+  <generalization id="37">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="20"/>  
+  </generalization>  
+  <dependency id="38">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="39">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="40">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="21"/>  
+  </dependency>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
