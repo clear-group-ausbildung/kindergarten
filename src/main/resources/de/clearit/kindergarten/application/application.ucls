@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="de.clearit.kindergarten.application.Dialogs" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/application/Dialogs.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="207" width="300" x="131" y="338"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="de.clearit.kindergarten.application.KindergartenComponentFactory" 
+    project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/application/KindergartenComponentFactory.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="207" width="391" x="41" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="de.clearit.kindergarten.application.MainModel.HelpHyperlinkHandler" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/kindergarten/application/MainModel.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="217" x="580" y="950"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="de.clearit.kindergarten.application.KindergartenLauncher" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/application/KindergartenLauncher.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="152" x="472" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="de.clearit.kindergarten.application.KindergartenApplication" 
+    project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/application/KindergartenApplication.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="261" width="217" x="664" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="de.clearit.kindergarten.application.Dialogs.DocumentsCellRenderer" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/kindergarten/application/Dialogs.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="409" x="131" y="585"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="de.clearit.kindergarten.application.MainView" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/application/MainView.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="171" width="172" x="471" y="338"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="de.clearit.kindergarten.application.KindergartenApplication.DesktopCloseHandler" 
+    project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/application/KindergartenApplication.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="203" x="704" y="338"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="de.clearit.kindergarten.application.MainModel" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/kindergarten/application/MainModel.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="315" width="266" x="580" y="585"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <dependency id="10">    
+    <bendpoint x="673" y="338"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <nesting id="11">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
+  <association id="12">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="13" name="instance"/>      
+      <multiplicity id="14" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="15">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <association id="16">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="17" name="mainModel"/>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="19">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <nesting id="20">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="8"/>  
+  </nesting>  
+  <nesting id="21">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="3"/>  
+  </nesting>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
