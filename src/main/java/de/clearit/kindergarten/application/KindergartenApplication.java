@@ -43,11 +43,11 @@ public final class KindergartenApplication extends UIFApplication {
     action = DesktopManager.createActivationAction(VendorAppliance.getInstance());
     action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 1"));
     spec.add(action);
-
+/*
     action = DesktopManager.createActivationAction(PurchaseAppliance.getInstance());
     action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 2"));
     spec.add(action);
-
+*/
     spec.addUnrelatedGap();
     spec.add(getResourceMap().getString("navigation.help"));
     spec.add(MainModel.getInstance().getActionMap(), "openAboutDialog");
