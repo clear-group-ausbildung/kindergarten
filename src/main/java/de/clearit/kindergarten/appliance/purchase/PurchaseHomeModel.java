@@ -1,6 +1,7 @@
 package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.event.ActionEvent;
+import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.ListModel;
@@ -8,6 +9,7 @@ import javax.swing.ListModel;
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
+import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.jsdl.core.CommandValue;
 import com.jgoodies.jsdl.core.MessageType;
 import com.jgoodies.jsdl.core.PreferredWidth;
@@ -69,47 +71,30 @@ public final class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     return new String[] {};
   }
 
-//  @Action
-//  public void newItem(ActionEvent e) {
-//    String title = RESOURCES.getString("newPurchase.title");
-//    editItem(e, title, new PurchaseBean(), true);
-//  }
+  private void editItem(EventObject e, String title, final PurchaseBean purchase, final boolean newItem) {
+    PurchaseEditorModel model = new PurchaseEditorModel(purchase, new CommitCallback<CommandValue>() {
+      @Override
+      public void committed(CommandValue value) {
+        if (newItem && (value == CommandValue.OK)) {
+          PurchaseBroker.INSTANCE.add(purchase);
+        }
+      }
+    });
+    PurchaseAppliance.getInstance().openPurchaseEditor(title, model, newItem);
+  }
 
-//  @Action
-//  public void newPurchase(ActionEvent e) {
-//    newItem(e);
-//  }
-
-//    @Action(enabled = false)
-//    public void editItem(ActionEvent e) {
-//    String title = RESOURCES.getString("editVendor.title");
-//    editItem(e, title, getSelection(), false);
-//  }
-
-//  private void editItem(EventObject e, String title, final PurchaseBean purchase, final boolean newItem) {
-//    PurchaseEditorModel model = new PurchaseEditorModel(purchase, new CommitCallback<CommandValue>() {
-//      @Override
-//      public void committed(CommandValue value) {
-//        if (newItem && (value == CommandValue.OK)) {
-//          PurchaseBroker.INSTANCE.add(purchase);
-//        }
-//      }
-//    });
-//    PurchaseAppliance.getInstance().openPurchaseEditor(title, model, newItem);
-//  }
-
-//  @Action(enabled = false)
-//  public void deleteItem(ActionEvent e) {
-//    PurchaseBean purchase = getSelection();
-//    String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", purchase.getLastName() + ", " + purchase
-//        .getFirstName());
-//    TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
-//    pane.setPreferredWidth(PreferredWidth.MEDIUM);
-//    pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
-//    if (pane.getCommitValue() == CommandValue.YES) {
-//      PurchaseBroker.INSTANCE.remove(purchase);
-//    }
-//  }
+  @Action(enabled = false)
+  public void deleteItem(ActionEvent e) {
+    PurchaseBean purchase = getSelection();
+    String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", purchase.getVendorId() + ", " + purchase.getItemNumber() + ", " + 
+    		purchase.getItemPrice());
+    TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
+    pane.setPreferredWidth(PreferredWidth.MEDIUM);
+    pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
+    if (pane.getCommitValue() == CommandValue.YES) {
+      PurchaseBroker.INSTANCE.remove(purchase);
+    }
+  }
 
   @Action(enabled = false)
   public void printItem(ActionEvent e) {

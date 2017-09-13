@@ -47,7 +47,7 @@ public class PurchaseBroker {
 
 	public PurchaseBean findById(Integer id, Integer itemNumber) {
 	  for (PurchaseBean purchase : purchase) {
-	    if (purchase.getSellerId().equals(id) && purchase.getItemNumber().equals(itemNumber)) {
+	    if (purchase.getVendorId().equals(id) && purchase.getItemNumber().equals(itemNumber)) {
 	      return purchase;
 	    }
 	  }
