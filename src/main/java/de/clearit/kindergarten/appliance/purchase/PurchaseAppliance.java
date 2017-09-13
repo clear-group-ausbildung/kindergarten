@@ -7,7 +7,6 @@ import com.jgoodies.desktop.DesktopFrame;
 import com.jgoodies.desktop.DesktopManager;
 import com.jgoodies.jsdl.core.CommandValue;
 
-import de.clearit.kindergarten.appliance.purchase.PurchaseEditorModel;
 import de.clearit.kindergarten.desktop.DefaultAppliance;
 import de.clearit.kindergarten.desktop.DefaultDesktopFrame;
 import de.clearit.kindergarten.domain.PurchaseBean;

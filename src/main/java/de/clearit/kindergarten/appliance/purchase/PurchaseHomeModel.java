@@ -18,8 +18,6 @@ import com.jgoodies.jsdl.core.pane.TaskPane;
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.PurchaseBroker;
-import de.clearit.kindergarten.domain.VendorBean;
-import de.clearit.kindergarten.domain.VendorBroker;
 
 /**
  * The home model for the purchase.

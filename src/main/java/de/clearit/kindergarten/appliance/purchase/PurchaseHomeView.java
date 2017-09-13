@@ -18,10 +18,7 @@ import com.jgoodies.uif2.util.TableUtils;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.appliance.HomeViewBuilder;
-import de.clearit.kindergarten.appliance.vendor.VendorHomeModel;
-import de.clearit.kindergarten.appliance.vendor.VendorPreview;
 import de.clearit.kindergarten.domain.PurchaseBean;
-import de.clearit.kindergarten.domain.VendorBean;
 
 public class PurchaseHomeView extends AbstractView {
 	

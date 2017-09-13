@@ -14,7 +14,6 @@ import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 import de.clearit.kindergarten.appliance.vendor.VendorAppliance;
 import de.clearit.kindergarten.application.KindergartenComponentFactory;
 import de.clearit.kindergarten.domain.PurchaseBean;
-import de.clearit.kindergarten.domain.VendorBean;
 
 public class PurchasePreview extends AbstractView {
 	

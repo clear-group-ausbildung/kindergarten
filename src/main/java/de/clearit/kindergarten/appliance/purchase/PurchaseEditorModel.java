@@ -13,7 +13,6 @@ import com.jgoodies.uif2.util.TextComponentUtils;
 
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.PurchaseBean;
-import de.clearit.kindergarten.domain.VendorBean;
 
 public final class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements FormPaneModel{
   
