@@ -26,12 +26,11 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
   private static final long serialVersionUID = 1L;
 
-  static final String ACTION_NEW_VENDOR = "newVendor";
-
+  public static final String ACTION_NEW_VENDOR = "newVendor";
+  public static final String ACTION_PRINT_RECEIPT = "printReceipt";
+  public static final String ACTION_PRINT_ALL_RECEIPTS = "printAllReceipts";
   private static final Logger LOGGER = Logger.getLogger(VendorHomeModel.class.getName());
-
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorHomeModel.class);
-
   private static VendorHomeModel instance;
 
   // Instance Creation ******************************************************
@@ -59,7 +58,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   @Override
   protected void handleSelectionChange(boolean hasSelection) {
     handleSelectionChangeEditDelete(hasSelection);
-    setActionEnabled(ACTION_PRINT_ITEM, hasSelection);
+    setActionEnabled(ACTION_PRINT_RECEIPT, hasSelection);
   }
 
   // Actions ****************************************************************
@@ -112,8 +111,13 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   }
 
   @Action(enabled = false)
-  public void printItem(ActionEvent e) {
-    LOGGER.fine("Printing vendor\u2026");
+  public void printReceipt(ActionEvent e) {
+    LOGGER.fine("Printing receipt\u2026");
+  }
+
+  @Action
+  public void printAllReceipts(ActionEvent e) {
+    LOGGER.fine("Printing all receipts\u2026");
   }
 
 }

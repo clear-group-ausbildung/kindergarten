@@ -1,7 +1,8 @@
-package de.clearit.kindergarten.appliance.vendor;
+package de.clearit.kindergarten.appliance.purchase;
 
 import java.util.EventObject;
 
+import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopManager;
 import com.jgoodies.jsdl.core.CloseRequestHandler;
@@ -12,12 +13,11 @@ import com.jgoodies.uif2.application.UIFPresentationModel;
 import com.jgoodies.uif2.util.TextComponentUtils;
 
 import de.clearit.kindergarten.application.Dialogs;
+import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorService;
 
-/**
- * The editor model for the vendor.
- */
-public final class VendorEditorModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
+public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements FormPaneModel {
 
   private static final long serialVersionUID = 1L;
 
@@ -27,15 +27,22 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
 
   // Instance Fields ********************************************************
 
+  private final SelectionInList<VendorBean> vendorList;
   private final CommitCallback<CommandValue> commitCallback;
   private final long creationTime;
 
   // Instance Creation ******************************************************
 
-  VendorEditorModel(VendorBean vendor, CommitCallback<CommandValue> callback) {
-    super(vendor);
+  PurchaseEditorModel(PurchaseBean purchase, CommitCallback<CommandValue> callback) {
+    super(purchase);
+    vendorList = new SelectionInList<>();
+    vendorList.getList().addAll(VendorService.getInstance().getAll());
     this.commitCallback = callback;
     this.creationTime = System.currentTimeMillis();
+  }
+
+  public SelectionInList<VendorBean> getVendorList() {
+    return vendorList;
   }
 
   // Actions ****************************************************************
@@ -79,7 +86,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
       cancelOp.run();
       return;
     }
-    String objectName = getBean().getLastName() + ", " + getBean().getFirstName();
+    String objectName = getBean().getItemQuantity() + " x " + getBean().getItemNumber();
     Object commitValue = Dialogs.showUnsavedChangesDialog(e, objectName);
     if (commitValue == CommandValue.CANCEL) {
       return;

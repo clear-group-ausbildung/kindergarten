@@ -8,13 +8,12 @@ import javax.swing.JList;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
-import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.value.AbstractConverter;
 import com.jgoodies.binding.value.ValueModel;
-import com.jgoodies.forms.builder.ButtonBarBuilder2;
 import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.jsdl.core.pane.form.FormPane;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 
@@ -25,8 +24,7 @@ public class PurchaseEditorView extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorView.class);
 
-  private final PurchaseHomeModel homeModel;
-  private final PresentationModel<PurchaseBean> model;
+  private final PurchaseEditorModel model;
 
   private JComponent itemQuantityField;
   private JComponent itemNumberField;
@@ -38,9 +36,8 @@ public class PurchaseEditorView extends AbstractView {
 
   // Instance Creation ******************************************************
 
-  public PurchaseEditorView(PurchaseHomeModel purchaseHomeModel) {
-    homeModel = purchaseHomeModel;
-    model = homeModel.getPurchaseAdapter();
+  public PurchaseEditorView(PurchaseEditorModel model) {
+    this.model = model;
   }
 
   // Building ***************************************************************
@@ -48,7 +45,10 @@ public class PurchaseEditorView extends AbstractView {
   @Override
   protected JComponent buildPanel() {
     initComponents();
-    return buildContent();
+
+    FormPane pane = new FormPane(buildContent(), model);
+    pane.setBackground(RESOURCES.getColor("content.background"));
+    return pane;
   }
 
   private void initComponents() {
@@ -60,7 +60,7 @@ public class PurchaseEditorView extends AbstractView {
         PurchaseBean.PROPERTY_ITEM_PRICE)));
     totalPriceField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_TOTAL_PRICE)));
-    vendorBox = BasicComponentFactory.createComboBox(homeModel.getVendorList(), new VendorListCellRenderer());
+    vendorBox = BasicComponentFactory.createComboBox(model.getVendorList(), new VendorListCellRenderer());
     paymentField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_PAYMENT)));
     profitField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
@@ -86,14 +86,7 @@ public class PurchaseEditorView extends AbstractView {
     builder.add(paymentField, CC.xy(7, 3));
     builder.addI15dLabel("purchase.profit", CC.xy(9, 3));
     builder.add(profitField, CC.xy(11, 3));
-    builder.add(buildButtonBar(), CC.xy(15, 3));
 
-    return builder.getPanel();
-  }
-
-  private JComponent buildButtonBar() {
-    ButtonBarBuilder2 builder = new ButtonBarBuilder2();
-    builder.addButton(homeModel.getAction(PurchaseHomeModel.ACTION_SAVE_PURCHASE));
     return builder.getPanel();
   }
 

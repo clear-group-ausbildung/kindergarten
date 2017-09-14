@@ -9,8 +9,7 @@ import javax.swing.ListModel;
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
-import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.list.SelectionInList;
+import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.jsdl.core.CommandValue;
 import com.jgoodies.jsdl.core.MessageType;
 import com.jgoodies.jsdl.core.PreferredWidth;
@@ -19,8 +18,6 @@ import com.jgoodies.jsdl.core.pane.TaskPane;
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.PurchaseService;
-import de.clearit.kindergarten.domain.VendorBean;
-import de.clearit.kindergarten.domain.VendorService;
 
 /**
  * The home model for the purchase.
@@ -30,21 +27,16 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   private static final long serialVersionUID = 1L;
 
   public static final String ACTION_NEW_PURCHASE = "newPurchase";
-  public static final String ACTION_SAVE_PURCHASE = "savePurchase";
+  public static final String ACTION_IMPORT_PURCHASES = "importPurchases";
+  public static final String ACTION_EXPORT_PURCHASES = "exportPurchases";
   private static final Logger LOGGER = Logger.getLogger(PurchaseHomeModel.class.getName());
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseHomeModel.class);
   private static PurchaseHomeModel instance;
-
-  private final SelectionInList<VendorBean> vendorList;
-  private final PresentationModel<PurchaseBean> purchaseAdapter = new PresentationModel<>(getSelectionInList()
-      .getSelectionHolder());
 
   // Instance Creation ******************************************************
 
   private PurchaseHomeModel() {
     super();
-    vendorList = new SelectionInList<>();
-    vendorList.getList().addAll(VendorService.getInstance().getAll());
   }
 
   static PurchaseHomeModel getInstance() {
@@ -66,15 +58,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   @Override
   protected void handleSelectionChange(boolean hasSelection) {
     handleSelectionChangeEditDelete(hasSelection);
-    setActionEnabled(ACTION_PRINT_ITEM, hasSelection);
-  }
-
-  protected SelectionInList<VendorBean> getVendorList() {
-    return vendorList;
-  }
-
-  protected PresentationModel<PurchaseBean> getPurchaseAdapter() {
-    return purchaseAdapter;
   }
 
   // Actions ****************************************************************
@@ -95,40 +78,22 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     newItem(e);
   }
 
-  @Action
-  public void savePurchase(ActionEvent e) {
-    PurchaseBean bufferedBean = (PurchaseBean) getSelectionInList().getSelectionHolder().getValue();
-    VendorBean selectedVendor = (VendorBean) getVendorList().getSelectionHolder().getValue();
-    bufferedBean.setVendorId(selectedVendor.getId());
-    if (bufferedBean.getId() == null) {
-      System.err.println("Creating");
-      PurchaseService.getInstance().create(bufferedBean);
-    } else {
-      System.err.println("Updating");
-      PurchaseService.getInstance().update(bufferedBean);
-    }
-    getSelectionInList().getList().clear();
-    getSelectionInList().getList().addAll(PurchaseService.getInstance().getAll());
-    getSelectionInList().setValue(bufferedBean);
-  }
-
   @Action(enabled = false)
   public void editItem(ActionEvent e) {
     String title = RESOURCES.getString("editPurchase.title");
     editItem(e, title, getSelection(), false);
   }
 
-  private void editItem(EventObject e, String title, final PurchaseBean vendor, final boolean newItem) {
-    // PurchaseEditorModel model = new PurchaseEditorModel(purchase, new
-    // CommitCallback<CommandValue>() {
-    // @Override
-    // public void committed(CommandValue value) {
-    // if (newItem && (value == CommandValue.OK)) {
-    // PurchaseService.getInstance().create(purchase);
-    // }
-    // }
-    // });
-    // PurchaseAppliance.getInstance().openPurchaseEditor(title, model, newItem);
+  private void editItem(EventObject e, String title, final PurchaseBean purchase, final boolean newItem) {
+    PurchaseEditorModel model = new PurchaseEditorModel(purchase, new CommitCallback<CommandValue>() {
+      @Override
+      public void committed(CommandValue value) {
+        if (newItem && (value == CommandValue.OK)) {
+          PurchaseService.getInstance().create(purchase);
+        }
+      }
+    });
+    PurchaseAppliance.getInstance().openPurchaseEditor(title, model, newItem);
   }
 
   @Action(enabled = false)
@@ -144,9 +109,14 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     }
   }
 
-  @Action(enabled = false)
-  public void printItem(ActionEvent e) {
-    LOGGER.fine("Printing purchase\u2026");
+  @Action
+  public void importPurchases(ActionEvent e) {
+    LOGGER.fine("Importing purchase\u2026");
+  }
+
+  @Action
+  public void exportPurchases(ActionEvent e) {
+    LOGGER.fine("Exporting purchase\u2026");
   }
 
 }

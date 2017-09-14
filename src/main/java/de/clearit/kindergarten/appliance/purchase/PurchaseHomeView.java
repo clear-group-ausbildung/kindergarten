@@ -16,6 +16,7 @@ import com.jgoodies.uif2.component.text.UIFSearchField.SearchMode;
 import com.jgoodies.uif2.util.ComponentUtils;
 import com.jgoodies.uif2.util.TableUtils;
 
+import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.appliance.HomeViewBuilder;
 import de.clearit.kindergarten.domain.PurchaseBean;
 
@@ -29,7 +30,6 @@ public class PurchaseHomeView extends AbstractView {
 
   private UIFSearchField searchField;
   private JTable table;
-  private PurchaseEditorView editor;
 
   // Instance Creation ******************************************************
 
@@ -58,7 +58,6 @@ public class PurchaseHomeView extends AbstractView {
     Action editAction = model.getAction(PurchaseHomeModel.ACTION_EDIT_ITEM);
     ComponentUtils.registerDoubleClickAction(table, editAction);
 
-    editor = new PurchaseEditorView(model);
   }
 
   @Override
@@ -69,11 +68,9 @@ public class PurchaseHomeView extends AbstractView {
     builder.setTitle(RESOURCES.getString("purchaseHome.mainInstruction"));
     builder.setSearchView(searchField);
     builder.setListView(table);
-    // builder.setListBar(model.getActionMap(), AbstractHomeModel.ACTION_NEW_ITEM,
-    // AbstractHomeModel.ACTION_EDIT_ITEM,
-    // AbstractHomeModel.ACTION_DELETE_ITEM, "---",
-    // AbstractHomeModel.ACTION_PRINT_ITEM);
-    builder.setPreview(editor.getPanel());
+    builder.setListBar(model.getActionMap(), AbstractHomeModel.ACTION_NEW_ITEM, AbstractHomeModel.ACTION_EDIT_ITEM,
+        AbstractHomeModel.ACTION_DELETE_ITEM, "---", PurchaseHomeModel.ACTION_IMPORT_PURCHASES,
+        PurchaseHomeModel.ACTION_EXPORT_PURCHASES);
 
     return builder.getPanel();
   }
