@@ -7,7 +7,7 @@ import javax.swing.ListModel;
 import de.clearit.kindergarten.domain.entity.Vendor;
 
 /**
- * The service for the Vendor Bean and Entity.
+ * The service for the Vendor resource.
  */
 public final class VendorService extends AbstractResourceService<VendorBean, Vendor> {
 

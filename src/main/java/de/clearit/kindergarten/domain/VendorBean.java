@@ -3,7 +3,7 @@ package de.clearit.kindergarten.domain;
 import com.jgoodies.binding.beans.Model;
 
 /**
- * The bean class for the Vendor entity.
+ * The bean class for the Vendor resource.
  */
 public final class VendorBean extends Model {
 

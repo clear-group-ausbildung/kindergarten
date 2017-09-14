@@ -19,11 +19,16 @@ import com.jgoodies.binding.list.ObservableList;
 public abstract class AbstractResourceService<B extends com.jgoodies.binding.beans.Model, E extends org.javalite.activejdbc.Model>
     implements ResourceService<B, E> {
 
+  private static boolean connectionEstablished = false;
+
   private final ObservableList<B> beans;
 
   public AbstractResourceService() {
     super();
-    Base.open("org.sqlite.JDBC", "jdbc:sqlite:./kindergarten.sqlite", "", "");
+    if (!connectionEstablished) {
+      Base.open("org.sqlite.JDBC", "jdbc:sqlite:./kindergarten.sqlite", "", "");
+      connectionEstablished = true;
+    }
     beans = new ArrayListModel<>();
     getEntities().forEach(entity -> beans.add(fromEntity(entity)));
   }
@@ -80,6 +85,11 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
     entity.delete();
   }
 
+  /**
+   * Returns all resources as a list of entities.
+   * 
+   * @return the list of entities
+   */
   protected abstract List<E> getEntities();
 
 }

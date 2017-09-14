@@ -19,6 +19,7 @@ import com.jgoodies.uif2.application.UIFApplication;
 import com.jgoodies.uif2.splash.SplashWindow;
 
 import de.clearit.kindergarten.appliance.documents.DocumentsAppliance;
+import de.clearit.kindergarten.appliance.purchase.PurchaseAppliance;
 import de.clearit.kindergarten.appliance.vendor.VendorAppliance;
 
 /**
@@ -41,6 +42,10 @@ public final class KindergartenApplication extends UIFApplication {
     spec.add(getResourceMap().getString("navigation.applications"));
     action = DesktopManager.createActivationAction(VendorAppliance.getInstance());
     action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 1"));
+    spec.add(action);
+
+    action = DesktopManager.createActivationAction(PurchaseAppliance.getInstance());
+    action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 2"));
     spec.add(action);
 
     spec.addUnrelatedGap();
@@ -89,7 +94,6 @@ public final class KindergartenApplication extends UIFApplication {
     JOptionPane.setRootFrame(frame);
 
     VendorAppliance.getInstance().activate();
-
 
     frame.setSize(950, 720);
     frame.setLocationRelativeTo(null);
