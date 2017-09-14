@@ -95,7 +95,7 @@ public final class KindergartenApplication extends UIFApplication {
 
     VendorAppliance.getInstance().activate();
 
-    frame.setSize(950, 720);
+    frame.setSize(1200, 720);
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
     SplashWindow.disposeSplash();

@@ -16,7 +16,7 @@ public final class KindergartenLauncher {
 
   public static void main(String[] args) {
     OSXApplicationMenu.setAboutName("Kassenverwaltung");
-    SplashWindow.splash(KindergartenLauncher.class.getResource("resources/images/splash.png"));
+    SplashWindow.splash(KindergartenLauncher.class.getResource("resources/images/logo.gif"));
     SplashWindow.invokeMain("de.clearit.kindergarten.application.KindergartenApplication", args);
   }
 

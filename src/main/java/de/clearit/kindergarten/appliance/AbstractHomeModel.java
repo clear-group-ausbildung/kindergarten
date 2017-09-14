@@ -47,7 +47,9 @@ public abstract class AbstractHomeModel<T> extends UIFModel {
 
   protected void initModels() {
     selectionInList = new SelectionInList<T>(getListModel());
+    // if (selectionInList.getList().size() > 0) {
     // selectionInList.setSelectionIndex(0);
+    // }
     handleSelectionChange(selectionInList.hasSelection());
   }
 

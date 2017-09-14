@@ -16,11 +16,8 @@ import com.jgoodies.uif2.component.text.UIFSearchField.SearchMode;
 import com.jgoodies.uif2.util.ComponentUtils;
 import com.jgoodies.uif2.util.TableUtils;
 
-import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.appliance.HomeViewBuilder;
 import de.clearit.kindergarten.domain.PurchaseBean;
-import de.clearit.kindergarten.domain.VendorBean;
-import de.clearit.kindergarten.domain.VendorService;
 
 public class PurchaseHomeView extends AbstractView {
 
@@ -32,7 +29,7 @@ public class PurchaseHomeView extends AbstractView {
 
   private UIFSearchField searchField;
   private JTable table;
-  private PurchaseEditor editor;
+  private PurchaseEditorView editor;
 
   // Instance Creation ******************************************************
 
@@ -61,7 +58,7 @@ public class PurchaseHomeView extends AbstractView {
     Action editAction = model.getAction(PurchaseHomeModel.ACTION_EDIT_ITEM);
     ComponentUtils.registerDoubleClickAction(table, editAction);
 
-    // editor = new PurchaseEditor(model.getSelectionInList().getSelectionHolder());
+    editor = new PurchaseEditorView(model);
   }
 
   @Override
@@ -72,9 +69,11 @@ public class PurchaseHomeView extends AbstractView {
     builder.setTitle(RESOURCES.getString("purchaseHome.mainInstruction"));
     builder.setSearchView(searchField);
     builder.setListView(table);
-    builder.setListBar(model.getActionMap(), AbstractHomeModel.ACTION_NEW_ITEM, AbstractHomeModel.ACTION_EDIT_ITEM,
-        AbstractHomeModel.ACTION_DELETE_ITEM, "---", AbstractHomeModel.ACTION_PRINT_ITEM);
-    // builder.setPreview(preview.getPanel());
+    // builder.setListBar(model.getActionMap(), AbstractHomeModel.ACTION_NEW_ITEM,
+    // AbstractHomeModel.ACTION_EDIT_ITEM,
+    // AbstractHomeModel.ACTION_DELETE_ITEM, "---",
+    // AbstractHomeModel.ACTION_PRINT_ITEM);
+    builder.setPreview(editor.getPanel());
 
     return builder.getPanel();
   }
@@ -120,12 +119,13 @@ public class PurchaseHomeView extends AbstractView {
 
       case 6:
         String result = "";
-        VendorBean vendor = VendorService.getInstance().getById(purchase.getVendorId());
-        if (vendor != null) {
-          result += vendor.getLastName();
-          result += ", ";
-          result += vendor.getFirstName();
-        }
+        // VendorBean vendor =
+        // VendorService.getInstance().getById(purchase.getVendorId());
+        // if (vendor != null) {
+        // result += vendor.getLastName();
+        // result += ", ";
+        // result += vendor.getFirstName();
+        // }
         return result;
 
       default:
