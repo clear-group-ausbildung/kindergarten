@@ -1,9 +1,6 @@
 package de.clearit.kindergarten.domain;
 
-import com.google.common.base.CaseFormat;
 import com.jgoodies.binding.beans.Model;
-
-import de.clearit.kindergarten.domain.entity.Vendor;
 
 /**
  * The bean class for the Vendor entity.
@@ -33,69 +30,6 @@ public final class VendorBean extends Model {
   private Boolean dirty;
   private Boolean fetched;
   private Boolean receivedMoney;
-
-  /**
-   * Creates a new {@link VendorBean} from the given {@link Vendor} entity.
-   * 
-   * @param entity
-   *          the entity to create the bean from
-   * @return the created bean
-   */
-  public static VendorBean fromEntity(Vendor entity) {
-    VendorBean bean = new VendorBean();
-    bean.setId(entity.getInteger(PROPERTY_ID));
-    bean.setFirstName(entity.getString(toSnakeCase(PROPERTY_FIRST_NAME)));
-    bean.setLastName(entity.getString(toSnakeCase(PROPERTY_LAST_NAME)));
-    bean.setPhoneNumber(entity.getString(toSnakeCase(PROPERTY_PHONE_NUMBER)));
-    bean.setDelivered(entity.getInteger(PROPERTY_DELIVERED) != 0);
-    bean.setDirty(entity.getInteger(PROPERTY_DIRTY) != 0);
-    bean.setFetched(entity.getInteger(PROPERTY_FETCHED) != 0);
-    bean.setReceivedMoney(entity.getInteger(toSnakeCase(PROPERTY_RECEIVED_MONEY)) != 0);
-    return bean;
-  }
-
-  /**
-   * Creates a new {@link Vendor} entity from the given {@link VendorBean}.
-   * 
-   * @param bean
-   *          the bean to create the entity from
-   * @return the created entity
-   */
-  public static Vendor toEntity(VendorBean bean) {
-    Vendor entity = Vendor.findById(bean.getId());
-    if (entity == null) {
-      entity = new Vendor();
-    }
-    entity.setString(toSnakeCase(PROPERTY_FIRST_NAME), bean.getFirstName());
-    entity.setString(toSnakeCase(PROPERTY_LAST_NAME), bean.getLastName());
-    entity.setString(toSnakeCase(PROPERTY_PHONE_NUMBER), bean.getPhoneNumber());
-    entity.setInteger(PROPERTY_DELIVERED, bean.getDelivered() ? 1 : 0);
-    entity.setInteger(PROPERTY_DIRTY, bean.getDirty() ? 1 : 0);
-    entity.setInteger(PROPERTY_FETCHED, bean.getFetched() ? 1 : 0);
-    entity.setInteger(toSnakeCase(PROPERTY_RECEIVED_MONEY), bean.getReceivedMoney() ? 1 : 0);
-    return entity;
-  }
-
-  /**
-   * Converts the given camelCase String to a snake_case String. The database
-   * column names use snake_case names for columns, e.g. {@code first_name}. The
-   * bean properties however use camelCase names for properties, e.g.
-   * {@code firstName}. So with this method, the property constant names can be
-   * used to map to the database columns for property names with multiple words.
-   * <p>
-   * <b>Example:</b>
-   * </p>
-   * <p>
-   * {@code toSnakeCase("firstName");  // becomes "first_name"}
-   * </p>
-   * 
-   * @param camelCase
-   *          the camelCase formatted String to be converted
-   * @return the snake_case converted String
-   */
-  private static String toSnakeCase(String camelCase) {
-    return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camelCase);
-  }
 
   // Instance Creation ******************************************************
 
@@ -152,17 +86,6 @@ public final class VendorBean extends Model {
     this.dirty = dirty;
     this.fetched = fetched;
     this.receivedMoney = receivedMoney;
-  }
-
-  // Misc API ***************************************************************
-
-  /**
-   * Converts {@code this} bean to a {@link Vendor} entity.
-   * 
-   * @return the converted entity
-   */
-  public Vendor toEntity() {
-    return toEntity(this);
   }
 
   // Accessors **************************************************************

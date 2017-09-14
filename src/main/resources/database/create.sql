@@ -9,3 +9,16 @@ CREATE TABLE vendors (
   fetched INTEGER(1),
   received_money INTEGER(1)
 );
+
+DROP TABLE IF EXISTS purchases;
+CREATE TABLE purchases (
+  id INTEGER PRIMARY KEY ASC,
+  item_quantity INTEGER,
+  item_number INTEGER,
+  item_price DOUBLE,
+  total_price DOUBLE,
+  profit DOUBLE,
+  payment DOUBLE,
+  vendor_id INTEGER,
+  FOREIGN KEY(vendor_id) REFERENCES vendors(id)
+);

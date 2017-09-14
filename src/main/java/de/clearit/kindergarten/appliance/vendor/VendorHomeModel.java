@@ -17,7 +17,7 @@ import com.jgoodies.jsdl.core.pane.TaskPane;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.domain.VendorBean;
-import de.clearit.kindergarten.domain.VendorBroker;
+import de.clearit.kindergarten.domain.VendorService;
 
 /**
  * The home model for the vendor.
@@ -51,7 +51,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
   @Override
   protected ListModel<?> getListModel() {
-    return VendorBroker.INSTANCE.getListModel();
+    return VendorService.getInstance().getListModel();
   }
 
   // Presentation Logic *****************************************************
@@ -91,7 +91,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
       @Override
       public void committed(CommandValue value) {
         if (newItem && (value == CommandValue.OK)) {
-          VendorBroker.INSTANCE.add(vendor);
+          VendorService.getInstance().create(vendor);
         }
       }
     });
@@ -107,7 +107,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     pane.setPreferredWidth(PreferredWidth.MEDIUM);
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
-      VendorBroker.INSTANCE.remove(vendor);
+      VendorService.getInstance().delete(vendor);
     }
   }
 

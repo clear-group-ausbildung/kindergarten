@@ -14,7 +14,7 @@ import com.jgoodies.uif2.search.AbstractFieldSearchProcessor;
 import com.jgoodies.uif2.util.UIFStringUtils;
 
 import de.clearit.kindergarten.domain.VendorBean;
-import de.clearit.kindergarten.domain.VendorBroker;
+import de.clearit.kindergarten.domain.VendorService;
 
 /**
  * Looks up Completions for Vendors, converts Vendor objects to Strings,
@@ -42,7 +42,7 @@ public final class VendorFieldSearchProcessor extends AbstractFieldSearchProcess
     String trimmedContent = content.trim();
     sleep(1000);
     Format format = new VendorAppliance.ExtrasHTMLFormat();
-    List<VendorBean> vendors = new ArrayList<VendorBean>(VendorBroker.INSTANCE.getList());
+    List<VendorBean> vendors = new ArrayList<VendorBean>(VendorService.getInstance().getAll());
 
     // Check the name
     for (Iterator<VendorBean> i = vendors.iterator(); i.hasNext();) {
@@ -103,7 +103,7 @@ public final class VendorFieldSearchProcessor extends AbstractFieldSearchProcess
     name = displayString.split(",");
     // e.g. name = { "Ritter", "Mark };
     // name[0] is the last name, name[1] is the first name
-    return VendorBroker.INSTANCE.findByName(name[0], name[1]);
+    return VendorService.getInstance().findByName(name[0], name[1]);
   }
 
   // Helper Code ************************************************************
