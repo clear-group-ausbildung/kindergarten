@@ -16,6 +16,8 @@ import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
+import de.clearit.kindergarten.domain.ExportDataService;
+import de.clearit.kindergarten.domain.ExportExcel;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorService;
 
@@ -113,11 +115,24 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   @Action(enabled = false)
   public void printReceipt(ActionEvent e) {
     LOGGER.fine("Printing receipt\u2026");
+    VendorBean vendor = getSelection();
+    ExportExcel.getInstance().createExcelVendorForId(vendor);
+    LOGGER.fine("Receipt was printed successfully\\u2026");
+    String mainInstruction = RESOURCES.getString("printReceipt.one.main", vendor.getLastName() + ", " + vendor
+            .getFirstName());
+    TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+    pane.setPreferredWidth(PreferredWidth.MEDIUM);
+    pane.showDialog(e, RESOURCES.getString("printReceipt.one.title"));
   }
 
   @Action
   public void printAllReceipts(ActionEvent e) {
     LOGGER.fine("Printing all receipts\u2026");
+    ExportExcel.getInstance().createExcelVendorsAll();
+    LOGGER.fine("Receipts were printed successfully\\u2026");
+    TaskPane pane = new TaskPane(MessageType.INFORMATION, RESOURCES.getString("printReceipt.all.main"), CommandValue.OK);
+    pane.setPreferredWidth(PreferredWidth.MEDIUM);
+    pane.showDialog(e, RESOURCES.getString("printReceipt.all.title"));
   }
 
 }
