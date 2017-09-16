@@ -11,13 +11,17 @@ import java.util.stream.Collectors;
  */
 public class ExportDataService {
 
-	public static PayoffData getAbrechnungForVendor(VendorBean pVendor) {
+	/**
+	 * Returns the {@link PayoffData} for the given {@link VendorBean}.
+	 * 
+	 * @param pVendor the vendor to get the data for.
+	 * 
+	 * @return {@link PayoffData} to create the receipt.
+	 */
+	public static PayoffData getPayoffDataForVendor(VendorBean pVendor) {
 		List<PurchaseBean> purchaseAllList = PurchaseService.getInstance().getAll();
-		System.out.println(purchaseAllList.size());
-		System.out.println(purchaseAllList.get(0).getVendorId());
 		List<PurchaseBean> purchaseList = purchaseAllList.stream()
 				.filter(purchase -> purchase.getVendorId() == pVendor.getId()).collect(Collectors.toList());
-		System.out.println(purchaseList.size());
 
 		HashMap<Integer, Double> soldItemNumbersPricesMap = new HashMap<>();
 		Double turnover = 0.0;
