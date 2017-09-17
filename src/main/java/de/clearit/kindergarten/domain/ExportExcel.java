@@ -2,6 +2,7 @@ package de.clearit.kindergarten.domain;
 
 import java.awt.Color;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,7 +36,17 @@ public class ExportExcel {
 	private static final ExportExcel INSTANCE = new ExportExcel();
 
 	ExportExcel() {
-		createStyles();
+		try {
+			wb = new XSSFWorkbook(new FileInputStream("./src/main/resources/abrechnung_template.xlsx"));
+			sheet = wb.getSheetAt(0);
+			createStyles();
+		} catch (FileNotFoundException e) {
+			LOGGER.fine("Error - Excel Template not found");
+			e.printStackTrace();
+		} catch (IOException e) {
+			LOGGER.fine("Error Exel Export");
+			e.printStackTrace();
+		}
 	}
 	
 	public static ExportExcel getInstance() {
@@ -70,9 +81,6 @@ public class ExportExcel {
 	public void createExcelVendorForId(VendorBean pVendor) {
 		try {
 			PayoffData payoffData = ExportDataService.getPayoffDataForVendor(pVendor);
-
-			wb = new XSSFWorkbook(new FileInputStream("./src/main/resources/abrechnung_template.xlsx"));
-			sheet = wb.getSheetAt(0);
 			
 			fillInPlaceholders(payoffData);
 
