@@ -141,7 +141,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    *          The list of purchases to summarise the item prices for
    * @return The sum of item prices
    */
-  public Double getItemSum(List<PurchaseBean> listPurchases) {
+  public Double getItemSumByPurchases(List<PurchaseBean> listPurchases) {
     Preconditions.checkNotNull(listPurchases);
     Preconditions.checkArgument(!listPurchases.isEmpty());
     // TODO: Gibts hier eine Java 8 Stream Moeglichkeit? Der untere Code
@@ -167,7 +167,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    *          The list of purchases to count the items
    * @return The count of items
    */
-  public Integer getItemCount(List<PurchaseBean> listPurchases) {
+  public Integer getItemCountByPurchases(List<PurchaseBean> listPurchases) {
     Preconditions.checkNotNull(listPurchases);
     Preconditions.checkArgument(!listPurchases.isEmpty());
     return listPurchases.size();

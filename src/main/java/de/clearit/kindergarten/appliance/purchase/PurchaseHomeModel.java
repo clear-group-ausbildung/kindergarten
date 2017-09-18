@@ -99,8 +99,8 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   @Action(enabled = false)
   public void deleteItem(ActionEvent e) {
     PurchaseBean purchase = getSelection();
-    String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", purchase.getItemQuantity() + " x "
-        + purchase.getItemNumber());
+    String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", "Artikel-Nr: " + purchase
+        .getItemNumber());
     TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
     pane.setPreferredWidth(PreferredWidth.MEDIUM);
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));

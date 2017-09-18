@@ -26,13 +26,9 @@ public class PurchaseEditorView extends AbstractView {
 
   private final PurchaseEditorModel model;
 
-  private JComponent itemQuantityField;
   private JComponent itemNumberField;
   private JComponent itemPriceField;
-  private JComponent totalPriceField;
   private JComponent vendorBox;
-  private JComponent paymentField;
-  private JComponent profitField;
 
   // Instance Creation ******************************************************
 
@@ -52,40 +48,23 @@ public class PurchaseEditorView extends AbstractView {
   }
 
   private void initComponents() {
-    itemQuantityField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
-        PurchaseBean.PROPERTY_ITEM_QUANTITY)));
     itemNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_NUMBER)));
     itemPriceField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_PRICE)));
-    totalPriceField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
-        PurchaseBean.PROPERTY_TOTAL_PRICE)));
     vendorBox = BasicComponentFactory.createComboBox(model.getVendorList(), new VendorListCellRenderer());
-    paymentField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
-        PurchaseBean.PROPERTY_PAYMENT)));
-    profitField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
-        PurchaseBean.PROPERTY_PROFIT)));
   }
 
   private JComponent buildContent() {
-    FormLayout layout = new FormLayout("3*(left:pref, $lcgap, [50dlu,pref], $rgap), left:pref, $lcgap, [50dlu,pref]",
-        "2*(p, $lg)");
+    FormLayout layout = new FormLayout("2*(left:pref, $lcgap, right:pref, $rgap), left:pref, $lcgap, right:pref", "1");
     I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
     builder.setBackground(RESOURCES.getColor("content.background"));
-    builder.addI15dLabel("purchase.itemQuantity", CC.xy(1, 1));
-    builder.add(itemQuantityField, CC.xy(3, 1));
-    builder.addI15dLabel("purchase.itemNumber", CC.xy(5, 1));
-    builder.add(itemNumberField, CC.xy(7, 1));
-    builder.addI15dLabel("purchase.itemPrice", CC.xy(9, 1));
-    builder.add(itemPriceField, CC.xy(11, 1));
-    builder.addI15dLabel("purchase.totalPrice", CC.xy(13, 1));
-    builder.add(totalPriceField, CC.xy(15, 1));
-    builder.addI15dLabel("purchase.vendor", CC.xy(1, 3));
-    builder.add(vendorBox, CC.xy(3, 3));
-    builder.addI15dLabel("purchase.payment", CC.xy(5, 3));
-    builder.add(paymentField, CC.xy(7, 3));
-    builder.addI15dLabel("purchase.profit", CC.xy(9, 3));
-    builder.add(profitField, CC.xy(11, 3));
+    builder.addI15dLabel("purchase.itemNumber", CC.xy(1, 1));
+    builder.add(itemNumberField, CC.xy(3, 1));
+    builder.addI15dLabel("purchase.itemPrice", CC.xy(5, 1));
+    builder.add(itemPriceField, CC.xy(7, 1));
+    builder.addI15dLabel("purchase.vendor", CC.xy(11, 1));
+    builder.add(vendorBox, CC.xy(11, 1));
 
     return builder.getPanel();
   }

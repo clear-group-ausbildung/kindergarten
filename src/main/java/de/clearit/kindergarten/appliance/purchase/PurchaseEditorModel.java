@@ -86,7 +86,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
       cancelOp.run();
       return;
     }
-    String objectName = getBean().getItemQuantity() + " x " + getBean().getItemNumber();
+    String objectName = "Artikel-Nr: " + getBean().getItemNumber();
     Object commitValue = Dialogs.showUnsavedChangesDialog(e, objectName);
     if (commitValue == CommandValue.CANCEL) {
       return;
