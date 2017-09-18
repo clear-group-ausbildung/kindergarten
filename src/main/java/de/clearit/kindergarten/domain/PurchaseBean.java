@@ -14,14 +14,14 @@ public class PurchaseBean extends Model {
   public static final String PROPERTY_ID = "id";
   public static final String PROPERTY_ITEM_NUMBER = "itemNumber";
   public static final String PROPERTY_ITEM_PRICE = "itemPrice";
-  public static final String PROPERTY_VENDOR_ID = "vendorId";
+  public static final String PROPERTY_VENDOR_NUMBER = "vendorNumber";
 
   // Fields *****************************************************************
 
   private Integer id;
   private Integer itemNumber;
   private Double itemPrice;
-  private Integer vendorId;
+  private Integer vendorNumber;
 
   // Instance Creation ******************************************************
 
@@ -42,11 +42,11 @@ public class PurchaseBean extends Model {
    *          the article number
    * @param itemPrice
    *          the price for a single item
-   * @param vendorId
-   *          the vendor id
+   * @param vendorNumber
+   *          the vendor number
    */
-  public PurchaseBean(Integer itemNumber, Double itemPrice, Integer vendorId) {
-    this(null, itemNumber, itemPrice, vendorId);
+  public PurchaseBean(Integer itemNumber, Double itemPrice, Integer vendorNumber) {
+    this(null, itemNumber, itemPrice, vendorNumber);
   }
 
   /**
@@ -58,15 +58,15 @@ public class PurchaseBean extends Model {
    *          the article number
    * @param itemPrice
    *          the price for a single item
-   * @param vendorId
-   *          the vendor id
+   * @param vendorNumber
+   *          the vendor number
    */
-  public PurchaseBean(Integer id, Integer itemNumber, Double itemPrice, Integer vendorId) {
+  public PurchaseBean(Integer id, Integer itemNumber, Double itemPrice, Integer vendorNumber) {
     super();
     this.id = id;
     this.itemNumber = itemNumber;
     this.itemPrice = itemPrice;
-    this.vendorId = vendorId;
+    this.vendorNumber = vendorNumber;
   }
 
   // Accessors **************************************************************
@@ -101,14 +101,14 @@ public class PurchaseBean extends Model {
     firePropertyChange(PROPERTY_ITEM_PRICE, oldValue, newValue);
   }
 
-  public Integer getVendorId() {
-    return vendorId;
+  public Integer getVendorNumber() {
+    return vendorNumber;
   }
 
-  public void setVendorId(Integer newValue) {
-    Integer oldValue = getVendorId();
-    vendorId = newValue;
-    firePropertyChange(PROPERTY_VENDOR_ID, oldValue, newValue);
+  public void setVendorNumber(Integer newValue) {
+    Integer oldValue = getVendorNumber();
+    vendorNumber = newValue;
+    firePropertyChange(PROPERTY_VENDOR_NUMBER, oldValue, newValue);
   }
 
 }

@@ -53,7 +53,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
     bean.setId(entity.getInteger(PurchaseBean.PROPERTY_ID));
     bean.setItemNumber(entity.getInteger(toSnakeCase(PurchaseBean.PROPERTY_ITEM_NUMBER)));
     bean.setItemPrice(entity.getDouble(toSnakeCase(PurchaseBean.PROPERTY_ITEM_PRICE)));
-    bean.setVendorId(entity.getInteger(toSnakeCase(PurchaseBean.PROPERTY_VENDOR_ID)));
+    bean.setVendorNumber(entity.getInteger(toSnakeCase(PurchaseBean.PROPERTY_VENDOR_NUMBER)));
     return bean;
   }
 
@@ -65,7 +65,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
     }
     entity.setInteger(toSnakeCase(PurchaseBean.PROPERTY_ITEM_NUMBER), bean.getItemNumber());
     entity.setDouble(toSnakeCase(PurchaseBean.PROPERTY_ITEM_PRICE), bean.getItemPrice());
-    entity.setInteger(toSnakeCase(PurchaseBean.PROPERTY_VENDOR_ID), bean.getVendorId());
+    entity.setInteger(toSnakeCase(PurchaseBean.PROPERTY_VENDOR_NUMBER), bean.getVendorNumber());
     return entity;
   }
 
@@ -85,7 +85,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
   public List<PurchaseBean> getPurchasesByVendor(Integer vendorId) {
     List<PurchaseBean> result = new ArrayList<>();
     if (vendorId != null) {
-      result.addAll(getAll().stream().filter(purchaseBean -> purchaseBean.getVendorId().equals(vendorId)).collect(
+      result.addAll(getAll().stream().filter(purchaseBean -> purchaseBean.getVendorNumber().equals(vendorId)).collect(
           Collectors.toList()));
     }
     return result;

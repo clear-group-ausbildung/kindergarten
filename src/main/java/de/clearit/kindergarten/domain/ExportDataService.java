@@ -22,7 +22,7 @@ public class ExportDataService {
   public static PayoffData getPayoffDataForVendor(VendorBean pVendor) {
     PurchaseService purchaseService = PurchaseService.getInstance();
     List<PurchaseBean> purchaseAllList = purchaseService.getAll();
-    List<PurchaseBean> purchaseList = purchaseAllList.stream().filter(purchase -> purchase.getVendorId() == pVendor
+    List<PurchaseBean> purchaseList = purchaseAllList.stream().filter(purchase -> purchase.getVendorNumber() == pVendor
         .getId()).collect(Collectors.toList());
 
     HashMap<Integer, Double> soldItemNumbersPricesMap = new HashMap<>();

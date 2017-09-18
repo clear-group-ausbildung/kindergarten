@@ -13,7 +13,6 @@ import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 
 import de.clearit.kindergarten.appliance.DoubleToStringConverter;
 import de.clearit.kindergarten.appliance.IntegerToStringConverter;
-import de.clearit.kindergarten.appliance.vendor.VendorListCellRenderer;
 import de.clearit.kindergarten.domain.PurchaseBean;
 
 public class PurchaseEditorView extends AbstractView {
@@ -24,7 +23,7 @@ public class PurchaseEditorView extends AbstractView {
 
   private JComponent itemNumberField;
   private JComponent itemPriceField;
-  private JComponent vendorBox;
+  private JComponent vendorNumberField;
 
   // Instance Creation ******************************************************
 
@@ -48,19 +47,20 @@ public class PurchaseEditorView extends AbstractView {
         PurchaseBean.PROPERTY_ITEM_NUMBER)));
     itemPriceField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_PRICE)));
-    vendorBox = BasicComponentFactory.createComboBox(model.getVendorList(), new VendorListCellRenderer());
+    vendorNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
+        PurchaseBean.PROPERTY_VENDOR_NUMBER)));
   }
 
   private JComponent buildContent() {
-    FormLayout layout = new FormLayout("2*(left:pref, $lcgap, right:pref, $rgap), left:pref, $lcgap, right:pref", "1");
+    FormLayout layout = new FormLayout("2*(left:pref, $lcgap, 50dlu, $rgap), left:pref, $lcgap, 50dlu", "p");
     I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
     builder.setBackground(RESOURCES.getColor("content.background"));
     builder.addI15dLabel("purchase.itemNumber", CC.xy(1, 1));
     builder.add(itemNumberField, CC.xy(3, 1));
     builder.addI15dLabel("purchase.itemPrice", CC.xy(5, 1));
     builder.add(itemPriceField, CC.xy(7, 1));
-    builder.addI15dLabel("purchase.vendor", CC.xy(11, 1));
-    builder.add(vendorBox, CC.xy(11, 1));
+    builder.addI15dLabel("purchase.vendor", CC.xy(9, 1));
+    builder.add(vendorNumberField, CC.xy(11, 1));
 
     return builder.getPanel();
   }

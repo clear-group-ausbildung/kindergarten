@@ -20,7 +20,7 @@ public class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
 
   private static String[] getColumnNames() {
     return new String[] { RESOURCES.getString("purchase.table.itemNumber"), RESOURCES.getString(
-        "purchase.table.itemPrice"), RESOURCES.getString("purchase.table.vendor") };
+        "purchase.table.itemPrice"), RESOURCES.getString("purchase.table.vendorNumber") };
   }
 
   @Override
@@ -35,15 +35,7 @@ public class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
     case 2:
 
     case 3:
-      String result = "";
-      // VendorBean vendor =
-      // VendorService.getInstance().getById(purchase.getVendorId());
-      // if (vendor != null) {
-      // result += vendor.getLastName();
-      // result += ", ";
-      // result += vendor.getFirstName();
-      // }
-      return result;
+      return purchase.getVendorNumber();
 
     default:
       throw new IllegalStateException("Can't handle column index " + columnIndex);
