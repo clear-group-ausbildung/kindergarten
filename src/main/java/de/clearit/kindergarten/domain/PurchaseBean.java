@@ -1,14 +1,13 @@
 package de.clearit.kindergarten.domain;
 
-import org.javalite.activejdbc.Model;
-
+import com.jgoodies.binding.beans.Model;
 import com.google.common.base.CaseFormat;
-
 import de.clearit.kindergarten.domain.entity.Purchase;
 
 public class PurchaseBean extends Model {
 	
-	// Names of the Bound Bean Properties *************************************	
+	// Names of the Bound Bean Properties *************************************
+	public static final String PROPERTY_ID = "id";
 	public static final String PROPERTY_VENDOR_ID = "vendorId";
 	public static final String PROPERTY_ITEM_QUANTITY = "itemQuantity";
 	public static final String PROPERTY_ITEM_NUMBER = "itemNumber";
@@ -20,6 +19,7 @@ public class PurchaseBean extends Model {
 	
 	// Fields *****************************************************************
 
+	private Integer id;
 	private Integer vendorId;
 	private Integer itemQuantity;
 	private Integer itemNumber;
@@ -30,13 +30,13 @@ public class PurchaseBean extends Model {
 
 	public static PurchaseBean fromEntity(Purchase entity) {
 		PurchaseBean bean = new PurchaseBean();
-		bean.setVendorId(entity.getInteger(PROPERTY_VENDOR_ID));
-		bean.setItemQuantity(entity.getInteger(PROPERTY_ITEM_QUANTITY));
-		bean.setItemNumber(entity.getInteger(PROPERTY_ITEM_NUMBER));
+		bean.setVendorId(entity.getInteger(toSnakeCase(PROPERTY_VENDOR_ID)));
+		bean.setItemQuantity(entity.getInteger(toSnakeCase(PROPERTY_ITEM_QUANTITY)));
+		bean.setItemNumber(entity.getInteger(toSnakeCase(PROPERTY_ITEM_NUMBER)));
 		bean.setItemPrice(entity.getDouble(toSnakeCase(PROPERTY_ITEM_PRICE)));
 		bean.setPayment(entity.getDouble(toSnakeCase(PROPERTY_PAYMENT)));
 		bean.setProfit(entity.getDouble(toSnakeCase(PROPERTY_PROFIT)));
-		bean.setSum(entity.getDouble(PROPERTY_SUM));
+		bean.setSum(entity.getDouble(toSnakeCase(PROPERTY_SUM)));
 		return bean;
 	}
 	
@@ -71,60 +71,83 @@ public class PurchaseBean extends Model {
 		return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camelCase);
 	}
 
-	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer newValue) {
+		Integer oldValue = getId();
+	    id = newValue;
+	    firePropertyChange(PROPERTY_ID, oldValue, newValue);
+	}
+
 	public Integer getVendorId() {
 		return vendorId;
 	}
 	
-	public void setVendorId(Integer vendorId) {
-		this.vendorId = vendorId;
+	public void setVendorId(Integer newValue) {
+		Integer oldValue = getVendorId();
+	    vendorId = newValue;
+	    firePropertyChange(PROPERTY_ID, oldValue, newValue);
 	}
 
 	public Integer getItemQuantity() {
 		return itemQuantity;
 	}
 	
-	public void setItemQuantity(Integer itemQuantity) {
-		this.itemQuantity = itemQuantity;
+	public void setItemQuantity(Integer newValue) {
+		Integer oldValue = getItemQuantity();
+		itemQuantity = newValue;
+	    firePropertyChange(PROPERTY_ID, oldValue, newValue);
 	}
 	
 	public Integer getItemNumber() {
 		return itemNumber;
 	}
 
-	public void setItemNumber(Integer itemNumber) {
-		this.itemNumber = itemNumber;
+	public void setItemNumber(Integer newValue) {
+		Integer oldValue = getItemNumber();
+		itemNumber = newValue;
+	    firePropertyChange(PROPERTY_ID, oldValue, newValue);
 	}
 
 	public Double getItemPrice() {
 		return itemPrice;
 	}
 
-	public void setItemPrice(Double itemPrice) {
-		this.itemPrice = itemPrice;
+	public void setItemPrice(Double newValue) {
+		Double oldValue = getItemPrice();
+		itemPrice = newValue;
+	    firePropertyChange(PROPERTY_ID, oldValue, newValue);
 	}
 
 	public Double getPayment() {
 		return payment;
 	}
 	
-	public void setPayment(Double payment) {
-		this.payment = payment;
+	public void setPayment(Double newValue) {
+		Double oldValue = getPayment();
+		payment = newValue;
+	    firePropertyChange(PROPERTY_ID, oldValue, newValue);
 	}
 	
 	public Double getProfit() {
 		return profit;
 	}
 
-	public void setProfit(Double profit) {
-		this.profit = profit;
+	public void setProfit(Double newValue) {
+		Double oldValue = getProfit();
+		profit = newValue;
+	    firePropertyChange(PROPERTY_ID, oldValue, newValue);
 	}	 
 	
 	public Double getSum() {
 		return sum;
 	}
 	
-	public void setSum(Double sum) {
-		this.sum = sum;
+	public void setSum(Double newValue) {
+		Double oldValue = getSum();
+		sum = newValue;
+	    firePropertyChange(PROPERTY_ID, oldValue, newValue);
 	}
 }

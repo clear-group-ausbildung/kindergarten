@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS vendors;
 CREATE TABLE vendors (
-  vendor_id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY,
   first_name VARCHAR(80),
   last_name VARCHAR(80),
   phone_number VARCHAR(80),
@@ -10,12 +10,15 @@ CREATE TABLE vendors (
   received_money INTEGER(1)
 );
 
+DROP TABLE IF EXISTS purchases;
 CREATE TABLE purchases (
-  vendor_id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY,
   item_quantity INTEGER,
   item_number INTEGER,
   item_price INTEGER,
   sum DOUBLE,
   profit DOUBLE,
-  payment DOUBLE
+  payment DOUBLE,
+  vendor_id INTEGER,
+  FOREIGN KEY(vendor_id) REFERENCES vendors(id)
 );

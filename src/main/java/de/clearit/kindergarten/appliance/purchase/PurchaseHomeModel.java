@@ -96,7 +96,7 @@ public final class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   @Action(enabled = false)
   public void printItem(ActionEvent e) {
-    LOGGER.fine("Printing vendor\u2026");
+    LOGGER.fine("Printing purchase\u2026");
   }
 
 }

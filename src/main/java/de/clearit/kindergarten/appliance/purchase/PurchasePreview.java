@@ -36,8 +36,6 @@ public class PurchasePreview extends AbstractView {
   // Building ***************************************************************
 
   private void initComponents() {
-    extrasArea = KindergartenComponentFactory.createReadOnlyTextArea(model.getBeanChannel(),
-        new VendorAppliance.ExtrasFormat());
     vendorIdField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(
         PurchaseBean.PROPERTY_VENDOR_ID));
     itemNumberField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(PurchaseBean.PROPERTY_ITEM_NUMBER));
@@ -48,8 +46,8 @@ public class PurchasePreview extends AbstractView {
   protected JComponent buildPanel() {
     initComponents();
 
-    FormLayout layout = new FormLayout("[125dlu,pref], 21dlu, right:pref, $lcgap, pref", "4*(p)");
-    layout.setRowGroups(new int[][] { { 1, 2, 3, 4 } });
+    FormLayout layout = new FormLayout("[125dlu,pref], 21dlu, right:pref, $lcgap, pref", "3*(p)");
+    layout.setRowGroups(new int[][] { { 1, 2, 3 } });
     I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
 
     builder.add(extrasArea, CC.xywh(1, 1, 1, 4, "left, top"));

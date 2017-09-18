@@ -1,11 +1,8 @@
 package de.clearit.kindergarten.domain;
 
 import java.util.List;
-
 import javax.swing.ListModel;
-
 import org.javalite.activejdbc.Base;
-
 import com.jgoodies.binding.list.ArrayListModel;
 import com.jgoodies.binding.list.ObservableList;
 
