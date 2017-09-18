@@ -1,5 +1,6 @@
 package de.clearit.kindergarten.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,9 +83,12 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    * @return The list of all purchases for the vendor
    */
   public List<PurchaseBean> getPurchasesByVendor(Integer vendorId) {
-    Preconditions.checkNotNull(vendorId);
-    return getAll().stream().filter(purchaseBean -> purchaseBean.getVendorId().equals(vendorId)).collect(Collectors
-        .toList());
+    List<PurchaseBean> result = new ArrayList<>();
+    if (vendorId != null) {
+      result.addAll(getAll().stream().filter(purchaseBean -> purchaseBean.getVendorId().equals(vendorId)).collect(
+          Collectors.toList()));
+    }
+    return result;
   }
 
   /**
@@ -95,8 +99,6 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    * @return The summarised profit for the kindergarten
    */
   public Double getKindergartenProfitByPurchases(List<PurchaseBean> listPurchases) {
-    Preconditions.checkNotNull(listPurchases);
-    Preconditions.checkArgument(!listPurchases.isEmpty());
     // TODO: Gibts hier eine Java 8 Stream Moeglichkeit? Der untere Code
     // funktioniert so nicht, da in eine enclosing variable geschrieben werden soll
     // "Local variable result defined in an enclosing scope must be final or
@@ -104,8 +106,10 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
 
     // listPurchases.forEach(purchase -> result += getProfitByPurchase(purchase));
     Double result = 0.0d;
-    for (PurchaseBean purchase : listPurchases) {
-      result += getKindergartenProfitByPurchase(purchase);
+    if (listPurchases != null && listPurchases.size() > 0) {
+      for (PurchaseBean purchase : listPurchases) {
+        result += getKindergartenProfitByPurchase(purchase);
+      }
     }
     return result;
   }
@@ -118,8 +122,6 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    * @return The summarized vendor payout amount
    */
   public Double getVendorPayoutByPurchases(List<PurchaseBean> listPurchases) {
-    Preconditions.checkNotNull(listPurchases);
-    Preconditions.checkArgument(!listPurchases.isEmpty());
     // TODO: Gibts hier eine Java 8 Stream Moeglichkeit? Der untere Code
     // funktioniert so nicht, da in eine enclosing variable geschrieben werden soll
     // "Local variable result defined in an enclosing scope must be final or
@@ -128,8 +130,10 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
     // listPurchases.forEach(purchase -> result +=
     // getVendorPayoutByPurchase(purchase));
     Double result = 0.0d;
-    for (PurchaseBean purchase : listPurchases) {
-      result += getVendorPayoutByPurchase(purchase);
+    if (listPurchases != null && listPurchases.size() > 0) {
+      for (PurchaseBean purchase : listPurchases) {
+        result += getVendorPayoutByPurchase(purchase);
+      }
     }
     return result;
   }
@@ -142,8 +146,6 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    * @return The sum of item prices
    */
   public Double getItemSumByPurchases(List<PurchaseBean> listPurchases) {
-    Preconditions.checkNotNull(listPurchases);
-    Preconditions.checkArgument(!listPurchases.isEmpty());
     // TODO: Gibts hier eine Java 8 Stream Moeglichkeit? Der untere Code
     // funktioniert so nicht, da in eine enclosing variable geschrieben werden soll
     // "Local variable result defined in an enclosing scope must be final or
@@ -151,9 +153,11 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
 
     // listPurchases.forEach(purchase -> result += purchase.getItemPrice();
     Double result = 0.0d;
-    for (PurchaseBean purchase : listPurchases) {
-      Preconditions.checkNotNull(purchase.getItemPrice());
-      result += purchase.getItemPrice();
+    if (listPurchases != null && listPurchases.size() > 0) {
+      for (PurchaseBean purchase : listPurchases) {
+        Preconditions.checkNotNull(purchase.getItemPrice());
+        result += purchase.getItemPrice();
+      }
     }
     return result;
   }
@@ -168,9 +172,11 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    * @return The count of items
    */
   public Integer getItemCountByPurchases(List<PurchaseBean> listPurchases) {
-    Preconditions.checkNotNull(listPurchases);
-    Preconditions.checkArgument(!listPurchases.isEmpty());
-    return listPurchases.size();
+    Integer result = 0;
+    if (listPurchases != null && listPurchases.size() > 0) {
+      result = listPurchases.size();
+    }
+    return result;
   }
 
   /**
@@ -181,9 +187,11 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    * @return The profit for the kindergarten
    */
   public Double getKindergartenProfitByPurchase(PurchaseBean purchase) {
-    Preconditions.checkNotNull(purchase);
-    Preconditions.checkNotNull(purchase.getItemPrice());
-    return purchase.getItemPrice() * KINDERGARTEN_PROFIT_RATIO;
+    Double result = 0.0d;
+    if (purchase != null && purchase.getItemPrice() != null) {
+      result = purchase.getItemPrice() * KINDERGARTEN_PROFIT_RATIO;
+    }
+    return result;
   }
 
   /**
@@ -194,9 +202,11 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    * @return The vendor payout amount
    */
   public Double getVendorPayoutByPurchase(PurchaseBean purchase) {
-    Preconditions.checkNotNull(purchase);
-    Preconditions.checkNotNull(purchase.getItemPrice());
-    return purchase.getItemPrice() * VENDOR_PAYOUT_RATIO;
+    Double result = 0.0d;
+    if (purchase != null && purchase.getItemPrice() != null) {
+      result = purchase.getItemPrice() * VENDOR_PAYOUT_RATIO;
+    }
+    return result;
   }
 
 }
