@@ -17,7 +17,7 @@ public class PurchaseBroker {
 	// Instance Creation ******************************************************
 
 	private PurchaseBroker() {
-	  Base.open("org.sqlite.JDBC", "jdbc:sqlite:./kindergarten.sqlite", "", "");
+	 // Base.open("org.sqlite.JDBC", "jdbc:sqlite:./kindergarten.sqlite", "", "");
 	  purchases = new ArrayListModel<PurchaseBean>();
 	  Purchase.<Purchase>findAll().stream().forEach(entity -> purchases.add(PurchaseBean.fromEntity(entity)));
 	}
