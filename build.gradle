@@ -28,6 +28,14 @@ repositories {
 dependencies {
   	// https://mvnrepository.com/artifact/com.google.guava/guava
   	compile group: 'com.google.guava', name: 'guava', version: '23.0'
+  	// https://mvnrepository.com/artifact/org.apache.poi/poi
+    //compile group: 'org.apache.poi', name: 'poi', version: '3.17'
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+	//compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+	// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas
+	//compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '3.17'
+	// https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans
+	//compile group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '2.6.0'
 	// https://mvnrepository.com/artifact/org.javalite/activejdbc
    	compile group: 'org.javalite', name: 'activejdbc', version: '1.4.13.j7'
    	// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
