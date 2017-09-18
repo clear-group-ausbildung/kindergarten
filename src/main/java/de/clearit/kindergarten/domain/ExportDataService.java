@@ -14,30 +14,26 @@ public class ExportDataService {
 	/**
 	 * Returns the {@link PayoffData} for the given {@link VendorBean}.
 	 * 
-	 * @param pVendor the vendor to get the data for.
+	 * @param pVendor
+	 *            the vendor to get the data for.
 	 * 
 	 * @return {@link PayoffData} to create the receipt.
 	 */
 	public static PayoffData getPayoffDataForVendor(VendorBean pVendor) {
-		List<PurchaseBean> purchaseAllList = PurchaseService.getInstance().getAll();
+		PurchaseService purchaseService = PurchaseService.getInstance();
+		List<PurchaseBean> purchaseAllList = purchaseService.getAll();
 		List<PurchaseBean> purchaseList = purchaseAllList.stream()
 				.filter(purchase -> purchase.getVendorId() == pVendor.getId()).collect(Collectors.toList());
 
 		HashMap<Integer, Double> soldItemNumbersPricesMap = new HashMap<>();
-		Double turnover = 0.0;
-		Double profit = 0.0;
-		Double payment = 0.0;
-		Integer totalSoldItems = 0;
 		for (PurchaseBean purchase : purchaseList) {
-			turnover += purchase.getTotalPrice();
-			profit += purchase.getProfit();
-			payment += purchase.getPayment();
-			totalSoldItems += purchase.getItemQuantity();
-			soldItemNumbersPricesMap.put(purchase.getItemNumber(), purchase.getTotalPrice());
+			soldItemNumbersPricesMap.put(purchase.getItemNumber(), purchase.getItemPrice());
 		}
 
 		PayoffData payoffData = new PayoffData(pVendor.getId(), pVendor.getFirstName(), pVendor.getLastName(),
-				pVendor.getPhoneNumber(), turnover, profit, payment, totalSoldItems, soldItemNumbersPricesMap);
+				pVendor.getPhoneNumber(), purchaseService.getVendorPayoutByPurchases(purchaseList), purchaseService.getKindergartenProfitByPurchases(purchaseList),
+				purchaseService.getVendorPayoutByPurchases(purchaseList), purchaseService.getItemCount(purchaseList),
+				soldItemNumbersPricesMap);
 
 		return payoffData;
 	}
