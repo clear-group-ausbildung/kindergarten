@@ -90,6 +90,6 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
    * 
    * @return the list of entities
    */
-  protected abstract List<E> getEntities();
+  public abstract List<E> getEntities();
 
 }

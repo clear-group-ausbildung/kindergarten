@@ -89,7 +89,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
   }
 
   @Override
-  protected List<Vendor> getEntities() {
+  public List<Vendor> getEntities() {
     return Vendor.<Vendor>findAll();
   }
 
