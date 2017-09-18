@@ -64,6 +64,23 @@ public final class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   // Actions ****************************************************************
 
+  @Action
+  public void newItem(ActionEvent e) {
+    String title = RESOURCES.getString("newPurchase.title");
+    editItem(e, title, new PurchaseBean(), true);
+  }
+
+  @Action
+  public void newPurchase(ActionEvent e) {
+    newItem(e);
+  }
+
+  @Action(enabled = false)
+  public void editItem(ActionEvent e) {
+    String title = RESOURCES.getString("editPurchase.title");
+    editItem(e, title, getSelection(), false);
+  }
+  
   @Override
   protected String[] contextActionNames() {
     return new String[] {};
