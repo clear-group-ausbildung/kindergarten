@@ -56,7 +56,7 @@ final class VendorHomeView extends AbstractView {
 
     table = new StripedTable(new VendorTableModel(model.getSelectionInList()));
     table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
-    TableUtils.configureColumns(table, "[30dlu,60dlu], [50dlu,pref], [50dlu,pref]");
+    TableUtils.configureColumns(table, "[30dlu,60dlu], [30dlu,60dlu], [50dlu,pref], [50dlu,pref]");
 
     Action editAction = model.getAction(VendorHomeModel.ACTION_EDIT_ITEM);
     ComponentUtils.registerDoubleClickAction(table, editAction);
@@ -91,8 +91,9 @@ final class VendorHomeView extends AbstractView {
     }
 
     private static String[] getColumnNames() {
-      return new String[] { RESOURCES.getString("vendor.table.firstName"), RESOURCES.getString("vendor.table.lastName"),
-          RESOURCES.getString("vendor.table.phoneNumber") };
+      return new String[] { RESOURCES.getString("vendor.table.vendorNumber"), RESOURCES.getString(
+          "vendor.table.firstName"), RESOURCES.getString("vendor.table.lastName"), RESOURCES.getString(
+              "vendor.table.phoneNumber") };
     }
 
     @Override
@@ -100,12 +101,14 @@ final class VendorHomeView extends AbstractView {
       VendorBean vendor = getRow(rowIndex);
       switch (columnIndex) {
       case 0:
+        return vendor.getVendorNumber();
+      case 1:
         return vendor.getFirstName();
 
-      case 1:
+      case 2:
         return vendor.getLastName();
 
-      case 2:
+      case 3:
         return vendor.getPhoneNumber();
 
       default:

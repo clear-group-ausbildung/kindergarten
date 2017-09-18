@@ -12,6 +12,7 @@ public final class VendorBean extends Model {
   // Names of the Bound Bean Properties *************************************
 
   public static final String PROPERTY_ID = "id";
+  public static final String PROPERTY_VENDOR_NUMBER = "vendorNumber";
   public static final String PROPERTY_FIRST_NAME = "firstName";
   public static final String PROPERTY_LAST_NAME = "lastName";
   public static final String PROPERTY_PHONE_NUMBER = "phoneNumber";
@@ -23,6 +24,7 @@ public final class VendorBean extends Model {
   // Fields *****************************************************************
 
   private Integer id;
+  private Integer vendorNumber;
   private String firstName;
   private String lastName;
   private String phoneNumber;
@@ -52,7 +54,7 @@ public final class VendorBean extends Model {
    *          the last name
    */
   public VendorBean(String firstName, String lastName) {
-    this(0, firstName, lastName, "", Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE);
+    this(0, 0, firstName, lastName, "", Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE);
   }
 
   /**
@@ -60,6 +62,8 @@ public final class VendorBean extends Model {
    * 
    * @param id
    *          the id
+   * @param vendorNumber
+   *          the vendor number
    * @param firstName
    *          the first name
    * @param lastName
@@ -75,10 +79,11 @@ public final class VendorBean extends Model {
    * @param receivedMoney
    *          did receive money? true / false
    */
-  public VendorBean(Integer id, String firstName, String lastName, String phoneNumber, Boolean delivered, Boolean dirty,
-      Boolean fetched, Boolean receivedMoney) {
+  public VendorBean(Integer id, Integer vendorNumber, String firstName, String lastName, String phoneNumber,
+      Boolean delivered, Boolean dirty, Boolean fetched, Boolean receivedMoney) {
     super();
     this.id = id;
+    this.vendorNumber = vendorNumber;
     this.firstName = firstName;
     this.lastName = lastName;
     this.phoneNumber = phoneNumber;
@@ -98,6 +103,16 @@ public final class VendorBean extends Model {
     Integer oldValue = getId();
     id = newValue;
     firePropertyChange(PROPERTY_ID, oldValue, newValue);
+  }
+
+  public Integer getVendorNumber() {
+    return vendorNumber;
+  }
+
+  public void setVendorNumber(Integer newValue) {
+    Integer oldValue = getVendorNumber();
+    vendorNumber = newValue;
+    firePropertyChange(PROPERTY_VENDOR_NUMBER, oldValue, newValue);
   }
 
   public String getFirstName() {

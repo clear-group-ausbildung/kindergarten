@@ -1,24 +1,20 @@
 package de.clearit.kindergarten.appliance.purchase;
 
-import java.awt.Component;
-
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
-import javax.swing.JList;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
-import com.jgoodies.binding.value.AbstractConverter;
-import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.jsdl.core.pane.form.FormPane;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 
+import de.clearit.kindergarten.appliance.DoubleToStringConverter;
+import de.clearit.kindergarten.appliance.IntegerToStringConverter;
+import de.clearit.kindergarten.appliance.vendor.VendorListCellRenderer;
 import de.clearit.kindergarten.domain.PurchaseBean;
-import de.clearit.kindergarten.domain.VendorBean;
 
 public class PurchaseEditorView extends AbstractView {
 
@@ -67,70 +63,6 @@ public class PurchaseEditorView extends AbstractView {
     builder.add(vendorBox, CC.xy(11, 1));
 
     return builder.getPanel();
-  }
-
-  private static final class VendorListCellRenderer extends DefaultListCellRenderer {
-
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-        boolean cellHasFocus) {
-      Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-      VendorBean vendor = (VendorBean) value;
-      setText(vendor == null ? "" : (vendor.getLastName() + ", " + vendor.getFirstName()));
-      return component;
-    }
-
-  }
-
-  private static final class IntegerToStringConverter extends AbstractConverter {
-
-    private static final long serialVersionUID = 1L;
-
-    private IntegerToStringConverter(ValueModel integerSubject) {
-      super(integerSubject);
-    }
-
-    @Override
-    public void setValue(Object newValue) {
-      Integer integerValue = Integer.valueOf((String) newValue);
-      subject.setValue(integerValue);
-    }
-
-    @Override
-    public Object convertFromSubject(Object subjectValue) {
-      String result = "";
-      if (subjectValue != null) {
-        result = ((Integer) subjectValue).toString();
-      }
-      return result;
-    }
-
-  }
-
-  private static final class DoubleToStringConverter extends AbstractConverter {
-
-    private DoubleToStringConverter(ValueModel doubleSubject) {
-      super(doubleSubject);
-    }
-
-    @Override
-    public void setValue(Object newValue) {
-      Double doubleValue = Double.valueOf((String) newValue);
-      subject.setValue(doubleValue);
-    }
-
-    @Override
-    public Object convertFromSubject(Object subjectValue) {
-      String result = "";
-      if (subjectValue != null) {
-        result = ((Double) subjectValue).toString();
-      }
-      return result;
-    }
-
   }
 
 }

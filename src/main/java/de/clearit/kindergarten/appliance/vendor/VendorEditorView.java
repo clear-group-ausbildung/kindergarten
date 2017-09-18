@@ -12,6 +12,7 @@ import com.jgoodies.jsdl.core.pane.form.FormPane;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 
+import de.clearit.kindergarten.appliance.IntegerToStringConverter;
 import de.clearit.kindergarten.desktop.DesktopUtils;
 import de.clearit.kindergarten.domain.VendorBean;
 
@@ -24,6 +25,7 @@ final class VendorEditorView extends AbstractView {
 
   private final VendorEditorModel model;
 
+  private JComponent vendorNumberField;
   private JComponent firstNameField;
   private JComponent lastNameField;
   private JComponent phoneNumberField;
@@ -41,6 +43,8 @@ final class VendorEditorView extends AbstractView {
   // Initialization *********************************************************
 
   private void initComponents() {
+    vendorNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
+        VendorBean.PROPERTY_VENDOR_NUMBER)));
     firstNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_LAST_NAME));
     phoneNumberField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_PHONE_NUMBER));
@@ -69,15 +73,17 @@ final class VendorEditorView extends AbstractView {
         "3*(p, $lg), p, 21dlu, 14dlu:grow");
     I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
     builder.setBorder(Borders.DLU14_BORDER);
-    builder.addI15dLabel("vendor.firstName", CC.xy(1, 1));
-    builder.add(firstNameField, CC.xy(3, 1));
+    builder.addI15dLabel("vendor.vendorNumber", CC.xy(1, 1));
+    builder.add(vendorNumberField, CC.xy(3, 1));
     builder.add(deliveredBox, CC.xy(5, 1));
-    builder.addI15dLabel("vendor.lastName", CC.xy(1, 3));
-    builder.add(lastNameField, CC.xy(3, 3));
+    builder.addI15dLabel("vendor.firstName", CC.xy(1, 3));
+    builder.add(firstNameField, CC.xy(3, 3));
     builder.add(dirtyBox, CC.xy(5, 3));
-    builder.addI15dLabel("vendor.phoneNumber", CC.xy(1, 5));
-    builder.add(phoneNumberField, CC.xy(3, 5));
+    builder.addI15dLabel("vendor.lastName", CC.xy(1, 5));
+    builder.add(lastNameField, CC.xy(3, 5));
     builder.add(fetchedBox, CC.xy(5, 5));
+    builder.addI15dLabel("vendor.phoneNumber", CC.xy(1, 7));
+    builder.add(phoneNumberField, CC.xy(3, 7));
     builder.add(receivedMoneyBox, CC.xy(5, 7));
     builder.add(buildValidationFeedback(), CC.xyw(1, 9, 6));
 
