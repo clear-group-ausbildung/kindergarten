@@ -3,6 +3,7 @@ package de.clearit.kindergarten.application;
 import java.awt.AWTKeyStroke;
 
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -125,6 +126,8 @@ public final class KindergartenApplication extends UIFApplication {
 
   private JFrame buildFrame() {
     JFrame frame = DesktopViews.buildDefaultFrame();
+    ImageIcon icon = new ImageIcon(KindergartenApplication.class.getResource("resources/images/logo.gif"));
+    frame.setIconImage(icon.getImage());
     frame.add(new MainView(MainModel.getInstance()).getPanel());
     return frame;
   }

@@ -23,7 +23,7 @@ public class ExportDataService {
     PurchaseService purchaseService = PurchaseService.getInstance();
     List<PurchaseBean> purchaseAllList = purchaseService.getAll();
     List<PurchaseBean> purchaseList = purchaseAllList.stream().filter(purchase -> purchase.getVendorNumber() == pVendor
-        .getId()).collect(Collectors.toList());
+        .getVendorNumber()).collect(Collectors.toList());
 
     HashMap<Integer, Double> soldItemNumbersPricesMap = new HashMap<>();
     for (PurchaseBean purchase : purchaseList) {
