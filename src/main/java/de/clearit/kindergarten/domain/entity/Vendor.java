@@ -10,7 +10,7 @@ public class Vendor extends Model {
   // Validation for mandatory properties
 
   static {
-    validatePresenceOf("first_name", "last_name");
+    validatePresenceOf("last_name");
   }
 
 }
