@@ -16,7 +16,6 @@ import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
-import de.clearit.kindergarten.domain.ExportDataService;
 import de.clearit.kindergarten.domain.ExportExcel;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorService;
