@@ -21,7 +21,7 @@ public class PurchasePreview extends AbstractView {
 
   private final PresentationModel<PurchaseBean> model;
 
-  private JComponent extrasArea;
+  //private JComponent extrasArea;
 
   private JComponent vendorIdField;
   private JComponent itemNumberField;
@@ -50,7 +50,7 @@ public class PurchasePreview extends AbstractView {
     layout.setRowGroups(new int[][] { { 1, 2, 3 } });
     I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
 
-    builder.add(extrasArea, CC.xywh(1, 1, 1, 4, "left, top"));
+   // builder.add(extrasArea, CC.xywh(1, 1, 1, 4, "left, top"));
 
     builder.addI15dROLabel("purchase.vendorId", CC.xy(3, 1));
     builder.add(vendorIdField, CC.xy(5, 1));
