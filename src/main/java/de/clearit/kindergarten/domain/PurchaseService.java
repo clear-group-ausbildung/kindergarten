@@ -209,4 +209,8 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
     return result;
   }
 
+  public void dumpPurchases() {
+    Purchase.<Purchase>findAll().dump();
+  }
+
 }

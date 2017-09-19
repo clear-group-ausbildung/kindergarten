@@ -31,6 +31,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   public static final String ACTION_EXPORT_PURCHASES = "exportPurchases";
   private static final Logger LOGGER = Logger.getLogger(PurchaseHomeModel.class.getName());
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseHomeModel.class);
+  private static final PurchaseService SERVICE = PurchaseService.getInstance();
   private static PurchaseHomeModel instance;
 
   // Instance Creation ******************************************************
@@ -50,7 +51,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   @Override
   protected ListModel<PurchaseBean> getListModel() {
-    return PurchaseService.getInstance().getListModel();
+    return SERVICE.getListModel();
   }
 
   // Presentation Logic *****************************************************
@@ -89,7 +90,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
       @Override
       public void committed(CommandValue value) {
         if (newItem && (value == CommandValue.OK)) {
-          PurchaseService.getInstance().create(purchase);
+          SERVICE.create(purchase);
         }
       }
     });
@@ -105,7 +106,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     pane.setPreferredWidth(PreferredWidth.MEDIUM);
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
-      PurchaseService.getInstance().delete(purchase);
+      SERVICE.delete(purchase);
     }
   }
 
@@ -116,6 +117,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   @Action
   public void exportPurchases(ActionEvent e) {
+    SERVICE.dumpPurchases();
     LOGGER.fine("Exporting purchase\u2026");
   }
 
