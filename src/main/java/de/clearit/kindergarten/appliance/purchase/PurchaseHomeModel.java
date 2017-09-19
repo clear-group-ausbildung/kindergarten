@@ -124,8 +124,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
       final List<PurchaseBean> purchaseList = mapper.readValue(importFile, mapper.getTypeFactory()
           .constructCollectionType(List.class, PurchaseBean.class));
       purchaseList.forEach(purchase -> {
-        Purchase.createIt("item_number", purchase.getItemNumber(), "item_price", purchase.getItemPrice(),
-            "vendor_number", purchase.getVendorNumber());
+    	  SERVICE.create(purchase);
       });
     } catch (final IOException e1) {
       LOGGER.severe("Fehler beim Importieren der Verku+00e4ufe!");
