@@ -62,6 +62,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
   public VendorBean fromEntity(Vendor entity) {
     VendorBean bean = new VendorBean();
     bean.setId(entity.getInteger(VendorBean.PROPERTY_ID));
+    bean.setVendorNumber(entity.getInteger(toSnakeCase(VendorBean.PROPERTY_VENDOR_NUMBER)));
     bean.setFirstName(entity.getString(toSnakeCase(VendorBean.PROPERTY_FIRST_NAME)));
     bean.setLastName(entity.getString(toSnakeCase(VendorBean.PROPERTY_LAST_NAME)));
     bean.setPhoneNumber(entity.getString(toSnakeCase(VendorBean.PROPERTY_PHONE_NUMBER)));
@@ -78,6 +79,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     if (entity == null) {
       entity = new Vendor();
     }
+    entity.setInteger(toSnakeCase(VendorBean.PROPERTY_VENDOR_NUMBER), bean.getVendorNumber());
     entity.setString(toSnakeCase(VendorBean.PROPERTY_FIRST_NAME), bean.getFirstName());
     entity.setString(toSnakeCase(VendorBean.PROPERTY_LAST_NAME), bean.getLastName());
     entity.setString(toSnakeCase(VendorBean.PROPERTY_PHONE_NUMBER), bean.getPhoneNumber());
