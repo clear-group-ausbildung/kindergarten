@@ -1,10 +1,13 @@
 package de.clearit.kindergarten.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import com.jgoodies.binding.beans.Model;
 
 /**
  * The bean class for the Purchase resource.
  */
+@JsonIgnoreProperties({"id", "propertyChangeListeners", "vetoableChangeListeners"})
 public class PurchaseBean extends Model {
 
   private static final long serialVersionUID = 1L;

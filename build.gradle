@@ -60,10 +60,6 @@ dependencies {
    	compile name: 'swing-worker'
    	compile name: 'uif2-0.9.18'
    	compile name: 'validation-2.0.1'
-//   	compile name: 'poi-3.14'
-//   	compile name: 'poi-ooxml-3.14'
-//   	compile name: 'poi-ooxml-schemas-3.14'
-//   	compile name: 'xmlbeans-2.6.0'
 }
 
 mainClassName = "de.clearit.kindergarten.application.KindergartenLauncher"
