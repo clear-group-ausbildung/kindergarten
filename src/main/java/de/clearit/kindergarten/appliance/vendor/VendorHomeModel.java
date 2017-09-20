@@ -137,10 +137,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
       @Override
       public void committed(CommandValue value) {
         if (value == CommandValue.OK) {
-
-          // TODO: Marco
-          // Hier deine Logik einbauen
-
+          // Do nothing specific
         }
       }
     });
