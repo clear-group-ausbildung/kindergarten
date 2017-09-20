@@ -59,7 +59,7 @@ public class VendorNumberChooserView extends AbstractView {
     builder.setBackground(Color.WHITE);
     builder.addI15dLabel("vendor.vendorNumber", CC.xy(1, 1));
     builder.add(vendorNumberField, CC.xy(1, 2));
-    builder.add(buildAction(addButton), CC.xy(2, 2));
+    builder.add(buildAction(addButton), CC.xy(3, 2));
     builder.add(new JScrollPane(vendorNumberList), CC.xyw(1, 4, 3));
     builder.add(buildAction(removeButton), CC.xy(1, 5));
 
