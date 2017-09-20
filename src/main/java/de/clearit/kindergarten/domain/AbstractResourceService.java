@@ -1,6 +1,7 @@
 package de.clearit.kindergarten.domain;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.javalite.activejdbc.Base;
 
@@ -29,8 +30,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
       Base.open("org.sqlite.JDBC", "jdbc:sqlite:./kindergarten.sqlite", "", "");
       connectionEstablished = true;
     }
-    beans = new ArrayListModel<>();
-    getEntities().forEach(entity -> beans.add(fromEntity(entity)));
+    beans = new ArrayListModel<B>(fromEntities());
   }
 
   /**
@@ -61,9 +61,9 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
 
   @Override
   public void create(B bean) {
-    beans.add(bean);
     E entity = toEntity(bean);
     entity.saveIt();
+    flush();
   }
 
   @Override
@@ -76,13 +76,14 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
   public void update(B bean) {
     E entity = toEntity(bean);
     entity.saveIt();
+    flush();
   }
 
   @Override
   public void delete(B bean) {
-    beans.remove(bean);
     E entity = toEntity(bean);
     entity.delete();
+    flush();
   }
 
   /**
@@ -91,5 +92,14 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
    * @return the list of entities
    */
   public abstract List<E> getEntities();
+
+  private List<B> fromEntities() {
+    return getEntities().stream().map(entity -> fromEntity(entity)).collect(Collectors.toList());
+  }
+
+  private void flush() {
+    beans.clear();
+    beans.addAll(fromEntities());
+  }
 
 }

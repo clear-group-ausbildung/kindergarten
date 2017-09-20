@@ -80,7 +80,7 @@ public class PurchaseEditorView extends AbstractView {
   }
 
   private JComponent buildEditorAndActions() {
-    final FormLayout layout = new FormLayout("default:grow, 9dlu, p", "p");
+    final FormLayout layout = new FormLayout("default, 9dlu, p", "p");
     final PanelBuilder builder = new PanelBuilder(layout);
     builder.setBackground(Color.WHITE);
     builder.add(buildEditor(), CC.xy(1, 1));
@@ -92,12 +92,12 @@ public class PurchaseEditorView extends AbstractView {
     final FormLayout layout = new FormLayout("2*(left:pref, $lcgap, 50dlu, $rgap), left:pref, $lcgap, 50dlu", "p");
     final I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
     builder.setBackground(RESOURCES.getColor("content.background"));
-    builder.addI15dLabel("purchase.itemNumber", CC.xy(1, 1));
-    builder.add(itemNumberField, CC.xy(3, 1));
-    builder.addI15dLabel("purchase.itemPrice", CC.xy(5, 1));
-    builder.add(itemPriceField, CC.xy(7, 1));
-    builder.addI15dLabel("purchase.vendor", CC.xy(9, 1));
-    builder.add(vendorNumberField, CC.xy(11, 1));
+    builder.addI15dLabel("purchase.vendor", CC.xy(1, 1));
+    builder.add(vendorNumberField, CC.xy(3, 1));
+    builder.addI15dLabel("purchase.itemNumber", CC.xy(5, 1));
+    builder.add(itemNumberField, CC.xy(7, 1));
+    builder.addI15dLabel("purchase.itemPrice", CC.xy(9, 1));
+    builder.add(itemPriceField, CC.xy(11, 1));
 
     return builder.getPanel();
   }

@@ -19,8 +19,8 @@ public class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
   }
 
   private static String[] getColumnNames() {
-    return new String[] { RESOURCES.getString("purchase.table.itemNumber"), RESOURCES.getString(
-        "purchase.table.itemPrice"), RESOURCES.getString("purchase.table.vendorNumber") };
+    return new String[] { RESOURCES.getString("purchase.table.vendorNumber"), RESOURCES.getString(
+        "purchase.table.itemNumber"), RESOURCES.getString("purchase.table.itemPrice") };
   }
 
   @Override
