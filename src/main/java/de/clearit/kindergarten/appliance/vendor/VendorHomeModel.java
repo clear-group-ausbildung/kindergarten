@@ -115,10 +115,6 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     }
   }
 
-  // TODO
-  // Neue Action einbauen, f�r die wir das nutzen k�nnen:
-  // ExportExcel.getInstance().createExcelForOneVendorWithMultipleVendorNumbers(...);
-
   @Action(enabled = false)
   public void printReceipt(ActionEvent e) {
     LOGGER.fine("Printing receipt\u2026");

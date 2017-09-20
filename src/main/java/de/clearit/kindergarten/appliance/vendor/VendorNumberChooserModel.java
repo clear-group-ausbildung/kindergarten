@@ -3,7 +3,9 @@ package de.clearit.kindergarten.appliance.vendor;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.List;
 
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
@@ -24,8 +26,10 @@ import com.jgoodies.uif2.application.UIFPresentationModel;
 import com.jgoodies.uif2.util.TextComponentUtils;
 
 import de.clearit.kindergarten.application.Dialogs;
+import de.clearit.kindergarten.domain.ExportExcel;
 import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorService;
 
 public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
 
@@ -167,6 +171,15 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
   public void performAccept(EventObject e) {
     TextComponentUtils.commitImmediately();
     triggerCommit();
+    
+    SelectionInList<Integer> selectionList = getSelectionInList();
+    List<Integer> vendorIdList = selectionList.getList();
+    List<VendorBean> vendorList = new ArrayList<>();
+    vendorIdList.forEach(vendorId -> {
+    	vendorList.add(VendorService.getInstance().getById(vendorId));
+    });
+    ExportExcel.getInstance().createExcelForOneVendorWithMultipleVendorNumbers(vendorList);
+    
     commitCallback.committed(CommandValue.OK);
     JSDLUtils.closePaneFor(e);
   }
