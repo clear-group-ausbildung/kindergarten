@@ -323,7 +323,7 @@ public class ExportExcel {
 	}
 
 	private String getDateiname(PayoffData pPayoffData) {
-		String folder = "./Abrechnungen";
+		String folder = System.getProperty("user.home") + "/Basar Abrechnungen";
 		StringBuffer dateiName = new StringBuffer();
 		if (!Files.isDirectory(Paths.get(folder))) {
 			try {
