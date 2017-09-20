@@ -18,6 +18,7 @@ import com.jgoodies.jsdl.core.pane.form.FormPane;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 
+import de.clearit.kindergarten.appliance.IntegerToStringConverter;
 import de.clearit.kindergarten.application.KindergartenComponentFactory;
 
 public class VendorNumberChooserView extends AbstractView {
@@ -46,7 +47,9 @@ public class VendorNumberChooserView extends AbstractView {
 
   private void initComponents() {
     addButton = new JButton(model.getAction(VendorNumberChooserModel.ACTION_ADD_VENDOR_NUMBER));
-    vendorNumberField = KindergartenComponentFactory.createTextField(model.getVendorNumberModel());
+    addButton.addActionListener(e -> vendorNumberField.requestFocusInWindow());
+    vendorNumberField = KindergartenComponentFactory.createTextField(new IntegerToStringConverter(model
+        .getVendorNumberModel()));
     vendorNumberList = KindergartenComponentFactory.createList(model.getSelectionInList(),
         new VendorNumberListCellRenderer());
     removeButton = new JButton(model.getAction(VendorNumberChooserModel.ACTION_REMOVE_VENDOR_NUMBER));
