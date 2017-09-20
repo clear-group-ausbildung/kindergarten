@@ -12,19 +12,17 @@ public class PayoffData {
 	private Integer vendorNumber;
 	private String firstName;
 	private String lastName;
-	private String phoneNumber;
 	private Double turnover;
 	private Double profit;
 	private Double payment;
 	private Integer totalSoldItems;
 	private HashMap<Integer, Double> soldItemNumbersPricesMap;
 
-	public PayoffData(Integer pVendorNumber, String pFirstName, String pLastName, String pPhoneNumber, Double pTurnover,
-			Double pProfit, Double pPayment, Integer pTotalSoldItems, HashMap<Integer, Double> pSoldItemNumbersPricesMap) {
+	public PayoffData(Integer pVendorNumber, String pFirstName, String pLastName, Double pTurnover, Double pProfit,
+			Double pPayment, Integer pTotalSoldItems, HashMap<Integer, Double> pSoldItemNumbersPricesMap) {
 		vendorNumber = pVendorNumber;
 		firstName = pFirstName;
 		lastName = pLastName;
-		phoneNumber = pPhoneNumber;
 		turnover = pTurnover;
 		profit = pProfit;
 		payment = pPayment;
@@ -42,10 +40,6 @@ public class PayoffData {
 
 	public String getFirstName() {
 		return firstName;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
 	}
 
 	public Double getTurnover() {
@@ -67,6 +61,5 @@ public class PayoffData {
 	public HashMap<Integer, Double> getSoldItemNumbersPricesMap() {
 		return soldItemNumbersPricesMap;
 	}
-	
-	
+
 }

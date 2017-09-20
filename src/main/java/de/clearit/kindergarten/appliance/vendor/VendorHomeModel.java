@@ -110,13 +110,18 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 			VendorService.getInstance().delete(vendor);
 		}
 	}
+	
+	//TODO
+	// Neue Action einbauen, für die wir das nutzen können:
+	// ExportExcel.getInstance().createExcelForOneVendorWithMultipleVendorNumbers(...);
 
 	@Action(enabled = false)
 	public void printReceipt(ActionEvent e) {
 		LOGGER.fine("Printing receipt\u2026");
 		VendorBean vendor = getSelection();
-		ExportExcel.getInstance().createExcelVendorForId(vendor);
+		ExportExcel.getInstance().createExcelForOneVendor(vendor);
 		LOGGER.fine("Receipt was printed successfully\\u2026");
+		
 		String mainInstruction = RESOURCES.getString("printReceipt.one.main",
 				"Nr. " + vendor.getId() + " " + vendor.getLastName() + ", " + vendor.getFirstName());
 		TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
@@ -127,8 +132,9 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	@Action
 	public void printAllReceipts(ActionEvent e) {
 		LOGGER.fine("Printing all receipts\u2026");
-		ExportExcel.getInstance().createExcelVendorsAll();
+		ExportExcel.getInstance().createExcelForAllVendors();
 		LOGGER.fine("Receipts were printed successfully\\u2026");
+		
 		TaskPane pane = new TaskPane(MessageType.INFORMATION, RESOURCES.getString("printReceipt.all.main"),
 				CommandValue.OK);
 		pane.setPreferredWidth(PreferredWidth.MEDIUM);

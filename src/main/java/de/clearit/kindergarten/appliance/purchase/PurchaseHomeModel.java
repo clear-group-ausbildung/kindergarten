@@ -143,7 +143,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 		List<PurchaseBean> purchaseList = SERVICE.getAll();
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			String exportPath = getExportPath() + "\\kindergarten_verkaeufe_export.json";
+			String exportPath = getExportPath() + ".json";
 			mapper.writeValue(new File(exportPath), purchaseList);
 
 			String mainInstruction = RESOURCES.getString("exportPurchases.message.text", purchaseList.size(),
@@ -174,10 +174,13 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 		final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		fileChooser.setDialogTitle("Speichern unter...");
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));
+		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.setVisible(true);
 		fileChooser.showSaveDialog(null);
 		fileChooser.setVisible(false);
+		
+		System.out.println(fileChooser.getCurrentDirectory().toString());
 
 		return fileChooser.getSelectedFile().toString();
 	}
