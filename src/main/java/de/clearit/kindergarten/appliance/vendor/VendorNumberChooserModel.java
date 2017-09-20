@@ -11,8 +11,6 @@ import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.binding.list.SelectionInList;
-import com.jgoodies.binding.value.ValueHolder;
-import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopManager;
 import com.jgoodies.jsdl.core.CloseRequestHandler;
@@ -41,12 +39,13 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
 
   private static final long FIFTEEN_SECONDS = 15000;
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorNumberChooserModel.class);
-  private static final PurchaseService SERVICE = PurchaseService.getInstance();
+  private static final PurchaseService PURCHASE_SERVICE = PurchaseService.getInstance();
+  private static final VendorService VENDOR_SERVICE = VendorService.getInstance();
 
   // Instance Fields ********************************************************
 
-  private final SelectionInList<Integer> selectionInList;
-  private final ValueModel vendorNumberModel;
+  private final SelectionInList<VendorBean> vendorList;
+  private final SelectionInList<VendorBean> selectionInList;
   private final CommitCallback<CommandValue> commitCallback;
   private final long creationTime;
 
@@ -54,8 +53,9 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
 
   VendorNumberChooserModel(final VendorBean purchase, final CommitCallback<CommandValue> callback) {
     super(purchase);
+    vendorList = new SelectionInList<>();
+    vendorList.getList().addAll(VENDOR_SERVICE.getAll());
     selectionInList = new SelectionInList<>();
-    vendorNumberModel = new ValueHolder();
     this.commitCallback = callback;
     this.creationTime = System.currentTimeMillis();
     initModels();
@@ -78,16 +78,16 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
 
   // Models *****************************************************************
 
-  public SelectionInList<Integer> getSelectionInList() {
+  public SelectionInList<VendorBean> getVendorList() {
+    return vendorList;
+  }
+
+  public SelectionInList<VendorBean> getSelectionInList() {
     return selectionInList;
   }
 
-  public Integer getSelection() {
+  public VendorBean getSelection() {
     return getSelectionInList().getSelection();
-  }
-
-  public ValueModel getVendorNumberModel() {
-    return vendorNumberModel;
   }
 
   // Event Handling *********************************************************
@@ -106,20 +106,20 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
   public void addVendorNumber(final ActionEvent e) {
     TextComponentUtils.commitImmediately();
     triggerCommit();
-    getSelectionInList().getList().add((Integer) vendorNumberModel.getValue());
-    vendorNumberModel.setValue(null);
+    getSelectionInList().getList().add(vendorList.getSelection());
+    vendorList.clearSelection();
   }
 
   @Action(enabled = false)
   public void removeVendorNumber(final ActionEvent e) {
-    final Integer vendorNumber = getSelection();
-    final String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", "Verk\u00e4ufernummer: "
-        + vendorNumber);
+    final VendorBean vendor = getSelection();
+    final String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", "Verk\u00e4ufernummer: " + vendor
+        .getVendorNumber());
     final TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
     pane.setPreferredWidth(PreferredWidth.MEDIUM);
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
-      getSelectionInList().getList().remove(vendorNumber);
+      getSelectionInList().getList().remove(vendor);
     }
   }
 
@@ -137,7 +137,7 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
       cancelOp.run();
       return;
     }
-    final String objectName = "Verk\\u00e4ufernummer: " + vendorNumberModel.getValue();
+    final String objectName = "Verk\u00e4ufernummer: " + vendorList.getSelection().getVendorNumber();
     final Object commitValue = Dialogs.showUnsavedChangesDialog(e, objectName);
     if (commitValue == CommandValue.CANCEL) {
       return;

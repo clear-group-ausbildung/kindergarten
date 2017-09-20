@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
+import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.forms.builder.ButtonBarBuilder2;
 import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
@@ -18,7 +19,6 @@ import com.jgoodies.jsdl.core.pane.form.FormPane;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 
-import de.clearit.kindergarten.appliance.IntegerToStringConverter;
 import de.clearit.kindergarten.application.KindergartenComponentFactory;
 
 public class VendorNumberChooserView extends AbstractView {
@@ -27,7 +27,7 @@ public class VendorNumberChooserView extends AbstractView {
 
   private final VendorNumberChooserModel model;
 
-  private JComponent vendorNumberField;
+  private JComponent vendorBox;
   private JButton addButton;
   private JList<Integer> vendorNumberList;
   private JButton removeButton;
@@ -47,11 +47,10 @@ public class VendorNumberChooserView extends AbstractView {
 
   private void initComponents() {
     addButton = new JButton(model.getAction(VendorNumberChooserModel.ACTION_ADD_VENDOR_NUMBER));
-    addButton.addActionListener(e -> vendorNumberField.requestFocusInWindow());
-    vendorNumberField = KindergartenComponentFactory.createTextField(new IntegerToStringConverter(model
-        .getVendorNumberModel()));
+    addButton.addActionListener(e -> vendorBox.requestFocusInWindow());
+    vendorBox = BasicComponentFactory.createComboBox(model.getVendorList(), new VendorListCellRenderer());
     vendorNumberList = KindergartenComponentFactory.createList(model.getSelectionInList(),
-        new VendorNumberListCellRenderer());
+        new VendorListCellRenderer());
     removeButton = new JButton(model.getAction(VendorNumberChooserModel.ACTION_REMOVE_VENDOR_NUMBER));
   }
 
@@ -61,7 +60,7 @@ public class VendorNumberChooserView extends AbstractView {
 
     builder.setBackground(Color.WHITE);
     builder.addI15dLabel("vendor.vendorNumber", CC.xy(1, 1));
-    builder.add(vendorNumberField, CC.xy(1, 2));
+    builder.add(vendorBox, CC.xy(1, 2));
     builder.add(buildAction(addButton), CC.xy(3, 2));
     builder.add(new JScrollPane(vendorNumberList), CC.xyw(1, 4, 3));
     builder.add(buildAction(removeButton), CC.xy(1, 5));
