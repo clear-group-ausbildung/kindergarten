@@ -74,7 +74,7 @@ final class VendorHomeView extends AbstractView {
     builder.setListView(table);
     builder.setListBar(model.getActionMap(), AbstractHomeModel.ACTION_NEW_ITEM, AbstractHomeModel.ACTION_EDIT_ITEM,
         AbstractHomeModel.ACTION_DELETE_ITEM, "---", VendorHomeModel.ACTION_PRINT_RECEIPT,
-        VendorHomeModel.ACTION_PRINT_ALL_RECEIPTS);
+        VendorHomeModel.ACTION_PRINT_MULTIPLE_RECEIPTS, VendorHomeModel.ACTION_PRINT_ALL_RECEIPTS);
     builder.setPreview(preview.getPanel());
 
     return builder.getPanel();
