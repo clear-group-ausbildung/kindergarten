@@ -6,9 +6,9 @@ Was mir jetzt noch aufgefallen ist, dass fehlt:
 2. Verkäuferübersicht, werden die Felder "Geliefert", Dreckig und "Abgeholt" in einer anderen Schriftart dargestellt
 3. Verkäuferübersicht, das Feld "Geld erhalten" passt gar nicht mehr mit drauf
 
-4. Verkäufer neu: Verkkäufernummer nicht mit 0 vorbelegen
+~~4. Verkäufer neu: Verkkäufernummer nicht mit 0 vorbelegen~~
 5. Verkäufer neu: Tabreihenfolge ändern, erst alle Eingabefelder, dann die Checkboxen *ODER* den Aufbau der Seite umstellen, dass die Checkboxen einfach darunter sind
-6. Verkäufer neu: Vorname soll kein Mussfeld mehr sein
+~~6. Verkäufer neu: Vorname soll kein Mussfeld mehr sein~~
 
 7. Verkäufe: Die Suche über der List kann aus meiner Sicht raus, bzw. soll hier ein Dropdown rein, damit man nach einer VerkäuferNummer filtern kann
 8. Verkäufe:  Die Anzeigefelder unten müssen noch sauber formatiert werden... € etc...

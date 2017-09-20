@@ -54,7 +54,7 @@ public final class VendorBean extends Model {
    *          the last name
    */
   public VendorBean(String firstName, String lastName) {
-    this(0, 0, firstName, lastName, "", Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE);
+    this(0, null, firstName, lastName, "", Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE);
   }
 
   /**

@@ -91,8 +91,8 @@ final class VendorEditorView extends AbstractView {
   }
 
   private JComponent buildValidationFeedback() {
-    return DesktopUtils.buildValidationFeedbackPanel("Der Vorname muss angegeben werden.",
-        "Der Nachname muss angegeben werden.", "Die Telefonnummer ist optional.", null);
+    return DesktopUtils.buildValidationFeedbackPanel("Die Verk\u00e4ufernummer muss angegeben werden.",
+        "Der Vorname ist optional.", "Der Nachname muss angegeben werden.", "Die Telefonnummer ist optional.");
   }
 
 }
