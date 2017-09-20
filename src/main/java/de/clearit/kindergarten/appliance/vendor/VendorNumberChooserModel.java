@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventObject;
+import java.util.Iterator;
+import java.util.List;
 
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
@@ -169,9 +171,23 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
   public void performAccept(EventObject e) {
     TextComponentUtils.commitImmediately();
     triggerCommit();
+    
+    List<VendorBean> vendorList = getSelectionInList().getList();
+    StringBuffer vendorNumbers = new StringBuffer();
+    Iterator<VendorBean> iter = vendorList.iterator();
+    while (iter.hasNext()) {
+    	vendorNumbers.append(iter.next().getVendorNumber());
+    	if (iter.hasNext()) {
+    		vendorNumbers.append(" & ");
+    	}
+    }
+    ExportExcel.getInstance().createExcelForOneVendorWithMultipleVendorNumbers(vendorList);
 
-    ExportExcel.getInstance().createExcelForOneVendorWithMultipleVendorNumbers(getSelectionInList().getList());
-
+    String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendorNumbers.toString() + " " + vendorList.get(0)
+            .getLastName() + ", " + vendorList.get(0).getFirstName());
+        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+        pane.setPreferredWidth(PreferredWidth.MEDIUM);
+        pane.showDialog(e, RESOURCES.getString("printReceipt.one.title"));
     commitCallback.committed(CommandValue.OK);
     JSDLUtils.closePaneFor(e);
   }
