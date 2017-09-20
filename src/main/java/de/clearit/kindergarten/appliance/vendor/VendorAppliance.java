@@ -106,13 +106,13 @@ public final class VendorAppliance extends DefaultAppliance {
       }
       VendorBean vendor = (VendorBean) obj;
       toAppendTo.append("<html>");
-      toAppendTo.append("Geliefert: " + (vendor.getDelivered() ? "Ja" : "Nein"));
+      toAppendTo.append("Verk&auml;ufernummer: " + vendor.getVendorNumber());
       toAppendTo.append("<br>");
-      toAppendTo.append("Dreckig: " + (vendor.getDirty() ? "Ja" : "Nein"));
+      toAppendTo.append("Vorname: " + vendor.getFirstName());
       toAppendTo.append("<br>");
-      toAppendTo.append("Abgeholt: " + (vendor.getFetched() ? "Ja" : "Nein"));
+      toAppendTo.append("Nachname: " + vendor.getLastName());
       toAppendTo.append("<br>");
-      toAppendTo.append("Geld erhalten: " + (vendor.getReceivedMoney() ? "Ja" : "Nein"));
+      toAppendTo.append("Telefonnummer: " + vendor.getPhoneNumber());
       toAppendTo.append("</html>");
       return toAppendTo;
     }
@@ -134,13 +134,13 @@ public final class VendorAppliance extends DefaultAppliance {
         return toAppendTo;
       }
       VendorBean vendor = (VendorBean) obj;
-      toAppendTo.append("Geliefert: " + (vendor.getDelivered() ? "Ja" : "Nein"));
+      toAppendTo.append("Verk&auml;ufernummer: " + vendor.getVendorNumber());
       toAppendTo.append("\n");
-      toAppendTo.append("Dreckig: " + (vendor.getDirty() ? "Ja" : "Nein"));
+      toAppendTo.append("Vorname: " + vendor.getFirstName());
       toAppendTo.append("\n");
-      toAppendTo.append("Abgeholt: " + (vendor.getFetched() ? "Ja" : "Nein"));
+      toAppendTo.append("Nachname: " + vendor.getLastName());
       toAppendTo.append("\n");
-      toAppendTo.append("Geld erhalten: " + (vendor.getReceivedMoney() ? "Ja" : "Nein"));
+      toAppendTo.append("Telefonnummer: " + vendor.getPhoneNumber());
       return toAppendTo;
     }
 

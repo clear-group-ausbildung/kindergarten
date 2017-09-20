@@ -29,10 +29,6 @@ final class VendorEditorView extends AbstractView {
   private JComponent firstNameField;
   private JComponent lastNameField;
   private JComponent phoneNumberField;
-  private JComponent deliveredBox;
-  private JComponent dirtyBox;
-  private JComponent fetchedBox;
-  private JComponent receivedMoneyBox;
 
   // Instance Creation ******************************************************
 
@@ -48,15 +44,6 @@ final class VendorEditorView extends AbstractView {
     firstNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_LAST_NAME));
     phoneNumberField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_PHONE_NUMBER));
-    deliveredBox = BasicComponentFactory.createCheckBox(model.getBufferedModel(VendorBean.PROPERTY_DELIVERED), RESOURCES
-        .getString("vendor.table.delivered"));
-    dirtyBox = BasicComponentFactory.createCheckBox(model.getBufferedModel(VendorBean.PROPERTY_DIRTY), RESOURCES
-        .getString("vendor.table.dirty"));
-    fetchedBox = BasicComponentFactory.createCheckBox(model.getBufferedModel(VendorBean.PROPERTY_FETCHED), RESOURCES
-        .getString("vendor.table.fetched"));
-    receivedMoneyBox = BasicComponentFactory.createCheckBox(model.getBufferedModel(VendorBean.PROPERTY_RECEIVED_MONEY),
-        RESOURCES.getString("vendor.table.receivedMoney"));
-
   }
 
   @Override
@@ -69,23 +56,18 @@ final class VendorEditorView extends AbstractView {
   }
 
   private JComponent buildContent() {
-    FormLayout layout = new FormLayout("left:pref, $lcgap, 120dlu, 6dlu, 120dlu, 0:grow",
-        "3*(p, $lg), p, 21dlu, 14dlu:grow");
+    FormLayout layout = new FormLayout("150dlu:grow, 16dlu, pref:grow", "3*(p, p, $lg), p, p");
     I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
     builder.setBorder(Borders.DLU14_BORDER);
     builder.addI15dLabel("vendor.vendorNumber", CC.xy(1, 1));
-    builder.add(vendorNumberField, CC.xy(3, 1));
-    builder.add(deliveredBox, CC.xy(5, 1));
-    builder.addI15dLabel("vendor.firstName", CC.xy(1, 3));
-    builder.add(firstNameField, CC.xy(3, 3));
-    builder.add(dirtyBox, CC.xy(5, 3));
-    builder.addI15dLabel("vendor.lastName", CC.xy(1, 5));
-    builder.add(lastNameField, CC.xy(3, 5));
-    builder.add(fetchedBox, CC.xy(5, 5));
-    builder.addI15dLabel("vendor.phoneNumber", CC.xy(1, 7));
-    builder.add(phoneNumberField, CC.xy(3, 7));
-    builder.add(receivedMoneyBox, CC.xy(5, 7));
-    builder.add(buildValidationFeedback(), CC.xyw(1, 9, 6));
+    builder.add(vendorNumberField, CC.xy(1, 2));
+    builder.addI15dLabel("vendor.firstName", CC.xy(1, 4));
+    builder.add(firstNameField, CC.xy(1, 5));
+    builder.addI15dLabel("vendor.lastName", CC.xy(1, 7));
+    builder.add(lastNameField, CC.xy(1, 8));
+    builder.addI15dLabel("vendor.phoneNumber", CC.xy(1, 10));
+    builder.add(phoneNumberField, CC.xy(1, 11));
+    builder.add(buildValidationFeedback(), CC.xywh(3, 1, 1, 11));
 
     return builder.getPanel();
   }

@@ -16,10 +16,6 @@ public final class VendorBean extends Model {
   public static final String PROPERTY_FIRST_NAME = "firstName";
   public static final String PROPERTY_LAST_NAME = "lastName";
   public static final String PROPERTY_PHONE_NUMBER = "phoneNumber";
-  public static final String PROPERTY_DELIVERED = "delivered";
-  public static final String PROPERTY_DIRTY = "dirty";
-  public static final String PROPERTY_FETCHED = "fetched";
-  public static final String PROPERTY_RECEIVED_MONEY = "receivedMoney";
 
   // Fields *****************************************************************
 
@@ -28,10 +24,6 @@ public final class VendorBean extends Model {
   private String firstName;
   private String lastName;
   private String phoneNumber;
-  private Boolean delivered;
-  private Boolean dirty;
-  private Boolean fetched;
-  private Boolean receivedMoney;
 
   // Instance Creation ******************************************************
 
@@ -54,7 +46,7 @@ public final class VendorBean extends Model {
    *          the last name
    */
   public VendorBean(String firstName, String lastName) {
-    this(0, null, firstName, lastName, "", Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE);
+    this(0, null, firstName, lastName, "");
   }
 
   /**
@@ -70,27 +62,14 @@ public final class VendorBean extends Model {
    *          the last name
    * @param phoneNumber
    *          the phone number
-   * @param delivered
-   *          was delivered? true / false
-   * @param dirty
-   *          was dirty? true / false
-   * @param fetched
-   *          was fetched? true / false
-   * @param receivedMoney
-   *          did receive money? true / false
    */
-  public VendorBean(Integer id, Integer vendorNumber, String firstName, String lastName, String phoneNumber,
-      Boolean delivered, Boolean dirty, Boolean fetched, Boolean receivedMoney) {
+  public VendorBean(Integer id, Integer vendorNumber, String firstName, String lastName, String phoneNumber) {
     super();
     this.id = id;
     this.vendorNumber = vendorNumber;
     this.firstName = firstName;
     this.lastName = lastName;
     this.phoneNumber = phoneNumber;
-    this.delivered = delivered;
-    this.dirty = dirty;
-    this.fetched = fetched;
-    this.receivedMoney = receivedMoney;
   }
 
   // Accessors **************************************************************
@@ -143,46 +122,6 @@ public final class VendorBean extends Model {
     String oldValue = getPhoneNumber();
     phoneNumber = newValue;
     firePropertyChange(PROPERTY_PHONE_NUMBER, oldValue, newValue);
-  }
-
-  public Boolean getDelivered() {
-    return delivered;
-  }
-
-  public void setDelivered(Boolean newValue) {
-    Boolean oldValue = getDelivered();
-    delivered = newValue;
-    firePropertyChange(PROPERTY_DELIVERED, oldValue, newValue);
-  }
-
-  public Boolean getDirty() {
-    return dirty;
-  }
-
-  public void setDirty(Boolean newValue) {
-    Boolean oldValue = getDirty();
-    dirty = newValue;
-    firePropertyChange(PROPERTY_DIRTY, oldValue, newValue);
-  }
-
-  public Boolean getFetched() {
-    return fetched;
-  }
-
-  public void setFetched(Boolean newValue) {
-    Boolean oldValue = getFetched();
-    fetched = newValue;
-    firePropertyChange(PROPERTY_FETCHED, oldValue, newValue);
-  }
-
-  public Boolean getReceivedMoney() {
-    return receivedMoney;
-  }
-
-  public void setReceivedMoney(Boolean newValue) {
-    Boolean oldValue = getReceivedMoney();
-    receivedMoney = newValue;
-    firePropertyChange(PROPERTY_RECEIVED_MONEY, oldValue, newValue);
   }
 
 }

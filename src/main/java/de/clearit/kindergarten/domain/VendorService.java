@@ -66,10 +66,6 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     bean.setFirstName(entity.getString(toSnakeCase(VendorBean.PROPERTY_FIRST_NAME)));
     bean.setLastName(entity.getString(toSnakeCase(VendorBean.PROPERTY_LAST_NAME)));
     bean.setPhoneNumber(entity.getString(toSnakeCase(VendorBean.PROPERTY_PHONE_NUMBER)));
-    bean.setDelivered(entity.getInteger(VendorBean.PROPERTY_DELIVERED) != 0);
-    bean.setDirty(entity.getInteger(VendorBean.PROPERTY_DIRTY) != 0);
-    bean.setFetched(entity.getInteger(VendorBean.PROPERTY_FETCHED) != 0);
-    bean.setReceivedMoney(entity.getInteger(toSnakeCase(VendorBean.PROPERTY_RECEIVED_MONEY)) != 0);
     return bean;
   }
 
@@ -83,10 +79,6 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     entity.setString(toSnakeCase(VendorBean.PROPERTY_FIRST_NAME), bean.getFirstName());
     entity.setString(toSnakeCase(VendorBean.PROPERTY_LAST_NAME), bean.getLastName());
     entity.setString(toSnakeCase(VendorBean.PROPERTY_PHONE_NUMBER), bean.getPhoneNumber());
-    entity.setInteger(VendorBean.PROPERTY_DELIVERED, bean.getDelivered() ? 1 : 0);
-    entity.setInteger(VendorBean.PROPERTY_DIRTY, bean.getDirty() ? 1 : 0);
-    entity.setInteger(VendorBean.PROPERTY_FETCHED, bean.getFetched() ? 1 : 0);
-    entity.setInteger(toSnakeCase(VendorBean.PROPERTY_RECEIVED_MONEY), bean.getReceivedMoney() ? 1 : 0);
     return entity;
   }
 

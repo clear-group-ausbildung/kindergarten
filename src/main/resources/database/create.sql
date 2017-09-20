@@ -4,11 +4,7 @@ CREATE TABLE vendors (
   vendor_number INTEGER,      -- The vendor number
   first_name VARCHAR(80),     -- The first name of the vendor
   last_name VARCHAR(80),      -- The last name of the vendor
-  phone_number VARCHAR(80),   -- The phone number of the
-  delivered INTEGER(1),       -- Did the vendor deliver his items? Boolean (Saved as Integer)
-  dirty INTEGER(1),           -- Were the vendors items dirty? Boolean (Saved as Integer)
-  fetched INTEGER(1),         -- Did the vendor fetch his items? Boolean (Saved as Integer)
-  received_money INTEGER(1)   -- Did the vendor receive the money for his purchases? Boolean (Saved as Integer)
+  phone_number VARCHAR(80)   -- The phone number of the
 );
 
 DROP TABLE IF EXISTS purchases;

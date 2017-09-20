@@ -23,8 +23,7 @@ public final class DesktopUtils {
 
   public static JComponent buildValidationFeedbackPanel(String message1, String message2, String message3,
       String message4) {
-    FormLayout layout = new FormLayout("left:p:grow, 21dlu:, left:p:grow", "[8dlu,p], 3dlu, [8dlu,p]");
-    layout.setColumnGroups(new int[][] { { 1, 3 } });
+    FormLayout layout = new FormLayout("left:p:grow", "3*([8dlu,p], 3dlu), [8dlu,p]");
     PanelBuilder builder = new PanelBuilder(layout, new ValidationFeedbackPanel());
     builder.setBorder(new CompoundBorder(new LineBorder(Color.GRAY), Borders.createEmptyBorder(
         "4dlu, 4dlu, 4dlu, 4dlu")));
@@ -36,10 +35,10 @@ public final class DesktopUtils {
       builder.addLabel(message2, CC.xy(1, 3));
     }
     if (message3 != null) {
-      builder.addLabel(message3, CC.xy(3, 1));
+      builder.addLabel(message3, CC.xy(1, 5));
     }
     if (message4 != null) {
-      builder.addLabel(message4, CC.xy(3, 3));
+      builder.addLabel(message4, CC.xy(1, 7));
     }
 
     return builder.getPanel();
