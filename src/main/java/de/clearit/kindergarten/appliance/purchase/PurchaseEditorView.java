@@ -69,7 +69,7 @@ public class PurchaseEditorView extends AbstractView {
     vendorNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_VENDOR_NUMBER)));
     addButton = new JButton(model.getAction(PurchaseEditorModel.ACTION_ADD_LINE_ITEM));
-    addButton.addActionListener(e -> itemNumberField.requestFocusInWindow());
+    addButton.addActionListener(e -> vendorNumberField.requestFocusInWindow());
 
     table = new StripedTable(new PurchaseTableModel(model.getSelectionInList()));
     table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));

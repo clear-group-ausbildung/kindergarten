@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class PayoffData {
 
-	private Integer vendorId;
+	private Integer vendorNumber;
 	private String firstName;
 	private String lastName;
 	private String phoneNumber;
@@ -19,9 +19,9 @@ public class PayoffData {
 	private Integer totalSoldItems;
 	private HashMap<Integer, Double> soldItemNumbersPricesMap;
 
-	public PayoffData(Integer pVendorId, String pFirstName, String pLastName, String pPhoneNumber, Double pTurnover,
+	public PayoffData(Integer pVendorNumber, String pFirstName, String pLastName, String pPhoneNumber, Double pTurnover,
 			Double pProfit, Double pPayment, Integer pTotalSoldItems, HashMap<Integer, Double> pSoldItemNumbersPricesMap) {
-		vendorId = pVendorId;
+		vendorNumber = pVendorNumber;
 		firstName = pFirstName;
 		lastName = pLastName;
 		phoneNumber = pPhoneNumber;
@@ -32,8 +32,8 @@ public class PayoffData {
 		soldItemNumbersPricesMap = pSoldItemNumbersPricesMap;
 	}
 
-	public Integer getVendorId() {
-		return vendorId;
+	public Integer getVendorNumber() {
+		return vendorNumber;
 	}
 
 	public String getLastName() {

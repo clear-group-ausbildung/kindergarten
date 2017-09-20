@@ -28,14 +28,14 @@ public class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
     PurchaseBean purchase = getRow(rowIndex);
     switch (columnIndex) {
     case 0:
-      return purchase.getItemNumber();
+      return purchase.getVendorNumber();
 
     case 1:
-      return purchase.getItemPrice();
+      return purchase.getItemNumber();
     case 2:
 
     case 3:
-      return purchase.getVendorNumber();
+      return purchase.getItemPrice();
 
     default:
       throw new IllegalStateException("Can't handle column index " + columnIndex);
