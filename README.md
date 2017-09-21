@@ -15,4 +15,4 @@
 - [ ] Neuer Verkauf: Values unten müssen nach hinzufügen und entfernen IMMER neu berechnet werden und sollten auch definitiv FETT Formatiert sein, bzw. Deutlich besser erkennbar. Das sind die Felder die für die Kassierer dann ja letztendlich entscheidend sind.
 - [ ] Gestylte Aufsummierungskomponente
 - [ ] Verkäuferübersicht: Preview aktualisiert sich nicht bei Tabellenzeilenselektion
-- [ ] Verkäufer bearbeiten: Bearbeitete Werte werden auf der GUI aktualisiert, nach Neustart sind alte Daten wieder vorhanden
+- [X] Verkäufer bearbeiten: Bearbeitete Werte werden auf der GUI aktualisiert, nach Neustart sind alte Daten wieder vorhanden

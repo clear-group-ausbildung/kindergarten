@@ -38,8 +38,6 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   public static final String ACTION_ADD_LINE_ITEM = "addLineItem";
   public static final String ACTION_REMOVE_LINE_ITEM = "removeLineItem";
 
-  private static final long FIFTEEN_SECONDS = 15000;
-
   // Instance Fields ********************************************************
 
   private final SelectionInList<VendorBean> vendorList;
@@ -150,11 +148,6 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   @Override
   public void paneClosing(final EventObject e, final Runnable operation) {
     final Runnable cancelOp = new WrappedOperation(commitCallback, CommandValue.CANCEL, operation);
-    if (quiteYoung()) {
-      System.out.println("Juenger als 15 Sekunden.");
-      cancelOp.run();
-      return;
-    }
     TextComponentUtils.commitImmediately();
     if (!isChanged() && !isBuffering()) { // Test for searching
       System.out.println("Nichts geaendert");
@@ -202,18 +195,6 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   }
 
   // Helper Code ************************************************************
-
-  /**
-   * Checks and answers whether this model has been created recently. Useful to
-   * reduce unnecessary Cancel confirmations, even if this model has been
-   * modified.
-   *
-   * @return {@code true} if the creation time is less than 15 seconds from now
-   */
-  private boolean quiteYoung() {
-    final long now = System.currentTimeMillis();
-    return now - creationTime < FIFTEEN_SECONDS;
-  }
 
   private final class WrappedOperation implements Runnable {
 

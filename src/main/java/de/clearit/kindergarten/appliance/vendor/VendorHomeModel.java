@@ -34,8 +34,10 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   public static final String ACTION_PRINT_RECEIPT = "printReceipt";
   public static final String ACTION_PRINT_MULTIPLE_RECEIPTS = "printMultipleReceipts";
   public static final String ACTION_PRINT_ALL_RECEIPTS = "printAllReceipts";
+
   private static final Logger LOGGER = Logger.getLogger(VendorHomeModel.class.getName());
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorHomeModel.class);
+  private static final VendorService SERVICE = VendorService.getInstance();
   private static VendorHomeModel instance;
 
   // Instance Creation ******************************************************
@@ -55,7 +57,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
   @Override
   protected ListModel<?> getListModel() {
-    return VendorService.getInstance().getListModel();
+    return SERVICE.getListModel();
   }
 
   // Presentation Logic *****************************************************
@@ -94,8 +96,12 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     VendorEditorModel model = new VendorEditorModel(vendor, new CommitCallback<CommandValue>() {
       @Override
       public void committed(CommandValue value) {
-        if (newItem && (value == CommandValue.OK)) {
-          VendorService.getInstance().create(vendor);
+        if (value == CommandValue.OK) {
+          if (newItem) {
+            SERVICE.create(vendor);
+          } else {
+            SERVICE.update(vendor);
+          }
         }
       }
     });
@@ -111,7 +117,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     pane.setPreferredWidth(PreferredWidth.MEDIUM);
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
-      VendorService.getInstance().delete(vendor);
+      SERVICE.delete(vendor);
     }
   }
 

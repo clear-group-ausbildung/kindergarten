@@ -21,10 +21,6 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
 
   private static final long serialVersionUID = 1L;
 
-  // Constants **************************************************************
-
-  private static final long FIFTEEN_SECONDS = 15000;
-
   // Instance Fields ********************************************************
 
   private final CommitCallback<CommandValue> commitCallback;
@@ -68,11 +64,6 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   @Override
   public void paneClosing(EventObject e, Runnable operation) {
     Runnable cancelOp = new WrappedOperation(commitCallback, CommandValue.CANCEL, operation);
-    if (quiteYoung()) {
-      System.out.println("Juenger als 15 Sekunden.");
-      cancelOp.run();
-      return;
-    }
     TextComponentUtils.commitImmediately();
     if (!isChanged() && !isBuffering()) { // Test for searching
       System.out.println("Nichts geaendert");
@@ -104,18 +95,6 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   }
 
   // Helper Code ************************************************************
-
-  /**
-   * Checks and answers whether this model has been created recently. Useful to
-   * reduce unnecessary Cancel confirmations, even if this model has been
-   * modified.
-   *
-   * @return {@code true} if the creation time is less than 15 seconds from now
-   */
-  private boolean quiteYoung() {
-    long now = System.currentTimeMillis();
-    return now - creationTime < FIFTEEN_SECONDS;
-  }
 
   private final class WrappedOperation implements Runnable {
 
