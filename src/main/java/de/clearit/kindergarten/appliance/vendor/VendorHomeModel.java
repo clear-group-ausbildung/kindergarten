@@ -124,10 +124,22 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   @Action(enabled = false)
   public void printReceipt(ActionEvent e) {
     LOGGER.fine("Printing receipt\u2026");
+    
     VendorBean vendor = getSelection();
-    ExportExcel.getInstance().createExcelForOneVendor(vendor);
-    LOGGER.fine("Receipt was printed successfully\\u2026");
-
+	LOGGER.fine("Receipt was printed successfully\\u2026");		
+	// TODO Christian...ist mal ein erster Wurf aber funktioniert noch nicht vernünftig.
+	BusyDialog busyDialog = new BusyDialog("Bitte warten", "Sie müssen jetzt wirklich warten!");
+	Thread t = new Thread() {
+		@Override
+		public void run() {
+			ExportExcel.getInstance().createExcelForOneVendor(vendor);
+			
+			busyDialog.dispose();
+		}
+	};
+	t.start();
+	busyDialog.setVisible(true);
+    
     String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendor.getId() + " " + vendor
         .getLastName() + ", " + vendor.getFirstName());
     TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
