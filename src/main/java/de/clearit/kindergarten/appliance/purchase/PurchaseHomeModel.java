@@ -50,6 +50,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   private PurchaseHomeModel() {
     super();
+    refreshSummary();
   }
 
   static PurchaseHomeModel getInstance() {
