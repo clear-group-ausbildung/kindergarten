@@ -121,7 +121,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   public void removeLineItem(final ActionEvent e) {
     final PurchaseBean purchase = getSelection();
     final String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", "Artikel-Nr: " + purchase
-        .getItemNumber());
+        .getItemNumber() + ", Verk\u00e4fernummer: " + purchase.getVendorNumber());
     final TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
     pane.setPreferredWidth(PreferredWidth.MEDIUM);
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
