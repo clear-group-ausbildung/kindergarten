@@ -56,6 +56,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
 
   @Override
   public List<B> getAll() {
+    flush();
     return beans;
   }
 
