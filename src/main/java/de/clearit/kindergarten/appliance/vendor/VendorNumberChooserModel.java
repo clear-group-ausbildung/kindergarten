@@ -171,23 +171,27 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
   public void performAccept(EventObject e) {
     TextComponentUtils.commitImmediately();
     triggerCommit();
-    
+    TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Die ausgew\u00e4hlten Belege werden gedruckt.",
+        CommandValue.OK);
+    infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
+    infoPane.showDialog(e, "Belegedruck");
+
     List<VendorBean> vendorList = getSelectionInList().getList();
     StringBuffer vendorNumbers = new StringBuffer();
     Iterator<VendorBean> iter = vendorList.iterator();
     while (iter.hasNext()) {
-    	vendorNumbers.append(iter.next().getVendorNumber());
-    	if (iter.hasNext()) {
-    		vendorNumbers.append(" & ");
-    	}
+      vendorNumbers.append(iter.next().getVendorNumber());
+      if (iter.hasNext()) {
+        vendorNumbers.append(" & ");
+      }
     }
     ExportExcel.getInstance().createExcelForOneVendorWithMultipleVendorNumbers(vendorList);
 
-    String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendorNumbers.toString() + " " + vendorList.get(0)
-            .getLastName() + ", " + vendorList.get(0).getFirstName());
-        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
-        pane.setPreferredWidth(PreferredWidth.MEDIUM);
-        pane.showDialog(e, RESOURCES.getString("printReceipt.one.title"));
+    String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendorNumbers.toString() + " "
+        + vendorList.get(0).getLastName() + ", " + vendorList.get(0).getFirstName());
+    TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+    pane.setPreferredWidth(PreferredWidth.MEDIUM);
+    pane.showDialog(e, RESOURCES.getString("printReceipt.one.title"));
     commitCallback.committed(CommandValue.OK);
     JSDLUtils.closePaneFor(e);
   }

@@ -52,7 +52,7 @@ public class PurchaseAppliance extends DefaultAppliance {
     openPurchaseEditor(title, model, true);
   }
 
-  public void editVendor(final String title, final PurchaseBean purchase, final CommitCallback<CommandValue> callback) {
+  public void editPurchase(final String title, final PurchaseBean purchase, final CommitCallback<CommandValue> callback) {
     PurchaseEditorModel model = new PurchaseEditorModel(purchase, callback);
     openPurchaseEditor(title, model, false);
   }

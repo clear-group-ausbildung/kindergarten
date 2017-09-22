@@ -169,12 +169,15 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
     public ImportPurchasesTask() {
       super(BlockingScope.APPLICATION);
+      importFile = getImportPath();
+      TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Der Verkaufsimport wird gestartet.", CommandValue.OK);
+      infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
+      infoPane.showDialog(getEventObject(), "Verkaufsimport");
       progressPane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
       progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
       progressPane.setProgressIndeterminate(true);
       progressPane.setProgressVisible(true);
       progressPane.setVisible(true);
-      importFile = getImportPath();
     }
 
     @Override
@@ -221,13 +224,16 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
     public ExportPurchasesTask() {
       super(BlockingScope.APPLICATION);
-      progressPane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
+      exportPath = getExportPath() + ".json";
+      TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Der Verkaufsexport wird gestartet.", CommandValue.OK);
+      infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
+      infoPane.showDialog(getEventObject(), "Verkaufsexport");
+      progressPane = new TaskPane(MessageType.INFORMATION, "Exportiere", CommandValue.OK);
       progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
       progressPane.setProgressIndeterminate(true);
       progressPane.setProgressVisible(true);
       progressPane.setVisible(true);
       purchaseList = SERVICE.getAll();
-      exportPath = getExportPath() + ".json";
     }
 
     @Override
