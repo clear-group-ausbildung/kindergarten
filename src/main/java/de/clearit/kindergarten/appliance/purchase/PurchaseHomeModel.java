@@ -2,7 +2,6 @@ package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.EventObject;
 import java.util.List;
 import java.util.logging.Logger;
@@ -15,7 +14,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
+import com.jgoodies.application.BlockingScope;
 import com.jgoodies.application.ResourceMap;
+import com.jgoodies.application.Task;
 import com.jgoodies.binding.value.ValueHolder;
 import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.jsdl.core.CommandValue;
@@ -143,26 +144,48 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   }
 
   @Action
-  public void importPurchases(final ActionEvent e) {
+  public Task<List<PurchaseBean>, Void> importPurchases(final ActionEvent e) {
     LOGGER.fine("Importing purchase\u2026");
 
-    final ObjectMapper mapper = new ObjectMapper();
-    final File importFile = getImportPath();
-    try {
-      final List<PurchaseBean> purchaseList = mapper.readValue(importFile, mapper.getTypeFactory()
-          .constructCollectionType(List.class, PurchaseBean.class));
-      purchaseList.forEach(purchase -> {
+    return new ImportPurchasesTask();
+
+  }
+
+  private final class ImportPurchasesTask extends Task<List<PurchaseBean>, Void> {
+
+    private final TaskPane pane;
+    private final File importFile;
+
+    public ImportPurchasesTask() {
+      super(BlockingScope.APPLICATION);
+      pane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
+      pane.setPreferredWidth(PreferredWidth.MEDIUM);
+      pane.setProgressIndeterminate(true);
+      pane.setProgressVisible(true);
+      pane.setVisible(true);
+      importFile = getImportPath();
+    }
+
+    @Override
+    protected List<PurchaseBean> doInBackground() throws Exception {
+      final ObjectMapper mapper = new ObjectMapper();
+      return mapper.readValue(importFile, mapper.getTypeFactory().constructCollectionType(List.class,
+          PurchaseBean.class));
+    }
+
+    @Override
+    protected void succeeded(List<PurchaseBean> result) {
+      super.succeeded(result);
+      result.forEach(purchase -> {
         SERVICE.create(purchase);
       });
-
-      String mainInstruction = RESOURCES.getString("importPurchases.message.text", purchaseList.size());
+      pane.setVisible(false);
+      String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
       TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
       pane.setPreferredWidth(PreferredWidth.MEDIUM);
-      pane.showDialog(e, RESOURCES.getString("importPurchases.message.title"));
-    } catch (final IOException e1) {
-      LOGGER.severe("Fehler beim Importieren der Verku+00e4ufe!");
-      e1.printStackTrace();
+      pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
     }
+
   }
 
   @Action
