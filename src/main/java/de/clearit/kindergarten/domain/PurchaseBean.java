@@ -7,7 +7,7 @@ import com.jgoodies.binding.beans.Model;
 /**
  * The bean class for the Purchase resource.
  */
-@JsonIgnoreProperties({"id", "propertyChangeListeners", "vetoableChangeListeners"})
+@JsonIgnoreProperties({ "id", "propertyChangeListeners", "vetoableChangeListeners" })
 public class PurchaseBean extends Model {
 
   private static final long serialVersionUID = 1L;
@@ -112,6 +112,64 @@ public class PurchaseBean extends Model {
     Integer oldValue = getVendorNumber();
     vendorNumber = newValue;
     firePropertyChange(PROPERTY_VENDOR_NUMBER, oldValue, newValue);
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((itemNumber == null) ? 0 : itemNumber.hashCode());
+    result = prime * result + ((itemPrice == null) ? 0 : itemPrice.hashCode());
+    result = prime * result + ((vendorNumber == null) ? 0 : vendorNumber.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    PurchaseBean other = (PurchaseBean) obj;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    if (itemNumber == null) {
+      if (other.itemNumber != null)
+        return false;
+    } else if (!itemNumber.equals(other.itemNumber))
+      return false;
+    if (itemPrice == null) {
+      if (other.itemPrice != null)
+        return false;
+    } else if (!itemPrice.equals(other.itemPrice))
+      return false;
+    if (vendorNumber == null) {
+      if (other.vendorNumber != null)
+        return false;
+    } else if (!vendorNumber.equals(other.vendorNumber))
+      return false;
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("PurchaseBean [id=");
+    builder.append(id);
+    builder.append(", itemNumber=");
+    builder.append(itemNumber);
+    builder.append(", itemPrice=");
+    builder.append(itemPrice);
+    builder.append(", vendorNumber=");
+    builder.append(vendorNumber);
+    builder.append("]");
+    return builder.toString();
   }
 
 }

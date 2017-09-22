@@ -124,4 +124,64 @@ public final class VendorBean extends Model {
     firePropertyChange(PROPERTY_PHONE_NUMBER, oldValue, newValue);
   }
 
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+    result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+    result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+    result = prime * result + ((vendorNumber == null) ? 0 : vendorNumber.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    VendorBean other = (VendorBean) obj;
+    if (firstName == null) {
+      if (other.firstName != null)
+        return false;
+    } else if (!firstName.equals(other.firstName))
+      return false;
+    if (lastName == null) {
+      if (other.lastName != null)
+        return false;
+    } else if (!lastName.equals(other.lastName))
+      return false;
+    if (phoneNumber == null) {
+      if (other.phoneNumber != null)
+        return false;
+    } else if (!phoneNumber.equals(other.phoneNumber))
+      return false;
+    if (vendorNumber == null) {
+      if (other.vendorNumber != null)
+        return false;
+    } else if (!vendorNumber.equals(other.vendorNumber))
+      return false;
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("VendorBean [id=");
+    builder.append(id);
+    builder.append(", vendorNumber=");
+    builder.append(vendorNumber);
+    builder.append(", firstName=");
+    builder.append(firstName);
+    builder.append(", lastName=");
+    builder.append(lastName);
+    builder.append(", phoneNumber=");
+    builder.append(phoneNumber);
+    builder.append("]");
+    return builder.toString();
+  }
+
 }
