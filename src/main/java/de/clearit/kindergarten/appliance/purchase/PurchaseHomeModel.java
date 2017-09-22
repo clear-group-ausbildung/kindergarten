@@ -180,6 +180,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
         SERVICE.create(purchase);
       });
       pane.setVisible(false);
+      refreshSummary();
       String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
       TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
       pane.setPreferredWidth(PreferredWidth.MEDIUM);
