@@ -8,7 +8,9 @@ import javax.swing.ListModel;
 
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
+import com.jgoodies.application.BlockingScope;
 import com.jgoodies.application.ResourceMap;
+import com.jgoodies.application.Task;
 import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopFrame;
 import com.jgoodies.desktop.DesktopManager;
@@ -122,30 +124,9 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   }
 
   @Action(enabled = false)
-  public void printReceipt(ActionEvent e) {
+  public Task<Void, Void> printReceipt(ActionEvent e) {
     LOGGER.fine("Printing receipt\u2026");
-
-    VendorBean vendor = getSelection();
-    LOGGER.fine("Receipt was printed successfully\\u2026");
-    // TODO Christian...ist mal ein erster Wurf aber funktioniert noch nicht
-    // vernuenftig.
-    BusyDialog busyDialog = new BusyDialog("Bitte warten", "Sie m\u00fcssen jetzt wirklich warten!");
-    Thread t = new Thread() {
-      @Override
-      public void run() {
-        ExportExcel.getInstance().createExcelForOneVendor(vendor);
-
-        busyDialog.dispose();
-      }
-    };
-    t.start();
-    busyDialog.setVisible(true);
-
-    String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendor.getId() + " " + vendor
-        .getLastName() + ", " + vendor.getFirstName());
-    TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
-    pane.setPreferredWidth(PreferredWidth.MEDIUM);
-    pane.showDialog(e, RESOURCES.getString("printReceipt.one.title"));
+    return new PrintSingleReceiptTask(getSelection());
   }
 
   @Action
@@ -168,15 +149,74 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   }
 
   @Action
-  public void printAllReceipts(ActionEvent e) {
+  public Task<Void, Void> printAllReceipts(ActionEvent e) {
     LOGGER.fine("Printing all receipts\u2026");
-    ExportExcel.getInstance().createExcelForAllVendors();
-    LOGGER.fine("Receipts were printed successfully\\u2026");
+    return new PrintAllReceiptsTask();
+  }
 
-    TaskPane pane = new TaskPane(MessageType.INFORMATION, RESOURCES.getString("printReceipt.all.main"),
-        CommandValue.OK);
-    pane.setPreferredWidth(PreferredWidth.MEDIUM);
-    pane.showDialog(e, RESOURCES.getString("printReceipt.all.title"));
+  private final class PrintSingleReceiptTask extends Task<Void, Void> {
+
+    private final TaskPane progressPane;
+    private final VendorBean vendor;
+
+    public PrintSingleReceiptTask(VendorBean vendor) {
+      super(BlockingScope.APPLICATION);
+      progressPane = new TaskPane(MessageType.INFORMATION, "Drucke Beleg", CommandValue.OK);
+      progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
+      progressPane.setProgressIndeterminate(true);
+      progressPane.setProgressVisible(true);
+      progressPane.setVisible(true);
+      this.vendor = vendor;
+      ExportExcel.getInstance().createExcelForOneVendor(this.vendor);
+    }
+
+    @Override
+    protected Void doInBackground() throws Exception {
+      return null;
+    }
+
+    @Override
+    protected void succeeded(Void result) {
+      super.succeeded(result);
+      progressPane.setVisible(false);
+      String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendor.getId() + " " + vendor
+          .getLastName() + ", " + vendor.getFirstName());
+      TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+      pane.setPreferredWidth(PreferredWidth.MEDIUM);
+      pane.showDialog(getEventObject(), RESOURCES.getString("printReceipt.one.title"));
+    }
+
+  }
+
+  private final class PrintAllReceiptsTask extends Task<Void, Void> {
+
+    private final TaskPane progressPane;
+
+    public PrintAllReceiptsTask() {
+      super(BlockingScope.APPLICATION);
+      progressPane = new TaskPane(MessageType.INFORMATION, "Drucke alle Belege", CommandValue.OK);
+      progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
+      progressPane.setProgressIndeterminate(true);
+      progressPane.setProgressVisible(true);
+      progressPane.setVisible(true);
+      ExportExcel.getInstance().createExcelForAllVendors();
+    }
+
+    @Override
+    protected Void doInBackground() throws Exception {
+      return null;
+    }
+
+    @Override
+    protected void succeeded(Void result) {
+      super.succeeded(result);
+      progressPane.setVisible(false);
+      TaskPane pane = new TaskPane(MessageType.INFORMATION, RESOURCES.getString("printReceipt.all.main"),
+          CommandValue.OK);
+      pane.setPreferredWidth(PreferredWidth.MEDIUM);
+      pane.showDialog(getEventObject(), RESOURCES.getString("printReceipt.all.title"));
+    }
+
   }
 
 }
