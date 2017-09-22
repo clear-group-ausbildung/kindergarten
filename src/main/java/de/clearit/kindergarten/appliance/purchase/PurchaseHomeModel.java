@@ -146,23 +146,34 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   @Action
   public Task<List<PurchaseBean>, Void> importPurchases(final ActionEvent e) {
     LOGGER.fine("Importing purchase\u2026");
-
     return new ImportPurchasesTask();
+  }
 
+  @Action
+  public Task<Void, Void> exportPurchases(final ActionEvent e) {
+    LOGGER.fine("Exporting purchase\u2026");
+    return new ExportPurchasesTask();
+  }
+
+  private void refreshSummary() {
+    itemCountModel.setValue(SERVICE.getItemCountByPurchases(getSelectionInList().getList()));
+    itemSumModel.setValue(SERVICE.getItemSumByPurchases(getSelectionInList().getList()));
+    kindergartenProfitModel.setValue(SERVICE.getKindergartenProfitByPurchases(getSelectionInList().getList()));
+    vendorPayoutModel.setValue(SERVICE.getVendorPayoutByPurchases(getSelectionInList().getList()));
   }
 
   private final class ImportPurchasesTask extends Task<List<PurchaseBean>, Void> {
 
-    private final TaskPane pane;
+    private final TaskPane progressPane;
     private final File importFile;
 
     public ImportPurchasesTask() {
       super(BlockingScope.APPLICATION);
-      pane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
-      pane.setPreferredWidth(PreferredWidth.MEDIUM);
-      pane.setProgressIndeterminate(true);
-      pane.setProgressVisible(true);
-      pane.setVisible(true);
+      progressPane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
+      progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
+      progressPane.setProgressIndeterminate(true);
+      progressPane.setProgressVisible(true);
+      progressPane.setVisible(true);
       importFile = getImportPath();
     }
 
@@ -179,7 +190,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
       result.forEach(purchase -> {
         SERVICE.create(purchase);
       });
-      pane.setVisible(false);
+      progressPane.setVisible(false);
       refreshSummary();
       String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
       TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
@@ -187,61 +198,68 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
       pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
     }
 
+    private File getImportPath() {
+      final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
+      fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));
+      fileChooser.setAcceptAllFileFilterUsed(false);
+      fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+      fileChooser.setDialogTitle("Datei \u00f6ffnen...");
+      fileChooser.setVisible(true);
+      fileChooser.showOpenDialog(null);
+      fileChooser.setVisible(false);
+
+      return fileChooser.getSelectedFile();
+    }
+
   }
 
-  @Action
-  public void exportPurchases(final ActionEvent e) {
-    LOGGER.fine("Exporting purchase\u2026");
+  private final class ExportPurchasesTask extends Task<Void, Void> {
 
-    List<PurchaseBean> purchaseList = SERVICE.getAll();
-    ObjectMapper mapper = new ObjectMapper();
-    try {
-      String exportPath = getExportPath() + ".json";
+    private final TaskPane progressPane;
+    private final List<PurchaseBean> purchaseList;
+    private final String exportPath;
+
+    public ExportPurchasesTask() {
+      super(BlockingScope.APPLICATION);
+      progressPane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
+      progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
+      progressPane.setProgressIndeterminate(true);
+      progressPane.setProgressVisible(true);
+      progressPane.setVisible(true);
+      purchaseList = SERVICE.getAll();
+      exportPath = getExportPath() + ".json";
+    }
+
+    @Override
+    protected Void doInBackground() throws Exception {
+      ObjectMapper mapper = new ObjectMapper();
       mapper.writeValue(new File(exportPath), purchaseList);
+      return null;
+    }
 
+    @Override
+    protected void succeeded(Void result) {
+      super.succeeded(result);
+      progressPane.setVisible(false);
       String mainInstruction = RESOURCES.getString("exportPurchases.message.text", purchaseList.size(), exportPath);
       TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
       pane.setPreferredWidth(PreferredWidth.MEDIUM);
-      pane.showDialog(e, RESOURCES.getString("exportPurchases.message.title"));
-    } catch (final Exception e1) {
-      LOGGER.severe("Fehler beim Exportieren der Verk\u00e4ufe!");
-      e1.printStackTrace();
+      pane.showDialog(getEventObject(), RESOURCES.getString("exportPurchases.message.title"));
     }
-  }
 
-  private void refreshSummary() {
-    itemCountModel.setValue(SERVICE.getItemCountByPurchases(getSelectionInList().getList()));
-    itemSumModel.setValue(SERVICE.getItemSumByPurchases(getSelectionInList().getList()));
-    kindergartenProfitModel.setValue(SERVICE.getKindergartenProfitByPurchases(getSelectionInList().getList()));
-    vendorPayoutModel.setValue(SERVICE.getVendorPayoutByPurchases(getSelectionInList().getList()));
-  }
+    private String getExportPath() {
+      final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
+      fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+      fileChooser.setDialogTitle("Speichern unter...");
+      fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));
+      fileChooser.setAcceptAllFileFilterUsed(false);
+      fileChooser.setVisible(true);
+      fileChooser.showSaveDialog(null);
+      fileChooser.setVisible(false);
 
-  private File getImportPath() {
-    final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
-    fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));
-    fileChooser.setAcceptAllFileFilterUsed(false);
-    fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-    fileChooser.setDialogTitle("Datei \u00f6ffnen...");
-    fileChooser.setVisible(true);
-    fileChooser.showOpenDialog(null);
-    fileChooser.setVisible(false);
+      return fileChooser.getSelectedFile().toString();
+    }
 
-    return fileChooser.getSelectedFile();
-  }
-
-  private String getExportPath() {
-    final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
-    fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-    fileChooser.setDialogTitle("Speichern unter...");
-    fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));
-    fileChooser.setAcceptAllFileFilterUsed(false);
-    fileChooser.setVisible(true);
-    fileChooser.showSaveDialog(null);
-    fileChooser.setVisible(false);
-
-    System.out.println(fileChooser.getCurrentDirectory().toString());
-
-    return fileChooser.getSelectedFile().toString();
   }
 
 }
