@@ -11,8 +11,6 @@ import com.jgoodies.binding.adapter.AbstractTableAdapter;
 import com.jgoodies.binding.adapter.SingleListSelectionAdapter;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.component.StripedTable;
-import com.jgoodies.uif2.component.text.UIFSearchField;
-import com.jgoodies.uif2.component.text.UIFSearchField.SearchMode;
 import com.jgoodies.uif2.util.ComponentUtils;
 import com.jgoodies.uif2.util.TableUtils;
 
@@ -31,7 +29,6 @@ final class VendorHomeView extends AbstractView {
 
   private final VendorHomeModel model;
 
-  private UIFSearchField searchField;
   private JTable table;
   private VendorPreview preview;
 
@@ -51,9 +48,6 @@ final class VendorHomeView extends AbstractView {
   // Building ***************************************************************
 
   private void initComponents() {
-    searchField = new UIFSearchField(SearchMode.INSTANT);
-    searchField.setPrompt(RESOURCES.getString("vendorHome.searchPrompt"));
-
     table = new StripedTable(new VendorTableModel(model.getSelectionInList()));
     table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
     TableUtils.configureColumns(table, "[30dlu,60dlu], [30dlu,60dlu], [50dlu,pref], [50dlu,pref]");
@@ -70,7 +64,6 @@ final class VendorHomeView extends AbstractView {
 
     HomeViewBuilder builder = new HomeViewBuilder();
     builder.setTitle(RESOURCES.getString("vendorHome.mainInstruction"));
-    builder.setSearchView(searchField);
     builder.setListView(table);
     builder.setListBar(model.getActionMap(), AbstractHomeModel.ACTION_NEW_ITEM, AbstractHomeModel.ACTION_EDIT_ITEM,
         AbstractHomeModel.ACTION_DELETE_ITEM, "---", VendorHomeModel.ACTION_PRINT_RECEIPT,

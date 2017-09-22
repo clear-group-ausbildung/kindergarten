@@ -9,6 +9,8 @@ import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.binding.list.SelectionInList;
+import com.jgoodies.binding.value.ValueHolder;
+import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopManager;
 import com.jgoodies.jsdl.core.CloseRequestHandler;
@@ -42,8 +44,9 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
   private final SelectionInList<VendorBean> vendorList;
   private final CommitCallback<CommandValue> commitCallback;
-  private final long creationTime;
   private SelectionInList<PurchaseBean> selectionInList;
+  private final ValueModel itemCountModel = new ValueHolder(0);
+  private final ValueModel itemSumModel = new ValueHolder(0.0);
 
   // Instance Creation ******************************************************
 
@@ -52,7 +55,6 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     vendorList = new SelectionInList<>();
     vendorList.getList().addAll(VendorService.getInstance().getAll());
     this.commitCallback = callback;
-    this.creationTime = System.currentTimeMillis();
     initModels();
     initPresentationLogic();
   }
@@ -86,6 +88,14 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     return vendorList;
   }
 
+  public ValueModel getItemCountModel() {
+    return itemCountModel;
+  }
+
+  public ValueModel getItemSumModel() {
+    return itemSumModel;
+  }
+
   // Event Handling *********************************************************
 
   protected void handleSelectionChange(final boolean hasSelection) {
@@ -103,6 +113,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     TextComponentUtils.commitImmediately();
     triggerCommit();
     getSelectionInList().getList().add(getBean());
+    refreshSummary();
     setBean(new PurchaseBean());
   }
 
@@ -116,6 +127,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
       getSelectionInList().getList().remove(purchase);
+      refreshSummary();
     }
   }
 
@@ -176,6 +188,11 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   @Override
   public boolean isApplyEnabled() {
     return false;
+  }
+
+  private void refreshSummary() {
+    itemCountModel.setValue(SERVICE.getItemCountByPurchases(selectionInList.getList()));
+    itemSumModel.setValue(SERVICE.getItemSumByPurchases(selectionInList.getList()));
   }
 
   // Event Handlers *********************************************************

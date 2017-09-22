@@ -1,7 +1,5 @@
 package de.clearit.kindergarten.appliance.purchase;
 
-import java.awt.Color;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -11,7 +9,6 @@ import com.jgoodies.application.ResourceMap;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.adapter.SingleListSelectionAdapter;
 import com.jgoodies.forms.builder.ButtonBarBuilder2;
-import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.jsdl.core.pane.form.FormPane;
@@ -35,7 +32,7 @@ public class PurchaseEditorView extends AbstractView {
   private JComponent vendorNumberField;
   private JButton addButton;
   private JTable table;
-  private PurchaseAnalysis analysis;
+  private PurchaseEditorSummary summary;
 
   // Instance Creation ******************************************************
 
@@ -50,11 +47,12 @@ public class PurchaseEditorView extends AbstractView {
     initComponents();
 
     final PurchaseEditorViewBuilder builder = new PurchaseEditorViewBuilder();
-    builder.setEditor(buildEditorAndActions());
+    builder.setSummary(summary.getPanel());
+    builder.setEditor(buildEditor());
+    builder.setEditorActions(buildActions());
     builder.setTableTitle(RESOURCES.getString("purchaseEditor.tableTitle"));
     builder.setListView(table);
     builder.setListBar(model.getActionMap(), PurchaseEditorModel.ACTION_REMOVE_LINE_ITEM);
-    builder.setAnalysis(analysis.getPanel());
 
     final FormPane pane = new FormPane(builder.getPanel(), model);
     pane.setBackground(RESOURCES.getColor("content.background"));
@@ -75,21 +73,12 @@ public class PurchaseEditorView extends AbstractView {
     table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
     TableUtils.configureColumns(table, "[30dlu,60dlu], [50dlu,pref], [50dlu,pref]");
 
-    analysis = new PurchaseAnalysis(model.getSelectionInList().getList());
+    summary = new PurchaseEditorSummary(model);
 
-  }
-
-  private JComponent buildEditorAndActions() {
-    final FormLayout layout = new FormLayout("default, 9dlu, p", "p");
-    final PanelBuilder builder = new PanelBuilder(layout);
-    builder.setBackground(Color.WHITE);
-    builder.add(buildEditor(), CC.xy(1, 1));
-    builder.add(buildActions(), CC.xy(3, 1));
-    return builder.getPanel();
   }
 
   private JComponent buildEditor() {
-    final FormLayout layout = new FormLayout("2*(left:pref, $lcgap, 50dlu, $rgap), left:pref, $lcgap, 50dlu", "p");
+    final FormLayout layout = new FormLayout("2*(left:pref, $lcgap, 25dlu, $rgap), left:pref, $lcgap, 50dlu", "p");
     final I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
     builder.setBackground(RESOURCES.getColor("content.background"));
     builder.addI15dLabel("purchase.vendor", CC.xy(1, 1));

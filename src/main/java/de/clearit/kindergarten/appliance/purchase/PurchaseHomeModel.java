@@ -16,6 +16,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
+import com.jgoodies.binding.value.ValueHolder;
+import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.jsdl.core.CommandValue;
 import com.jgoodies.jsdl.core.MessageType;
 import com.jgoodies.jsdl.core.PreferredWidth;
@@ -39,6 +41,10 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseHomeModel.class);
   private static final PurchaseService SERVICE = PurchaseService.getInstance();
   private static PurchaseHomeModel instance;
+  private final ValueModel itemCountModel = new ValueHolder(0);
+  private final ValueModel itemSumModel = new ValueHolder(0.0);
+  private final ValueModel kindergartenProfitModel = new ValueHolder(0.0);
+  private final ValueModel vendorPayoutModel = new ValueHolder(0.0);
 
   // Instance Creation ******************************************************
 
@@ -51,6 +57,22 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
       instance = new PurchaseHomeModel();
     }
     return instance;
+  }
+
+  public ValueModel getItemCountModel() {
+    return itemCountModel;
+  }
+
+  public ValueModel getItemSumModel() {
+    return itemSumModel;
+  }
+
+  public ValueModel getKindergartenProfitModel() {
+    return kindergartenProfitModel;
+  }
+
+  public ValueModel getVendorPayoutModel() {
+    return vendorPayoutModel;
   }
 
   // Initialization *********************************************************
@@ -99,6 +121,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
         } else {
           SERVICE.update(purchase);
         }
+        refreshSummary();
       }
     });
     PurchaseAppliance.getInstance().openPurchaseEditor(title, model, newItem);
@@ -114,6 +137,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
       SERVICE.delete(purchase);
+      refreshSummary();
     }
   }
 
@@ -158,6 +182,13 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
       LOGGER.severe("Fehler beim Exportieren der Verk\u00e4ufe!");
       e1.printStackTrace();
     }
+  }
+
+  private void refreshSummary() {
+    itemCountModel.setValue(SERVICE.getItemCountByPurchases(getSelectionInList().getList()));
+    itemSumModel.setValue(SERVICE.getItemSumByPurchases(getSelectionInList().getList()));
+    kindergartenProfitModel.setValue(SERVICE.getKindergartenProfitByPurchases(getSelectionInList().getList()));
+    vendorPayoutModel.setValue(SERVICE.getVendorPayoutByPurchases(getSelectionInList().getList()));
   }
 
   private File getImportPath() {

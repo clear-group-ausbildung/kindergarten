@@ -21,7 +21,7 @@ import com.jgoodies.jsdl.core.component.factory.JSDLFactory;
 public class HomeViewBuilder {
 
   private JComponent titleLabel;
-  private JComponent searchView;
+  private JComponent summary;
 
   private JComponent listView;
   private JComponent listBar;
@@ -43,8 +43,8 @@ public class HomeViewBuilder {
     this.titleLabel = titleLabel;
   }
 
-  public void setSearchView(JComponent searchView) {
-    this.searchView = searchView;
+  public void setSummary(JComponent summary) {
+    this.summary = summary;
   }
 
   public void setListView(JComponent listView) {
@@ -94,22 +94,30 @@ public class HomeViewBuilder {
   // Implementation *********************************************************
 
   private JComponent buildPanel() {
-    FormLayout layout = new FormLayout("default:grow, 9dlu, [100dlu,p]", "[14dlu,p], $lg, fill:100dlu:grow, p, p");
+    FormLayout layout = new FormLayout("fill:pref:grow", "b:p, $lg, p, fill:100dlu:grow, p, p");
     PanelBuilder builder = new PanelBuilder(layout);
     builder.setBackground(Color.WHITE);
     builder.setBorder(Borders.createEmptyBorder("12dlu, 18dlu, 14dlu, 18dlu"));
-    builder.add(titleLabel, CC.xy(1, 1));
-    builder.add(new JScrollPane(listView), CC.xyw(1, 3, 3));
-    if (searchView != null) {
-      builder.add(searchView, CC.xy(3, 1));
+    if (summary != null) {
+      builder.add(buildDecoratedSummary(), CC.xy(1, 1));
     }
+    builder.add(titleLabel, CC.xy(1, 3));
+    builder.add(new JScrollPane(listView), CC.xy(1, 4));
     if ((listBar != null) || (listExtras != null)) {
-      builder.add(buildDecoratedListBarAndExtras(), CC.xyw(1, 4, 3));
+      builder.add(buildDecoratedListBarAndExtras(), CC.xy(1, 5));
     }
     if (preview != null) {
-      builder.add(buildDecoratedPreview(), CC.xyw(1, 5, 3));
+      builder.add(buildDecoratedPreview(), CC.xy(1, 6));
     }
 
+    return builder.getPanel();
+  }
+
+  private JComponent buildDecoratedSummary() {
+    final FormLayout layout = new FormLayout("right:pref:grow", "p");
+    final PanelBuilder builder = new PanelBuilder(layout);
+    builder.setBackground(Color.WHITE);
+    builder.add(summary, CC.xy(1, 1));
     return builder.getPanel();
   }
 

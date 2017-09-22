@@ -16,16 +16,21 @@ import com.jgoodies.uif2.AbstractView;
 
 public class PurchaseEditorViewBuilder extends AbstractView {
 
+  private JComponent summary;
   private JComponent editor;
+  private JComponent editorActions;
   private JComponent tableTitleLabel;
   private JComponent listView;
   private JComponent listBar;
-  private JComponent analysis;
 
   // API ********************************************************************
 
   public void setEditor(final JComponent editor) {
     this.editor = editor;
+  }
+
+  public void setEditorActions(final JComponent editorActions) {
+    this.editorActions = editorActions;
   }
 
   public void setTableTitle(final String markedTitle) {
@@ -65,26 +70,22 @@ public class PurchaseEditorViewBuilder extends AbstractView {
     this.listBar = listBar;
   }
 
-  public void setAnalysis(final JComponent analysis) {
-    this.analysis = analysis;
+  public void setSummary(final JComponent summary) {
+    this.summary = summary;
   }
 
   @Override
   protected JComponent buildPanel() {
-    final FormLayout layout = new FormLayout("default:grow, 9dlu, [100dlu,p]",
-        "p, 20dlu, [14dlu,p], $lg, fill:100dlu:grow, p, p");
+    final FormLayout layout = new FormLayout("fill:pref:grow",
+        "b:p, $lg, p, 10dlu, [14dlu,p], $lg, fill:100dlu:grow, p, p");
     final PanelBuilder builder = new PanelBuilder(layout);
     builder.setBackground(Color.WHITE);
     builder.setBorder(Borders.createEmptyBorder("12dlu, 18dlu, 14dlu, 18dlu"));
-    builder.add(editor, CC.xyw(1, 1, 3));
-    builder.add(tableTitleLabel, CC.xy(1, 3));
-    builder.add(new JScrollPane(listView), CC.xyw(1, 5, 3));
-    if (listBar != null) {
-      builder.add(buildDecoratedListBarAndExtras(), CC.xyw(1, 6, 3));
-    }
-    if (analysis != null) {
-      builder.add(buildDecoratedAnalysis(), CC.xyw(1, 7, 3));
-    }
+    builder.add(buildDecoratedSummary(), CC.xy(1, 1));
+    builder.add(buildEditorAndActions(), CC.xy(1, 3));
+    builder.add(tableTitleLabel, CC.xy(1, 5));
+    builder.add(new JScrollPane(listView), CC.xy(1, 7));
+    builder.add(buildDecoratedListBarAndExtras(), CC.xy(1, 8));
 
     return builder.getPanel();
   }
@@ -99,11 +100,21 @@ public class PurchaseEditorViewBuilder extends AbstractView {
     return builder.getPanel();
   }
 
-  private JComponent buildDecoratedAnalysis() {
-    final FormLayout layout = new FormLayout("fill:default:grow", "14, p");
-    final PanelBuilder builder = new PanelBuilder(layout);
+  private JComponent buildEditorAndActions() {
+    FormLayout layout = new FormLayout("pref, $rg, pref", "p");
+    PanelBuilder builder = new PanelBuilder(layout);
     builder.setOpaque(false);
-    builder.add(analysis, CC.xy(1, 2));
+    builder.add(editor, CC.xy(1, 1));
+    builder.add(editorActions, CC.xy(3, 1));
+
+    return builder.getPanel();
+  }
+
+  private JComponent buildDecoratedSummary() {
+    final FormLayout layout = new FormLayout("right:pref:grow", "p");
+    final PanelBuilder builder = new PanelBuilder(layout);
+    builder.setBackground(Color.WHITE);
+    builder.add(summary, CC.xy(1, 1));
     return builder.getPanel();
   }
 
