@@ -45,7 +45,7 @@ public final class DesktopQuickSearchProcessor implements QuickSearchProcessor {
         continue;
       }
       sleep(250);
-      List<?> matchingObjects = appliance.computeMatchingObjects(content);
+      List<?> matchingObjects = appliance.computeMatchingObjects();
       if (matchingObjects.isEmpty()) {
         Action action = DesktopManager.createActivationAction(appliance);
         Activatable activatable = new ActionActivatable<>("Appliance", action, 10);

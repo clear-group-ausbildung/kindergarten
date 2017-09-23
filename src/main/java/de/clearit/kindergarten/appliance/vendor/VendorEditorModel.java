@@ -24,14 +24,12 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   // Instance Fields ********************************************************
 
   private final CommitCallback<CommandValue> commitCallback;
-  private final long creationTime;
 
   // Instance Creation ******************************************************
 
   VendorEditorModel(VendorBean vendor, CommitCallback<CommandValue> callback) {
     super(vendor);
     this.commitCallback = callback;
-    this.creationTime = System.currentTimeMillis();
   }
 
   // Actions ****************************************************************

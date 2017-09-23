@@ -84,32 +84,8 @@ public final class Dialogs {
     if (pane.getCommitValue() == saveSelected) {
       MainModel.getInstance().saveDocuments(getSelectedDocuments(list));
     } else if (pane.getCommitValue() == discardSelected) {
-      MainModel.getInstance().discardDocuments(getSelectedDocuments(list));
+      MainModel.getInstance().discardDocuments();
     }
-    return pane.isCancelled();
-  }
-
-  /**
-   * Checks if the document has errors.
-   * 
-   * @param e
-   *          the event object
-   * @param document
-   *          the document
-   * @return {@code true} if canceled, {@code false} otherwise
-   */
-  public static boolean documentHasErrors(EventObject e, Document document) {
-    String title = RESOURCES.getString("dialogs.documentHasErrors.title");
-    String mainInstruction = RESOURCES.getString("dialogs.documentHasErrors.mainInstruction", document
-        .getDisplayString());
-    String contentText = RESOURCES.getString("dialogs.documentHasErrors.content", document.getDisplayString());
-
-    TaskPane pane = new TaskPane(MessageType.WARNING, mainInstruction, contentText, CommandValue.DISCARD,
-        CommandValue.CANCEL);
-    pane.setMarginContentTop(4);
-    pane.setMarginContentBottom(14);
-
-    pane.showDialog(e, title);
     return pane.isCancelled();
   }
 
@@ -125,12 +101,6 @@ public final class Dialogs {
     pane.setMarginContentBottom(14);
 
     pane.showDialog(e, title);
-  }
-
-  public static void mustNotBeBlank(EventObject e, String titleName, String mainInstructionName) {
-    TaskPane pane = new TaskPane(MessageType.WARNING, mainInstructionName + " darf nicht leer sein.", CommandValue.OK);
-    pane.setPreferredWidth(PreferredWidth.MEDIUM);
-    pane.showDialog(e, titleName + " leer");
   }
 
   // Helper Code ************************************************************

@@ -84,10 +84,6 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     return getSelectionInList().getSelection();
   }
 
-  public SelectionInList<VendorBean> getVendorList() {
-    return vendorList;
-  }
-
   public ValueModel getItemCountModel() {
     return itemCountModel;
   }

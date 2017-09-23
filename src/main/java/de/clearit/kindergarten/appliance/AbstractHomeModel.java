@@ -25,10 +25,7 @@ public abstract class AbstractHomeModel<T> extends UIFModel {
 
   public static final String ACTION_NEW_ITEM = "newItem";
   public static final String ACTION_EDIT_ITEM = "editItem";
-  public static final String ACTION_OPEN_ITEM = "openItem";
   public static final String ACTION_DELETE_ITEM = "deleteItem";
-  public static final String ACTION_PRINT_ITEM = "printItem";
-  public static final String ACTION_PRINT_ALL_ITEMS = "printAllItems";
 
   // ************************************************************************
 

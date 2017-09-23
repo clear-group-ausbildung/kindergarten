@@ -35,7 +35,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   private static final long serialVersionUID = 1L;
 
-  public static final String ACTION_NEW_PURCHASE = "newPurchase";
   public static final String ACTION_IMPORT_PURCHASES = "importPurchases";
   public static final String ACTION_EXPORT_PURCHASES = "exportPurchases";
   private static final Logger LOGGER = Logger.getLogger(PurchaseHomeModel.class.getName());
@@ -104,11 +103,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     editItem(e, title, new PurchaseBean(), true);
   }
 
-  @Action
-  public void newPurchase(final ActionEvent e) {
-    newItem(e);
-  }
-
   @Action(enabled = false)
   public void editItem(final ActionEvent e) {
     final String title = RESOURCES.getString("editPurchase.title");
@@ -126,7 +120,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
         refreshSummary();
       }
     });
-    PurchaseAppliance.getInstance().openPurchaseEditor(title, model, newItem);
+    PurchaseAppliance.getInstance().openPurchaseEditor(title, model);
   }
 
   @Action(enabled = false)

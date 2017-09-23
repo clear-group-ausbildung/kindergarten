@@ -7,7 +7,6 @@ import com.jgoodies.application.ResourceMap;
 import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopFrame;
 import com.jgoodies.desktop.DesktopManager;
-import com.jgoodies.desktop.spec.MenuSpec;
 import com.jgoodies.desktop.spec.NavigationBarSpec;
 import com.jgoodies.jsdl.core.CommandValue;
 
@@ -44,25 +43,19 @@ public class PurchaseAppliance extends DefaultAppliance {
     final PurchaseBean newPurchase = new PurchaseBean();
     final CommitCallback<CommandValue> callback = result -> outerCallback.committed(result == CommandValue.OK ? newPurchase : null);
     PurchaseEditorModel model = new PurchaseEditorModel(newPurchase, callback);
-    openPurchaseEditor(title, model, true);
+    openPurchaseEditor(title, model);
   }
 
   public void editPurchase(final String title, final PurchaseBean purchase, final CommitCallback<CommandValue> callback) {
     PurchaseEditorModel model = new PurchaseEditorModel(purchase, callback);
-    openPurchaseEditor(title, model, false);
+    openPurchaseEditor(title, model);
   }
 
-  void openPurchaseEditor(String title, PurchaseEditorModel model, boolean newItem) {
+  void openPurchaseEditor(String title, PurchaseEditorModel model) {
     PurchaseEditorView view = new PurchaseEditorView(model);
     DesktopFrame frame = new DefaultDesktopFrame(DesktopManager.activeFrame(), title, true, PurchaseAppliance
         .getInstance(), null, null, null, view.getPanel(), null);
     frame.setVisible(true);
-  }
-
-  // Contributions for the Application New Menu *****************************
-
-  public void addNewMenuItems(MenuSpec spec) {
-    spec.add(PurchaseHomeModel.getInstance().getActionMap(), PurchaseHomeModel.ACTION_NEW_PURCHASE);
   }
 
   // Implementing Abstract Behavior *****************************************

@@ -48,25 +48,19 @@ public final class VendorAppliance extends DefaultAppliance {
     final VendorBean newVendor = new VendorBean();
     final CommitCallback<CommandValue> callback = result -> outerCallback.committed(result == CommandValue.OK ? newVendor : null);
     VendorEditorModel model = new VendorEditorModel(newVendor, callback);
-    openVendorEditor(title, model, true);
+    openVendorEditor(title, model);
   }
 
   public void editVendor(final String title, final VendorBean vendor, final CommitCallback<CommandValue> callback) {
     VendorEditorModel model = new VendorEditorModel(vendor, callback);
-    openVendorEditor(title, model, false);
+    openVendorEditor(title, model);
   }
 
-  void openVendorEditor(String title, VendorEditorModel model, boolean newItem) {
+  void openVendorEditor(String title, VendorEditorModel model) {
     VendorEditorView view = new VendorEditorView(model);
     DesktopFrame frame = new DefaultDesktopFrame(DesktopManager.activeFrame(), title, true, VendorAppliance
         .getInstance(), null, null, null, view.getPanel(), null);
     frame.setVisible(true);
-  }
-
-  // Contributions for the Application New Menu *****************************
-
-  public void addNewMenuItems(MenuSpec spec) {
-    spec.add(VendorHomeModel.getInstance().getActionMap(), VendorHomeModel.ACTION_NEW_VENDOR);
   }
 
   // Implementing Abstract Behavior *****************************************

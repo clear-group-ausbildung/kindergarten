@@ -1,7 +1,6 @@
 package de.clearit.kindergarten.appliance.vendor;
 
 import java.awt.event.ActionEvent;
-import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.ListModel;
@@ -31,7 +30,6 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
   private static final long serialVersionUID = 1L;
 
-  public static final String ACTION_NEW_VENDOR = "newVendor";
   public static final String ACTION_PRINT_RECEIPT = "printReceipt";
   public static final String ACTION_PRINT_MULTIPLE_RECEIPTS = "printMultipleReceipts";
   public static final String ACTION_PRINT_ALL_RECEIPTS = "printAllReceipts";
@@ -79,21 +77,16 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   @Action
   public void newItem(ActionEvent e) {
     String title = RESOURCES.getString("newVendor.title");
-    editItem(e, title, new VendorBean(), true);
-  }
-
-  @Action
-  public void newVendor(ActionEvent e) {
-    newItem(e);
+    editItem(title, new VendorBean(), true);
   }
 
   @Action(enabled = false)
   public void editItem(ActionEvent e) {
     String title = RESOURCES.getString("editVendor.title");
-    editItem(e, title, getSelection(), false);
+    editItem(title, getSelection(), false);
   }
 
-  private void editItem(EventObject e, String title, final VendorBean vendor, final boolean newItem) {
+  private void editItem(String title, final VendorBean vendor, final boolean newItem) {
     VendorEditorModel model = new VendorEditorModel(vendor, value -> {
       if (value == CommandValue.OK) {
         if (newItem) {
@@ -103,7 +96,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
         }
       }
     });
-    VendorAppliance.getInstance().openVendorEditor(title, model, newItem);
+    VendorAppliance.getInstance().openVendorEditor(title, model);
   }
 
   @Action(enabled = false)

@@ -25,7 +25,6 @@ public class HomeViewBuilder {
 
   private JComponent listView;
   private JComponent listBar;
-  private JComponent listExtras;
   private JComponent preview;
 
   /**
@@ -76,10 +75,6 @@ public class HomeViewBuilder {
     this.listBar = listBar;
   }
 
-  public void setListExtras(JComponent listExtras) {
-    this.listExtras = listExtras;
-  }
-
   public void setPreview(JComponent preview) {
     this.preview = preview;
   }
@@ -103,7 +98,7 @@ public class HomeViewBuilder {
     }
     builder.add(titleLabel, CC.xy(1, 3));
     builder.add(new JScrollPane(listView), CC.xy(1, 4));
-    if ((listBar != null) || (listExtras != null)) {
+    if ((listBar != null)) {
       builder.add(buildDecoratedListBarAndExtras(), CC.xy(1, 5));
     }
     if (preview != null) {
@@ -127,9 +122,6 @@ public class HomeViewBuilder {
     builder.setOpaque(false);
     if (listBar != null) {
       builder.add(listBar, CC.xy(1, 2));
-    }
-    if (listExtras != null) {
-      builder.add(listExtras, CC.xy(3, 2));
     }
     return builder.getPanel();
   }

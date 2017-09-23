@@ -45,19 +45,13 @@ public abstract class DefaultAppliance extends AbstractAppliance {
    * by the DesktopModel's CompletionProcessor, if this appliances already matched
    * the given content.
    *
-   * @param content
-   *          the String used to look up the completions
    * @return a list of objects that match the given content
    */
-  public List<?> computeMatchingObjects(String content) {
+  public List<?> computeMatchingObjects() {
     return Collections.emptyList();
   }
 
   // Convenience Code *******************************************************
-
-  public static String getTitle(ResourceMap resourceMap, boolean newItem, String objectName) {
-    return newItem ? resourceMap.getString("newItem.title") : resourceMap.getString("editItem.title", objectName);
-  }
 
   // Helper Code ************************************************************
 
