@@ -57,12 +57,8 @@ public final class DocumentsAppliance extends DefaultAppliance {
     DocumentsHomeModel model = DocumentsHomeModel.getInstance();
     DocumentsHomeView view = DocumentsHomeView.getInstance();
 
-    DesktopFrame parent = null;
-    NavigationBarSpec navigationSpec = null;
-    JComponent statusPane = null;
-
-    return new DefaultDesktopFrame(parent, RESOURCES.getString("documentsHome.title"), false, this, null, model
-        .contextSpec(), navigationSpec, view.getPanel(), statusPane);
+    return new DefaultDesktopFrame(null, RESOURCES.getString("documentsHome.title"), false, this, null, model
+        .contextSpec(), null, view.getPanel(), null);
   }
 
 }

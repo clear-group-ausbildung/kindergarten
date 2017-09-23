@@ -3,7 +3,6 @@ package de.clearit.kindergarten.desktop;
 import java.util.Collections;
 import java.util.List;
 
-import com.jgoodies.application.ResourceMap;
 import com.jgoodies.desktop.AbstractAppliance;
 
 /**

@@ -82,7 +82,7 @@ final class DesktopViewFactory {
     return sideBarSpec.buildNavigationBar(new SideBarBuilder());
   }
 
-  static JButton createToolBarButton(Action action) {
+  private static JButton createToolBarButton(Action action) {
     JButton button = new ToolBarButton(action);
     Object accelerator = action.getValue(Action.ACCELERATOR_KEY);
     if (accelerator != null) {

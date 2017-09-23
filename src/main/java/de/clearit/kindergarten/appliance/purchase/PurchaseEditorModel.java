@@ -26,8 +26,6 @@ import com.jgoodies.uif2.util.TextComponentUtils;
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.PurchaseService;
-import de.clearit.kindergarten.domain.VendorBean;
-import de.clearit.kindergarten.domain.VendorService;
 
 class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements FormPaneModel {
 
@@ -42,7 +40,6 @@ class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements 
 
   // Instance Fields ********************************************************
 
-  private final SelectionInList<VendorBean> vendorList;
   private final CommitCallback<CommandValue> commitCallback;
   private SelectionInList<PurchaseBean> selectionInList;
   private final ValueModel itemCountModel = new ValueHolder(0);
@@ -52,8 +49,6 @@ class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements 
 
   PurchaseEditorModel(final PurchaseBean purchase, final CommitCallback<CommandValue> callback) {
     super(purchase);
-    vendorList = new SelectionInList<>();
-    vendorList.getList().addAll(VendorService.getInstance().getAll());
     this.commitCallback = callback;
     initModels();
     initPresentationLogic();

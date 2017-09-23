@@ -1,12 +1,9 @@
 package de.clearit.kindergarten.desktop;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.Action;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.event.ListDataEvent;
@@ -23,11 +20,7 @@ import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.quicksearch.QuickSearchManager;
-import com.jgoodies.quicksearch.QuickSearchView;
 import com.jgoodies.uif2.AbstractView;
-import com.jgoodies.uif2.component.ToolBarButton;
-import com.jgoodies.uif2.util.ComponentUtils;
 
 import de.clearit.kindergarten.application.KindergartenApplication;
 import de.clearit.kindergarten.desktop.component.ImageBackgroundPanel;
@@ -39,11 +32,7 @@ public final class DesktopView extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(DesktopView.class);
 
-  private JButton backButton; // header navigation
-  private JButton nextButton;
-
   private JPanel contextActionContainer; // header center: toolbar
-  private JButton searchButton; // header popup for quicksearch
 
   private JPanel navigationActionContainer; // side bar top
   private JPanel applicationActionContainer; // side bar middle
@@ -56,38 +45,8 @@ public final class DesktopView extends AbstractView {
   // Building ***************************************************************
 
   private void initComponents() {
-    Action backAction = DesktopManager.INSTANCE.getGoBackAction();
-    backButton = new ToolBarButton(backAction);
-    backButton.setPreferredSize(new Dimension(28, 29));
-    backButton.setContentAreaFilled(false);
-    backButton.setBorder(null);
-    backButton.setDisabledIcon(RESOURCES.getIcon("history.goBack.Action.icon.disabled"));
-    backButton.setRolloverIcon(RESOURCES.getIcon("history.goBack.Action.icon.rollover"));
-    Object backAccelerator = backAction.getValue(Action.ACCELERATOR_KEY);
-    if (backAccelerator != null) {
-      ComponentUtils.registerKeyboardAction(backButton, backAction, JComponent.WHEN_IN_FOCUSED_WINDOW);
-    }
-
-    Action nextAction = DesktopManager.INSTANCE.getGoNextAction();
-    nextButton = new ToolBarButton(nextAction);
-    nextButton.setPreferredSize(new Dimension(27, 29));
-    nextButton.setContentAreaFilled(false);
-    nextButton.setBorder(null);
-    nextButton.setDisabledIcon(RESOURCES.getIcon("history.goNext.Action.icon.disabled"));
-    nextButton.setRolloverIcon(RESOURCES.getIcon("history.goNext.Action.icon.rollover"));
-    Object nextAccelerator = nextAction.getValue(Action.ACCELERATOR_KEY);
-    if (nextAccelerator != null) {
-      ComponentUtils.registerKeyboardAction(nextButton, nextAction, JComponent.WHEN_IN_FOCUSED_WINDOW);
-    }
-
     contextActionContainer = new JPanel(new BorderLayout());
     contextActionContainer.setOpaque(false);
-
-    QuickSearchManager manager = new QuickSearchManager(new DesktopQuickSearchProcessor());
-    Action searchAction = new QuickSearchView(manager).getQuickSearchAction();
-    searchButton = DesktopViewFactory.createToolBarButton(searchAction);
-    searchButton.setText("");
-    searchButton.setPreferredSize(new Dimension(30, 26));
 
     navigationActionContainer = new JPanel(new BorderLayout());
     navigationActionContainer.setOpaque(false);

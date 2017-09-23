@@ -9,9 +9,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import com.jgoodies.application.Action;
-import com.jgoodies.application.Application;
 import com.jgoodies.application.ExitListener;
-import com.jgoodies.application.ResourceMap;
 import com.jgoodies.desktop.DesktopManager;
 import com.jgoodies.desktop.Document;
 import com.jgoodies.help.HelpBroker;

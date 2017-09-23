@@ -11,7 +11,6 @@ import com.jgoodies.application.ResourceMap;
 import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopFrame;
 import com.jgoodies.desktop.DesktopManager;
-import com.jgoodies.desktop.spec.MenuSpec;
 import com.jgoodies.desktop.spec.NavigationBarSpec;
 import com.jgoodies.jsdl.core.CommandValue;
 
