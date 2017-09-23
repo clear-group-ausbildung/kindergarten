@@ -60,9 +60,7 @@ public class ExportExcel {
 	 */
 	public void createExcelForAllVendors() {
 		List<VendorBean> vendorList = VendorService.getInstance().getAll();
-		vendorList.stream().forEach((vendor) -> {
-			createExcelForOneVendor(vendor);
-		});
+		vendorList.stream().forEach(this::createExcelForOneVendor);
 	}
 
 	/**

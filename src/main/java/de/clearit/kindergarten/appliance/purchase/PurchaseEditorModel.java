@@ -137,7 +137,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   public void performAccept(final EventObject e) {
     TextComponentUtils.commitImmediately();
     triggerCommit();
-    getSelectionInList().getList().forEach(purchaseBean -> SERVICE.create(purchaseBean));
+    getSelectionInList().getList().forEach(SERVICE::create);
     commitCallback.committed(CommandValue.OK);
     JSDLUtils.closePaneFor(e);
   }

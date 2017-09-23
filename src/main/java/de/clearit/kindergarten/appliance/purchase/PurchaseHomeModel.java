@@ -190,9 +190,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     @Override
     protected void succeeded(List<PurchaseBean> result) {
       super.succeeded(result);
-      result.forEach(purchase -> {
-        SERVICE.create(purchase);
-      });
+      result.forEach(SERVICE::create);
       progressPane.setVisible(false);
       refreshSummary();
       String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());

@@ -95,7 +95,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
   public abstract List<E> getEntities();
 
   private List<B> fromEntities() {
-    return getEntities().stream().map(entity -> fromEntity(entity)).collect(Collectors.toList());
+    return getEntities().stream().map(this::fromEntity).collect(Collectors.toList());
   }
 
   private void flush() {
