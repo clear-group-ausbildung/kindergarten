@@ -75,23 +75,6 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
   }
 
   /**
-   * Returns a list of all purchases for the vendor with the given
-   * {@code vendorId}.
-   * 
-   * @param vendorId
-   *          The id of the vendor
-   * @return The list of all purchases for the vendor
-   */
-  public List<PurchaseBean> getPurchasesByVendor(Integer vendorId) {
-    List<PurchaseBean> result = new ArrayList<>();
-    if (vendorId != null) {
-      result.addAll(getAll().stream().filter(purchaseBean -> purchaseBean.getVendorNumber().equals(vendorId)).collect(
-          Collectors.toList()));
-    }
-    return result;
-  }
-
-  /**
    * Calculates the profit for the kindergarten for the given list of purchases.
    * 
    * @param listPurchases
@@ -207,10 +190,6 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
       result = purchase.getItemPrice() * VENDOR_PAYOUT_RATIO;
     }
     return result;
-  }
-
-  public void dumpPurchases() {
-    Purchase.<Purchase>findAll().dump();
   }
 
 }
