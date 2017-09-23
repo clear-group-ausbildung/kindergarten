@@ -127,11 +127,12 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
   @Action
   public void printMultipleReceipts(ActionEvent e) {
-    LOGGER.fine("Printinging multiple receipt\u2026");
+    LOGGER.fine("Printing multiple receipt\u2026");
 
     VendorNumberChooserModel model = new VendorNumberChooserModel(getSelection(), value -> {
       if (value == CommandValue.OK) {
         // Do nothing specific
+        LOGGER.fine("Successfully printed receipts.");
       }
     });
 
