@@ -312,8 +312,6 @@ public final class IconFeedbackPanel extends JLayeredPane {
         } else {
           addFeedbackComponent(child, (JComponent) child, keyMap, xOffset, yOffset);
         }
-      } else if (isScrollPaneView(child)) {
-        // Just do nothing.
       } else if (child instanceof Container) {
         visitComponentTree((Container) child, keyMap, xOffset + child.getX(), yOffset + child.getY());
       }

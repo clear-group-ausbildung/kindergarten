@@ -81,11 +81,11 @@ class PurchaseHomeSummary extends AbstractView {
     itemSumLabel.setFont(bold18PtLabelFont);
     kindergartenProfitLabel.setFont(bold18PtLabelFont);
     vendorPayoutLabel.setFont(bold18PtLabelFont);
-    Font regurlar18PtFieldFont = itemCountLabel.getFont().deriveFont(18.0f);
-    itemCountField.setFont(regurlar18PtFieldFont);
-    itemSumField.setFont(regurlar18PtFieldFont);
-    kindergartenProfitField.setFont(regurlar18PtFieldFont);
-    vendorPayoutField.setFont(regurlar18PtFieldFont);
+    Font regular18PtFieldFont = itemCountLabel.getFont().deriveFont(18.0f);
+    itemCountField.setFont(regular18PtFieldFont);
+    itemSumField.setFont(regular18PtFieldFont);
+    kindergartenProfitField.setFont(regular18PtFieldFont);
+    vendorPayoutField.setFont(regular18PtFieldFont);
   }
 
 }

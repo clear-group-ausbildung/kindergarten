@@ -1,11 +1,8 @@
 package de.clearit.kindergarten.appliance.documents;
 
-import javax.swing.JComponent;
-
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.desktop.DesktopFrame;
-import com.jgoodies.desktop.spec.NavigationBarSpec;
 
 import de.clearit.kindergarten.desktop.DefaultAppliance;
 import de.clearit.kindergarten.desktop.DefaultDesktopFrame;

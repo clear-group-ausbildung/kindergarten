@@ -4,14 +4,11 @@ import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 
-import javax.swing.JComponent;
-
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopFrame;
 import com.jgoodies.desktop.DesktopManager;
-import com.jgoodies.desktop.spec.NavigationBarSpec;
 import com.jgoodies.jsdl.core.CommandValue;
 
 import de.clearit.kindergarten.desktop.DefaultAppliance;
@@ -73,12 +70,8 @@ public final class VendorAppliance extends DefaultAppliance {
     VendorHomeModel model = VendorHomeModel.getInstance();
     VendorHomeView view = VendorHomeView.getInstance();
 
-    DesktopFrame parent = null;
-    NavigationBarSpec navigationSpec = null;
-    JComponent statusPane = null;
-
-    return new DefaultDesktopFrame(parent, RESOURCES.getString("vendorHome.title"), false, this, null, model
-        .contextSpec(), navigationSpec, view.getPanel(), statusPane);
+    return new DefaultDesktopFrame(null, RESOURCES.getString("vendorHome.title"), false, this, null, model
+        .contextSpec(), null, view.getPanel(), null);
   }
 
   // Conversion *************************************************************
@@ -106,7 +99,7 @@ public final class VendorAppliance extends DefaultAppliance {
     }
 
     @Override
-    public Object parseObject(String source, ParsePosition pos) {
+    public Object parseObject(String source,  ParsePosition pos) {
       throw new UnsupportedOperationException("Can't parse.");
     }
 

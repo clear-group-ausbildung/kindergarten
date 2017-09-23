@@ -66,11 +66,11 @@ public final class ValidationSupport {
 
   // API ********************************************************************
 
-  public Validatable getValidatable() {
+  private Validatable getValidatable() {
     return validatable;
   }
 
-  public void setValidatable(Validatable newValidator) {
+  private void setValidatable(Validatable newValidator) {
     if (newValidator == null) {
       throw new NullPointerException("The Validatable must not be null.");
     }

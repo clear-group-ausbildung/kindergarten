@@ -1,13 +1,10 @@
 package de.clearit.kindergarten.appliance.purchase;
 
-import javax.swing.JComponent;
-
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopFrame;
 import com.jgoodies.desktop.DesktopManager;
-import com.jgoodies.desktop.spec.NavigationBarSpec;
 import com.jgoodies.jsdl.core.CommandValue;
 
 import de.clearit.kindergarten.desktop.DefaultAppliance;
@@ -69,12 +66,8 @@ public class PurchaseAppliance extends DefaultAppliance {
     PurchaseHomeModel model = PurchaseHomeModel.getInstance();
     PurchaseHomeView view = PurchaseHomeView.getInstance();
 
-    DesktopFrame parent = null;
-    NavigationBarSpec navigationSpec = null;
-    JComponent statusPane = null;
-
-    return new DefaultDesktopFrame(parent, RESOURCES.getString("purchaseHome.title"), false, this, null, model
-        .contextSpec(), navigationSpec, view.getPanel(), statusPane);
+    return new DefaultDesktopFrame(null, RESOURCES.getString("purchaseHome.title"), false, this, null, model
+        .contextSpec(), null, view.getPanel(), null);
   }
 
 }
