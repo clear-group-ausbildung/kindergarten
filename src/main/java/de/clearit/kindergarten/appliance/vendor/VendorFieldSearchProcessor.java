@@ -93,11 +93,12 @@ public final class VendorFieldSearchProcessor extends AbstractFieldSearchProcess
   public Object valueFor(Completion completion) {
     String displayString = completion.getDisplayString();
     int commaIndex = displayString.indexOf(',');
-    String[] name = new String[] {};
+    String[] name;
     if (commaIndex == -1) {
       // Input was in format "Ritter Mark"
       name = displayString.split(" ");
       // e.g. name = { "Ritter", "Mark };
+      return VendorService.getInstance().findByName(name[0], name[1]);
     }
     // Input was in format "Ritter, Mark"
     name = displayString.split(",");
