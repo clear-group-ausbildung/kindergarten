@@ -159,17 +159,16 @@ public class PurchaseBean extends Model {
 
   @Override
   public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("PurchaseBean [id=");
-    builder.append(id);
-    builder.append(", itemNumber=");
-    builder.append(itemNumber);
-    builder.append(", itemPrice=");
-    builder.append(itemPrice);
-    builder.append(", vendorNumber=");
-    builder.append(vendorNumber);
-    builder.append("]");
-    return builder.toString();
+    String builder = "PurchaseBean [id=" +
+        id +
+        ", itemNumber=" +
+        itemNumber +
+        ", itemPrice=" +
+        itemPrice +
+        ", vendorNumber=" +
+        vendorNumber +
+        "]";
+    return builder;
   }
 
 }

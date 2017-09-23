@@ -169,19 +169,18 @@ public final class VendorBean extends Model {
 
   @Override
   public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("VendorBean [id=");
-    builder.append(id);
-    builder.append(", vendorNumber=");
-    builder.append(vendorNumber);
-    builder.append(", firstName=");
-    builder.append(firstName);
-    builder.append(", lastName=");
-    builder.append(lastName);
-    builder.append(", phoneNumber=");
-    builder.append(phoneNumber);
-    builder.append("]");
-    return builder.toString();
+    String builder = "VendorBean [id=" +
+        id +
+        ", vendorNumber=" +
+        vendorNumber +
+        ", firstName=" +
+        firstName +
+        ", lastName=" +
+        lastName +
+        ", phoneNumber=" +
+        phoneNumber +
+        "]";
+    return builder;
   }
 
 }
