@@ -32,7 +32,7 @@ public final class VendorPreview extends AbstractView {
   // Instance Creation ******************************************************
 
   public VendorPreview(ValueModel vendorHolder) {
-    model = new PresentationModel<VendorBean>(vendorHolder);
+    model = new PresentationModel<>(vendorHolder);
   }
 
   // Building ***************************************************************

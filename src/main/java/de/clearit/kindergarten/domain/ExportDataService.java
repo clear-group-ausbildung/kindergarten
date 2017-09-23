@@ -51,7 +51,7 @@ public class ExportDataService {
 	 * @return list with {@link PayoffData} to create the receipts.
 	 */
 	public static List<PayoffData> getPayoffDataForVendors(List<VendorBean> pVendorList) {
-		List<PayoffData> payoffDataList = new ArrayList<PayoffData>();
+		List<PayoffData> payoffDataList = new ArrayList<>();
 
 		pVendorList.forEach(pVendor -> {
 			payoffDataList.add(getPayoffDataForVendor(pVendor));

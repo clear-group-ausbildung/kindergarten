@@ -42,7 +42,7 @@ public final class VendorFieldSearchProcessor extends AbstractFieldSearchProcess
     String trimmedContent = content.trim();
     sleep(1000);
     Format format = new VendorAppliance.ExtrasHTMLFormat();
-    List<VendorBean> vendors = new ArrayList<VendorBean>(VendorService.getInstance().getAll());
+    List<VendorBean> vendors = new ArrayList<>(VendorService.getInstance().getAll());
 
     // Check the name
     for (Iterator<VendorBean> i = vendors.iterator(); i.hasNext();) {

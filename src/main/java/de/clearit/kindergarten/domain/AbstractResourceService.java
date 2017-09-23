@@ -30,7 +30,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
       Base.open("org.sqlite.JDBC", "jdbc:sqlite:./kindergarten.sqlite", "", "");
       connectionEstablished = true;
     }
-    beans = new ArrayListModel<B>(fromEntities());
+    beans = new ArrayListModel<>(fromEntities());
   }
 
   /**
