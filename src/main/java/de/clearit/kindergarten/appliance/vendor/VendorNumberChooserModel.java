@@ -39,7 +39,6 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
 
   private static final long FIFTEEN_SECONDS = 15000;
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorNumberChooserModel.class);
-  private static final PurchaseService PURCHASE_SERVICE = PurchaseService.getInstance();
   private static final VendorService VENDOR_SERVICE = VendorService.getInstance();
 
   // Instance Fields ********************************************************
