@@ -9,14 +9,14 @@ import java.util.HashMap;
  */
 public class PayoffData {
 
-	private Integer vendorNumber;
-	private String firstName;
-	private String lastName;
-	private Double turnover;
-	private Double profit;
-	private Double payment;
-	private Integer totalSoldItems;
-	private HashMap<Integer, Double> soldItemNumbersPricesMap;
+	private final Integer vendorNumber;
+	private final String firstName;
+	private final String lastName;
+	private final Double turnover;
+	private final Double profit;
+	private final Double payment;
+	private final Integer totalSoldItems;
+	private final HashMap<Integer, Double> soldItemNumbersPricesMap;
 
 	public PayoffData(Integer pVendorNumber, String pFirstName, String pLastName, Double pTurnover, Double pProfit,
 			Double pPayment, Integer pTotalSoldItems, HashMap<Integer, Double> pSoldItemNumbersPricesMap) {
