@@ -101,13 +101,13 @@ public final class VendorAppliance extends DefaultAppliance {
       }
       VendorBean vendor = (VendorBean) obj;
       toAppendTo.append("<html>");
-      toAppendTo.append("Verk&auml;ufernummer: " + vendor.getVendorNumber());
+      toAppendTo.append("Verk&auml;ufernummer: ").append(vendor.getVendorNumber());
       toAppendTo.append("<br>");
-      toAppendTo.append("Vorname: " + vendor.getFirstName());
+      toAppendTo.append("Vorname: ").append(vendor.getFirstName());
       toAppendTo.append("<br>");
-      toAppendTo.append("Nachname: " + vendor.getLastName());
+      toAppendTo.append("Nachname: ").append(vendor.getLastName());
       toAppendTo.append("<br>");
-      toAppendTo.append("Telefonnummer: " + vendor.getPhoneNumber());
+      toAppendTo.append("Telefonnummer: ").append(vendor.getPhoneNumber());
       toAppendTo.append("</html>");
       return toAppendTo;
     }
@@ -129,13 +129,13 @@ public final class VendorAppliance extends DefaultAppliance {
         return toAppendTo;
       }
       VendorBean vendor = (VendorBean) obj;
-      toAppendTo.append("Verk&auml;ufernummer: " + vendor.getVendorNumber());
+      toAppendTo.append("Verk&auml;ufernummer: ").append(vendor.getVendorNumber());
       toAppendTo.append("\n");
-      toAppendTo.append("Vorname: " + vendor.getFirstName());
+      toAppendTo.append("Vorname: ").append(vendor.getFirstName());
       toAppendTo.append("\n");
-      toAppendTo.append("Nachname: " + vendor.getLastName());
+      toAppendTo.append("Nachname: ").append(vendor.getLastName());
       toAppendTo.append("\n");
-      toAppendTo.append("Telefonnummer: " + vendor.getPhoneNumber());
+      toAppendTo.append("Telefonnummer: ").append(vendor.getPhoneNumber());
       return toAppendTo;
     }
 
