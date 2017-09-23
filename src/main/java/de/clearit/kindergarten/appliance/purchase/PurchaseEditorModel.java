@@ -29,7 +29,7 @@ import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorService;
 
-public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements FormPaneModel {
+class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements FormPaneModel {
 
   private static final long serialVersionUID = 1L;
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorModel.class);
@@ -61,7 +61,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
   // Initialization *********************************************************
 
-  protected void initModels() {
+  private void initModels() {
     selectionInList = new SelectionInList<>();
     if (selectionInList.getList().size() > 0) {
       selectionInList.setSelectionIndex(0);
@@ -69,7 +69,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     handleSelectionChange(selectionInList.hasSelection());
   }
 
-  protected void initPresentationLogic() {
+  private void initPresentationLogic() {
     getSelectionInList().addPropertyChangeListener(SelectionInList.PROPERTYNAME_SELECTION, new SelectionChangeHandler(
         this));
   }
@@ -80,7 +80,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     return selectionInList;
   }
 
-  public PurchaseBean getSelection() {
+  private PurchaseBean getSelection() {
     return getSelectionInList().getSelection();
   }
 
@@ -94,11 +94,11 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
   // Event Handling *********************************************************
 
-  protected void handleSelectionChange(final boolean hasSelection) {
+  private void handleSelectionChange(final boolean hasSelection) {
     handleSelectionChangeEditDelete(hasSelection);
   }
 
-  protected void handleSelectionChangeEditDelete(final boolean hasSelection) {
+  private void handleSelectionChangeEditDelete(final boolean hasSelection) {
     setActionEnabled(ACTION_REMOVE_LINE_ITEM, hasSelection);
   }
 

@@ -22,10 +22,10 @@ public final class ImageBackgroundPanel extends JPanel {
 
   // Instance Creation ******************************************************
 
-  public ImageBackgroundPanel(Image image, int sx1, int sy1, int sx2, int sy2) {
+  private ImageBackgroundPanel(Image image, int sx2, int sy2) {
     this.image = image;
-    this.sx1 = sx1;
-    this.sy1 = sy1;
+    this.sx1 = 0;
+    this.sy1 = 0;
     this.sx2 = sx2;
     this.sy2 = sy2;
   }
@@ -33,7 +33,7 @@ public final class ImageBackgroundPanel extends JPanel {
   public static ImageBackgroundPanel createFrom(Image image) {
     int width = image.getWidth(null);
     int height = image.getHeight(null);
-    return new ImageBackgroundPanel(image, 0, 0, width, height);
+    return new ImageBackgroundPanel(image, width, height);
   }
 
   // Painting ***************************************************************

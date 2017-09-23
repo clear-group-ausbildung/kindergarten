@@ -13,7 +13,7 @@ import com.jgoodies.uif2.util.TableUtils;
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.appliance.HomeViewBuilder;
 
-public class PurchaseHomeView extends AbstractView {
+class PurchaseHomeView extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseHomeView.class);
 

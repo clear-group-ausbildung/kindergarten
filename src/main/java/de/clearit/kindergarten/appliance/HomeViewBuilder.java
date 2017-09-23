@@ -38,7 +38,7 @@ public class HomeViewBuilder {
     setTitleLabel(JSDLFactory.createHeaderLabel(markedTitle));
   }
 
-  public void setTitleLabel(JComponent titleLabel) {
+  private void setTitleLabel(JComponent titleLabel) {
     this.titleLabel = titleLabel;
   }
 
@@ -71,7 +71,7 @@ public class HomeViewBuilder {
     setListBar(builder.getPanel());
   }
 
-  public void setListBar(JComponent listBar) {
+  private void setListBar(JComponent listBar) {
     this.listBar = listBar;
   }
 

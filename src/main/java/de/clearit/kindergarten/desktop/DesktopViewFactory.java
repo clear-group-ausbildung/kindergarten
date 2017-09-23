@@ -38,7 +38,7 @@ import de.clearit.kindergarten.desktop.component.ToolBarMenuButton;
 /**
  * The view factory for the desktop.
  */
-public final class DesktopViewFactory {
+final class DesktopViewFactory {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(DesktopViewFactory.class);
 
@@ -91,7 +91,7 @@ public final class DesktopViewFactory {
     return button;
   }
 
-  static JButton createToolBarMenuButton(JMenu menu) {
+  private static JButton createToolBarMenuButton(JMenu menu) {
     JButton button = new ToolBarMenuButton(menu.getAction(), menu.getPopupMenu());
     Object accelerator = menu.getAction().getValue(Action.ACCELERATOR_KEY);
     if (accelerator != null) {
@@ -251,7 +251,7 @@ public final class DesktopViewFactory {
     private final Color sideColor;
     private final Color midColor;
 
-    public HorizontalGradientPanel(Color sideColor, Color midColor) {
+    HorizontalGradientPanel(Color sideColor, Color midColor) {
       this.sideColor = sideColor;
       this.midColor = midColor;
     }

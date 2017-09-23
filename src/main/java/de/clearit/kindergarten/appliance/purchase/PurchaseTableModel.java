@@ -8,7 +8,7 @@ import com.jgoodies.binding.adapter.AbstractTableAdapter;
 
 import de.clearit.kindergarten.domain.PurchaseBean;
 
-public class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
+class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
 
   private static final long serialVersionUID = 1L;
 

@@ -167,7 +167,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    *          The purchase to calculate the kindergarten profit for
    * @return The profit for the kindergarten
    */
-  public Double getKindergartenProfitByPurchase(PurchaseBean purchase) {
+  private Double getKindergartenProfitByPurchase(PurchaseBean purchase) {
     Double result = 0.0d;
     if (purchase != null && purchase.getItemPrice() != null) {
       result = purchase.getItemPrice() * KINDERGARTEN_PROFIT_RATIO;
@@ -182,7 +182,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    *          The purchase to calculate the vendor payout amount for
    * @return The vendor payout amount
    */
-  public Double getVendorPayoutByPurchase(PurchaseBean purchase) {
+  private Double getVendorPayoutByPurchase(PurchaseBean purchase) {
     Double result = 0.0d;
     if (purchase != null && purchase.getItemPrice() != null) {
       result = purchase.getItemPrice() * VENDOR_PAYOUT_RATIO;

@@ -37,7 +37,7 @@ public class PurchaseEditorViewBuilder extends AbstractView {
     setTableTitleLabel(JSDLFactory.createHeaderLabel(markedTitle));
   }
 
-  public void setTableTitleLabel(final JComponent tableTitleLabel) {
+  private void setTableTitleLabel(final JComponent tableTitleLabel) {
     this.tableTitleLabel = tableTitleLabel;
   }
 
@@ -66,7 +66,7 @@ public class PurchaseEditorViewBuilder extends AbstractView {
     setListBar(builder.getPanel());
   }
 
-  public void setListBar(final JComponent listBar) {
+  private void setListBar(final JComponent listBar) {
     this.listBar = listBar;
   }
 

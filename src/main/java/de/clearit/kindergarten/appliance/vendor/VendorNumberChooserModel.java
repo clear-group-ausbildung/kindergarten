@@ -28,7 +28,7 @@ import de.clearit.kindergarten.domain.ExportExcel;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorService;
 
-public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
+class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
 
   private static final long serialVersionUID = 1L;
 
@@ -62,14 +62,14 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
 
   // Initialization *********************************************************
 
-  protected void initModels() {
+  private void initModels() {
     if (selectionInList.getList().size() > 0) {
       selectionInList.setSelectionIndex(0);
     }
     handleSelectionChange(selectionInList.hasSelection());
   }
 
-  protected void initPresentationLogic() {
+  private void initPresentationLogic() {
     getSelectionInList().addPropertyChangeListener(SelectionInList.PROPERTYNAME_SELECTION, new SelectionChangeHandler(
         this));
   }
@@ -84,17 +84,17 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
     return selectionInList;
   }
 
-  public VendorBean getSelection() {
+  private VendorBean getSelection() {
     return getSelectionInList().getSelection();
   }
 
   // Event Handling *********************************************************
 
-  protected void handleSelectionChange(final boolean hasSelection) {
+  private void handleSelectionChange(final boolean hasSelection) {
     handleSelectionChangeEditDelete(hasSelection);
   }
 
-  protected void handleSelectionChangeEditDelete(final boolean hasSelection) {
+  private void handleSelectionChangeEditDelete(final boolean hasSelection) {
     setActionEnabled(ACTION_REMOVE_VENDOR_NUMBER, hasSelection);
   }
 

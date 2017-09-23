@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  *
  * @author Marco Jaeger
  */
-public class ExportDataService {
+class ExportDataService {
 
 	/**
 	 * Returns the {@link PayoffData} for the given {@link VendorBean}.

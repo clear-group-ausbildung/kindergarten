@@ -15,7 +15,7 @@ import de.clearit.kindergarten.desktop.DesktopView;
  * in, logging out) and the main desktop view.
  *
  */
-public final class MainView extends AbstractView {
+final class MainView extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(MainView.class);
 

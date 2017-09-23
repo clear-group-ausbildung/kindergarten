@@ -27,7 +27,7 @@ import com.jgoodies.uif2.util.UIFStringUtils;
  * @see QuickSearchManager
  * @see Activatable
  */
-public final class DesktopQuickSearchProcessor implements QuickSearchProcessor {
+final class DesktopQuickSearchProcessor implements QuickSearchProcessor {
 
   // QuickSearchProcessor Implementation ************************************
 

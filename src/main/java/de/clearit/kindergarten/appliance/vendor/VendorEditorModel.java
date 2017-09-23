@@ -17,7 +17,7 @@ import de.clearit.kindergarten.domain.VendorBean;
 /**
  * The editor model for the vendor.
  */
-public final class VendorEditorModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
+final class VendorEditorModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
 
   private static final long serialVersionUID = 1L;
 

@@ -24,7 +24,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
 
   private final ObservableList<B> beans;
 
-  public AbstractResourceService() {
+  AbstractResourceService() {
     super();
     if (!connectionEstablished) {
       Base.open("org.sqlite.JDBC", "jdbc:sqlite:./kindergarten.sqlite", "", "");
@@ -50,7 +50,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
    *          the camelCase formatted String to be converted
    * @return the snake_case converted String
    */
-  public static String toSnakeCase(String camelCase) {
+  static String toSnakeCase(String camelCase) {
     return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camelCase);
   }
 
@@ -92,7 +92,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
    * 
    * @return the list of entities
    */
-  public abstract List<E> getEntities();
+  protected abstract List<E> getEntities();
 
   private List<B> fromEntities() {
     return getEntities().stream().map(this::fromEntity).collect(Collectors.toList());

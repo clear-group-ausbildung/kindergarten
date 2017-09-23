@@ -22,7 +22,7 @@ public abstract class DefaultAppliance extends AbstractAppliance {
 
   // Quick Search ***********************************************************
 
-  protected final String quickSearchName() {
+  private String quickSearchName() {
     return quickSearchName;
   }
 

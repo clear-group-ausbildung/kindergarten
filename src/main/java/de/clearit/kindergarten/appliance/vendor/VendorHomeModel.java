@@ -146,7 +146,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     private final TaskPane progressPane;
     private final VendorBean vendor;
 
-    public PrintSingleReceiptTask(VendorBean vendor) {
+    PrintSingleReceiptTask(VendorBean vendor) {
       super(BlockingScope.APPLICATION);
       TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Der Beleg wird gedruckt.", CommandValue.OK);
       infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
@@ -182,7 +182,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
     private final TaskPane progressPane;
 
-    public PrintAllReceiptsTask() {
+    PrintAllReceiptsTask() {
       super(BlockingScope.APPLICATION);
       TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Alle Belege werden gedruckt.", CommandValue.OK);
       infoPane.setPreferredWidth(PreferredWidth.MEDIUM);

@@ -161,7 +161,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     private final TaskPane progressPane;
     private final File importFile;
 
-    public ImportPurchasesTask() {
+    ImportPurchasesTask() {
       super(BlockingScope.APPLICATION);
       importFile = getImportPath();
       TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Der Verkaufsimport wird gestartet.", CommandValue.OK);
@@ -214,7 +214,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     private final List<PurchaseBean> purchaseList;
     private final String exportPath;
 
-    public ExportPurchasesTask() {
+    ExportPurchasesTask() {
       super(BlockingScope.APPLICATION);
       exportPath = getExportPath() + ".json";
       TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Der Verkaufsexport wird gestartet.", CommandValue.OK);

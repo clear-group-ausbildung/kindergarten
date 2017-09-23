@@ -46,11 +46,11 @@ public final class ToolBarMenuButton extends AbstractToolBarButton {
 
   // Accessors **************************************************************
 
-  public JPopupMenu getMenu() {
+  private JPopupMenu getMenu() {
     return popupMenu;
   }
 
-  public void setMenu(JPopupMenu popupMenu) {
+  private void setMenu(JPopupMenu popupMenu) {
     if (popupMenu == null) {
       throw new IllegalArgumentException("The popup menu must not be null.");
     }

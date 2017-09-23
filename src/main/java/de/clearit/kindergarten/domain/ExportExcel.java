@@ -38,7 +38,7 @@ public class ExportExcel {
 	private static final Logger LOGGER = Logger.getLogger(ExportExcel.class.getName());
 	private static final ExportExcel INSTANCE = new ExportExcel();
 
-	ExportExcel() {
+	private ExportExcel() {
 	}
 
 	public static ExportExcel getInstance() {
@@ -48,12 +48,12 @@ public class ExportExcel {
 	private XSSFWorkbook wb;
 	private XSSFSheet sheet;
 
-	XSSFCellStyle currencyStyle;
-	XSSFCellStyle currencyResultStyle;
-	XSSFCellStyle dateStyle;
-	XSSFCellStyle numberStyle;
-	XSSFCellStyle priceStyle;
-	XSSFCellStyle vendorHeaderStyle;
+	private XSSFCellStyle currencyStyle;
+	private XSSFCellStyle currencyResultStyle;
+	private XSSFCellStyle dateStyle;
+	private XSSFCellStyle numberStyle;
+	private XSSFCellStyle priceStyle;
+	private XSSFCellStyle vendorHeaderStyle;
 
 	/**
 	 * Creates an receipt in excel for each existing vendor.

@@ -32,44 +32,12 @@ public final class VendorBean extends Model {
    * (String), zero (Integer) or false(Boolean)) values for the attributes.
    */
   public VendorBean() {
-    this("", "");
-  }
-
-  /**
-   * Constructor, creates a new {@link VendorBean} with the given attributes and
-   * default (empty (String), zero (Integer) or false(Boolean)) values for the
-   * remaining attributes.
-   * 
-   * @param firstName
-   *          the first name
-   * @param lastName
-   *          the last name
-   */
-  public VendorBean(String firstName, String lastName) {
-    this(0, null, firstName, lastName, "");
-  }
-
-  /**
-   * Constructor; creates a new {@link VendorBean} with the given attributes.
-   * 
-   * @param id
-   *          the id
-   * @param vendorNumber
-   *          the vendor number
-   * @param firstName
-   *          the first name
-   * @param lastName
-   *          the last name
-   * @param phoneNumber
-   *          the phone number
-   */
-  public VendorBean(Integer id, Integer vendorNumber, String firstName, String lastName, String phoneNumber) {
     super();
-    this.id = id;
-    this.vendorNumber = vendorNumber;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.phoneNumber = phoneNumber;
+    this.id = 0;
+    this.vendorNumber = null;
+    this.firstName = "";
+    this.lastName = "";
+    this.phoneNumber = "";
   }
 
   // Accessors **************************************************************

@@ -40,7 +40,7 @@ abstract class AbstractToolBarButton extends JButton {
 
   // Misc *******************************************************************
 
-  protected Border getInsetsBorder() {
+  Border getInsetsBorder() {
     return new EmptyBorder(2, 4, 2, 4);
   }
 

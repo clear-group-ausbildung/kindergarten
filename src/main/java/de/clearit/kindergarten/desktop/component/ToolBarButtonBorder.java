@@ -16,7 +16,7 @@ final class ToolBarButtonBorder extends AbstractBorder {
 
   private static final long serialVersionUID = 1L;
 
-  static final Insets INSETS = new Insets(4, 4, 4, 4);
+  private static final Insets INSETS = new Insets(4, 4, 4, 4);
 
   private final Image rolloverImage;
   private final int rolloverWidth;
@@ -25,7 +25,7 @@ final class ToolBarButtonBorder extends AbstractBorder {
   private final int pressedWidth;
   private final int pressedHeight;
 
-  protected ToolBarButtonBorder(Image rolloverImage, Image pressedImage) {
+  ToolBarButtonBorder(Image rolloverImage, Image pressedImage) {
     this.rolloverImage = rolloverImage;
     this.rolloverWidth = rolloverImage.getWidth(null);
     this.rolloverHeight = rolloverImage.getHeight(null);

@@ -60,7 +60,7 @@ public final class NavigationButton extends JButton {
     super.paintComponent(g);
   }
 
-  protected void paintPressed(Graphics g) {
+  private void paintPressed(Graphics g) {
     Color startColor = RESOURCES.getColor("NavigationButton.pressed.gradient.start");
     Color endColor = RESOURCES.getColor("NavigationButton.pressed.gradient.stop");
     paintGradient(g, startColor, endColor);
