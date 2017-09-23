@@ -43,6 +43,7 @@ class VendorNumberChooserView extends AbstractView {
     return pane;
   }
 
+  @SuppressWarnings("unchecked")
   private void initComponents() {
     addButton = new JButton(model.getAction(VendorNumberChooserModel.ACTION_ADD_VENDOR_NUMBER));
     addButton.addActionListener(e -> vendorBox.requestFocusInWindow());

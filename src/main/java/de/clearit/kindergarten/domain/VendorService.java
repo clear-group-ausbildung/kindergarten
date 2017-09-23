@@ -36,6 +36,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
    * 
    * @return the ListModel
    */
+  @SuppressWarnings("unchecked")
   public ListModel<VendorBean> getListModel() {
     return (ListModel<VendorBean>) getAll();
   }

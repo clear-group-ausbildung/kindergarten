@@ -41,6 +41,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    * 
    * @return the ListModel
    */
+  @SuppressWarnings("unchecked")
   public ListModel<PurchaseBean> getListModel() {
     return (ListModel<PurchaseBean>) getAll();
   }
