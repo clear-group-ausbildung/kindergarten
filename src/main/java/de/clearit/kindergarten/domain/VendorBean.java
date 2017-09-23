@@ -137,7 +137,7 @@ public final class VendorBean extends Model {
 
   @Override
   public String toString() {
-    String builder = "VendorBean [id=" +
+    return "VendorBean [id=" +
         id +
         ", vendorNumber=" +
         vendorNumber +
@@ -148,7 +148,6 @@ public final class VendorBean extends Model {
         ", phoneNumber=" +
         phoneNumber +
         "]";
-    return builder;
   }
 
 }

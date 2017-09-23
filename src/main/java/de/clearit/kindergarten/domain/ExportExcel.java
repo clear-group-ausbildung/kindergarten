@@ -289,12 +289,11 @@ public class ExportExcel {
 	}
 
 	private int createItemRows(int pRowCount, int pColIndex, HashMap<Integer, Double> pSoldItemMap) {
-		int colIndexNumber = pColIndex;
-		int colIndexPrice = colIndexNumber + 1;
+		int colIndexPrice = pColIndex + 1;
 		for (Integer key : pSoldItemMap.keySet()) {
 			XSSFRow tempRow = sheet.createRow(pRowCount);
 
-			XSSFCell numberCell = tempRow.createCell(colIndexNumber);
+			XSSFCell numberCell = tempRow.createCell(pColIndex);
 			numberCell.setCellValue(key);
 			numberCell.setCellStyle(numberStyle);
 

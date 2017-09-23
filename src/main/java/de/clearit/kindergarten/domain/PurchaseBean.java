@@ -159,7 +159,7 @@ public class PurchaseBean extends Model {
 
   @Override
   public String toString() {
-    String builder = "PurchaseBean [id=" +
+    return "PurchaseBean [id=" +
         id +
         ", itemNumber=" +
         itemNumber +
@@ -168,7 +168,6 @@ public class PurchaseBean extends Model {
         ", vendorNumber=" +
         vendorNumber +
         "]";
-    return builder;
   }
 
 }

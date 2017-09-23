@@ -33,13 +33,11 @@ class ExportDataService {
 			soldItemNumbersPricesMap.put(purchase.getItemNumber(), purchase.getItemPrice());
 		}
 
-		PayoffData payoffData = new PayoffData(pVendor.getId(), pVendor.getFirstName(), pVendor.getLastName(),
+		return new PayoffData(pVendor.getId(), pVendor.getFirstName(), pVendor.getLastName(),
 				purchaseService.getItemSumByPurchases(purchaseList),
 				purchaseService.getKindergartenProfitByPurchases(purchaseList),
 				purchaseService.getVendorPayoutByPurchases(purchaseList),
 				purchaseService.getItemCountByPurchases(purchaseList), soldItemNumbersPricesMap);
-
-		return payoffData;
 	}
 
 	/**
