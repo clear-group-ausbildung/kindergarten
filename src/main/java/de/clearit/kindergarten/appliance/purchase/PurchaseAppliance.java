@@ -42,12 +42,7 @@ public class PurchaseAppliance extends DefaultAppliance {
 
   public void newPurchase(String title, final CommitCallback<PurchaseBean> outerCallback) {
     final PurchaseBean newPurchase = new PurchaseBean();
-    final CommitCallback<CommandValue> callback = new CommitCallback<CommandValue>() {
-      @Override
-      public void committed(CommandValue result) {
-        outerCallback.committed(result == CommandValue.OK ? newPurchase : null);
-      }
-    };
+    final CommitCallback<CommandValue> callback = result -> outerCallback.committed(result == CommandValue.OK ? newPurchase : null);
     PurchaseEditorModel model = new PurchaseEditorModel(newPurchase, callback);
     openPurchaseEditor(title, model, true);
   }

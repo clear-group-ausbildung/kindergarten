@@ -37,12 +37,7 @@ abstract class AbstractToolBarButton extends JButton {
     pressedBackground = RESOURCES.getImage("ToolBarButton.pressed");
     setBorder(new CompoundBorder(new ToolBarButtonBorder(rolloverBackground, pressedBackground), getInsetsBorder()));
     setForeground(getCurrentColor());
-    getModel().addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
-        setForeground(getCurrentColor());
-      }
-    });
+    getModel().addChangeListener(e -> setForeground(getCurrentColor()));
   }
 
   // Misc *******************************************************************

@@ -41,12 +41,7 @@ public final class NavigationButton extends JButton {
     setHorizontalAlignment(SwingConstants.LEADING);
     setBorder(new CompoundBorder(new NavigationButtonBorder(), new EmptyBorder(2, 4, 2, 4)));
     setForeground(getCurrentColor());
-    getModel().addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
-        setForeground(getCurrentColor());
-      }
-    });
+    getModel().addChangeListener(e -> setForeground(getCurrentColor()));
   }
 
   @Override

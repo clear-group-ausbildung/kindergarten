@@ -95,15 +95,12 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   }
 
   private void editItem(EventObject e, String title, final VendorBean vendor, final boolean newItem) {
-    VendorEditorModel model = new VendorEditorModel(vendor, new CommitCallback<CommandValue>() {
-      @Override
-      public void committed(CommandValue value) {
-        if (value == CommandValue.OK) {
-          if (newItem) {
-            SERVICE.create(vendor);
-          } else {
-            SERVICE.update(vendor);
-          }
+    VendorEditorModel model = new VendorEditorModel(vendor, value -> {
+      if (value == CommandValue.OK) {
+        if (newItem) {
+          SERVICE.create(vendor);
+        } else {
+          SERVICE.update(vendor);
         }
       }
     });
@@ -133,12 +130,9 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   public void printMultipleReceipts(ActionEvent e) {
     LOGGER.fine("Printinging multiple receipt\u2026");
 
-    VendorNumberChooserModel model = new VendorNumberChooserModel(getSelection(), new CommitCallback<CommandValue>() {
-      @Override
-      public void committed(CommandValue value) {
-        if (value == CommandValue.OK) {
-          // Do nothing specific
-        }
+    VendorNumberChooserModel model = new VendorNumberChooserModel(getSelection(), value -> {
+      if (value == CommandValue.OK) {
+        // Do nothing specific
       }
     });
 
