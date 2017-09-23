@@ -71,7 +71,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
 
   @Override
   public List<Purchase> getEntities() {
-    return Purchase.<Purchase>findAll();
+    return Purchase.findAll();
   }
 
   /**

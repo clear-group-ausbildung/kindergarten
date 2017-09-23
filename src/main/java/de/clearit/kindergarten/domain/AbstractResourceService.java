@@ -69,7 +69,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
 
   @Override
   public B getById(Integer id) {
-    E entity = E.<E>findById(id);
+    E entity = E.findById(id);
     return fromEntity(entity);
   }
 
