@@ -65,7 +65,7 @@ public class PurchaseEditorSummary extends AbstractView {
     Font bold18PtLabelFont = itemCountLabel.getFont().deriveFont(Font.BOLD, 18);
     itemCountLabel.setFont(bold18PtLabelFont);
     itemSumLabel.setFont(bold18PtLabelFont);
-    Font regurlar18PtFieldFont = itemCountLabel.getFont().deriveFont(18);
+    Font regurlar18PtFieldFont = itemCountLabel.getFont().deriveFont(18.0f);
     itemCountField.setFont(regurlar18PtFieldFont);
     itemSumField.setFont(regurlar18PtFieldFont);
   }
