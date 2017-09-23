@@ -25,7 +25,6 @@ import com.jgoodies.uif2.util.TextComponentUtils;
 
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.ExportExcel;
-import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorService;
 

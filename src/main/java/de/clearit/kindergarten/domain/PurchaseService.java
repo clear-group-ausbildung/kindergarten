@@ -1,8 +1,6 @@
 package de.clearit.kindergarten.domain;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.ListModel;
 

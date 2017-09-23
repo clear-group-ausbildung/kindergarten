@@ -1,9 +1,7 @@
 package de.clearit.kindergarten.appliance.vendor;
 
 import java.awt.Color;
-import java.awt.Component;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JList;
