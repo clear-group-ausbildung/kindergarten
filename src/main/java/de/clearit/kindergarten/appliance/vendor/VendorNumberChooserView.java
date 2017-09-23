@@ -74,20 +74,4 @@ public class VendorNumberChooserView extends AbstractView {
     return builder.getPanel();
   }
 
-  private static final class VendorNumberListCellRenderer extends DefaultListCellRenderer {
-
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-        boolean cellHasFocus) {
-      Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-      Integer vendorNumber = (Integer) value;
-      setText(vendorNumber == null ? "" : vendorNumber.toString());
-      return component;
-    }
-
-  }
-
 }
