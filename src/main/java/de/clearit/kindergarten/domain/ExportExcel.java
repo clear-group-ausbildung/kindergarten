@@ -176,7 +176,7 @@ public class ExportExcel {
 	}
 
 	private void fillInPlaceholdersForMultipleVendorNumbers(List<PayoffData> pPayoffDataList) {
-		StringBuffer vendorNumbers = new StringBuffer();
+		StringBuilder vendorNumbers = new StringBuilder();
 		String firstName = "";
 		String lastName = "";
 		Integer totalSoldItems = 0;
@@ -324,7 +324,7 @@ public class ExportExcel {
 
 	private String getDateiname(PayoffData pPayoffData) {
 		String folder = System.getProperty("user.home") + "/Basar Abrechnungen";
-		StringBuffer dateiName = new StringBuffer();
+		StringBuilder dateiName = new StringBuilder();
 		if (!Files.isDirectory(Paths.get(folder))) {
 			try {
 				Files.createDirectory(Paths.get(folder));

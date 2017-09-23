@@ -177,7 +177,7 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
     infoPane.showDialog(e, "Belegedruck");
 
     List<VendorBean> vendorList = getSelectionInList().getList();
-    StringBuffer vendorNumbers = new StringBuffer();
+    StringBuilder vendorNumbers = new StringBuilder();
     Iterator<VendorBean> iter = vendorList.iterator();
     while (iter.hasNext()) {
       vendorNumbers.append(iter.next().getVendorNumber());
