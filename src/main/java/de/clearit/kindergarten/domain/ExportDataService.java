@@ -53,9 +53,7 @@ public class ExportDataService {
 	public static List<PayoffData> getPayoffDataForVendors(List<VendorBean> pVendorList) {
 		List<PayoffData> payoffDataList = new ArrayList<>();
 
-		pVendorList.forEach(pVendor -> {
-			payoffDataList.add(getPayoffDataForVendor(pVendor));
-		});
+		pVendorList.forEach(pVendor -> payoffDataList.add(getPayoffDataForVendor(pVendor)));
 
 		return payoffDataList;
 	}
