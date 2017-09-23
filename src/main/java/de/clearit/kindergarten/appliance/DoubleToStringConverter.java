@@ -21,7 +21,7 @@ public class DoubleToStringConverter extends AbstractConverter {
   public Object convertFromSubject(Object subjectValue) {
     String result = "";
     if (subjectValue != null) {
-      result = ((Double) subjectValue).toString();
+      result = subjectValue.toString();
     }
     return result;
   }

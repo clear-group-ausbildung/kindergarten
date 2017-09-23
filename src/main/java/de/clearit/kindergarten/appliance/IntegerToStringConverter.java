@@ -21,7 +21,7 @@ public class IntegerToStringConverter extends AbstractConverter {
   public Object convertFromSubject(Object subjectValue) {
     String result = "";
     if (subjectValue != null) {
-      result = ((Integer) subjectValue).toString();
+      result = subjectValue.toString();
     }
     return result;
   }
