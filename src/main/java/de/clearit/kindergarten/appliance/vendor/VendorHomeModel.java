@@ -11,7 +11,6 @@ import com.jgoodies.application.Application;
 import com.jgoodies.application.BlockingScope;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.application.Task;
-import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopFrame;
 import com.jgoodies.desktop.DesktopManager;
 import com.jgoodies.jsdl.core.CommandValue;

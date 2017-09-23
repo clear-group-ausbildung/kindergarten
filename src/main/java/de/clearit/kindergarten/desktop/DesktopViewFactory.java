@@ -1,12 +1,10 @@
 package de.clearit.kindergarten.desktop;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.Rectangle;
 
 import javax.swing.Action;
@@ -15,7 +13,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
-import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 
 import com.jgoodies.application.Application;
@@ -34,7 +31,6 @@ import com.jgoodies.forms.layout.Sizes;
 import com.jgoodies.uif2.component.GradientSeparator;
 import com.jgoodies.uif2.util.ComponentUtils;
 
-import de.clearit.kindergarten.desktop.component.ImageBackgroundPanel;
 import de.clearit.kindergarten.desktop.component.NavigationButton;
 import de.clearit.kindergarten.desktop.component.ToolBarButton;
 import de.clearit.kindergarten.desktop.component.ToolBarMenuButton;
