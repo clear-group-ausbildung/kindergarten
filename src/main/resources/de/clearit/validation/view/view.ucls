@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="de.clearit.validation.view.ValidationSupport.DelayedValidationHandler" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/validation/view/ValidationSupport.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="278" x="839" y="536"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="de.clearit.validation.view.IconFeedbackPanel.ValidationResultChangeHandler" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/validation/view/IconFeedbackPanel.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="240" x="41" y="536"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="de.clearit.validation.view.ValidationSupport" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/validation/view/ValidationSupport.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="315" width="307" x="724" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="de.clearit.validation.view.IconFeedbackPanel" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/validation/view/IconFeedbackPanel.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="459" width="465" x="181" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="de.clearit.validation.view.IconFeedbackPanel.SimpleLayout" project="kindergarten" 
+    file="/kindergarten/src/main/java/de/clearit/validation/view/IconFeedbackPanel.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="171" width="247" x="321" y="536"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="de.clearit.validation.view.ValidationSupport.ValidationWorker" 
+    project="kindergarten" file="/kindergarten/src/main/java/de/clearit/validation/view/ValidationSupport.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="191" x="608" y="536"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <nesting id="7">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </nesting>  
+  <nesting id="8">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <nesting id="9">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="5"/>  
+  </nesting>  
+  <nesting id="10">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
