@@ -69,3 +69,11 @@ tasks.withType(JavaExec) {
         jvmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9099'
     }
 }
+
+distZip {
+    into(project.name + '-' + project.version + '/bin') {
+        from '.'
+        include 'kindergarten.sqlite'
+        include 'abrechnung_template.xlsx'
+    }
+}
