@@ -2,14 +2,19 @@ package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.swing.JFileChooser;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.jgoodies.binding.list.SelectionInList;
+import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorService;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.jgoodies.application.Action;
@@ -40,7 +45,9 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   private static final Logger LOGGER = Logger.getLogger(PurchaseHomeModel.class.getName());
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseHomeModel.class);
   private static final PurchaseService SERVICE = PurchaseService.getInstance();
+  private static final VendorService VENDOR_SERVICE = VendorService.getInstance();
   private static PurchaseHomeModel instance;
+  private final SelectionInList<VendorBean> vendorList;
   private final ValueModel itemCountModel = new ValueHolder(0);
   private final ValueModel itemSumModel = new ValueHolder(0.0);
   private final ValueModel kindergartenProfitModel = new ValueHolder(0.0);
@@ -50,7 +57,12 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   private PurchaseHomeModel() {
     super();
+    vendorList = new SelectionInList<>();
+    vendorList.getList().add(alleVerkaeufer());
+    vendorList.getList().addAll(VENDOR_SERVICE.getAll());
+    vendorList.setSelectionIndex(0);
     refreshSummary();
+    vendorList.addValueChangeListener(evt -> filterPurchases());
   }
 
   public static PurchaseHomeModel getInstance() {
@@ -58,6 +70,10 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
       instance = new PurchaseHomeModel();
     }
     return instance;
+  }
+
+  public SelectionInList<VendorBean> getVendorList() {
+    return vendorList;
   }
 
   public ValueModel getItemCountModel() {
@@ -94,7 +110,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   @Override
   protected String[] contextActionNames() {
-    return new String[] {};
+    return new String[]{};
   }
 
   @Action
@@ -154,6 +170,26 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     itemSumModel.setValue(SERVICE.getItemSumByPurchases(getSelectionInList().getList()));
     kindergartenProfitModel.setValue(SERVICE.getKindergartenProfitByPurchases(getSelectionInList().getList()));
     vendorPayoutModel.setValue(SERVICE.getVendorPayoutByPurchases(getSelectionInList().getList()));
+  }
+
+  private VendorBean alleVerkaeufer() {
+    VendorBean alleVerkaeufer = new VendorBean();
+    alleVerkaeufer.setLastName("Alle");
+    return alleVerkaeufer;
+  }
+
+  private void filterPurchases() {
+    VendorBean selectedVendor = getVendorList().getSelection();
+    List<PurchaseBean> filteredOrAllPurchases = new ArrayList<>();
+
+    if (alleVerkaeufer().equals(selectedVendor)) {
+      filteredOrAllPurchases.addAll(SERVICE.getAll());
+    } else {
+      filteredOrAllPurchases.addAll(SERVICE.getAll().stream().filter(bean -> bean.getVendorNumber().equals(selectedVendor.getVendorNumber())).collect(Collectors.toList()));
+    }
+    getSelectionInList().getList().clear();
+    getSelectionInList().getList().addAll(filteredOrAllPurchases);
+    refreshSummary();
   }
 
   private final class ImportPurchasesTask extends Task<List<PurchaseBean>, Void> {

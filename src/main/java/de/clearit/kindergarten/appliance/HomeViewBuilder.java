@@ -38,7 +38,7 @@ public class HomeViewBuilder {
     setTitleLabel(JSDLFactory.createHeaderLabel(markedTitle));
   }
 
-  private void setTitleLabel(JComponent titleLabel) {
+  public void setTitleLabel(JComponent titleLabel) {
     this.titleLabel = titleLabel;
   }
 
