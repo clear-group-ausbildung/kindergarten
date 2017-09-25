@@ -12,7 +12,7 @@ import com.jgoodies.uif2.splash.SplashWindow;
  * that we don't need at this time.
  *
  */
-final class KindergartenLauncher {
+public final class KindergartenLauncher {
 
   public static void main(String[] args) {
     OSXApplicationMenu.setAboutName("Kassenverwaltung");

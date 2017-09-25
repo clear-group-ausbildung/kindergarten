@@ -13,7 +13,7 @@ import javax.swing.border.EmptyBorder;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 
-abstract class AbstractToolBarButton extends JButton {
+public abstract class AbstractToolBarButton extends JButton {
 
   private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ abstract class AbstractToolBarButton extends JButton {
 
   // Instance Creation ******************************************************
 
-  AbstractToolBarButton() {
+  public AbstractToolBarButton() {
     setFocusPainted(false);
     setFocusable(false);
     setContentAreaFilled(false);
@@ -40,7 +40,7 @@ abstract class AbstractToolBarButton extends JButton {
 
   // Misc *******************************************************************
 
-  Border getInsetsBorder() {
+  protected Border getInsetsBorder() {
     return new EmptyBorder(2, 4, 2, 4);
   }
 

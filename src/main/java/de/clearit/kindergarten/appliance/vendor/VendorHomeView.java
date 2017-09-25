@@ -21,7 +21,7 @@ import de.clearit.kindergarten.domain.VendorBean;
 /**
  * The home view for the vendor.
  */
-final class VendorHomeView extends AbstractView {
+public final class VendorHomeView extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorHomeView.class);
 
@@ -38,7 +38,7 @@ final class VendorHomeView extends AbstractView {
     this.model = model;
   }
 
-  static VendorHomeView getInstance() {
+  public static VendorHomeView getInstance() {
     if (instance == null) {
       instance = new VendorHomeView(VendorHomeModel.getInstance());
     }

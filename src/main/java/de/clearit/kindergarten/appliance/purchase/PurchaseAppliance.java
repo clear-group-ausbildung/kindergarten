@@ -38,17 +38,20 @@ public class PurchaseAppliance extends DefaultAppliance {
 
   public void newPurchase(String title, final CommitCallback<PurchaseBean> outerCallback) {
     final PurchaseBean newPurchase = new PurchaseBean();
-    final CommitCallback<CommandValue> callback = result -> outerCallback.committed(result == CommandValue.OK ? newPurchase : null);
+    final CommitCallback<CommandValue> callback = result -> outerCallback.committed(result == CommandValue.OK
+        ? newPurchase
+        : null);
     PurchaseEditorModel model = new PurchaseEditorModel(newPurchase, callback);
     openPurchaseEditor(title, model);
   }
 
-  public void editPurchase(final String title, final PurchaseBean purchase, final CommitCallback<CommandValue> callback) {
+  public void editPurchase(final String title, final PurchaseBean purchase,
+      final CommitCallback<CommandValue> callback) {
     PurchaseEditorModel model = new PurchaseEditorModel(purchase, callback);
     openPurchaseEditor(title, model);
   }
 
-  void openPurchaseEditor(String title, PurchaseEditorModel model) {
+  public void openPurchaseEditor(String title, PurchaseEditorModel model) {
     PurchaseEditorView view = new PurchaseEditorView(model);
     DesktopFrame frame = new DefaultDesktopFrame(DesktopManager.activeFrame(), title, true, PurchaseAppliance
         .getInstance(), null, null, null, view.getPanel(), null);

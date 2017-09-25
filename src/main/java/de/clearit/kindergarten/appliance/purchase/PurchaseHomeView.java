@@ -13,7 +13,7 @@ import com.jgoodies.uif2.util.TableUtils;
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.appliance.HomeViewBuilder;
 
-class PurchaseHomeView extends AbstractView {
+public class PurchaseHomeView extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseHomeView.class);
 
@@ -30,7 +30,7 @@ class PurchaseHomeView extends AbstractView {
     this.model = model;
   }
 
-  static PurchaseHomeView getInstance() {
+  public static PurchaseHomeView getInstance() {
     if (instance == null) {
       instance = new PurchaseHomeView(PurchaseHomeModel.getInstance());
     }

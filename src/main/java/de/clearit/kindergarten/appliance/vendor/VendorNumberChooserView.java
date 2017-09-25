@@ -19,7 +19,7 @@ import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 
 import de.clearit.kindergarten.application.KindergartenComponentFactory;
 
-class VendorNumberChooserView extends AbstractView {
+public class VendorNumberChooserView extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorNumberChooserView.class);
 

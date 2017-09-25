@@ -45,7 +45,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     super();
   }
 
-  static VendorHomeModel getInstance() {
+  public static VendorHomeModel getInstance() {
     if (instance == null) {
       instance = new VendorHomeModel();
     }

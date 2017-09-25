@@ -42,7 +42,9 @@ public final class VendorAppliance extends DefaultAppliance {
 
   public void newVendor(String title, final CommitCallback<VendorBean> outerCallback) {
     final VendorBean newVendor = new VendorBean();
-    final CommitCallback<CommandValue> callback = result -> outerCallback.committed(result == CommandValue.OK ? newVendor : null);
+    final CommitCallback<CommandValue> callback = result -> outerCallback.committed(result == CommandValue.OK
+        ? newVendor
+        : null);
     VendorEditorModel model = new VendorEditorModel(newVendor, callback);
     openVendorEditor(title, model);
   }
@@ -52,7 +54,7 @@ public final class VendorAppliance extends DefaultAppliance {
     openVendorEditor(title, model);
   }
 
-  void openVendorEditor(String title, VendorEditorModel model) {
+  public void openVendorEditor(String title, VendorEditorModel model) {
     VendorEditorView view = new VendorEditorView(model);
     DesktopFrame frame = new DefaultDesktopFrame(DesktopManager.activeFrame(), title, true, VendorAppliance
         .getInstance(), null, null, null, view.getPanel(), null);
@@ -99,7 +101,7 @@ public final class VendorAppliance extends DefaultAppliance {
     }
 
     @Override
-    public Object parseObject(String source,  ParsePosition pos) {
+    public Object parseObject(String source, ParsePosition pos) {
       throw new UnsupportedOperationException("Can't parse.");
     }
 

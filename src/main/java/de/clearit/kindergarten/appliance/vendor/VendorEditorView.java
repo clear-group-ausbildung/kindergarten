@@ -19,7 +19,7 @@ import de.clearit.kindergarten.domain.VendorBean;
 /**
  * The editor view for the vendor.
  */
-final class VendorEditorView extends AbstractView {
+public final class VendorEditorView extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorEditorView.class);
 
@@ -32,7 +32,7 @@ final class VendorEditorView extends AbstractView {
 
   // Instance Creation ******************************************************
 
-  VendorEditorView(VendorEditorModel model) {
+  public VendorEditorView(VendorEditorModel model) {
     this.model = model;
   }
 

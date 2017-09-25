@@ -21,7 +21,7 @@ import de.clearit.kindergarten.appliance.HomeViewBuilder;
 /**
  * Builds the table view for the All Documents view.
  */
-final class DocumentsHomeView extends AbstractView {
+public final class DocumentsHomeView extends AbstractView {
 
   private static DocumentsHomeView instance;
 
@@ -36,7 +36,7 @@ final class DocumentsHomeView extends AbstractView {
     this.model = model;
   }
 
-  static DocumentsHomeView getInstance() {
+  public static DocumentsHomeView getInstance() {
     if (instance == null) {
       instance = new DocumentsHomeView(DocumentsHomeModel.getInstance());
     }

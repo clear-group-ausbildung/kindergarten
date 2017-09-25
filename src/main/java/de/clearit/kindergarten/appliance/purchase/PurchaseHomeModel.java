@@ -53,7 +53,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     refreshSummary();
   }
 
-  static PurchaseHomeModel getInstance() {
+  public static PurchaseHomeModel getInstance() {
     if (instance == null) {
       instance = new PurchaseHomeModel();
     }

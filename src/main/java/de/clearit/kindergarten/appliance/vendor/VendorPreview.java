@@ -18,7 +18,7 @@ import de.clearit.kindergarten.domain.VendorBean;
 /**
  * The preview for a vendor.
  */
-final class VendorPreview extends AbstractView {
+public final class VendorPreview extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorPreview.class);
 

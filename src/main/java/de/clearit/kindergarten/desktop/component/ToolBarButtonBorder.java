@@ -12,7 +12,7 @@ import javax.swing.border.AbstractBorder;
 /**
  *
  */
-final class ToolBarButtonBorder extends AbstractBorder {
+public final class ToolBarButtonBorder extends AbstractBorder {
 
   private static final long serialVersionUID = 1L;
 
@@ -25,7 +25,7 @@ final class ToolBarButtonBorder extends AbstractBorder {
   private final int pressedWidth;
   private final int pressedHeight;
 
-  ToolBarButtonBorder(Image rolloverImage, Image pressedImage) {
+  public ToolBarButtonBorder(Image rolloverImage, Image pressedImage) {
     this.rolloverImage = rolloverImage;
     this.rolloverWidth = rolloverImage.getWidth(null);
     this.rolloverHeight = rolloverImage.getHeight(null);

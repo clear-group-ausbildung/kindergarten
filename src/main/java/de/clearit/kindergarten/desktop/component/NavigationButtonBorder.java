@@ -9,7 +9,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.border.AbstractBorder;
 
-final class NavigationButtonBorder extends AbstractBorder {
+public final class NavigationButtonBorder extends AbstractBorder {
 
   private static final long serialVersionUID = 1L;
 

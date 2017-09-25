@@ -32,7 +32,7 @@ public final class DocumentsHomeModel extends AbstractHomeModel<DesktopFrame> {
     super();
   }
 
-  static DocumentsHomeModel getInstance() {
+  public static DocumentsHomeModel getInstance() {
     if (instance == null) {
       instance = new DocumentsHomeModel();
     }

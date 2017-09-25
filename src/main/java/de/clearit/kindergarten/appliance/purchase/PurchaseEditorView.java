@@ -21,7 +21,7 @@ import de.clearit.kindergarten.appliance.DoubleToStringConverter;
 import de.clearit.kindergarten.appliance.IntegerToStringConverter;
 import de.clearit.kindergarten.domain.PurchaseBean;
 
-class PurchaseEditorView extends AbstractView {
+public class PurchaseEditorView extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorView.class);
 

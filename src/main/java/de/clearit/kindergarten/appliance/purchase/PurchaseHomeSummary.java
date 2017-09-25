@@ -18,7 +18,7 @@ import com.jgoodies.uif2.AbstractView;
 import de.clearit.kindergarten.appliance.IntegerToStringConverter;
 import de.clearit.kindergarten.application.KindergartenComponentFactory;
 
-class PurchaseHomeSummary extends AbstractView {
+public class PurchaseHomeSummary extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseHomeSummary.class);
 

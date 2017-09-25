@@ -28,7 +28,7 @@ import de.clearit.kindergarten.domain.ExportExcel;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorService;
 
-class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
+public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
 
   private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,6 @@ class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> implemen
   public static final String ACTION_ADD_VENDOR_NUMBER = "addVendorNumber";
   public static final String ACTION_REMOVE_VENDOR_NUMBER = "removeVendorNumber";
 
-  private static final long FIFTEEN_SECONDS = 15000;
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorNumberChooserModel.class);
   private static final VendorService VENDOR_SERVICE = VendorService.getInstance();
 
@@ -45,17 +44,15 @@ class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> implemen
   private final SelectionInList<VendorBean> vendorList;
   private final SelectionInList<VendorBean> selectionInList;
   private final CommitCallback<CommandValue> commitCallback;
-  private final long creationTime;
 
   // Instance Creation ******************************************************
 
-  VendorNumberChooserModel(final VendorBean purchase, final CommitCallback<CommandValue> callback) {
+  public VendorNumberChooserModel(final VendorBean purchase, final CommitCallback<CommandValue> callback) {
     super(purchase);
     vendorList = new SelectionInList<>();
     vendorList.getList().addAll(VENDOR_SERVICE.getAll());
     selectionInList = new SelectionInList<>();
     this.commitCallback = callback;
-    this.creationTime = System.currentTimeMillis();
     initModels();
     initPresentationLogic();
   }
@@ -124,11 +121,6 @@ class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> implemen
   @Override
   public void paneClosing(EventObject e, Runnable operation) {
     final Runnable cancelOp = new WrappedOperation(commitCallback, CommandValue.CANCEL, operation);
-    if (quiteYoung()) {
-      System.out.println("Juenger als 15 Sekunden.");
-      cancelOp.run();
-      return;
-    }
     TextComponentUtils.commitImmediately();
     if (!isChanged() && !isBuffering()) { // Test for searching
       System.out.println("Nichts geaendert");
@@ -222,18 +214,6 @@ class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> implemen
   }
 
   // Helper Code ************************************************************
-
-  /**
-   * Checks and answers whether this model has been created recently. Useful to
-   * reduce unnecessary Cancel confirmations, even if this model has been
-   * modified.
-   *
-   * @return {@code true} if the creation time is less than 15 seconds from now
-   */
-  private boolean quiteYoung() {
-    final long now = System.currentTimeMillis();
-    return now - creationTime < FIFTEEN_SECONDS;
-  }
 
   private final class WrappedOperation implements Runnable {
 

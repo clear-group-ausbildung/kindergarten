@@ -27,7 +27,7 @@ import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.PurchaseService;
 
-class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements FormPaneModel {
+public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements FormPaneModel {
 
   private static final long serialVersionUID = 1L;
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorModel.class);
@@ -47,7 +47,7 @@ class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements 
 
   // Instance Creation ******************************************************
 
-  PurchaseEditorModel(final PurchaseBean purchase, final CommitCallback<CommandValue> callback) {
+  public PurchaseEditorModel(final PurchaseBean purchase, final CommitCallback<CommandValue> callback) {
     super(purchase);
     this.commitCallback = callback;
     initModels();
