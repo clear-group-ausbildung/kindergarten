@@ -7,6 +7,8 @@ import java.util.Locale;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
@@ -46,8 +48,8 @@ public class PurchaseHomeSummary extends AbstractView {
     initComponents();
     initFonts();
 
-    FormLayout layout = new FormLayout("left:pref, $lcgap, right:75dlu", "p, $lg, p, $lg, p, $lg, p");
-    PanelBuilder builder = new PanelBuilder(layout);
+    final FormLayout layout = new FormLayout("left:pref, $lcgap, right:125dlu", "p, $lg, p, $lg, p, $lg, p");
+    final PanelBuilder builder = new PanelBuilder(layout);
     builder.setBackground(Color.WHITE);
     builder.add(itemCountLabel, CC.xy(1, 1));
     builder.add(itemCountField, CC.xy(3, 1));
@@ -64,6 +66,7 @@ public class PurchaseHomeSummary extends AbstractView {
     itemCountLabel = new JLabel(RESOURCES.getString("purchase.itemCount"));
     itemCountField = KindergartenComponentFactory.createReadOnlyTextField(new IntegerToStringConverter(model
         .getItemCountModel()));
+    ((JTextField) itemCountField).setHorizontalAlignment(SwingConstants.RIGHT);
     itemSumLabel = new JLabel(RESOURCES.getString("purchase.itemSum"));
     itemSumField = KindergartenComponentFactory.createReadOnlyFormattedTextField(model.getItemSumModel(), NumberFormat
         .getCurrencyInstance(Locale.GERMANY));
@@ -76,12 +79,12 @@ public class PurchaseHomeSummary extends AbstractView {
   }
 
   private void initFonts() {
-    Font bold18PtLabelFont = itemCountLabel.getFont().deriveFont(Font.BOLD, 18);
+    final Font bold18PtLabelFont = itemCountLabel.getFont().deriveFont(Font.BOLD, 18);
     itemCountLabel.setFont(bold18PtLabelFont);
     itemSumLabel.setFont(bold18PtLabelFont);
     kindergartenProfitLabel.setFont(bold18PtLabelFont);
     vendorPayoutLabel.setFont(bold18PtLabelFont);
-    Font regular18PtFieldFont = itemCountLabel.getFont().deriveFont(18.0f);
+    final Font regular18PtFieldFont = itemCountLabel.getFont().deriveFont(18.0f);
     itemCountField.setFont(regular18PtFieldFont);
     itemSumField.setFont(regular18PtFieldFont);
     kindergartenProfitField.setFont(regular18PtFieldFont);
