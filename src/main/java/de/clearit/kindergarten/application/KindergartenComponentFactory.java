@@ -7,6 +7,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.text.JTextComponent;
 
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -45,8 +46,8 @@ public final class KindergartenComponentFactory extends BasicComponentFactory {
    * @throws NullPointerException
    *           if the valueModel is {@code null}
    */
-  public static JCheckBox createCheckBox(ValueModel valueModel, String markedText) {
-    JCheckBox box = BasicComponentFactory.createCheckBox(valueModel, markedText);
+  public static JCheckBox createCheckBox(final ValueModel valueModel, final String markedText) {
+    final JCheckBox box = BasicComponentFactory.createCheckBox(valueModel, markedText);
     box.setContentAreaFilled(false);
     JSDLUtils.configureMnemonic(box, markedText);
     return box;
@@ -73,8 +74,8 @@ public final class KindergartenComponentFactory extends BasicComponentFactory {
    * @throws NullPointerException
    *           if the valueModel is {@code null}
    */
-  public static JRadioButton createRadioButton(ValueModel model, Object choice, String markedText) {
-    JRadioButton radio = BasicComponentFactory.createRadioButton(model, choice, markedText);
+  public static JRadioButton createRadioButton(final ValueModel model, final Object choice, final String markedText) {
+    final JRadioButton radio = BasicComponentFactory.createRadioButton(model, choice, markedText);
     radio.setContentAreaFilled(false);
     JSDLUtils.configureMnemonic(radio, markedText);
     return radio;
@@ -96,10 +97,11 @@ public final class KindergartenComponentFactory extends BasicComponentFactory {
    * @throws NullPointerException
    *           if the valueModel is {@code null}
    */
-  public static JFormattedTextField createReadOnlyFormattedTextField(ValueModel valueModel, Format format) {
-    JFormattedTextField textField = createFormattedTextField(valueModel, format);
+  public static JFormattedTextField createReadOnlyFormattedTextField(final ValueModel valueModel, final Format format) {
+    final JFormattedTextField textField = createFormattedTextField(valueModel, format);
     textField.setEditable(false);
     textField.setBorder(null);
+    textField.setHorizontalAlignment(SwingConstants.RIGHT);
     JSDLUtils.configureTransparentBackground(textField);
     return textField;
   }
@@ -118,8 +120,8 @@ public final class KindergartenComponentFactory extends BasicComponentFactory {
    *
    * @see #createTextArea(ValueModel, boolean)
    */
-  public static JTextArea createReadOnlyTextArea(ValueModel valueModel) {
-    JTextArea textArea = createTextArea(valueModel, true);
+  public static JTextArea createReadOnlyTextArea(final ValueModel valueModel) {
+    final JTextArea textArea = createTextArea(valueModel, true);
     textArea.setEditable(false);
     textArea.setBorder(null);
     JSDLUtils.configureTransparentBackground(textArea);
@@ -144,7 +146,7 @@ public final class KindergartenComponentFactory extends BasicComponentFactory {
    *
    * @see #createTextArea(ValueModel, boolean)
    */
-  public static JTextArea createReadOnlyTextArea(ValueModel valueModel, Format format) {
+  public static JTextArea createReadOnlyTextArea(final ValueModel valueModel, final Format format) {
     return createReadOnlyTextArea(ConverterFactory.createStringConverter(valueModel, format));
   }
 
@@ -159,8 +161,8 @@ public final class KindergartenComponentFactory extends BasicComponentFactory {
    * @throws NullPointerException
    *           if the valueModel is {@code null}
    */
-  public static JTextComponent createReadOnlyTextField(String text) {
-    JTextComponent field = new JTextField(text);
+  public static JTextComponent createReadOnlyTextField(final String text) {
+    final JTextComponent field = new JTextField(text);
     field.setEditable(false);
     field.setBorder(null);
     JSDLUtils.configureTransparentBackground(field);
@@ -179,8 +181,8 @@ public final class KindergartenComponentFactory extends BasicComponentFactory {
    * @throws NullPointerException
    *           if the valueModel is {@code null}
    */
-  public static JTextComponent createReadOnlyTextField(ValueModel valueModel) {
-    JTextComponent field = createTextField(valueModel);
+  public static JTextComponent createReadOnlyTextField(final ValueModel valueModel) {
+    final JTextComponent field = createTextField(valueModel);
     field.setEditable(false);
     field.setBorder(null);
     JSDLUtils.configureTransparentBackground(field);

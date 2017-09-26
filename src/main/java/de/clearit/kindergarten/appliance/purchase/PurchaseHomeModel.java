@@ -12,9 +12,6 @@ import javax.swing.JFileChooser;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.jgoodies.binding.list.SelectionInList;
-import de.clearit.kindergarten.domain.VendorBean;
-import de.clearit.kindergarten.domain.VendorService;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.jgoodies.application.Action;
@@ -22,6 +19,7 @@ import com.jgoodies.application.Application;
 import com.jgoodies.application.BlockingScope;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.application.Task;
+import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.ValueHolder;
 import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.jsdl.core.CommandValue;
@@ -32,6 +30,8 @@ import com.jgoodies.jsdl.core.pane.TaskPane;
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.PurchaseService;
+import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorService;
 
 /**
  * The home model for the purchase.
@@ -110,7 +110,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   @Override
   protected String[] contextActionNames() {
-    return new String[]{};
+    return new String[] {};
   }
 
   @Action
@@ -128,11 +128,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   private void editItem(final EventObject e, final String title, final PurchaseBean purchase, final boolean newItem) {
     final PurchaseEditorModel model = new PurchaseEditorModel(purchase, value -> {
       if (value == CommandValue.OK) {
-        if (newItem) {
-          SERVICE.create(purchase);
-        } else {
-          SERVICE.update(purchase);
-        }
         refreshSummary();
       }
     });
@@ -185,7 +180,8 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     if (alleVerkaeufer().equals(selectedVendor)) {
       filteredOrAllPurchases.addAll(SERVICE.getAll());
     } else {
-      filteredOrAllPurchases.addAll(SERVICE.getAll().stream().filter(bean -> bean.getVendorNumber().equals(selectedVendor.getVendorNumber())).collect(Collectors.toList()));
+      filteredOrAllPurchases.addAll(SERVICE.getAll().stream().filter(bean -> bean.getVendorNumber().equals(
+          selectedVendor.getVendorNumber())).collect(Collectors.toList()));
     }
     getSelectionInList().getList().clear();
     getSelectionInList().getList().addAll(filteredOrAllPurchases);

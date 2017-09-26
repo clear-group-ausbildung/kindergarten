@@ -100,7 +100,7 @@ public class ExportExcel {
    */
   public void createExcelForOneVendorWithMultipleVendorNumbers(List<VendorBean> pVendorList) {
     try {
-      wb = new XSSFWorkbook(new FileInputStream("./src/main/resources/abrechnung_template.xlsx"));
+      wb = new XSSFWorkbook(new FileInputStream("./abrechnung_template.xlsx"));
       sheet = wb.getSheetAt(0);
       createStyles();
 
