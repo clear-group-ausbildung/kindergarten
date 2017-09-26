@@ -1,7 +1,21 @@
 # Change Log
 
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/TheDonDope/kindergarten/releases/tag/v1.0.1) (2017-09-26)
+
+[Full Changelog](https://github.com/TheDonDope/kindergarten/compare/v1.0.0...v1.0.1)
+
+
+### Bug Fixes
+
+* fix(purchases): correctly refresh list after create ([ac9b90f](https://github.com/TheDonDope/kindergarten/commit/ac9b90f))
+* fix: summaries layout ([32e42e8](https://github.com/TheDonDope/kindergarten/commit/32e42e8))
+* fix(vendors): use correct template path for multiexport ([d7f86f8](https://github.com/TheDonDope/kindergarten/commit/d7f86f8))
+* fix: summaries layout ([32e42e8](https://github.com/TheDonDope/kindergarten/commit/32e42e8))
+
+
 <a name="1.0.0"></a>
-# 1.0.0 (2017-09-25)
+## [1.0.0](https://github.com/TheDonDope/kindergarten/releases/tag/v1.0.0) (2017-09-26)
 
 
 ### Bug Fixes
@@ -87,6 +101,3 @@
 * **vendors:** update excel receipt template ([32e6bcb](https://github.com/TheDonDope/kindergarten/commit/32e6bcb))
 * **vendors:** update receipts excel export ([1a04c9d](https://github.com/TheDonDope/kindergarten/commit/1a04c9d))
 * **vendors:** update texts and icons ([c86ac45](https://github.com/TheDonDope/kindergarten/commit/c86ac45))
-
-
-
