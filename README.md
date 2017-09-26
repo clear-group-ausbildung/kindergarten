@@ -29,6 +29,7 @@
 - [ ] Hinweis, dass Preis mit Punkt statt Komma eingegeben werden muss, sollte immer ersichtlich sein.
 - [ ] Bei Return/Enter nach der Eingabe wird der Einkauf abgeschlossen. Das ist schlecht. Es wäre schön, wenn man bei Return/Enter den nächsten Artikel eingeben kann.
 - [ ] Verkauf abschließen sollte nur aktiv durch Klicken des Buttons möglich sein.
+
 **Nice to have:**
 - [X] Beim Drucken der Belege wäre es schön, wenn angezeigt wird, wo genau sie hin gespeichert werden.
 - [X] Button Hinzufügen hat Rechtschreibfehler.
