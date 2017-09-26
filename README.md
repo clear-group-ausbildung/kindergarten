@@ -23,3 +23,17 @@
 - [X] Neuer Verkauf: Wenn ein Artikel entfernt wird, bitte noch die Verkäufernummer mit in die Meldung "Verkauf löschen" mit aufnehmen. Ist ja immer das entscheidende Paar, Verkäufernummer und Artikelnummer.
 - [ ] Verkäufe: Hier werden rechts oben auch teilweise Werte abgeschnitten. Ich würde sagen du solltest mindestens eine MEnge von 99.999,99 € bezüglich der Stellen anzeigen können, vom Platz her!
 - [X]  **Buisy-Dialog: Bevor du dieses Ladezeile unten einblendest, trotzdem eine Infofenster anzeigen, dass noch einen kleinen Text anzeigt, wie "Datensätze werden importiert" oder "Abrechnungen werden erstellt" oder sowas? Weil im Moment sitzt der User da und weiß nicht was passiert...**
+
+## Neue Punkte 26.09.2017 - 22:30 Uhr - Anne
+**ESSENTIELL:**
+- [ ] Hinweis, dass Preis mit Punkt statt Komma eingegeben werden muss, sollte immer ersichtlich sein.
+- [ ] Bei Return/Enter nach der Eingabe wird der Einkauf abgeschlossen. Das ist schlecht. Es wäre schön, wenn man bei Return/Enter den nächsten Artikel eingeben kann.
+- [ ] Verkauf abschließen sollte nur aktiv durch Klicken des Buttons möglich sein.
+**Nice to have:**
+- [X] Beim Drucken der Belege wäre es schön, wenn angezeigt wird, wo genau sie hin gespeichert werden.
+- [X] Button Hinzufügen hat Rechtschreibfehler.
+- [X] Bei dem Menüpunkt Anwendungen würde ich den "Verkäufer" in Abrechnung umbenennen.
+- [X] Bei der Abrechnung in Excel erscheint: "Verk?ufer Nummer: 7" bei der Übersicht über die verkauften Artikel (also wenn ich mehrere Nummern habe)
+- [ ] Zeile mit Eingabefeldern bei Verkäufe größer.
+- [ ] Fenster "Der Verkaufsexport wird gestartet" ist überflüssig.
+- [ ] Abrechnungen drucken: Button Abrechnungen drucken erst aktiv, sobald eine Auswahl in der Liste ist, und zwar mehr als eine Verkäufernummer!
