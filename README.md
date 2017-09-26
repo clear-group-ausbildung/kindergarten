@@ -29,6 +29,7 @@
 - [ ] Hinweis, dass Preis mit Punkt statt Komma eingegeben werden muss, sollte immer ersichtlich sein.
 - [ ] Bei Return/Enter nach der Eingabe wird der Einkauf abgeschlossen. Das ist schlecht. Es wäre schön, wenn man bei Return/Enter den nächsten Artikel eingeben kann.
 - [ ] Verkauf abschließen sollte nur aktiv durch Klicken des Buttons möglich sein.
+- [ ] Abrechnungen drucken: Button Abrechnungen drucken erst aktiv, sobald eine Auswahl in der Liste ist, und zwar mehr als eine Verkäufernummer!
 
 **Nice to have:**
 - [X] Beim Drucken der Belege wäre es schön, wenn angezeigt wird, wo genau sie hin gespeichert werden.
@@ -37,4 +38,3 @@
 - [X] Bei der Abrechnung in Excel erscheint: "Verk?ufer Nummer: 7" bei der Übersicht über die verkauften Artikel (also wenn ich mehrere Nummern habe)
 - [ ] Zeile mit Eingabefeldern bei Verkäufe größer.
 - [ ] Fenster "Der Verkaufsexport wird gestartet" ist überflüssig.
-- [ ] Abrechnungen drucken: Button Abrechnungen drucken erst aktiv, sobald eine Auswahl in der Liste ist, und zwar mehr als eine Verkäufernummer!
