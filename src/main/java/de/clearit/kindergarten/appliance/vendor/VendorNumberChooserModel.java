@@ -177,8 +177,9 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
     }
     ExportExcel.getInstance().createExcelForOneVendorWithMultipleVendorNumbers(vendorList);
 
+    String path = System.getProperty("user.home")+ "/Desktop/Basar Abrechnungen";  
     String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendorNumbers.toString() + " "
-        + vendorList.get(0).getLastName() + ", " + vendorList.get(0).getFirstName());
+        + vendorList.get(0).getLastName() + ", " + vendorList.get(0).getFirstName(), path);
     TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
     pane.setPreferredWidth(PreferredWidth.MEDIUM);
     pane.showDialog(e, RESOURCES.getString("printReceipt.one.title"));

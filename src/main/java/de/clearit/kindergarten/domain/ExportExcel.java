@@ -279,7 +279,7 @@ public class ExportExcel {
   private int createVendorHeaderRow(int pRowCount, int pColIndex, Integer pVendorNumber) {
     XSSFRow vendorRow = sheet.createRow(pRowCount);
     XSSFCell vendorNumberCell = vendorRow.createCell(pColIndex);
-    vendorNumberCell.setCellValue("Verk�ufer Nummer: " + pVendorNumber);
+    vendorNumberCell.setCellValue("Verk" + "\u00E4" + "ufer Nummer: " + pVendorNumber);
     vendorNumberCell.setCellStyle(vendorHeaderStyle);
 
     sheet.addMergedRegion(new CellRangeAddress(pRowCount, pRowCount, vendorNumberCell.getColumnIndex(), vendorNumberCell
@@ -320,7 +320,7 @@ public class ExportExcel {
   }
 
   private String getDateiname(PayoffData pPayoffData) {
-    String folder = System.getProperty("user.home") + "/Basar Abrechnungen";
+    String folder = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";
     StringBuilder dateiName = new StringBuilder();
     if (!Files.isDirectory(Paths.get(folder))) {
       try {

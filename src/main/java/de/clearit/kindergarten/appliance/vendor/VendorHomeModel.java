@@ -169,8 +169,10 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     protected void succeeded(Void result) {
       super.succeeded(result);
       progressPane.setVisible(false);
+      
+      String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";      
       String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendor.getId() + " " + vendor
-          .getLastName() + ", " + vendor.getFirstName());
+          .getLastName() + ", " + vendor.getFirstName(), path);
       TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
       pane.setPreferredWidth(PreferredWidth.MEDIUM);
       pane.showDialog(getEventObject(), RESOURCES.getString("printReceipt.one.title"));
@@ -204,7 +206,8 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     protected void succeeded(Void result) {
       super.succeeded(result);
       progressPane.setVisible(false);
-      TaskPane pane = new TaskPane(MessageType.INFORMATION, RESOURCES.getString("printReceipt.all.main"),
+      String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";  
+      TaskPane pane = new TaskPane(MessageType.INFORMATION, RESOURCES.getString("printReceipt.all.main", path),
           CommandValue.OK);
       pane.setPreferredWidth(PreferredWidth.MEDIUM);
       pane.showDialog(getEventObject(), RESOURCES.getString("printReceipt.all.title"));
