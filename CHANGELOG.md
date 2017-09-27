@@ -1,5 +1,32 @@
 # Change Log
 
+<a nam="1.1.0"></a>
+## [1.1.0](https://github.com/TheDonDope/kindergarten/releases/tag/v1.1.0) (2017-09-28)
+
+[Full Changelog](https://github.com/TheDonDope/kindergarten/compare/v1.0.1...v1.1.0)
+
+
+### Bug Fixes
+
+* **db:** recreate database from sql schema ([79e8a07](https://github.com/TheDonDope/kindergarten/commit/79e8a07))
+* **db:** recreate database from sql schema ([17b92ec](https://github.com/TheDonDope/kindergarten/commit/17b92ec))
+* **purchases:** euro sign ([b7010a7](https://github.com/TheDonDope/kindergarten/commit/b7010a7))
+* **purchases:** honor filter after delete ([bbb936f](https://github.com/TheDonDope/kindergarten/commit/bbb936f))
+* **purchases:** refresh editor summary ([6bf2bbd](https://github.com/TheDonDope/kindergarten/commit/6bf2bbd))
+
+
+### Features
+
+* **purchases:** conclude sale only on mouse click ([2614e6a](https://github.com/TheDonDope/kindergarten/commit/2614e6a))
+* **purchases:** enlarge editor fields ([f2db6e0](https://github.com/TheDonDope/kindergarten/commit/f2db6e0))
+* **purchases:** redirect enter to add line item ([c723e54](https://github.com/TheDonDope/kindergarten/commit/c723e54))
+* **purchases:** remove export start notification ([4cae56b](https://github.com/TheDonDope/kindergarten/commit/4cae56b))
+* **purchases:** reset vendor filter after create ([8537cec](https://github.com/TheDonDope/kindergarten/commit/8537cec))
+* **vendors:** rename menu item to receipts ([2470b1d](https://github.com/TheDonDope/kindergarten/commit/2470b1d))
+* **vendors:** price input supports comma format ([1f987a3](https://github.com/TheDonDope/kindergarten/commit/1f987a3))
+* **vendors:** validation receipts print ([7a9f4c1](https://github.com/TheDonDope/kindergarten/commit/7a9f4c1))
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/TheDonDope/kindergarten/releases/tag/v1.0.1) (2017-09-26)
 
@@ -8,14 +35,14 @@
 
 ### Bug Fixes
 
-* **purchases:** correctly refresh list after create ([ac9b90f](https://github.com/TheDonDope/kindergarten/commit/ac9b90f))
 * summaries layout ([32e42e8](https://github.com/TheDonDope/kindergarten/commit/32e42e8))
+* **purchases:** correctly refresh list after create ([ac9b90f](https://github.com/TheDonDope/kindergarten/commit/ac9b90f))
 * **vendors:** use correct template path for multiexport ([d7f86f8](https://github.com/TheDonDope/kindergarten/commit/d7f86f8))
 
 
 
 <a name="1.0.0"></a>
-## [1.0.0](https://github.com/TheDonDope/kindergarten/releases/tag/v1.0.0) (2017-09-26)
+## [1.0.0](https://github.com/TheDonDope/kindergarten/releases/tag/v1.0.0) (2017-09-25)
 
 
 ### Bug Fixes
