@@ -58,7 +58,7 @@ public class PurchaseEditorSummary extends AbstractView {
     itemCountField = new JLabel("0");
     itemCountField.setHorizontalAlignment(SwingConstants.RIGHT);
     itemSumLabel = new JLabel(RESOURCES.getString("purchase.itemSum"));
-    itemSumField = new JLabel("0,00 €");
+    itemSumField = new JLabel("0,00 \u20ac");
     itemSumField.setHorizontalAlignment(SwingConstants.RIGHT);
   }
 
@@ -97,7 +97,7 @@ public class PurchaseEditorSummary extends AbstractView {
         Double itemSum = service.getItemSumByPurchases(model.getSelectionInList().getList());
         String itemSumWithDots = itemSum.toString();
         String itemSumWithComma = itemSumWithDots.replace('.', ',');
-        itemSumField.setText(itemSumWithComma + "  €");
+        itemSumField.setText(itemSumWithComma + "  \u20ac");
       }
 
     });
