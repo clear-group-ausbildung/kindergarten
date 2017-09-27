@@ -13,7 +13,9 @@ public class DoubleToStringConverter extends AbstractConverter {
 
   @Override
   public void setValue(Object newValue) {
-    Double doubleValue = Double.valueOf((String) newValue);
+    String inputWithComma = (String)newValue;
+    String inputWithDot = inputWithComma.replace(',', '.');
+    Double doubleValue = Double.valueOf(inputWithDot);
     subject.setValue(doubleValue);
   }
 
@@ -21,7 +23,8 @@ public class DoubleToStringConverter extends AbstractConverter {
   public Object convertFromSubject(Object subjectValue) {
     String result = "";
     if (subjectValue != null) {
-      result = subjectValue.toString();
+      String outputWithDot = subjectValue.toString();
+      result = outputWithDot.replace('.', ',');
     }
     return result;
   }

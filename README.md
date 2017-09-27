@@ -26,7 +26,7 @@
 
 ## Neue Punkte 26.09.2017 - 22:30 Uhr - Anne
 **ESSENTIELL:**
-- [ ] Hinweis, dass Preis mit Punkt statt Komma eingegeben werden muss, sollte immer ersichtlich sein.
+- [X] Hinweis, dass Preis mit Punkt statt Komma eingegeben werden muss, sollte immer ersichtlich sein.
 - [ ] Bei Return/Enter nach der Eingabe wird der Einkauf abgeschlossen. Das ist schlecht. Es wäre schön, wenn man bei Return/Enter den nächsten Artikel eingeben kann.
 - [ ] Verkauf abschließen sollte nur aktiv durch Klicken des Buttons möglich sein.
 - [ ] Abrechnungen drucken: Button Abrechnungen drucken erst aktiv, sobald eine Auswahl in der Liste ist, und zwar mehr als eine Verkäufernummer!
