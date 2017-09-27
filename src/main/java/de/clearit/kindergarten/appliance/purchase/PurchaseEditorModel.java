@@ -33,6 +33,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorModel.class);
   private static final PurchaseService SERVICE = PurchaseService.getInstance();
   private static final int MODIFIER_FIRED_BY_MOUSE = 16;
+  private static final int MODIFIER_FIRED_BY_ENTER = 0;
 
   // Constants **************************************************************
 
@@ -135,6 +136,8 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
         getSelectionInList().getList().forEach(SERVICE::create);
         commitCallback.committed(CommandValue.OK);
         JSDLUtils.closePaneFor(e);
+      } else if (MODIFIER_FIRED_BY_ENTER == event.getModifiers()) {
+        addLineItem(event);
       }
     }
   }
