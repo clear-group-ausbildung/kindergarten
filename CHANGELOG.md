@@ -8,10 +8,10 @@
 
 ### Bug Fixes
 
-* fix(purchases): correctly refresh list after create ([ac9b90f](https://github.com/TheDonDope/kindergarten/commit/ac9b90f))
-* fix: summaries layout ([32e42e8](https://github.com/TheDonDope/kindergarten/commit/32e42e8))
-* fix(vendors): use correct template path for multiexport ([d7f86f8](https://github.com/TheDonDope/kindergarten/commit/d7f86f8))
-* fix: summaries layout ([32e42e8](https://github.com/TheDonDope/kindergarten/commit/32e42e8))
+* **purchases:** correctly refresh list after create ([ac9b90f](https://github.com/TheDonDope/kindergarten/commit/ac9b90f))
+* summaries layout ([32e42e8](https://github.com/TheDonDope/kindergarten/commit/32e42e8))
+* **vendors:** use correct template path for multiexport ([d7f86f8](https://github.com/TheDonDope/kindergarten/commit/d7f86f8))
+
 
 
 <a name="1.0.0"></a>
