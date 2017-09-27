@@ -128,6 +128,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   private void editItem(final EventObject e, final String title, final PurchaseBean purchase, final boolean newItem) {
     final PurchaseEditorModel model = new PurchaseEditorModel(purchase, value -> {
       if (value == CommandValue.OK) {
+        getVendorList().setSelectionIndex(0);
         refreshSummary();
       }
     });
