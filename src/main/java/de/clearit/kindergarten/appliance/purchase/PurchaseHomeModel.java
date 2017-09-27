@@ -128,6 +128,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   private void editItem(final EventObject e, final String title, final PurchaseBean purchase, final boolean newItem) {
     final PurchaseEditorModel model = new PurchaseEditorModel(purchase, value -> {
       if (value == CommandValue.OK) {
+        getVendorList().setSelectionIndex(0);
         refreshSummary();
       }
     });
@@ -144,7 +145,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
       SERVICE.delete(purchase);
-      refreshSummary();
+      filterPurchases();
     }
   }
 
@@ -249,9 +250,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     ExportPurchasesTask() {
       super(BlockingScope.APPLICATION);
       exportPath = getExportPath() + ".json";
-      TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Der Verkaufsexport wird gestartet.", CommandValue.OK);
-      infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
-      infoPane.showDialog(getEventObject(), "Verkaufsexport");
       progressPane = new TaskPane(MessageType.INFORMATION, "Exportiere", CommandValue.OK);
       progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
       progressPane.setProgressIndeterminate(true);

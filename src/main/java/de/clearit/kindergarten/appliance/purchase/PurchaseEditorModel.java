@@ -32,6 +32,8 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   private static final long serialVersionUID = 1L;
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorModel.class);
   private static final PurchaseService SERVICE = PurchaseService.getInstance();
+  private static final int MODIFIER_FIRED_BY_MOUSE = 16;
+  private static final int MODIFIER_FIRED_BY_ENTER = 0;
 
   // Constants **************************************************************
 
@@ -126,11 +128,18 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
   @Override
   public void performAccept(final EventObject e) {
-    TextComponentUtils.commitImmediately();
-    triggerCommit();
-    getSelectionInList().getList().forEach(SERVICE::create);
-    commitCallback.committed(CommandValue.OK);
-    JSDLUtils.closePaneFor(e);
+    if (e instanceof ActionEvent) {
+      ActionEvent event = (ActionEvent) e;
+      if (MODIFIER_FIRED_BY_MOUSE == event.getModifiers()) {
+        TextComponentUtils.commitImmediately();
+        triggerCommit();
+        getSelectionInList().getList().forEach(SERVICE::create);
+        commitCallback.committed(CommandValue.OK);
+        JSDLUtils.closePaneFor(e);
+      } else if (MODIFIER_FIRED_BY_ENTER == event.getModifiers()) {
+        addLineItem(event);
+      }
+    }
   }
 
   @Override

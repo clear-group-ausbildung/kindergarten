@@ -159,31 +159,39 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
 
   @Override
   public void performAccept(EventObject e) {
-    TextComponentUtils.commitImmediately();
-    triggerCommit();
-    TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Die ausgew\u00e4hlten Belege werden gedruckt.",
-        CommandValue.OK);
-    infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
-    infoPane.showDialog(e, "Belegedruck");
+    if (getSelectionInList().getList().size() > 1) {
+      TextComponentUtils.commitImmediately();
+      triggerCommit();
+      TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Die ausgew\u00e4hlten Belege werden gedruckt.",
+          CommandValue.OK);
+      infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
+      infoPane.showDialog(e, "Belegedruck");
 
-    List<VendorBean> vendorList = getSelectionInList().getList();
-    StringBuilder vendorNumbers = new StringBuilder();
-    Iterator<VendorBean> iter = vendorList.iterator();
-    while (iter.hasNext()) {
-      vendorNumbers.append(iter.next().getVendorNumber());
-      if (iter.hasNext()) {
-        vendorNumbers.append(" & ");
+      List<VendorBean> vendorList = getSelectionInList().getList();
+      StringBuilder vendorNumbers = new StringBuilder();
+      Iterator<VendorBean> iter = vendorList.iterator();
+      while (iter.hasNext()) {
+        vendorNumbers.append(iter.next().getVendorNumber());
+        if (iter.hasNext()) {
+          vendorNumbers.append(" & ");
+        }
       }
-    }
-    ExportExcel.getInstance().createExcelForOneVendorWithMultipleVendorNumbers(vendorList);
+      ExportExcel.getInstance().createExcelForOneVendorWithMultipleVendorNumbers(vendorList);
 
-    String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendorNumbers.toString() + " "
-        + vendorList.get(0).getLastName() + ", " + vendorList.get(0).getFirstName());
-    TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
-    pane.setPreferredWidth(PreferredWidth.MEDIUM);
-    pane.showDialog(e, RESOURCES.getString("printReceipt.one.title"));
-    commitCallback.committed(CommandValue.OK);
-    JSDLUtils.closePaneFor(e);
+      String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";
+      String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendorNumbers.toString() + " "
+          + vendorList.get(0).getLastName() + ", " + vendorList.get(0).getFirstName(), path);
+      TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+      pane.setPreferredWidth(PreferredWidth.MEDIUM);
+      pane.showDialog(e, RESOURCES.getString("printReceipt.one.title"));
+      commitCallback.committed(CommandValue.OK);
+      JSDLUtils.closePaneFor(e);
+    } else {
+      TaskPane infoPane = new TaskPane(MessageType.ERROR, "W\u00e4hlen sie mindestens zwei Verk\u00e4fernummern aus.",
+          CommandValue.CLOSE);
+      infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
+      infoPane.showDialog(e, "Belegedruck");
+    }
   }
 
   @Override
