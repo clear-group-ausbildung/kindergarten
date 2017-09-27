@@ -2,13 +2,12 @@ package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
@@ -17,17 +16,16 @@ import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.uif2.AbstractView;
 
-import de.clearit.kindergarten.appliance.IntegerToStringConverter;
-import de.clearit.kindergarten.application.KindergartenComponentFactory;
+import de.clearit.kindergarten.domain.PurchaseService;
 
 public class PurchaseEditorSummary extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorSummary.class);
 
-  private JComponent itemCountLabel;
-  private JComponent itemCountField;
+  private JLabel itemCountLabel;
+  private JLabel itemCountField;
   private JComponent itemSumLabel;
-  private JComponent itemSumField;
+  private JLabel itemSumField;
 
   private final PurchaseEditorModel model;
 
@@ -43,6 +41,7 @@ public class PurchaseEditorSummary extends AbstractView {
   protected JComponent buildPanel() {
     initComponents();
     initFonts();
+    initEventHandling();
 
     final FormLayout layout = new FormLayout("left:pref, $lcgap, right:125dlu", "p, $lg, p");
     final PanelBuilder builder = new PanelBuilder(layout);
@@ -56,12 +55,11 @@ public class PurchaseEditorSummary extends AbstractView {
 
   private void initComponents() {
     itemCountLabel = new JLabel(RESOURCES.getString("purchase.itemCount"));
-    itemCountField = KindergartenComponentFactory.createReadOnlyTextField(new IntegerToStringConverter(model
-        .getItemCountModel()));
-    ((JTextField) itemCountField).setHorizontalAlignment(SwingConstants.RIGHT);
+    itemCountField = new JLabel("0");
+    itemCountField.setHorizontalAlignment(SwingConstants.RIGHT);
     itemSumLabel = new JLabel(RESOURCES.getString("purchase.itemSum"));
-    itemSumField = KindergartenComponentFactory.createReadOnlyFormattedTextField(model.getItemSumModel(), NumberFormat
-        .getCurrencyInstance(Locale.GERMANY));
+    itemSumField = new JLabel("0,00 €");
+    itemSumField.setHorizontalAlignment(SwingConstants.RIGHT);
   }
 
   private void initFonts() {
@@ -71,6 +69,38 @@ public class PurchaseEditorSummary extends AbstractView {
     final Font regurlar18PtFieldFont = itemCountLabel.getFont().deriveFont(18.0f);
     itemCountField.setFont(regurlar18PtFieldFont);
     itemSumField.setFont(regurlar18PtFieldFont);
+  }
+
+  private void initEventHandling() {
+    model.getSelectionInList().addListDataListener(new ListDataListener() {
+
+      private final PurchaseService service = PurchaseService.getInstance();
+
+      @Override
+      public void intervalRemoved(ListDataEvent e) {
+        refreshLabelText();
+      }
+
+      @Override
+      public void intervalAdded(ListDataEvent e) {
+        refreshLabelText();
+      }
+
+      @Override
+      public void contentsChanged(ListDataEvent e) {
+        refreshLabelText();
+      }
+
+      private void refreshLabelText() {
+        Integer itemCount = service.getItemCountByPurchases(model.getSelectionInList().getList());
+        itemCountField.setText(itemCount.toString());
+        Double itemSum = service.getItemSumByPurchases(model.getSelectionInList().getList());
+        String itemSumWithDots = itemSum.toString();
+        String itemSumWithComma = itemSumWithDots.replace('.', ',');
+        itemSumField.setText(itemSumWithComma + "  €");
+      }
+
+    });
   }
 
 }
