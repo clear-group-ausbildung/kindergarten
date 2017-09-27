@@ -1,7 +1,10 @@
 package de.clearit.kindergarten.appliance.purchase;
 
+import java.awt.Font;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import com.jgoodies.application.Application;
@@ -27,8 +30,11 @@ public class PurchaseEditorView extends AbstractView {
 
   private final PurchaseEditorModel model;
 
+  private JComponent itemNumberLabel;
   private JComponent itemNumberField;
+  private JComponent itemPriceLabel;
   private JComponent itemPriceField;
+  private JComponent vendorNumberLabel;
   private JComponent vendorNumberField;
   private JButton addButton;
   private JTable table;
@@ -45,6 +51,7 @@ public class PurchaseEditorView extends AbstractView {
   @Override
   protected JComponent buildPanel() {
     initComponents();
+    initFonts();
 
     final PurchaseEditorViewBuilder builder = new PurchaseEditorViewBuilder();
     builder.setSummary(summary.getPanel());
@@ -60,10 +67,13 @@ public class PurchaseEditorView extends AbstractView {
   }
 
   private void initComponents() {
+    itemNumberLabel = new JLabel(RESOURCES.getString("purchase.itemNumber"));
     itemNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_NUMBER)));
+    itemPriceLabel = new JLabel(RESOURCES.getString("purchase.itemPrice"));
     itemPriceField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_PRICE)));
+    vendorNumberLabel = new JLabel(RESOURCES.getString("purchase.vendor"));
     vendorNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_VENDOR_NUMBER)));
     addButton = new JButton(model.getAction(PurchaseEditorModel.ACTION_ADD_LINE_ITEM));
@@ -77,15 +87,26 @@ public class PurchaseEditorView extends AbstractView {
 
   }
 
+  private void initFonts() {
+    final Font regurlar18PtFieldFont = itemNumberLabel.getFont().deriveFont(18.0f);
+    itemNumberLabel.setFont(regurlar18PtFieldFont);
+    itemNumberField.setFont(regurlar18PtFieldFont);
+    itemPriceLabel.setFont(regurlar18PtFieldFont);
+    itemPriceField.setFont(regurlar18PtFieldFont);
+    vendorNumberLabel.setFont(regurlar18PtFieldFont);
+    vendorNumberField.setFont(regurlar18PtFieldFont);
+    addButton.setFont(regurlar18PtFieldFont);
+  }
+
   private JComponent buildEditor() {
     final FormLayout layout = new FormLayout("2*(left:pref, $lcgap, 25dlu, $rgap), left:pref, $lcgap, 50dlu", "p");
     final I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
     builder.setBackground(RESOURCES.getColor("content.background"));
-    builder.addI15dLabel("purchase.vendor", CC.xy(1, 1));
+    builder.add(vendorNumberLabel, CC.xy(1, 1));
     builder.add(vendorNumberField, CC.xy(3, 1));
-    builder.addI15dLabel("purchase.itemNumber", CC.xy(5, 1));
+    builder.add(itemNumberLabel, CC.xy(5, 1));
     builder.add(itemNumberField, CC.xy(7, 1));
-    builder.addI15dLabel("purchase.itemPrice", CC.xy(9, 1));
+    builder.add(itemPriceLabel, CC.xy(9, 1));
     builder.add(itemPriceField, CC.xy(11, 1));
 
     return builder.getPanel();

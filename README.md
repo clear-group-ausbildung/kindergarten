@@ -36,5 +36,5 @@
 - [X] Button Hinzufügen hat Rechtschreibfehler.
 - [X] Bei dem Menüpunkt Anwendungen würde ich den "Verkäufer" in Abrechnung umbenennen.
 - [X] Bei der Abrechnung in Excel erscheint: "Verk?ufer Nummer: 7" bei der Übersicht über die verkauften Artikel (also wenn ich mehrere Nummern habe)
-- [ ] Zeile mit Eingabefeldern bei Verkäufe größer.
+- [X] Zeile mit Eingabefeldern bei Verkäufe größer.
 - [X] Fenster "Der Verkaufsexport wird gestartet" ist überflüssig.
