@@ -249,9 +249,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     ExportPurchasesTask() {
       super(BlockingScope.APPLICATION);
       exportPath = getExportPath() + ".json";
-      TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Der Verkaufsexport wird gestartet.", CommandValue.OK);
-      infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
-      infoPane.showDialog(getEventObject(), "Verkaufsexport");
       progressPane = new TaskPane(MessageType.INFORMATION, "Exportiere", CommandValue.OK);
       progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
       progressPane.setProgressIndeterminate(true);
