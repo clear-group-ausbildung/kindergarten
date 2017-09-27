@@ -145,7 +145,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
       SERVICE.delete(purchase);
-      refreshSummary();
+      filterPurchases();
     }
   }
 
