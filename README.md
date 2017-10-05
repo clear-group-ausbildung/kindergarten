@@ -40,7 +40,7 @@
 - [X] Fenster "Der Verkaufsexport wird gestartet" ist überflüssig.
 
 
-## Neue Punkte 05.10.2017 - 17:00 Uhr - Erfahrung mit dem Tool am Basar-Tag
+## Neue Punkte 05.10.2017 - 17:00 Uhr - Erfahrung von MJ mit dem Tool am Basar-Tag
 - [ ] Die Anwdendung muss so umgebaut werden, dass man beim Verkäufer anlegen, wirklich einen Verkäufer anlegt. Also eine Person, der man dann nachträglich oder wann auch immer einen Verkäufernummer zuordnen kann. Das hat den Vorteil, dass die Anwendung dann an vielen Stellen selbst entscheiden kann, welche Verkäufernummer gehört zur welchen Person. Man kann dann auch abfangen, damit keine Verkäufernummer doppelt vergeben wird.
 - [ ] Wenn man neu Verkäufe anlegt, müssen alle drei Felder gefüllt sein!!!
 - [ ] Bei den Summenfeldern, werden anstatt 10,50 € -> 10,5 € angezeit. Hier bitte das Format ändern.
