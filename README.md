@@ -38,3 +38,13 @@
 - [X] Bei der Abrechnung in Excel erscheint: "Verk?ufer Nummer: 7" bei der Übersicht über die verkauften Artikel (also wenn ich mehrere Nummern habe)
 - [X] Zeile mit Eingabefeldern bei Verkäufe größer.
 - [X] Fenster "Der Verkaufsexport wird gestartet" ist überflüssig.
+
+
+## Neue Punkte 05.10.2017 - 17:00 Uhr - Erfahrung mit dem Tool am Basar-Tag
+- [] Die Anwdendung muss so umgebaut werden, dass man beim Verkäufer anlegen, wirklich einen Verkäufer anlegt. Also eine Person, der man dann nachträglich oder wann auch immer einen Verkäufernummer zuordnen kann. Das hat den Vorteil, dass die Anwendung dann an vielen Stellen selbst entscheiden kann, welche Verkäufernummer gehört zur welchen Person. Man kann dann auch abfangen, damit keine Verkäufernummer doppelt vergeben wird.
+- [] Wenn man neu Verkäufe anlegt, müssen alle drei Felder gefüllt sein!!!
+- [] Bei den Summenfeldern, werden anstatt 10,50 € -> 10,5 € angezeit. Hier bitte das Format ändern.
+- [] Bei mehrmaligen Abrechnungen, soll unten in der Liste der Einzelartikel dann nach jeder Verkäufernummer die Summe angezeigt werden. Also Gesamtsumme, Auszahlungsbetrag und Profit Kindergarten.
+- [] Wenn man das Programm so umgestellt hat, dass es selbst zuordnen kann, welche Verkäufernummern zu welchem Verkäufer (Person) gehörtn, dann soll es nur noch einen Abrechnungen erstellen Button geben. Die anderen sind unnötig, denn das Programm kann selbst entscheiden, welche Abrechnung für welchen Verkäufer erstellt wird.
+- [] Es soll zusätlich noch eine weitere Abrechnung für die interne Abrechnung des Teams geben. Diese dient dann zur Beschriftung der Kuverts die dann an den Verkäufer mit dem Geld und der Abrechnung rausgegeben werden. In dieser Abrechnung sollen dann der Verkäufername, die Verkäufernummer(n) und der Auszahlungsbetrag stehen. Sollten es mehr Verkäufernummern sein, dann soll der Auszahlungsbetrag natürlich die Summe der Einzel-Auszahlungsbeträge.
+- [] Die Abrechnungen sollen am besten direkt als PDF erstellt werden. Ich würde hier bei der XLSX Variante bleiben und im Programm einfach die Auswahl mit einbauen, ob PDF, XSLX oder Beides... Ich würde nach einer Möglichkeit suchen, dass man das XLSX nach PDF formatiert -> geht mit iText...Da wird dann das XLSX ausgelesen in einen FileInputStream und dann schreibt er das neu in das PDF...blöd an der Stelle. Bin damit nicht zufrieden, wollte von Anfang an iText nicht nutzen, weil das kostenpflichtig ist und ich finde, dass das Format XLSX besser für Abrechnungen geeignet ist. Auf der anderen Seite ist es schöner, wenn man PDF rausgeben kann. Mal überlegen...
