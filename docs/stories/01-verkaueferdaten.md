@@ -2,7 +2,7 @@
 
 ## Beschreibung:
 
-Als Benutzer möchte ich, dass alle Verkäufer mit Verkäufer-ID, Vornamen, Nachnamen und Telefonnummer erfasst werden. Die angelegten Listen sollen Importiert und Exportiert werden können
+Als Benutzer möchte ich, dass alle Verkäufer mit Verkäufer-ID, Vornamen, Nachnamen und Telefonnummer erfasst werden. Die angelegten Listen sollen importiert und exportiert werden können
 
 ## Akzeptanzkriterien:
 
