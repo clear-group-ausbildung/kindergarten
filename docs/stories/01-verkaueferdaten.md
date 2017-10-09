@@ -2,10 +2,9 @@
 
 ## Beschreibung:
 
-Als Benutzer möchte ich, dass alle Verkäufer mit Verkäufer-ID, Namen, Zusatz, Adresse, und Telefonnummer erfasst werden.  Zusätzlich benötigt man ein Zusatzfeld und Angaben zur Ware, ob gebracht, dreckig und abgeholt. Bei jedem Verkäufer soll man auch einen Vermerk machen können ob das Geld bereits erhalten wurde .
+Als Benutzer möchte ich, dass alle Verkäufer mit Verkäufer-ID, Vornamen, Nachnamen und Telefonnummer erfasst werden.
 
 ## Akzeptanzkriterien:
 
-- Erfassung der Verkäufer mit Namen, Adresse, Telefonnummer und einem Zusatzfeld 
-- Zusätzlich klickbare Punkte ob: gebracht, dreckig, abgeholt und Geld erhalten
+- Erfassung der Verkäufer mit Namen, Telefonnummer
 - Verkäuferliste muss leicht kopiert werden können
