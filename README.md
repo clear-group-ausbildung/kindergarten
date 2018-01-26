@@ -1,3 +1,8 @@
+# TroubleShooting
+Debug:  
+ - in die "run" config von Gradle bei Arguments -> Programm Arguments "-D DEBUG=true" eintragen
+ - Root-Verzeichnis vom Projekt -> Rechtsklick -> Debug as -> Debug Config -> Remote Java Application localhost:9099 -> debug
+ 
 # Kindergarten Kassenverwaltung
 
 ## Neue Punkte 05.10.2017 - 17:00 Uhr - Erfahrung von MJ mit dem Tool am Basar-Tag
