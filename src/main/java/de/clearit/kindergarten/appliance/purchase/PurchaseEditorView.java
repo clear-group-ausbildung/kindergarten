@@ -24,7 +24,7 @@ import de.clearit.kindergarten.appliance.DoubleToStringConverter;
 import de.clearit.kindergarten.appliance.IntegerToStringConverter;
 import de.clearit.kindergarten.domain.PurchaseBean;
 
-public class PurchaseEditorView extends AbstractView {
+public class PurchaseEditorView extends AbstractView{
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorView.class);
 
@@ -70,12 +70,14 @@ public class PurchaseEditorView extends AbstractView {
     itemNumberLabel = new JLabel(RESOURCES.getString("purchase.itemNumber"));
     itemNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_NUMBER)));
+    
     itemPriceLabel = new JLabel(RESOURCES.getString("purchase.itemPrice"));
     itemPriceField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_PRICE)));
+    
     vendorNumberLabel = new JLabel(RESOURCES.getString("purchase.vendor"));
     vendorNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
-        PurchaseBean.PROPERTY_VENDOR_NUMBER)));
+        PurchaseBean.PROPERTY_VENDOR_NUMBER)));    
     addButton = new JButton(model.getAction(PurchaseEditorModel.ACTION_ADD_LINE_ITEM));
     addButton.addActionListener(e -> vendorNumberField.requestFocusInWindow());
 

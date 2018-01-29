@@ -1,5 +1,7 @@
 package de.clearit.kindergarten.domain;
 
+import java.math.BigDecimal;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import com.jgoodies.binding.beans.Model;
@@ -23,7 +25,7 @@ public class PurchaseBean extends Model {
 
   private Integer id;
   private Integer itemNumber;
-  private Double itemPrice;
+  private BigDecimal itemPrice;
   private Integer vendorNumber;
 
   // Instance Creation ******************************************************
@@ -48,7 +50,7 @@ public class PurchaseBean extends Model {
    * @param vendorNumber
    *          the vendor number
    */
-  public PurchaseBean(Integer itemNumber, Double itemPrice, Integer vendorNumber) {
+  public PurchaseBean(Integer itemNumber, BigDecimal itemPrice, Integer vendorNumber) {
     this(null, itemNumber, itemPrice, vendorNumber);
   }
 
@@ -64,11 +66,11 @@ public class PurchaseBean extends Model {
    * @param vendorNumber
    *          the vendor number
    */
-  public PurchaseBean(Integer id, Integer itemNumber, Double itemPrice, Integer vendorNumber) {
+  public PurchaseBean(Integer id, Integer itemNumber, BigDecimal itemPrice, Integer vendorNumber) {
     super();
     this.id = id;
-    this.itemNumber = itemNumber;
-    this.itemPrice = itemPrice;
+    this.itemNumber = itemNumber;   
+    this.itemPrice = itemPrice;    
     this.vendorNumber = vendorNumber;
   }
 
@@ -94,13 +96,14 @@ public class PurchaseBean extends Model {
     firePropertyChange(PROPERTY_ITEM_NUMBER, oldValue, newValue);
   }
 
-  public Double getItemPrice() {
+  public BigDecimal getItemPrice() { 	  
     return itemPrice;
   }
 
-  public void setItemPrice(Double newValue) {
-    Double oldValue = getItemPrice();
-    itemPrice = newValue;
+  public void setItemPrice(BigDecimal newValue) {
+    BigDecimal oldValue = getItemPrice();
+    itemPrice = newValue;    
+	itemPrice = itemPrice.setScale(2, BigDecimal.ROUND_DOWN);
     firePropertyChange(PROPERTY_ITEM_PRICE, oldValue, newValue);
   }
 

@@ -1,5 +1,6 @@
 package de.clearit.kindergarten.domain;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.swing.ListModel;
@@ -13,8 +14,8 @@ import de.clearit.kindergarten.domain.entity.Purchase;
  */
 public class PurchaseService extends AbstractResourceService<PurchaseBean, Purchase> {
 
-  private static final Double KINDERGARTEN_PROFIT_RATIO = 0.2d;
-  private static final Double VENDOR_PAYOUT_RATIO = 0.8d;
+  private static final BigDecimal KINDERGARTEN_PROFIT_RATIO = new BigDecimal(0.2);
+  private static final BigDecimal VENDOR_PAYOUT_RATIO = new BigDecimal(0.8);
 
   private static final PurchaseService INSTANCE = new PurchaseService();
 
@@ -51,7 +52,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
     PurchaseBean bean = new PurchaseBean();
     bean.setId(entity.getInteger(PurchaseBean.PROPERTY_ID));
     bean.setItemNumber(entity.getInteger(toSnakeCase(PurchaseBean.PROPERTY_ITEM_NUMBER)));
-    bean.setItemPrice(entity.getDouble(toSnakeCase(PurchaseBean.PROPERTY_ITEM_PRICE)));
+    bean.setItemPrice(entity.getBigDecimal(toSnakeCase(PurchaseBean.PROPERTY_ITEM_PRICE)));
     bean.setVendorNumber(entity.getInteger(toSnakeCase(PurchaseBean.PROPERTY_VENDOR_NUMBER)));
     return bean;
   }
@@ -63,7 +64,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
       entity = new Purchase();
     }
     entity.setInteger(toSnakeCase(PurchaseBean.PROPERTY_ITEM_NUMBER), bean.getItemNumber());
-    entity.setDouble(toSnakeCase(PurchaseBean.PROPERTY_ITEM_PRICE), bean.getItemPrice());
+    entity.setBigDecimal(toSnakeCase(PurchaseBean.PROPERTY_ITEM_PRICE), bean.getItemPrice());
     entity.setInteger(toSnakeCase(PurchaseBean.PROPERTY_VENDOR_NUMBER), bean.getVendorNumber());
     return entity;
   }
@@ -80,17 +81,17 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    *          The list of purchases to summarise the kindergarten profit for
    * @return The summarised profit for the kindergarten
    */
-  public Double getKindergartenProfitByPurchases(List<PurchaseBean> listPurchases) {
+  public BigDecimal getKindergartenProfitByPurchases(List<PurchaseBean> listPurchases) {
     // TODO: Gibts hier eine Java 8 Stream Moeglichkeit? Der untere Code
     // funktioniert so nicht, da in eine enclosing variable geschrieben werden soll
     // "Local variable result defined in an enclosing scope must be final or
     // effectively final"
 
     // listPurchases.forEach(purchase -> result += getProfitByPurchase(purchase));
-    Double result = 0.0d;
+    BigDecimal result = new BigDecimal(0.00);
     if (listPurchases != null && listPurchases.size() > 0) {
       for (PurchaseBean purchase : listPurchases) {
-        result += getKindergartenProfitByPurchase(purchase);
+        result = result.add(getKindergartenProfitByPurchase(purchase));
       }
     }
     return result;
@@ -103,7 +104,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    *          The list of purchases to summarise the vendor payout amount for
    * @return The summarized vendor payout amount
    */
-  public Double getVendorPayoutByPurchases(List<PurchaseBean> listPurchases) {
+  public BigDecimal getVendorPayoutByPurchases(List<PurchaseBean> listPurchases) {
     // TODO: Gibts hier eine Java 8 Stream Moeglichkeit? Der untere Code
     // funktioniert so nicht, da in eine enclosing variable geschrieben werden soll
     // "Local variable result defined in an enclosing scope must be final or
@@ -111,10 +112,10 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
 
     // listPurchases.forEach(purchase -> result +=
     // getVendorPayoutByPurchase(purchase));
-    Double result = 0.0d;
+	  BigDecimal result = new BigDecimal(0.00);
     if (listPurchases != null && listPurchases.size() > 0) {
       for (PurchaseBean purchase : listPurchases) {
-        result += getVendorPayoutByPurchase(purchase);
+        result = result.add(getVendorPayoutByPurchase(purchase));
       }
     }
     return result;
@@ -127,18 +128,18 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    *          The list of purchases to summarise the item prices for
    * @return The sum of item prices
    */
-  public Double getItemSumByPurchases(List<PurchaseBean> listPurchases) {
+  public BigDecimal getItemSumByPurchases(List<PurchaseBean> listPurchases) {
     // TODO: Gibts hier eine Java 8 Stream Moeglichkeit? Der untere Code
     // funktioniert so nicht, da in eine enclosing variable geschrieben werden soll
     // "Local variable result defined in an enclosing scope must be final or
     // effectively final"
 
     // listPurchases.forEach(purchase -> result += purchase.getItemPrice();
-    Double result = 0.0d;
+    BigDecimal result = new BigDecimal(0.00);
     if (listPurchases != null && listPurchases.size() > 0) {
       for (PurchaseBean purchase : listPurchases) {
         Preconditions.checkNotNull(purchase.getItemPrice());
-        result += purchase.getItemPrice();
+        result = result.add(purchase.getItemPrice());
       }
     }
     return result;
@@ -168,10 +169,10 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    *          The purchase to calculate the kindergarten profit for
    * @return The profit for the kindergarten
    */
-  private Double getKindergartenProfitByPurchase(PurchaseBean purchase) {
-    Double result = 0.0d;
+  private BigDecimal getKindergartenProfitByPurchase(PurchaseBean purchase) {
+	  BigDecimal result = new BigDecimal(0.00);
     if (purchase != null && purchase.getItemPrice() != null) {
-      result = purchase.getItemPrice() * KINDERGARTEN_PROFIT_RATIO;
+      result = purchase.getItemPrice().multiply(KINDERGARTEN_PROFIT_RATIO);
     }
     return result;
   }
@@ -183,10 +184,10 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    *          The purchase to calculate the vendor payout amount for
    * @return The vendor payout amount
    */
-  private Double getVendorPayoutByPurchase(PurchaseBean purchase) {
-    Double result = 0.0d;
+  private BigDecimal getVendorPayoutByPurchase(PurchaseBean purchase) {
+    BigDecimal result = new BigDecimal(0.00);
     if (purchase != null && purchase.getItemPrice() != null) {
-      result = purchase.getItemPrice() * VENDOR_PAYOUT_RATIO;
+      result = purchase.getItemPrice().multiply(VENDOR_PAYOUT_RATIO);
     }
     return result;
   }

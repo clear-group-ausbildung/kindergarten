@@ -1,5 +1,6 @@
 package de.clearit.kindergarten.domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ public class ExportDataService {
     List<PurchaseBean> purchaseList = purchaseAllList.stream().filter(purchase -> purchase.getVendorNumber().equals(
         pVendor.getVendorNumber())).collect(Collectors.toList());
 
-    HashMap<Integer, Double> soldItemNumbersPricesMap = new HashMap<>();
+    HashMap<Integer, BigDecimal> soldItemNumbersPricesMap = new HashMap<>();
     for (PurchaseBean purchase : purchaseList) {
       soldItemNumbersPricesMap.put(purchase.getItemNumber(), purchase.getItemPrice());
     }

@@ -1,5 +1,6 @@
 package de.clearit.kindergarten.domain;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -12,14 +13,14 @@ public class PayoffData {
 	private final Integer vendorNumber;
 	private final String firstName;
 	private final String lastName;
-	private final Double turnover;
-	private final Double profit;
-	private final Double payment;
+	private final BigDecimal turnover;
+	private final BigDecimal profit;
+	private final BigDecimal payment;
 	private final Integer totalSoldItems;
-	private final HashMap<Integer, Double> soldItemNumbersPricesMap;
+	private final HashMap<Integer, BigDecimal> soldItemNumbersPricesMap;
 
-	public PayoffData(Integer pVendorNumber, String pFirstName, String pLastName, Double pTurnover, Double pProfit,
-			Double pPayment, Integer pTotalSoldItems, HashMap<Integer, Double> pSoldItemNumbersPricesMap) {
+	public PayoffData(Integer pVendorNumber, String pFirstName, String pLastName, BigDecimal pTurnover, BigDecimal pProfit,
+			BigDecimal pPayment, Integer pTotalSoldItems, HashMap<Integer, BigDecimal> pSoldItemNumbersPricesMap) {
 		vendorNumber = pVendorNumber;
 		firstName = pFirstName;
 		lastName = pLastName;
@@ -42,15 +43,15 @@ public class PayoffData {
 		return firstName;
 	}
 
-	public Double getTurnover() {
+	public BigDecimal getTurnover() {
 		return turnover;
 	}
 
-	public Double getProfit() {
+	public BigDecimal getProfit() {
 		return profit;
 	}
 
-	public Double getPayment() {
+	public BigDecimal getPayment() {
 		return payment;
 	}
 
@@ -58,7 +59,7 @@ public class PayoffData {
 		return totalSoldItems;
 	}
 
-	public HashMap<Integer, Double> getSoldItemNumbersPricesMap() {
+	public HashMap<Integer, BigDecimal> getSoldItemNumbersPricesMap() {
 		return soldItemNumbersPricesMap;
 	}
 

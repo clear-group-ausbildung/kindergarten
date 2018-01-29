@@ -2,6 +2,9 @@ package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -20,8 +23,8 @@ import de.clearit.kindergarten.domain.PurchaseService;
 
 public class PurchaseEditorSummary extends AbstractView {
 
-  private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorSummary.class);
-
+  private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorSummary.class);  
+  
   private JLabel itemCountLabel;
   private JLabel itemCountField;
   private JComponent itemSumLabel;
@@ -94,13 +97,26 @@ public class PurchaseEditorSummary extends AbstractView {
       private void refreshLabelText() {
         Integer itemCount = service.getItemCountByPurchases(model.getSelectionInList().getList());
         itemCountField.setText(itemCount.toString());
-        Double itemSum = service.getItemSumByPurchases(model.getSelectionInList().getList());
-        String itemSumWithDots = itemSum.toString();
+        BigDecimal itemSum = service.getItemSumByPurchases(model.getSelectionInList().getList());
+        
+        String itemSumWithDots = formatNumber(itemSum);
         String itemSumWithComma = itemSumWithDots.replace('.', ',');
-        itemSumField.setText(itemSumWithComma + "  \u20ac");
+        itemSumField.setText(itemSumWithComma + " \u20ac");
+      }
+      
+      // Format the ItemPrice / Sum with 2 decimal places and return this as String   
+      private String formatNumber(BigDecimal itemSum) {
+    	  BigDecimal sumToFormat = itemSum;
+    	  
+    	  NumberFormat nf = NumberFormat.getInstance();    	  
+    	  nf.setMinimumFractionDigits(2);
+    	  nf.setMaximumFractionDigits(2);
+    	  nf.setRoundingMode(RoundingMode.HALF_UP);
+    	  String formattedString = nf.format(sumToFormat);
+    	  
+    	  return formattedString;
       }
 
     });
   }
-
 }

@@ -18,6 +18,7 @@ public class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
     super(listModel, getColumnNames());
   }
 
+  // Spalten überschrift
   private static String[] getColumnNames() {
     return new String[] { RESOURCES.getString("purchase.table.vendorNumber"), RESOURCES.getString(
         "purchase.table.itemNumber"), RESOURCES.getString("purchase.table.itemPrice") };
@@ -29,12 +30,9 @@ public class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
     switch (columnIndex) {
     case 0:
       return purchase.getVendorNumber();
-
     case 1:
       return purchase.getItemNumber();
     case 2:
-
-    case 3:
       return purchase.getItemPrice();
 
     default:

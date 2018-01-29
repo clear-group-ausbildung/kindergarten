@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -141,17 +142,17 @@ public class ExportExcel {
 
     Cell turnoverCell = getCellForPlaceholder("$turnover");
     if (turnoverCell != null) {
-      turnoverCell.setCellValue(pPayoffData.getTurnover());
+    //  turnoverCell.setCellValue(pPayoffData.getTurnover());
     }
 
     Cell profitCell = getCellForPlaceholder("$profit");
     if (profitCell != null) {
-      profitCell.setCellValue(pPayoffData.getProfit());
+    //  profitCell.setCellValue(pPayoffData.getProfit());
     }
 
     Cell paymentCell = getCellForPlaceholder("$payment");
     if (paymentCell != null) {
-      paymentCell.setCellValue(pPayoffData.getPayment());
+    //  paymentCell.setCellValue(pPayoffData.getPayment());
     }
 
     Cell dateCell = getCellForPlaceholder("$date");
@@ -165,11 +166,11 @@ public class ExportExcel {
     }
   }
 
-  private void createSoldItemListInExcelForOne(HashMap<Integer, Double> pSoldItemMap, Cell startCell) {
-    if (pSoldItemMap.isEmpty()) {
+  private void createSoldItemListInExcelForOne(HashMap<Integer, BigDecimal> hashMap, Cell startCell) {
+    if (hashMap.isEmpty()) {
       startCell.setCellValue("Keine Artikel verkauft");
     } else {
-      createItemRows(startCell.getRowIndex(), startCell.getColumnIndex(), pSoldItemMap);
+      createItemRows(startCell.getRowIndex(), startCell.getColumnIndex(), hashMap);
     }
   }
 
@@ -181,15 +182,15 @@ public class ExportExcel {
     Double turnover = 0.0;
     Double profit = 0.0;
     Double payment = 0.0;
-    HashMap<Integer, HashMap<Integer, Double>> soldItemMaps = new HashMap<>();
+    HashMap<Integer, HashMap<Integer, BigDecimal>> soldItemMaps = new HashMap<>();
 
     Iterator<PayoffData> iter = pPayoffDataList.iterator();
     while (iter.hasNext()) {
       PayoffData payoffData = iter.next();
       totalSoldItems += payoffData.getTotalSoldItems();
-      turnover += payoffData.getTurnover();
-      profit += payoffData.getProfit();
-      payment += payoffData.getPayment();
+//      turnover += payoffData.getTurnover();
+//      profit += payoffData.getProfit();
+//      payment += payoffData.getPayment();
       soldItemMaps.put(payoffData.getVendorNumber(), payoffData.getSoldItemNumbersPricesMap());
       vendorNumbers.append(payoffData.getVendorNumber());
       if (iter.hasNext()) {
@@ -247,13 +248,13 @@ public class ExportExcel {
   }
 
   private void createSoldItemListInExcelForMultipleVendorNumbers(
-      HashMap<Integer, HashMap<Integer, Double>> pSoldItemMaps, Cell startCell) {
+      HashMap<Integer, HashMap<Integer, BigDecimal>> pSoldItemMaps, Cell startCell) {
 
     int rowCountGlobal = startCell.getRowIndex();
     int columnIndex = startCell.getColumnIndex();
 
     for (Integer mapsKey : pSoldItemMaps.keySet()) {
-      HashMap<Integer, Double> soldItemMap = pSoldItemMaps.get(mapsKey);
+      HashMap<Integer, BigDecimal> soldItemMap = pSoldItemMaps.get(mapsKey);
 
       rowCountGlobal = createPlaceholderRow(rowCountGlobal, columnIndex, "");
 
@@ -288,9 +289,9 @@ public class ExportExcel {
     return ++pRowCount;
   }
 
-  private int createItemRows(int pRowCount, int pColIndex, HashMap<Integer, Double> pSoldItemMap) {
+  private int createItemRows(int pRowCount, int pColIndex, HashMap<Integer, BigDecimal> hashMap) {
     int colIndexPrice = pColIndex + 1;
-    for (Integer key : pSoldItemMap.keySet()) {
+    for (Integer key : hashMap.keySet()) {
       XSSFRow tempRow = sheet.createRow(pRowCount);
 
       XSSFCell numberCell = tempRow.createCell(pColIndex);
@@ -298,7 +299,7 @@ public class ExportExcel {
       numberCell.setCellStyle(numberStyle);
 
       XSSFCell priceCell = tempRow.createCell(colIndexPrice);
-      priceCell.setCellValue(pSoldItemMap.get(key));
+//      priceCell.setCellValue(hashMap.get(key));
       priceCell.setCellStyle(priceStyle);
 
       pRowCount++;
