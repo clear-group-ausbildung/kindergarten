@@ -7,8 +7,6 @@ import org.javalite.activejdbc.Model;
  */
 public class Vendor extends Model {
 
-  // Validation for mandatory properties
-
   static {
     validatePresenceOf("last_name");
   }

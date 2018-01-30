@@ -66,6 +66,7 @@ public class PurchaseEditorView extends AbstractView{
     pane.setBackground(RESOURCES.getColor("content.background"));
     return pane;
   }
+  
 
   private void initComponents() {
     itemNumberLabel = new JLabel(RESOURCES.getString("purchase.itemNumber"));

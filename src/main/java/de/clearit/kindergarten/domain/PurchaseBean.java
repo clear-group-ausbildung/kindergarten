@@ -69,8 +69,8 @@ public class PurchaseBean extends Model {
   public PurchaseBean(Integer id, Integer itemNumber, BigDecimal itemPrice, Integer vendorNumber) {
     super();
     this.id = id;
-    this.itemNumber = itemNumber;   
-    this.itemPrice = itemPrice;    
+    this.itemNumber = itemNumber;
+    this.itemPrice = itemPrice;
     this.vendorNumber = vendorNumber;
   }
 
@@ -96,21 +96,21 @@ public class PurchaseBean extends Model {
     firePropertyChange(PROPERTY_ITEM_NUMBER, oldValue, newValue);
   }
 
-  public BigDecimal getItemPrice() { 	  
+  public BigDecimal getItemPrice() {
     return itemPrice;
   }
 
   public void setItemPrice(BigDecimal newValue) {
-	if(newValue != null) {
-		BigDecimal oldValue = getItemPrice();
-		itemPrice = newValue;    
-		itemPrice = itemPrice.setScale(2, BigDecimal.ROUND_DOWN);
-		firePropertyChange(PROPERTY_ITEM_PRICE, oldValue, newValue);
-	}else {
-		itemPrice = null;
-	}
+    if (newValue != null) {
+      BigDecimal oldValue = getItemPrice();
+      itemPrice = newValue;
+      itemPrice = itemPrice.setScale(2, BigDecimal.ROUND_DOWN);
+      firePropertyChange(PROPERTY_ITEM_PRICE, oldValue, newValue);
+    } else {
+      itemPrice = null;
+    }
   }
-  
+
   public Integer getVendorNumber() {
     return vendorNumber;
   }
@@ -166,15 +166,8 @@ public class PurchaseBean extends Model {
 
   @Override
   public String toString() {
-    return "PurchaseBean [id=" +
-        id +
-        ", itemNumber=" +
-        itemNumber +
-        ", itemPrice=" +
-        itemPrice +
-        ", vendorNumber=" +
-        vendorNumber +
-        "]";
+    return "PurchaseBean [id=" + id + ", itemNumber=" + itemNumber + ", itemPrice=" + itemPrice + ", vendorNumber="
+        + vendorNumber + "]";
   }
 
 }

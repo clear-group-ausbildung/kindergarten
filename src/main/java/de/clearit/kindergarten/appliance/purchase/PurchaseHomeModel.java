@@ -182,7 +182,8 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
       filteredOrAllPurchases.addAll(SERVICE.getAll());
     } else {
       filteredOrAllPurchases.addAll(SERVICE.getAll().stream().filter(bean -> bean.getVendorNumber().equals(
-          selectedVendor.getVendorNumber())).collect(Collectors.toList()));
+          0000)).collect(Collectors.toList()));
+      //TODO an neue Datenstruktur anpassen neuer Filter??
     }
     getSelectionInList().getList().clear();
     getSelectionInList().getList().addAll(filteredOrAllPurchases);

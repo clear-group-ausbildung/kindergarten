@@ -9,6 +9,7 @@ import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.binding.adapter.AbstractTableAdapter;
 import com.jgoodies.binding.adapter.SingleListSelectionAdapter;
+import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.component.StripedTable;
 import com.jgoodies.uif2.util.ComponentUtils;
@@ -50,6 +51,7 @@ public final class VendorHomeView extends AbstractView {
   private void initComponents() {
     table = new StripedTable(new VendorTableModel(model.getSelectionInList()));
     table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
+    //TODO neue Klasse/Selectioninlist für die Table??
     TableUtils.configureColumns(table, "[30dlu,60dlu], [30dlu,60dlu], [50dlu,pref], [50dlu,pref]");
 
     Action editAction = model.getAction(VendorHomeModel.ACTION_EDIT_ITEM);
@@ -94,7 +96,14 @@ public final class VendorHomeView extends AbstractView {
       VendorBean vendor = getRow(rowIndex);
       switch (columnIndex) {
       case 0:
-        return vendor.getVendorNumber();
+    	  if(!vendor.getVendorNumbers().isEmpty()) {
+    		  return vendor.getVendorNumbers().get(0).getVendorNumber();
+    		  //TODO 
+    	  }else {
+    		  return "Keine Vorhanden";
+    	  }
+        
+        // TODO an neue Datenstruktur anpassen neue Klasse/andere Tabelle?
       case 1:
         return vendor.getFirstName();
 
