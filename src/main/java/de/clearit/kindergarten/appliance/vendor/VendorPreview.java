@@ -14,6 +14,7 @@ import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 import de.clearit.kindergarten.appliance.IntegerToStringConverter;
 import de.clearit.kindergarten.application.KindergartenComponentFactory;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
 
 /**
  * The preview for a vendor.
@@ -38,8 +39,10 @@ public final class VendorPreview extends AbstractView {
   // Building ***************************************************************
 
   private void initComponents() {
-    vendorNumberField = KindergartenComponentFactory.createReadOnlyTextField(new IntegerToStringConverter(model
-        .getModel(VendorBean.PROPERTY_VENDOR_NUMBER)));
+//    vendorNumberField = KindergartenComponentFactory.createReadOnlyTextField(new IntegerToStringConverter(model
+//        .getModel(VendorNumberBean.PROPERTY_VENDOR_NUMBER)));
+	    vendorNumberField = KindergartenComponentFactory.createReadOnlyTextField("");
+    //TODO an neue Datenstruktur anpassen done??
     firstNameField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(
         VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(VendorBean.PROPERTY_LAST_NAME));

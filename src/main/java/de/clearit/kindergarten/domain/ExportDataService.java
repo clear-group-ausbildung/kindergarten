@@ -26,7 +26,8 @@ public class ExportDataService {
     List<PurchaseBean> purchaseAllList = purchaseService.getAll();
 
     List<PurchaseBean> purchaseList = purchaseAllList.stream().filter(purchase -> purchase.getVendorNumber().equals(
-        pVendor.getVendorNumber())).collect(Collectors.toList());
+        0)).collect(Collectors.toList());
+    //TODO an neue Datenstruktur anpassen neu..
 
     HashMap<Integer, BigDecimal> soldItemNumbersPricesMap = new HashMap<>();
     for (PurchaseBean purchase : purchaseList) {
