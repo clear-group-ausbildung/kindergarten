@@ -1,5 +1,7 @@
 package de.clearit.kindergarten.domain.entity;
 
+import java.util.ArrayList;
+
 import org.javalite.activejdbc.Model;
 
 /**
@@ -7,6 +9,7 @@ import org.javalite.activejdbc.Model;
  */
 public class Vendor extends Model {
 
+//	ArrayList<Integer> vendorNumbers = new ArrayList<>();
   // Validation for mandatory properties
 
   static {

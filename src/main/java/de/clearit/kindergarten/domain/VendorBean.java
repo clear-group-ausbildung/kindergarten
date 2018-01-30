@@ -1,5 +1,8 @@
 package de.clearit.kindergarten.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.jgoodies.binding.beans.Model;
 
 /**
@@ -12,7 +15,6 @@ public final class VendorBean extends Model {
   // Names of the Bound Bean Properties *************************************
 
   public static final String PROPERTY_ID = "id";
-  public static final String PROPERTY_VENDOR_NUMBER = "vendorNumber";
   public static final String PROPERTY_FIRST_NAME = "firstName";
   public static final String PROPERTY_LAST_NAME = "lastName";
   public static final String PROPERTY_PHONE_NUMBER = "phoneNumber";
@@ -20,24 +22,26 @@ public final class VendorBean extends Model {
   // Fields *****************************************************************
 
   private Integer id;
-  private Integer vendorNumber;
   private String firstName;
   private String lastName;
   private String phoneNumber;
+  private List<VendorNumberBean> vendorNumbers;
 
   // Instance Creation ******************************************************
 
-  /**
+
+
+/**
    * Default constructor; creates a new {@link VendorBean} with default (empty
    * (String), zero (Integer) or false(Boolean)) values for the attributes.
    */
   public VendorBean() {
     super();
     this.id = 0;
-    this.vendorNumber = null;
     this.firstName = "";
     this.lastName = "";
     this.phoneNumber = "";
+    this.vendorNumbers = new ArrayList<VendorNumberBean>();
   }
 
   // Accessors **************************************************************
@@ -50,16 +54,6 @@ public final class VendorBean extends Model {
     Integer oldValue = getId();
     id = newValue;
     firePropertyChange(PROPERTY_ID, oldValue, newValue);
-  }
-
-  public Integer getVendorNumber() {
-    return vendorNumber;
-  }
-
-  public void setVendorNumber(Integer newValue) {
-    Integer oldValue = getVendorNumber();
-    vendorNumber = newValue;
-    firePropertyChange(PROPERTY_VENDOR_NUMBER, oldValue, newValue);
   }
 
   public String getFirstName() {
@@ -91,6 +85,14 @@ public final class VendorBean extends Model {
     phoneNumber = newValue;
     firePropertyChange(PROPERTY_PHONE_NUMBER, oldValue, newValue);
   }
+  
+  public List<VendorNumberBean> getVendorNumbers() {
+	return vendorNumbers;
+  }
+
+  public void setVendorNumbers(List<VendorNumberBean> newValue) {
+	vendorNumbers = newValue;
+  }
 
   @Override
   public int hashCode() {
@@ -99,7 +101,6 @@ public final class VendorBean extends Model {
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
-    result = prime * result + ((vendorNumber == null) ? 0 : vendorNumber.hashCode());
     return result;
   }
 
@@ -127,11 +128,6 @@ public final class VendorBean extends Model {
         return false;
     } else if (!phoneNumber.equals(other.phoneNumber))
       return false;
-    if (vendorNumber == null) {
-      if (other.vendorNumber != null)
-        return false;
-    } else if (!vendorNumber.equals(other.vendorNumber))
-      return false;
     return true;
   }
 
@@ -139,8 +135,6 @@ public final class VendorBean extends Model {
   public String toString() {
     return "VendorBean [id=" +
         id +
-        ", vendorNumber=" +
-        vendorNumber +
         ", firstName=" +
         firstName +
         ", lastName=" +

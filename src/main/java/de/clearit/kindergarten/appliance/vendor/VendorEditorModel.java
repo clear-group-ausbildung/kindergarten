@@ -1,5 +1,6 @@
 package de.clearit.kindergarten.appliance.vendor;
 
+import java.util.ArrayList;
 import java.util.EventObject;
 
 import com.jgoodies.desktop.CommitCallback;
@@ -13,6 +14,8 @@ import com.jgoodies.uif2.util.TextComponentUtils;
 
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
+import de.clearit.kindergarten.domain.VendorNumberService;
 
 /**
  * The editor model for the vendor.
