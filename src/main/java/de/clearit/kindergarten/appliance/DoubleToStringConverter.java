@@ -25,6 +25,7 @@ public class DoubleToStringConverter extends AbstractConverter {
   @Override
   public Object convertFromSubject(Object subjectValue) {
     String result = "";
+   
     if (subjectValue != null) {
       String outputWithDot = subjectValue.toString();
       
@@ -33,7 +34,8 @@ public class DoubleToStringConverter extends AbstractConverter {
       nf.setMinimumFractionDigits(2);
       double value = Double.parseDouble(outputWithDot);
       result = nf.format(value);
-
+      
+      
 //      Replace this with NumberFormat
 //      
 //      result = outputWithDot.replace('.', ',');

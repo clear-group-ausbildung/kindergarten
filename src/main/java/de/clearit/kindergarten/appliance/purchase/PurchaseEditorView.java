@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
@@ -80,6 +81,7 @@ public class PurchaseEditorView extends AbstractView{
         PurchaseBean.PROPERTY_VENDOR_NUMBER)));    
     addButton = new JButton(model.getAction(PurchaseEditorModel.ACTION_ADD_LINE_ITEM));
     addButton.addActionListener(e -> vendorNumberField.requestFocusInWindow());
+    
 
     table = new StripedTable(new PurchaseTableModel(model.getSelectionInList()));
     table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
@@ -119,5 +121,29 @@ public class PurchaseEditorView extends AbstractView{
     builder.addButton(addButton);
     return builder.getPanel();
   }
+  
+  public JTextField getVendorNumber() {
+	  return (JTextField) vendorNumberField;
+  }
+  
+  public void setVendorNumber(String vendorNumber) {
+	  ((JTextField) vendorNumberField).setText(vendorNumber);
+  }
+  
+  public JTextField getItemNumber() {
+	  return (JTextField) itemNumberField;
+  }
+  
+  public void setItemNumber(String itemNumber) {
+	  ((JTextField) itemNumberField).setText(itemNumber);
+  }
+  
+  public JTextField getItemPrice() {
+	  return (JTextField) itemPriceField;
+  }
 
+  public void setItemPrice(String itemPrice) {
+	  ((JTextField) itemPriceField).setText(itemPrice);
+  }
+  
 }

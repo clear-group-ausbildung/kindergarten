@@ -4,6 +4,11 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventObject;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
@@ -103,13 +108,55 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
   @Action
   public void addLineItem(final ActionEvent e) {
+	  
     TextComponentUtils.commitImmediately();
     triggerCommit();
-    getSelectionInList().getList().add(getBean());
-    refreshSummary();
-    setBean(new PurchaseBean());
+    
+    if(checkBeanContent(getBean())) {
+    	getSelectionInList().getList().add(getBean());
+    	refreshSummary();
+    	setBean(new PurchaseBean());
+    }
   }
 
+  
+  // Check Bean Not Null ******************************************************
+  private Boolean checkBeanContent(PurchaseBean pBean) {
+	  boolean state = false;
+	  
+	  Pattern p = Pattern.compile("\\d+$");
+	  
+	  String vendorNumber = PurchaseAppliance.getInstance().getView().getVendorNumber().getText();
+	  String itemNumber =  PurchaseAppliance.getInstance().getView().getItemNumber().getText();
+	  String itemPrice = PurchaseAppliance.getInstance().getView().getItemPrice().getText();
+	  
+	  Matcher match = p.matcher(itemPrice);
+	  	  
+	  if(vendorNumber.matches("^(?=\\d*[1-9])\\d+$") && itemNumber.matches("^(?=\\d*[1-9])\\d+$") && match.find()) {
+		  state = true;
+	  }else {
+		  JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befüllen!");
+		  if(!vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+			  PurchaseAppliance.getInstance().getView().setVendorNumber(null);
+			 // PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocus();
+		  }
+		  if(!itemNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+			  PurchaseAppliance.getInstance().getView().setItemNumber(null);
+			  if(vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+				  PurchaseAppliance.getInstance().getView().getItemNumber().requestFocus();
+			  }
+		  }
+		  if(!match.find()) {
+			  PurchaseAppliance.getInstance().getView().setItemPrice(null);
+			  if(itemNumber.matches("^(?=\\d*[1-9])\\d+$") && vendorNumber.matches("^(?=\\d*[1-9])\\d+$")){
+				  PurchaseAppliance.getInstance().getView().getItemPrice().requestFocus();
+			  }
+		  }
+	  }
+	  return state;
+  }
+  
+  
   @Action(enabled = false)
   public void removeLineItem(final ActionEvent e) {
     final PurchaseBean purchase = getSelection();
@@ -128,6 +175,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
   @Override
   public void performAccept(final EventObject e) {
+	  
     if (e instanceof ActionEvent) {
       ActionEvent event = (ActionEvent) e;
       if (MODIFIER_FIRED_BY_MOUSE == event.getModifiers()) {
