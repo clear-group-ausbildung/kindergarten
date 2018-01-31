@@ -16,9 +16,6 @@ public class DeleteButtonActionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        // TODO Auto-generated method stub
-        
-        System.out.println(selectionList.getSelectionIndexHolder());
         selectionList.getList().remove(selectionList.getSelectionIndex());
 
     }
