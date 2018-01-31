@@ -40,7 +40,6 @@ public final class VendorEditorView extends AbstractView  {
   private JButton removeBtn;
   SelectionInList<String> vendorSelectionList;
   
-  
  // private final VendorNumberTableModel vendorModel;
   // Instance Creation ******************************************************
   public VendorEditorView(VendorEditorModel model) {
@@ -75,7 +74,7 @@ public final class VendorEditorView extends AbstractView  {
   }
   
   public JComponent buildContent() {                                             
-    FormLayout layout = new FormLayout("150dlu:grow, 16dlu, 70dlu, pref:grow", "2*(p, p, $lg),p, p,30dlu, p , pref , pref , 30dlu ,pref, pref:grow,20dlu");
+    FormLayout layout = new FormLayout("150dlu:grow, 16dlu, 70dlu, pref:grow", "2*(p, p, $lg),p, p,30dlu, p , pref , pref , 30dlu ,pref, pref:grow, p");
     I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
     builder.setBorder(Borders.DLU14_BORDER);
     
@@ -88,8 +87,8 @@ public final class VendorEditorView extends AbstractView  {
     builder.add(buildValidationFeedback(), CC.xywh(3, 1, 2, 8));
     builder.addI15dLabel("vendor.vendorNumber", CC.xy(1, 10));
     builder.add(vendorNumberField, CC.xy(1, 12));
-    builder.add(addBtn, CC.xy(3, 13));
-    builder.add(scrollPane, CC.xywh(1, 14, 1, 2));
+    builder.add(addBtn, CC.xy(3, 12));
+    builder.add(scrollPane, CC.xywh(1, 14, 1, 3));
     builder.add(removeBtn, CC.xy(3, 16));
     
     return builder.getPanel();

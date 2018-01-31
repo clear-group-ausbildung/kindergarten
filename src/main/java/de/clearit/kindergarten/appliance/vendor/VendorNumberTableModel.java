@@ -21,7 +21,7 @@ import de.clearit.kindergarten.domain.VendorBean;
   }
 
   private static String[] getColumnNames() {
-    return new String[] { RESOURCES.getString("vendor.table.vendorNumber") };
+    return new String[] { "zugewiesene Verkäufernummern" };
   }
   
   @Override
