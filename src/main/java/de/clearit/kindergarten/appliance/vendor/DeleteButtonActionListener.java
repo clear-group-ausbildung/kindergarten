@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import com.jgoodies.binding.list.SelectionInList;
 
 public class DeleteButtonActionListener implements ActionListener {
-    
        SelectionInList<String> selectionList;
        VendorEditorView view;
     

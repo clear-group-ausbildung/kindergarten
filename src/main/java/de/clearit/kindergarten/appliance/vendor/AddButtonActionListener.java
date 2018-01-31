@@ -15,7 +15,6 @@ import com.jgoodies.binding.list.SelectionInList;
  *Adds the user input from Verkäufernummer to the table below
  */
 public class AddButtonActionListener implements ActionListener {
-
 	private JOptionPane validationPane;
     SelectionInList<String> selectionList;
     VendorEditorView view;

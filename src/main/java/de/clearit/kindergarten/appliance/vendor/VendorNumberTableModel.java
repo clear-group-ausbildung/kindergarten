@@ -11,7 +11,6 @@ import de.clearit.kindergarten.domain.VendorBean;
  *TableModle for the table in VendorEditorView 
  *containing VendorNumbers
  */
-
   public class VendorNumberTableModel extends AbstractTableAdapter<String> {
 
   private static final long serialVersionUID = 1L;
