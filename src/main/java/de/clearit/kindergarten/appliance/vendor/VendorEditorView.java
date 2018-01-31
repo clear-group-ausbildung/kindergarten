@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
+import com.jgoodies.binding.adapter.SingleListSelectionAdapter;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.factories.Borders;
@@ -53,6 +54,7 @@ public final class VendorEditorView extends AbstractView  {
     phoneNumberField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_PHONE_NUMBER));
     vendorSelectionList = new SelectionInList<String>();
     vendorNumberTable = new StripedTable(new VendorNumberTableModel(vendorSelectionList));
+    vendorNumberTable.setSelectionModel(new SingleListSelectionAdapter(vendorSelectionList.getSelectionIndexHolder()));
     scrollPane = new JScrollPane(vendorNumberTable);
     vendorNumberTable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     
@@ -60,7 +62,7 @@ public final class VendorEditorView extends AbstractView  {
     addBtn.addActionListener(new AddButtonActionListener(vendorSelectionList, this));
     
     removeBtn = new JButton("Entfernen");
-    removeBtn.addActionListener(new DeleteButtonActionListener(vendorSelectionList));
+    removeBtn.addActionListener(new DeleteButtonActionListener(vendorSelectionList, this));
   }
   
 @Override
