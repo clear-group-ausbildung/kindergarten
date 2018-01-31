@@ -134,6 +134,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 	  	  
 	  if(vendorNumber.matches("^(?=\\d*[1-9])\\d+$") && itemNumber.matches("^(?=\\d*[1-9])\\d+$") && match.find()) {
 		  state = true;
+		  PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocus();
 	  }else {
 		  JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befüllen!");
 		  if(!vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
