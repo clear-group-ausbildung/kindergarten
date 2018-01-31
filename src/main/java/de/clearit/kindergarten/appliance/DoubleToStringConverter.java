@@ -16,10 +16,14 @@ public class DoubleToStringConverter extends AbstractConverter {
 
   @Override
   public void setValue(Object newValue) {
-    String inputWithComma = (String)newValue;
-    String inputWithDot = inputWithComma.replace(',', '.');   
-    BigDecimal BigValue = new BigDecimal(inputWithDot);    
-    subject.setValue(BigValue);
+	  try {
+	    String inputWithComma = (String)newValue;
+	    String inputWithDot = inputWithComma.replace(',', '.');   
+	    BigDecimal BigValue = new BigDecimal(inputWithDot);    
+	    subject.setValue(BigValue);
+	  }catch(NumberFormatException e) {
+		  
+	  }
   }
   
   @Override
