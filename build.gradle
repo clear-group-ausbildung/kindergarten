@@ -77,7 +77,3 @@ distZip {
         include 'abrechnung_template.xlsx'
     }
 }
-
-run {
-
-}
