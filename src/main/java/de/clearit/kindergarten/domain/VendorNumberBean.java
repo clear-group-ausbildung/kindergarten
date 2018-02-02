@@ -1,11 +1,9 @@
 package de.clearit.kindergarten.domain;
 
-import java.util.ArrayList;
-
 import com.jgoodies.binding.beans.Model;
 
 /**
- * The bean class for the Vendor resource.
+ * The bean class for the Vendor Number resource.
  */
 public final class VendorNumberBean extends Model {
 
@@ -25,17 +23,9 @@ public final class VendorNumberBean extends Model {
 
   // Instance Creation ******************************************************
 
-//  public ArrayList<String> getVendorNumbers() {
-//	return vendorNumbers;
-//}
-//
-//public void setVendorNumbers(ArrayList<String> vendorNumbers) {
-//	this.vendorNumbers = vendorNumbers;
-//}
-
-/**
-   * Default constructor; creates a new {@link VendorNumberBean} with default (empty
-   * (String), zero (Integer) or false(Boolean)) values for the attributes.
+  /**
+   * Default constructor; creates a new {@link VendorNumberBean} with default
+   * (empty (String), zero (Integer) or false(Boolean)) values for the attributes.
    */
   public VendorNumberBean() {
     super();
@@ -43,13 +33,24 @@ public final class VendorNumberBean extends Model {
     this.vendorNumber = 0;
     this.vendorId = 0;
   }
-  
-  //public VendorNumberBean(int id, int vendorNumber, int vendorId) {
-//	    super();
-//	    this.id = id;
-//	    this.vendorNumber = vendorNumber;
-//	    this.vendorId = vendorId;
-//	  }
+
+  /**
+   * Constructor, creates a new {@link VendorNumberBean} with the given
+   * attributes.
+   * 
+   * @param id
+   *          the id
+   * @param vendorNumber
+   *          the vendor number
+   * @param vendorId
+   *          the vendor id
+   */
+  public VendorNumberBean(Integer id, int vendorNumber, int vendorId) {
+    super();
+    this.id = id;
+    this.vendorNumber = vendorNumber;
+    this.vendorId = vendorId;
+  }
 
   // Accessors **************************************************************
 
@@ -83,43 +84,40 @@ public final class VendorNumberBean extends Model {
     firePropertyChange(PROPERTY_VENDOR_ID, oldValue, newValue);
   }
 
-@Override
-public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((id == null) ? 0 : id.hashCode());
-	result = prime * result + vendorId;
-	result = prime * result + vendorNumber;
-	return result;
-}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + vendorId;
+    result = prime * result + vendorNumber;
+    return result;
+  }
 
-@Override
-public boolean equals(Object obj) {
-	if (this == obj)
-		return true;
-	if (obj == null)
-		return false;
-	if (getClass() != obj.getClass())
-		return false;
-	VendorNumberBean other = (VendorNumberBean) obj;
-	if (id == null) {
-		if (other.id != null)
-			return false;
-	} else if (!id.equals(other.id))
-		return false;
-	if (vendorId != other.vendorId)
-		return false;
-	if (vendorNumber != other.vendorNumber)
-		return false;
-	return true;
-}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    VendorNumberBean other = (VendorNumberBean) obj;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    if (vendorId != other.vendorId)
+      return false;
+    if (vendorNumber != other.vendorNumber)
+      return false;
+    return true;
+  }
 
-@Override
-public String toString() {
-	return "VendorNumberBean [id=" + id + ", vendorNumber=" + vendorNumber + ", vendorId=" + vendorId + "]";
-}
-
-
- 
+  @Override
+  public String toString() {
+    return "VendorNumberBean [id=" + id + ", vendorNumber=" + vendorNumber + ", vendorId=" + vendorId + "]";
+  }
 
 }
