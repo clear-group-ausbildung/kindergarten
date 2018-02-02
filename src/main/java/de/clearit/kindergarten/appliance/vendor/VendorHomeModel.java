@@ -1,6 +1,8 @@
 package de.clearit.kindergarten.appliance.vendor;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.ListModel;
@@ -21,6 +23,8 @@ import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.desktop.DefaultDesktopFrame;
 import de.clearit.kindergarten.domain.ExportExcel;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
+import de.clearit.kindergarten.domain.VendorNumberService;
 import de.clearit.kindergarten.domain.VendorService;
 
 /**
@@ -109,6 +113,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
       SERVICE.delete(vendor);
+      //TODO and delete vendor numbers
     }
   }
 

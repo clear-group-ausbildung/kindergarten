@@ -25,10 +25,14 @@ public class VendorListCellRenderer extends DefaultListCellRenderer {
   private String formatVendor(VendorBean vendor) {
     StringBuilder builder = new StringBuilder();
     if (vendor != null) {
-      if (vendor.getVendorNumber()!=null){
-        builder.append(vendor.getVendorNumber());
-        builder.append(": ");
-      }
+//      if (vendor.getVendorNumber()!=null){
+//        builder.append(vendor.getVendorNumber());
+//        builder.append(": ");
+//      }
+    	
+    	//TODO an neue Datenstruktur anpassen neue 
+    	//	neue Klasse die Vendor und nummer vereint
+    	// ganze Tabelle muss umgestellt werden.
       builder.append(vendor.getLastName());
       if (!Strings.isNullOrEmpty(vendor.getFirstName())) {
         builder.append(", ");

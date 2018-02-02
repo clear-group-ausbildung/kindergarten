@@ -1,19 +1,18 @@
 package de.clearit.kindergarten.appliance.vendor;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.accessibility.AccessibleContext;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.adapter.SingleListSelectionAdapter;
 import com.jgoodies.binding.list.SelectionInList;
-import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
@@ -21,9 +20,10 @@ import com.jgoodies.jsdl.core.pane.form.FormPane;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 import com.jgoodies.uif2.component.StripedTable;
-import de.clearit.kindergarten.appliance.IntegerToStringConverter;
+
 import de.clearit.kindergarten.desktop.DesktopUtils;
 import de.clearit.kindergarten.domain.VendorBean;
+
 /**
  * The editor view for the vendor.
  */
@@ -47,8 +47,8 @@ public final class VendorEditorView extends AbstractView  {
   }
   // Initialization *********************************************************
   private void initComponents() {
-    vendorNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
-    					VendorBean.PROPERTY_VENDOR_NUMBER)));
+    vendorNumberField = new JTextField();
+	//TODO an neue Datenstruktur anpassen done?
     firstNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_LAST_NAME));
     phoneNumberField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_PHONE_NUMBER));
@@ -77,7 +77,6 @@ public final class VendorEditorView extends AbstractView  {
     FormLayout layout = new FormLayout("150dlu:grow, 16dlu, 70dlu, pref:grow", "2*(p, p, $lg),p, p,30dlu, p , pref , pref , 30dlu ,pref, pref:grow, p");
     I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
     builder.setBorder(Borders.DLU14_BORDER);
-    
     builder.addI15dLabel("vendor.firstName", CC.xy(1, 1));
     builder.add(firstNameField, CC.xy(1, 2));
     builder.addI15dLabel("vendor.lastName", CC.xy(1, 4));
@@ -90,7 +89,6 @@ public final class VendorEditorView extends AbstractView  {
     builder.add(addBtn, CC.xy(3, 12));
     builder.add(scrollPane, CC.xywh(1, 14, 1, 3));
     builder.add(removeBtn, CC.xy(3, 16));
-    
     return builder.getPanel();
   }
   private JComponent buildValidationFeedback() {

@@ -108,8 +108,8 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
   @Action(enabled = false)
   public void removeVendorNumber(final ActionEvent e) {
     final VendorBean vendor = getSelection();
-    final String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", "Verk\u00e4ufernummer: " + vendor
-        .getVendorNumber());
+    final String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", "Verk\u00e4ufernummer: " + 0000);
+    // TODO an neue Datenstruktur anpassen ganze Methode?
     final TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
     pane.setPreferredWidth(PreferredWidth.MEDIUM);
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
@@ -127,7 +127,9 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
       cancelOp.run();
       return;
     }
-    final String objectName = "Verk\u00e4ufernummer: " + vendorList.getSelection().getVendorNumber();
+    //final String objectName = "Verk\u00e4ufernummer: " + vendorList.getSelection().getVendorNumber();
+    final String objectName = "Verk\u00e4ufernummer: " + 0000;
+    //TODO an neue Datenstruktur anpassen ganze Methode?
     final Object commitValue = Dialogs.showUnsavedChangesDialog(e, objectName);
     if (commitValue == CommandValue.CANCEL) {
       return;
@@ -170,8 +172,9 @@ public class VendorNumberChooserModel extends UIFPresentationModel<VendorBean> i
       List<VendorBean> vendorList = getSelectionInList().getList();
       StringBuilder vendorNumbers = new StringBuilder();
       Iterator<VendorBean> iter = vendorList.iterator();
+      //TODO an neue Datenstruktur anpassen - ganze Methode?
       while (iter.hasNext()) {
-        vendorNumbers.append(iter.next().getVendorNumber());
+    	  //vendorNumbers.append(iter.next().getVendorNumber());
         if (iter.hasNext()) {
           vendorNumbers.append(" & ");
         }
