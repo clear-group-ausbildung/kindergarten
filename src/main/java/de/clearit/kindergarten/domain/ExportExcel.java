@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -38,7 +39,8 @@ public class ExportExcel {
 
   private static final Logger LOGGER = Logger.getLogger(ExportExcel.class.getName());
   private static final ExportExcel INSTANCE = new ExportExcel();
-
+  
+  
   private ExportExcel() {
   }
 
@@ -140,19 +142,22 @@ public class ExportExcel {
       totalSoldItemsCell.setCellValue(pPayoffData.getTotalSoldItems());
     }
 
+    // Error - BigDecimal To String *********************************************************
     Cell turnoverCell = getCellForPlaceholder("$turnover");
     if (turnoverCell != null) {
-    //  turnoverCell.setCellValue(pPayoffData.getTurnover());
+      turnoverCell.setCellValue(pPayoffData.getTurnover() + "\u20ac");
     }
 
+    // Error - BigDecimal To String *********************************************************
     Cell profitCell = getCellForPlaceholder("$profit");
     if (profitCell != null) {
-    //  profitCell.setCellValue(pPayoffData.getProfit());
+      profitCell.setCellValue(pPayoffData.getProfit() + "\u20ac");
     }
 
+    // Error - BigDecimal To String *********************************************************
     Cell paymentCell = getCellForPlaceholder("$payment");
     if (paymentCell != null) {
-    //  paymentCell.setCellValue(pPayoffData.getPayment());
+      paymentCell.setCellValue(pPayoffData.getPayment() + "\u20ac");
     }
 
     Cell dateCell = getCellForPlaceholder("$date");
@@ -166,11 +171,11 @@ public class ExportExcel {
     }
   }
 
-  private void createSoldItemListInExcelForOne(HashMap<Integer, BigDecimal> hashMap, Cell startCell) {
-    if (hashMap.isEmpty()) {
+  private void createSoldItemListInExcelForOne(Map<Integer, String> map, Cell startCell) {
+    if (map.isEmpty()) {
       startCell.setCellValue("Keine Artikel verkauft");
     } else {
-      createItemRows(startCell.getRowIndex(), startCell.getColumnIndex(), hashMap);
+      createItemRows(startCell.getRowIndex(), startCell.getColumnIndex(), map);
     }
   }
 
@@ -179,18 +184,18 @@ public class ExportExcel {
     String firstName = "";
     String lastName = "";
     Integer totalSoldItems = 0;
-    Double turnover = 0.0;
-    Double profit = 0.0;
-    Double payment = 0.0;
-    HashMap<Integer, HashMap<Integer, BigDecimal>> soldItemMaps = new HashMap<>();
+    BigDecimal turnover = new BigDecimal(0.00);
+    BigDecimal profit = new BigDecimal(0.00);
+    BigDecimal payment = new BigDecimal(0.00);
+    Map<Integer, Map<Integer, String>> soldItemMaps = new HashMap<>();
 
     Iterator<PayoffData> iter = pPayoffDataList.iterator();
     while (iter.hasNext()) {
       PayoffData payoffData = iter.next();
       totalSoldItems += payoffData.getTotalSoldItems();
-//      turnover += payoffData.getTurnover();
-//      profit += payoffData.getProfit();
-//      payment += payoffData.getPayment();
+//      turnover = turnover.add(payoffData.getTurnover());
+//      profit = profit.add(payoffData.getProfit());
+//      payment = payment.add(payoffData.getPayment());
       soldItemMaps.put(payoffData.getVendorNumber(), payoffData.getSoldItemNumbersPricesMap());
       vendorNumbers.append(payoffData.getVendorNumber());
       if (iter.hasNext()) {
@@ -223,17 +228,17 @@ public class ExportExcel {
 
     Cell turnoverCell = getCellForPlaceholder("$turnover");
     if (turnoverCell != null) {
-      turnoverCell.setCellValue(turnover);
+      turnoverCell.setCellValue(turnover.doubleValue());
     }
 
     Cell profitCell = getCellForPlaceholder("$profit");
     if (profitCell != null) {
-      profitCell.setCellValue(profit);
+      profitCell.setCellValue(profit.doubleValue());
     }
 
     Cell paymentCell = getCellForPlaceholder("$payment");
     if (paymentCell != null) {
-      paymentCell.setCellValue(payment);
+      paymentCell.setCellValue(payment.doubleValue());
     }
 
     Cell dateCell = getCellForPlaceholder("$date");
@@ -248,14 +253,14 @@ public class ExportExcel {
   }
 
   private void createSoldItemListInExcelForMultipleVendorNumbers(
-      HashMap<Integer, HashMap<Integer, BigDecimal>> pSoldItemMaps, Cell startCell) {
+		  Map<Integer, Map<Integer, String>> soldItemMaps, Cell startCell) {
 
     int rowCountGlobal = startCell.getRowIndex();
     int columnIndex = startCell.getColumnIndex();
 
-    for (Integer mapsKey : pSoldItemMaps.keySet()) {
-      HashMap<Integer, BigDecimal> soldItemMap = pSoldItemMaps.get(mapsKey);
-
+    for (Integer mapsKey : soldItemMaps.keySet()) {
+      Map<Integer, String> soldItemMap = soldItemMaps.get(mapsKey);
+      
       rowCountGlobal = createPlaceholderRow(rowCountGlobal, columnIndex, "");
 
       rowCountGlobal = createVendorHeaderRow(rowCountGlobal, columnIndex, mapsKey);
@@ -289,9 +294,9 @@ public class ExportExcel {
     return ++pRowCount;
   }
 
-  private int createItemRows(int pRowCount, int pColIndex, HashMap<Integer, BigDecimal> hashMap) {
+  private int createItemRows(int pRowCount, int pColIndex, Map<Integer, String> map) {
     int colIndexPrice = pColIndex + 1;
-    for (Integer key : hashMap.keySet()) {
+    for (Integer key : map.keySet()) {
       XSSFRow tempRow = sheet.createRow(pRowCount);
 
       XSSFCell numberCell = tempRow.createCell(pColIndex);

@@ -139,7 +139,6 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 		  JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befüllen!");
 		  if(!vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
 			  PurchaseAppliance.getInstance().getView().setVendorNumber(null);
-			 // PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocus();
 		  }
 		  if(!itemNumber.matches("^(?=\\d*[1-9])\\d+$")) {
 			  PurchaseAppliance.getInstance().getView().setItemNumber(null);
