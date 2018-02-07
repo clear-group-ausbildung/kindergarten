@@ -13,6 +13,7 @@ import de.clearit.kindergarten.utils.CollectorUtils;
 public final class VendorService extends AbstractResourceService<VendorBean, Vendor> {
 
   private static final VendorService INSTANCE = new VendorService();
+  private static final VendorNumberService NUMBER_SERVICE = VendorNumberService.getInstance();
 
   /**
    * Private constructor to prevent instantiation.
@@ -49,6 +50,8 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     bean.setFirstName(entity.getString(toSnakeCase(VendorBean.PROPERTY_FIRST_NAME)));
     bean.setLastName(entity.getString(toSnakeCase(VendorBean.PROPERTY_LAST_NAME)));
     bean.setPhoneNumber(entity.getString(toSnakeCase(VendorBean.PROPERTY_PHONE_NUMBER)));
+    // Load Vendor Numbers
+    bean.setVendorNumbers(NUMBER_SERVICE.findByVendorId(bean.getId()));
     return bean;
   }
 
@@ -70,6 +73,14 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     return Vendor.findAll();
   }
 
+  @Override
+  public void create(VendorBean bean) {
+    super.create(bean);
+    
+    // Persist Vendor Numbers
+    bean.getVendorNumbers().stream().forEach(number -> NUMBER_SERVICE.create(number));
+  }
+  
   /**
    * Finds a VendorBean by the given {@code firstName} and {@code lastName}.
    * Furthermore, the list of vendor numbers is populated with the found vendor
