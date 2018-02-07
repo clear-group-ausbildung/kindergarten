@@ -23,6 +23,7 @@ import com.jgoodies.uif2.component.StripedTable;
 
 import de.clearit.kindergarten.desktop.DesktopUtils;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
 
 /**
  * The editor view for the vendor.
@@ -38,7 +39,7 @@ public final class VendorEditorView extends AbstractView  {
   private JTable vendorNumberTable;
   private JButton addBtn;
   private JButton removeBtn;
-  SelectionInList<String> vendorSelectionList;
+  SelectionInList<VendorNumberBean> vendorSelectionList;
   
  // private final VendorNumberTableModel vendorModel;
   // Instance Creation ******************************************************
@@ -52,8 +53,8 @@ public final class VendorEditorView extends AbstractView  {
     firstNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_LAST_NAME));
     phoneNumberField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_PHONE_NUMBER));
-    vendorSelectionList = new SelectionInList<String>();
-    vendorNumberTable = new StripedTable(new VendorNumberTableModel(vendorSelectionList));
+    vendorSelectionList = new SelectionInList<VendorNumberBean>();
+    vendorNumberTable = new StripedTable(new VendorNumberTableModel(vendorSelectionList, model));
     vendorNumberTable.setSelectionModel(new SingleListSelectionAdapter(vendorSelectionList.getSelectionIndexHolder()));
     scrollPane = new JScrollPane(vendorNumberTable);
     vendorNumberTable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -96,13 +97,11 @@ public final class VendorEditorView extends AbstractView  {
         "Der Vorname ist optional.", "Der Nachname muss angegeben werden.", "Die Telefonnummer ist optional.");
   }
   
-  public JComponent getVendorNumberField()
-  {
+  public JComponent getVendorNumberField(){
 		return vendorNumberField;
   }
   
-  public void setVendorNumberField(JComponent vendorNumberField)
-  {
+  public void setVendorNumberField(JComponent vendorNumberField){
 		this.vendorNumberField = vendorNumberField;
   }
   
