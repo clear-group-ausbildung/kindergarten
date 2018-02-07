@@ -6,7 +6,6 @@ import javax.swing.ListModel;
 
 import com.jgoodies.binding.adapter.AbstractTableAdapter;
 
-import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
 
 /**
@@ -34,26 +33,23 @@ import de.clearit.kindergarten.domain.VendorNumberBean;
   
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-	 VendorNumberBean vbn = listModel.getElementAt(rowIndex);
-	 
-	 vendorNumberList.add(vbn);
-	 
-	 String vendorNumber = new Integer(vbn.getVendorNumber()).toString();
-	 
-	 VendorBean vendor = model.getVendor();
-	 vbn.setVendorId(vendor.getId());
-	 
-	 vendor.setVendorNumbers(vendorNumberList);
-  
-   // String vendorNumber = getRow(rowIndex);
+	 VendorNumberBean vnb = listModel.getElementAt(rowIndex); 
+	 vendorNumberList = getVendorNumberList(); 
+	 vendorNumberList.add(vnb);
+	 String vendorNumber = new Integer(vnb.getVendorNumber()).toString();
+
     switch (columnIndex) {
     case 0:
       return vendorNumber;
     default:
       throw new IllegalStateException("Can't handle column index " + columnIndex);
     }
+        
   }
   
+  public List<VendorNumberBean> getVendorNumberList(){
+  	return vendorNumberList;
+  }
   
 
 }
