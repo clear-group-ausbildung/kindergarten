@@ -1,6 +1,5 @@
 package de.clearit.kindergarten.appliance.vendor;
 
-import java.util.ArrayList;
 import java.util.EventObject;
 
 import com.jgoodies.desktop.CommitCallback;
@@ -14,14 +13,13 @@ import com.jgoodies.uif2.util.TextComponentUtils;
 
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.VendorBean;
-import de.clearit.kindergarten.domain.VendorNumberBean;
-import de.clearit.kindergarten.domain.VendorNumberService;
 
 /**
  * The editor model for the vendor.
  */
 public final class VendorEditorModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
 
+  private VendorBean vendor;
   private static final long serialVersionUID = 1L;
 
   // Instance Fields ********************************************************
@@ -32,9 +30,14 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
 
   public VendorEditorModel(VendorBean vendor, CommitCallback<CommandValue> callback) {
     super(vendor);
+    this.vendor = vendor;
     this.commitCallback = callback;
   }
 
+  public VendorBean getVendor() {
+	  return vendor;
+  }
+  
   // Actions ****************************************************************
 
   // FormPaneModel Implementation *******************************************
@@ -73,6 +76,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     }
     String objectName = getBean().getLastName() + ", " + getBean().getFirstName();
     Object commitValue = Dialogs.showUnsavedChangesDialog(e, objectName);
+    
     if (commitValue == CommandValue.CANCEL) {
       return;
     }
