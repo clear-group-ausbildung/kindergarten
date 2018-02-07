@@ -19,6 +19,7 @@ public class PurchaseAppliance extends DefaultAppliance {
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseAppliance.class);
 
   private static PurchaseAppliance instance;
+  private PurchaseEditorView view;
 
   // Instance Access ********************************************************
 
@@ -52,12 +53,16 @@ public class PurchaseAppliance extends DefaultAppliance {
   }
 
   public void openPurchaseEditor(String title, PurchaseEditorModel model) {
-    PurchaseEditorView view = new PurchaseEditorView(model);
+    view = new PurchaseEditorView(model);
     DesktopFrame frame = new DefaultDesktopFrame(DesktopManager.activeFrame(), title, true, PurchaseAppliance
         .getInstance(), null, null, null, view.getPanel(), null);
     frame.setVisible(true);
   }
 
+  public PurchaseEditorView getView() {
+	  return view;
+  }
+  
   // Implementing Abstract Behavior *****************************************
 
   /**

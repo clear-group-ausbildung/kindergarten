@@ -101,12 +101,16 @@ public class PurchaseBean extends Model {
   }
 
   public void setItemPrice(BigDecimal newValue) {
-    BigDecimal oldValue = getItemPrice();
-    itemPrice = newValue;    
-	itemPrice = itemPrice.setScale(2, BigDecimal.ROUND_DOWN);
-    firePropertyChange(PROPERTY_ITEM_PRICE, oldValue, newValue);
+	if(newValue != null) {
+		BigDecimal oldValue = getItemPrice();
+		itemPrice = newValue;    
+		itemPrice = itemPrice.setScale(2, BigDecimal.ROUND_DOWN);
+		firePropertyChange(PROPERTY_ITEM_PRICE, oldValue, newValue);
+	}else {
+		itemPrice = null;
+	}
   }
-
+  
   public Integer getVendorNumber() {
     return vendorNumber;
   }

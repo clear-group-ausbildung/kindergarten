@@ -1,7 +1,8 @@
 package de.clearit.kindergarten.domain;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The class PayoffData
@@ -17,10 +18,10 @@ public class PayoffData {
 	private final BigDecimal profit;
 	private final BigDecimal payment;
 	private final Integer totalSoldItems;
-	private final HashMap<Integer, BigDecimal> soldItemNumbersPricesMap;
+	private final Map<Integer, BigDecimal> soldItemNumbersPricesMap;
 
 	public PayoffData(Integer pVendorNumber, String pFirstName, String pLastName, BigDecimal pTurnover, BigDecimal pProfit,
-			BigDecimal pPayment, Integer pTotalSoldItems, HashMap<Integer, BigDecimal> pSoldItemNumbersPricesMap) {
+			BigDecimal pPayment, Integer pTotalSoldItems, Map<Integer, BigDecimal> pSoldItemNumbersPricesMap) {
 		vendorNumber = pVendorNumber;
 		firstName = pFirstName;
 		lastName = pLastName;
@@ -43,24 +44,29 @@ public class PayoffData {
 		return firstName;
 	}
 
-	public BigDecimal getTurnover() {
-		return turnover;
+	public String getTurnover() {
+		return turnover.setScale(2, BigDecimal.ROUND_DOWN).toString();
 	}
 
-	public BigDecimal getProfit() {
-		return profit;
+	public String getProfit() {
+		return profit.setScale(2, BigDecimal.ROUND_DOWN).toString();
 	}
 
-	public BigDecimal getPayment() {
-		return payment;
+	public String getPayment() {
+		return payment.setScale(2, BigDecimal.ROUND_DOWN).toString();
 	}
 
 	public Integer getTotalSoldItems() {
 		return totalSoldItems;
 	}
 
-	public HashMap<Integer, BigDecimal> getSoldItemNumbersPricesMap() {
-		return soldItemNumbersPricesMap;
+	public Map<Integer, String> getSoldItemNumbersPricesMap() {
+		
+		return convertMapValuesFromBigDecimalToString(soldItemNumbersPricesMap);
 	}
 
+	public Map<Integer, String> convertMapValuesFromBigDecimalToString(Map<Integer, BigDecimal> mapToBeConverted) {
+		Map<Integer, String> result = mapToBeConverted.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, value -> value.toString()));
+		return result;
+    }
 }
