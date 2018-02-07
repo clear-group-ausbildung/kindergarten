@@ -18,12 +18,12 @@ import de.clearit.kindergarten.domain.VendorNumberBean;
 
   private static final long serialVersionUID = 1L;
   private ListModel<VendorNumberBean> listModel;
-  private VendorEditorModel model;
   private List<VendorNumberBean> vendorNumberList = new ArrayList<VendorNumberBean>();
+  private VendorEditorModel vendorEditorModel;
 
-  public VendorNumberTableModel(ListModel<VendorNumberBean> listModel, VendorEditorModel model) {
+  public VendorNumberTableModel(ListModel<VendorNumberBean> listModel, VendorEditorModel vendorEditorModel) {
     super(listModel, getColumnNames());
-    this.model = model;
+    this.vendorEditorModel = vendorEditorModel;
     this.listModel = listModel;
   }
 
@@ -33,23 +33,42 @@ import de.clearit.kindergarten.domain.VendorNumberBean;
   
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-	 VendorNumberBean vnb = listModel.getElementAt(rowIndex); 
-	 vendorNumberList = getVendorNumberList(); 
-	 vendorNumberList.add(vnb);
-	 String vendorNumber = new Integer(vnb.getVendorNumber()).toString();
-
-    switch (columnIndex) {
-    case 0:
-      return vendorNumber;
-    default:
-      throw new IllegalStateException("Can't handle column index " + columnIndex);
-    }
-        
+	 
+	  VendorNumberBean vnb = listModel.getElementAt(rowIndex); 
+	  vendorNumberList = getVendorNumberList(); 
+	  vendorNumberList.add(vendorNumberList.size(), vnb);
+	  String vendorNumber = new Integer(vnb.getVendorNumber()).toString();
+	
+	  VendorHomeModel vendorHomeModel = VendorHomeModel.getInstance();
+	  vendorHomeModel.setVendorNumberBeansList(vendorNumberList);
+ 	  switch (columnIndex) {
+   	  case 0:
+   		  return vendorNumber;
+   	  default:
+   		  throw new IllegalStateException("Can't handle column index " + columnIndex);
+   	  }	  
   }
   
   public List<VendorNumberBean> getVendorNumberList(){
   	return vendorNumberList;
   }
   
-
+/*
+ *  else {
+	 		vendorNumberList = vendorEditorModel.getVendor().getVendorNumbers();
+	 		for(int i = 0; i < vendorNumberList.size(); i++) {
+		 		vnb = vendorNumberList.get(i);
+		 		vendorNumber = new Integer(vnb.getVendorNumber()).toString();
+		 		switch (columnIndex) {
+		    	  case 0:
+		    		  return vendorNumber;
+		    	  default:
+		    		  throw new IllegalStateException("Can't handle column index " + columnIndex);
+		 		}
+	 		}
+    	}
+ * 
+ * 
+ * 
+ */
 }

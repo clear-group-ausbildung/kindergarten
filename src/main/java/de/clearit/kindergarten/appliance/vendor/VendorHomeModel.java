@@ -1,6 +1,8 @@
 package de.clearit.kindergarten.appliance.vendor;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.ListModel;
@@ -21,6 +23,8 @@ import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.desktop.DefaultDesktopFrame;
 import de.clearit.kindergarten.domain.ExportExcel;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
+import de.clearit.kindergarten.domain.VendorNumberService;
 import de.clearit.kindergarten.domain.VendorService;
 
 /**
@@ -37,7 +41,10 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   private static final Logger LOGGER = Logger.getLogger(VendorHomeModel.class.getName());
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorHomeModel.class);
   private static final VendorService SERVICE = VendorService.getInstance();
+  private static final VendorNumberService NUMBERSERVICE = VendorNumberService.getInstance();
   private static VendorHomeModel instance;
+  
+  private List<VendorNumberBean> vendorNumberBeansList;  
 
   // Instance Creation ******************************************************
 
@@ -77,6 +84,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   @Action
   public void newItem(ActionEvent e) {
     String title = RESOURCES.getString("newVendor.title");
+    vendorNumberBeansList = new ArrayList<VendorNumberBean>();
     editItem(title, new VendorBean(), true);
   }
 
@@ -85,12 +93,26 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     String title = RESOURCES.getString("editVendor.title");
     editItem(title, getSelection(), false);
   }
-
+  
+  public void setVendorNumberBeansList(List<VendorNumberBean> vendorNumberBeansList) {
+	  this.vendorNumberBeansList = vendorNumberBeansList;
+  }
+  
+  
+//TODO
 	private void editItem(String title, final VendorBean vendor, final boolean newItem) {
     VendorEditorModel model = new VendorEditorModel(vendor, value -> {
       if (value == CommandValue.OK) {
         if (newItem) {
           SERVICE.create(vendor);
+          VendorBean bean = SERVICE.findByName(vendor.getFirstName(), vendor.getLastName());
+          for(int i = 0; i < vendorNumberBeansList.size(); i++) {
+        	  VendorNumberBean vnb = vendorNumberBeansList.get(i);
+        	  vnb.setVendorId(bean.getId());
+        	  NUMBERSERVICE.create(vnb);
+        	  System.out.println(vnb.getVendorId());
+          }
+          bean.setVendorNumbers(vendorNumberBeansList);
         } else {
           SERVICE.update(vendor);
         }

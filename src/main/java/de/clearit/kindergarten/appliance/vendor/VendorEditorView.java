@@ -39,7 +39,7 @@ public final class VendorEditorView extends AbstractView  {
   private JTable vendorNumberTable;
   private JButton addBtn;
   private JButton removeBtn;
-  SelectionInList<VendorNumberBean> vendorSelectionList;
+  private SelectionInList<VendorNumberBean> vendorSelectionList;
   
  // private final VendorNumberTableModel vendorModel;
   // Instance Creation ******************************************************
