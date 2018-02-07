@@ -1,9 +1,13 @@
 package de.clearit.kindergarten.appliance.vendor;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ListModel;
-import com.jgoodies.application.Application;
-import com.jgoodies.application.ResourceMap;
+
 import com.jgoodies.binding.adapter.AbstractTableAdapter;
+
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
 
 /**
  * 
@@ -11,13 +15,17 @@ import de.clearit.kindergarten.domain.VendorBean;
  *TableModle for the table in VendorEditorView 
  *containing VendorNumbers
  */
-  public class VendorNumberTableModel extends AbstractTableAdapter<String> {
+  public class VendorNumberTableModel extends AbstractTableAdapter<VendorNumberBean>{
 
   private static final long serialVersionUID = 1L;
-  private static final ResourceMap RESOURCES = Application.getResourceMap(VendorHomeView.class);
+  private ListModel<VendorNumberBean> listModel;
+  private VendorEditorModel model;
+  private List<VendorNumberBean> vendorNumberList = new ArrayList<VendorNumberBean>();
 
-  public VendorNumberTableModel(ListModel<?> listModel) {
+  public VendorNumberTableModel(ListModel<VendorNumberBean> listModel, VendorEditorModel model) {
     super(listModel, getColumnNames());
+    this.model = model;
+    this.listModel = listModel;
   }
 
   private static String[] getColumnNames() {
@@ -26,7 +34,18 @@ import de.clearit.kindergarten.domain.VendorBean;
   
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-    String vendorNumber = getRow(rowIndex);
+	 VendorNumberBean vbn = listModel.getElementAt(rowIndex);
+	 
+	 vendorNumberList.add(vbn);
+	 
+	 String vendorNumber = new Integer(vbn.getVendorNumber()).toString();
+	 
+	 VendorBean vendor = model.getVendor();
+	 vbn.setVendorId(vendor.getId());
+	 
+	 vendor.setVendorNumbers(vendorNumberList);
+  
+   // String vendorNumber = getRow(rowIndex);
     switch (columnIndex) {
     case 0:
       return vendorNumber;

@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.jgoodies.binding.list.SelectionInList;
+
+import de.clearit.kindergarten.domain.VendorNumberBean;
 /**
  * 
  * @author Kenan.Horoz
@@ -15,31 +17,34 @@ import com.jgoodies.binding.list.SelectionInList;
  *Adds the user input from Verkäufernummer to the table below
  */
 public class AddButtonActionListener implements ActionListener {
-	private JOptionPane validationPane;
-    SelectionInList<String> selectionList;
-    VendorEditorView view;
+    private SelectionInList<VendorNumberBean> selectionList;
+ 	private VendorEditorView view;
    
-    public AddButtonActionListener(SelectionInList<String> selectionList, VendorEditorView view) {
+    public AddButtonActionListener(SelectionInList<VendorNumberBean> selectionList, VendorEditorView view) {
         this.selectionList = selectionList;
         this.view = view;
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-    	validationPane = new JOptionPane();
     	
-    	if ( Pattern.matches("^(?=\\d*[1-9])\\d+$", ((JTextField)view.getVendorNumberField()).getText()) )
-    		
-    	{
-    		selectionList.getList().add(((JTextField)view.getVendorNumberField()).getText());
-    	}
-
-        else
-        {
+    	if ( Pattern.matches("^(?=\\d*[1-9])\\d+$", ((JTextField)view.getVendorNumberField()).getText()) ){
+    		VendorNumberBean vnb = new VendorNumberBean();
+    		vnb.setVendorNumber(Integer.parseInt(((JTextField) view.getVendorNumberField()).getText().toString()));
+    		addToList(vnb);	
+    	}else{
         	JOptionPane.showMessageDialog(new JFrame(), "Bitte geben Sie eine gültige Verkäufernummer ein");
         }
 
         ((JTextField)view.getVendorNumberField()).setText("");
     }
 
+    private void addToList(VendorNumberBean vendorNumberBean) {
+    	selectionList.getList().add(vendorNumberBean);
+    }
+    
+    public SelectionInList<VendorNumberBean> getSelectionList() {
+    	return selectionList;
+    }
+    
 }
