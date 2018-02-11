@@ -1,10 +1,14 @@
 package de.clearit.kindergarten.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ListModel;
 
+import org.apache.poi.ss.formula.functions.Address;
+
 import de.clearit.kindergarten.domain.entity.Vendor;
+import de.clearit.kindergarten.domain.entity.VendorNumber;
 import de.clearit.kindergarten.utils.CollectorUtils;
 
 /**
@@ -31,6 +35,14 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     return INSTANCE;
   }
 
+  @Override
+  protected void postCreate(VendorBean bean, Vendor entity) {
+    Integer createdVendorId = entity.getInteger(toSnakeCase(VendorBean.PROPERTY_ID));
+    bean.getVendorNumbers().stream().forEach(number -> number.setVendorId(createdVendorId));
+    bean.getVendorNumbers().stream().forEach(number -> entity.add(NUMBER_SERVICE.toEntity(number)));
+    entity.saveIt();
+  }
+
   // Public API *************************************************************
 
   /**
@@ -51,7 +63,10 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     bean.setLastName(entity.getString(toSnakeCase(VendorBean.PROPERTY_LAST_NAME)));
     bean.setPhoneNumber(entity.getString(toSnakeCase(VendorBean.PROPERTY_PHONE_NUMBER)));
     // Load Vendor Numbers
-    bean.setVendorNumbers(NUMBER_SERVICE.findByVendorId(bean.getId()));
+    List<VendorNumber> vendorNumbers = entity.getAll(VendorNumber.class);
+    List<VendorNumberBean> vendorNumberBeans = new ArrayList<>();
+    vendorNumbers.stream().forEach(number -> vendorNumberBeans.addAll(NUMBER_SERVICE.findByVendorId(bean.getId())));
+    bean.setVendorNumbers(vendorNumberBeans);
     return bean;
   }
 
@@ -61,10 +76,13 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     if (entity == null) {
       entity = new Vendor();
     }
+    if (bean.getId() != null && bean.getId() != 0) {
+      entity.setInteger(toSnakeCase(VendorBean.PROPERTY_ID), bean.getId());
+    }
     entity.setString(toSnakeCase(VendorBean.PROPERTY_FIRST_NAME), bean.getFirstName());
     entity.setString(toSnakeCase(VendorBean.PROPERTY_LAST_NAME), bean.getLastName());
     entity.setString(toSnakeCase(VendorBean.PROPERTY_PHONE_NUMBER), bean.getPhoneNumber());
-    
+
     return entity;
   }
 
@@ -73,14 +91,6 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     return Vendor.findAll();
   }
 
-  @Override
-  public void create(VendorBean bean) {
-    super.create(bean);
-    
-    // Persist Vendor Numbers
-    bean.getVendorNumbers().stream().forEach(number -> NUMBER_SERVICE.create(number));
-  }
-  
   /**
    * Finds a VendorBean by the given {@code firstName} and {@code lastName}.
    * Furthermore, the list of vendor numbers is populated with the found vendor
