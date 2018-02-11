@@ -24,100 +24,100 @@ import de.clearit.kindergarten.domain.VendorBean;
  */
 public final class VendorHomeView extends AbstractView {
 
-  private static final ResourceMap RESOURCES = Application.getResourceMap(VendorHomeView.class);
+	private static final ResourceMap RESOURCES = Application.getResourceMap(VendorHomeView.class);
 
-  private static VendorHomeView instance;
+	private static VendorHomeView instance;
 
-  private final VendorHomeModel model;
+	private final VendorHomeModel model;
 
-  private JTable table;
-  private VendorPreview preview;
+	private JTable table;
+	private VendorPreview preview;
 
-  // Instance Creation ******************************************************
+	// Instance Creation ******************************************************
 
-  private VendorHomeView(VendorHomeModel model) {
-    this.model = model;
-  }
+	private VendorHomeView(VendorHomeModel model) {
+		this.model = model;
+	}
 
-  public static VendorHomeView getInstance() {
-    if (instance == null) {
-      instance = new VendorHomeView(VendorHomeModel.getInstance());
-    }
-    return instance;
-  }
+	public static VendorHomeView getInstance() {
+		if (instance == null) {
+			instance = new VendorHomeView(VendorHomeModel.getInstance());
+		}
+		return instance;
+	}
 
-  // Building ***************************************************************
+	// Building ***************************************************************
 
-  private void initComponents() {
-    table = new StripedTable(new VendorTableModel(model.getSelectionInList()));
-    table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
-    //TODO neue Klasse/Selectioninlist für die Table??
-    TableUtils.configureColumns(table, "[30dlu,60dlu], [30dlu,60dlu], [50dlu,pref], [50dlu,pref]");
+	private void initComponents() {
+		table = new StripedTable(new VendorTableModel(model.getSelectionInList()));
+		table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
+		// TODO neue Klasse/Selectioninlist für die Table??
+		TableUtils.configureColumns(table, "[30dlu,60dlu], [30dlu,60dlu], [50dlu,pref], [50dlu,pref]");
 
-    Action editAction = model.getAction(VendorHomeModel.ACTION_EDIT_ITEM);
-    ComponentUtils.registerDoubleClickAction(table, editAction);
+		Action editAction = model.getAction(VendorHomeModel.ACTION_EDIT_ITEM);
+		ComponentUtils.registerDoubleClickAction(table, editAction);
 
-    preview = new VendorPreview(model.getSelectionInList().getSelectionHolder());
-  }
+		preview = new VendorPreview(model.getSelectionInList().getSelectionHolder());
+	}
 
-  @Override
-  protected JComponent buildPanel() {
-    initComponents();
+	@Override
+	protected JComponent buildPanel() {
+		initComponents();
 
-    HomeViewBuilder builder = new HomeViewBuilder();
-    builder.setTitle(RESOURCES.getString("vendorHome.mainInstruction"));
-    builder.setListView(table);
-    builder.setListBar(model.getActionMap(), AbstractHomeModel.ACTION_NEW_ITEM, AbstractHomeModel.ACTION_EDIT_ITEM,
-        AbstractHomeModel.ACTION_DELETE_ITEM, "---", VendorHomeModel.ACTION_PRINT_RECEIPT,
-        VendorHomeModel.ACTION_PRINT_MULTIPLE_RECEIPTS, VendorHomeModel.ACTION_PRINT_ALL_RECEIPTS);
-    builder.setPreview(preview.getPanel());
+		HomeViewBuilder builder = new HomeViewBuilder();
+		builder.setTitle(RESOURCES.getString("vendorHome.mainInstruction"));
+		builder.setListView(table);
+		builder.setListBar(model.getActionMap(), AbstractHomeModel.ACTION_NEW_ITEM, AbstractHomeModel.ACTION_EDIT_ITEM,
+				AbstractHomeModel.ACTION_DELETE_ITEM, "---", VendorHomeModel.ACTION_PRINT_RECEIPT,
+				VendorHomeModel.ACTION_PRINT_ALL_RECEIPTS, VendorHomeModel.ACTION_PRINT_INTERNAL_RECEIPT);
+		builder.setPreview(preview.getPanel());
 
-    return builder.getPanel();
-  }
+		return builder.getPanel();
+	}
 
-  // TableModel *************************************************************
+	// TableModel *************************************************************
 
-  private static final class VendorTableModel extends AbstractTableAdapter<VendorBean> {
+	private static final class VendorTableModel extends AbstractTableAdapter<VendorBean> {
 
-    private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 
-    VendorTableModel(ListModel<?> listModel) {
-      super(listModel, getColumnNames());
-    }
+		VendorTableModel(ListModel<?> listModel) {
+			super(listModel, getColumnNames());
+		}
 
-    private static String[] getColumnNames() {
-      return new String[] { RESOURCES.getString("vendor.table.vendorNumber"), RESOURCES.getString(
-          "vendor.table.firstName"), RESOURCES.getString("vendor.table.lastName"), RESOURCES.getString(
-              "vendor.table.phoneNumber") };
-    }
+		private static String[] getColumnNames() {
+			return new String[] { RESOURCES.getString("vendor.table.vendorNumber"),
+					RESOURCES.getString("vendor.table.firstName"), RESOURCES.getString("vendor.table.lastName"),
+					RESOURCES.getString("vendor.table.phoneNumber") };
+		}
 
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-      VendorBean vendor = getRow(rowIndex);
-      switch (columnIndex) {
-      case 0:
-    	  if(!vendor.getVendorNumbers().isEmpty()) {
-    		  return vendor.getVendorNumbers().get(0).getVendorNumber();
-    		  //TODO 
-    	  }else {
-    		  return "Keine Vorhanden";
-    	  }
-        
-        // TODO an neue Datenstruktur anpassen neue Klasse/andere Tabelle?
-      case 1:
-        return vendor.getFirstName();
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			VendorBean vendor = getRow(rowIndex);
+			switch (columnIndex) {
+			case 0:
+				if (!vendor.getVendorNumbers().isEmpty()) {
+					return vendor.getVendorNumbers().get(0).getVendorNumber();
+					// TODO
+				} else {
+					return "Keine Vorhanden";
+				}
 
-      case 2:
-        return vendor.getLastName();
+				// TODO an neue Datenstruktur anpassen neue Klasse/andere Tabelle?
+			case 1:
+				return vendor.getFirstName();
 
-      case 3:
-        return vendor.getPhoneNumber();
+			case 2:
+				return vendor.getLastName();
 
-      default:
-        throw new IllegalStateException("Can't handle column index " + columnIndex);
-      }
-    }
+			case 3:
+				return vendor.getPhoneNumber();
 
-  }
+			default:
+				throw new IllegalStateException("Can't handle column index " + columnIndex);
+			}
+		}
+
+	}
 
 }
