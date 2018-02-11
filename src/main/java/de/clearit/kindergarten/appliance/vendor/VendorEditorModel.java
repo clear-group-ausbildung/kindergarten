@@ -1,7 +1,14 @@
 package de.clearit.kindergarten.appliance.vendor;
 
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.EventObject;
 
+import com.jgoodies.application.Action;
+import com.jgoodies.binding.list.SelectionInList;
+import com.jgoodies.binding.value.ValueHolder;
+import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopManager;
 import com.jgoodies.jsdl.core.CloseRequestHandler;
@@ -10,44 +17,130 @@ import com.jgoodies.jsdl.core.pane.form.FormPaneModel;
 import com.jgoodies.jsdl.core.util.JSDLUtils;
 import com.jgoodies.uif2.application.UIFPresentationModel;
 import com.jgoodies.uif2.util.TextComponentUtils;
+import com.jgoodies.validation.ValidationResult;
 
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
+import de.clearit.kindergarten.domain.validation.VendorValidatable;
+import de.clearit.validation.view.ValidationSupport;
 
 /**
  * The editor model for the vendor.
  */
 public final class VendorEditorModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
 
-  private VendorBean vendor;
   private static final long serialVersionUID = 1L;
+
+  // Constants **************************************************************
+
+  public static final String ACTION_ADD_VENDOR_NUMBER = "addVendorNumber";
+  public static final String ACTION_REMOVE_VENDOR_NUMBER = "removeVendorNumber";
 
   // Instance Fields ********************************************************
 
   private final CommitCallback<CommandValue> commitCallback;
+  private final ValidationSupport validationSupport;
+  private SelectionInList<VendorNumberBean> selectionInList;
+  private final ValueModel vendorNumberFieldModel = new ValueHolder();
 
   // Instance Creation ******************************************************
 
   public VendorEditorModel(VendorBean vendor, CommitCallback<CommandValue> callback) {
     super(vendor);
-    this.vendor = vendor;
     this.commitCallback = callback;
+    this.validationSupport = new ValidationSupport(new VendorValidatable(vendor), 1000);
+    initModels();
+    initPresentationLogic();
   }
 
-  public VendorBean getVendor() {
-	  return vendor;
+  // Initialization *********************************************************
+
+  private void initModels() {
+    selectionInList = new SelectionInList<>();
+    selectionInList.getList().addAll(getBean().getVendorNumbers());
+    if (selectionInList.getList().size() > 0) {
+      selectionInList.setSelectionIndex(0);
+    }
+    handleSelectionChange(selectionInList.hasSelection());
   }
-  
+
+  private void initPresentationLogic() {
+    addBeanPropertyChangeListener(validationSupport.delayedValidationHandler());
+    getSelectionInList().addPropertyChangeListener(SelectionInList.PROPERTYNAME_SELECTION, new SelectionChangeHandler(
+        this));
+  }
+
+  // Models *****************************************************************
+
+  public SelectionInList<VendorNumberBean> getSelectionInList() {
+    return selectionInList;
+  }
+
+  private VendorNumberBean getSelection() {
+    return getSelectionInList().getSelection();
+  }
+
+  public ValidationSupport getValidationSupport() {
+    return validationSupport;
+  }
+
+  public ValueModel getVendorNumberFieldModel() {
+    return vendorNumberFieldModel;
+  }
+
+  // Event Handling *********************************************************
+
+  private void handleSelectionChange(final boolean hasSelection) {
+    handleSelectionChangeEditDelete(hasSelection);
+  }
+
+  private void handleSelectionChangeEditDelete(final boolean hasSelection) {
+    setActionEnabled(ACTION_REMOVE_VENDOR_NUMBER, hasSelection);
+  }
+
   // Actions ****************************************************************
+
+  @Action
+  public void addVendorNumber(ActionEvent e) {
+    TextComponentUtils.commitImmediately();
+    VendorNumberBean vendorNumberBean = new VendorNumberBean();
+    // Read Vendor number from input field
+    vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));
+    // Add to model list
+    getSelectionInList().getList().add(vendorNumberBean);
+    // Add to bean list
+    getBean().getVendorNumbers().add(vendorNumberBean);
+    // Reset input field
+    getVendorNumberFieldModel().setValue(null);
+
+  }
+
+  @Action(enabled = false)
+  public void removeVendorNumber(ActionEvent e) {
+    VendorNumberBean vendorNumberBean = getSelection();
+    // Remove from model list
+    getSelectionInList().getList().remove(vendorNumberBean);
+    // Remove from bean list
+    getBean().getVendorNumbers().remove(vendorNumberBean);
+  }
 
   // FormPaneModel Implementation *******************************************
 
   @Override
   public void performAccept(EventObject e) {
     TextComponentUtils.commitImmediately();
+    // ValidationResult result = validationSupport.getResult();
+    // if (!result.hasErrors()) {
     triggerCommit();
     commitCallback.committed(CommandValue.OK);
     JSDLUtils.closePaneFor(e);
+    // }
+    // boolean canceled = Dialogs.vendorHasErrors(e, getBean());
+    // if (!canceled) {
+    // commitCallback.committed(CommandValue.CANCEL);
+    // JSDLUtils.closePaneFor(e);
+    // }
   }
 
   @Override
@@ -76,7 +169,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     }
     String objectName = getBean().getLastName() + ", " + getBean().getFirstName();
     Object commitValue = Dialogs.showUnsavedChangesDialog(e, objectName);
-    
+
     if (commitValue == CommandValue.CANCEL) {
       return;
     }
@@ -97,6 +190,28 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   @Override
   public boolean isApplyEnabled() {
     return false;
+  }
+
+  @Override
+  public void release() {
+    removeBeanPropertyChangeListener(validationSupport.delayedValidationHandler());
+    setBean(null);
+  }
+
+  // Event Handlers *********************************************************
+
+  private static final class SelectionChangeHandler implements PropertyChangeListener {
+
+    private final VendorEditorModel model;
+
+    SelectionChangeHandler(final VendorEditorModel model) {
+      this.model = model;
+    }
+
+    @Override
+    public void propertyChange(final PropertyChangeEvent evt) {
+      model.handleSelectionChange(model.getSelectionInList().hasSelection());
+    }
   }
 
   // Helper Code ************************************************************

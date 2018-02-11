@@ -51,7 +51,6 @@ public final class VendorHomeView extends AbstractView {
 	private void initComponents() {
 		table = new StripedTable(new VendorTableModel(model.getSelectionInList()));
 		table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
-		// TODO neue Klasse/Selectioninlist für die Table??
 		TableUtils.configureColumns(table, "[30dlu,60dlu], [30dlu,60dlu], [50dlu,pref], [50dlu,pref]");
 
 		Action editAction = model.getAction(VendorHomeModel.ACTION_EDIT_ITEM);

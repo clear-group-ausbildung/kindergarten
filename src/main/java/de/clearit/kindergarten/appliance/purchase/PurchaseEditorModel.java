@@ -108,55 +108,53 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
   @Action
   public void addLineItem(final ActionEvent e) {
-	  
+
     TextComponentUtils.commitImmediately();
     triggerCommit();
-    
-    if(checkBeanContent(getBean())) {
-    	getSelectionInList().getList().add(getBean());
-    	refreshSummary();
-    	setBean(new PurchaseBean());
+
+    if (checkBeanContent(getBean())) {
+      getSelectionInList().getList().add(getBean());
+      refreshSummary();
+      setBean(new PurchaseBean());
     }
   }
 
-  
   // Check Bean Not Null ******************************************************
   private Boolean checkBeanContent(PurchaseBean pBean) {
-	  boolean state = false;
-	  
-	  Pattern p = Pattern.compile("\\d+$");
-	  
-	  String vendorNumber = PurchaseAppliance.getInstance().getView().getVendorNumber().getText();
-	  String itemNumber =  PurchaseAppliance.getInstance().getView().getItemNumber().getText();
-	  String itemPrice = PurchaseAppliance.getInstance().getView().getItemPrice().getText();
-	  
-	  Matcher match = p.matcher(itemPrice);
-	  	  
-	  if(vendorNumber.matches("^(?=\\d*[1-9])\\d+$") && itemNumber.matches("^(?=\\d*[1-9])\\d+$") && match.find()) {
-		  state = true;
-		  PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocus();
-	  }else {
-		  JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befüllen!");
-		  if(!vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
-			  PurchaseAppliance.getInstance().getView().setVendorNumber(null);
-		  }
-		  if(!itemNumber.matches("^(?=\\d*[1-9])\\d+$")) {
-			  PurchaseAppliance.getInstance().getView().setItemNumber(null);
-			  if(vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
-				  PurchaseAppliance.getInstance().getView().getItemNumber().requestFocus();
-			  }
-		  }
-		  if(!match.find()) {
-			  PurchaseAppliance.getInstance().getView().setItemPrice(null);
-			  if(itemNumber.matches("^(?=\\d*[1-9])\\d+$") && vendorNumber.matches("^(?=\\d*[1-9])\\d+$")){
-				  PurchaseAppliance.getInstance().getView().getItemPrice().requestFocus();
-			  }
-		  }
-	  }
-	  return state;
+    boolean state = false;
+
+    Pattern p = Pattern.compile("\\d+$");
+
+    String vendorNumber = PurchaseAppliance.getInstance().getView().getVendorNumber().getText();
+    String itemNumber = PurchaseAppliance.getInstance().getView().getItemNumber().getText();
+    String itemPrice = PurchaseAppliance.getInstance().getView().getItemPrice().getText();
+
+    Matcher match = p.matcher(itemPrice);
+
+    if (vendorNumber.matches("^(?=\\d*[1-9])\\d+$") && itemNumber.matches("^(?=\\d*[1-9])\\d+$") && match.find()) {
+      state = true;
+      PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocus();
+    } else {
+      JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befuellen!");
+      if (!vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+        PurchaseAppliance.getInstance().getView().setVendorNumber(null);
+      }
+      if (!itemNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+        PurchaseAppliance.getInstance().getView().setItemNumber(null);
+        if (vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+          PurchaseAppliance.getInstance().getView().getItemNumber().requestFocus();
+        }
+      }
+      if (!match.find()) {
+        PurchaseAppliance.getInstance().getView().setItemPrice(null);
+        if (itemNumber.matches("^(?=\\d*[1-9])\\d+$") && vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+          PurchaseAppliance.getInstance().getView().getItemPrice().requestFocus();
+        }
+      }
+    }
+    return state;
   }
-  
-  
+
   @Action(enabled = false)
   public void removeLineItem(final ActionEvent e) {
     final PurchaseBean purchase = getSelection();
@@ -175,7 +173,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
   @Override
   public void performAccept(final EventObject e) {
-	  
+
     if (e instanceof ActionEvent) {
       ActionEvent event = (ActionEvent) e;
       if (MODIFIER_FIRED_BY_MOUSE == event.getModifiers()) {
@@ -211,7 +209,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     TextComponentUtils.commitImmediately();
     if (!isChanged() && !isBuffering()) { // Test for searching
       System.out.println("Nichts geaendert");
-      //TODO entfernen
+      // TODO entfernen
       cancelOp.run();
       return;
     }

@@ -18,7 +18,7 @@ public class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
     super(listModel, getColumnNames());
   }
 
-  // Spalten überschrift
+  // Spaltenueberschrift
   private static String[] getColumnNames() {
     return new String[] { RESOURCES.getString("purchase.table.vendorNumber"), RESOURCES.getString(
         "purchase.table.itemNumber"), RESOURCES.getString("purchase.table.itemPrice") };

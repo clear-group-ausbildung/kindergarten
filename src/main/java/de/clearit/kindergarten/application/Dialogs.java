@@ -20,6 +20,9 @@ import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 import com.jgoodies.jsdl.core.util.JSDLUtils;
 
+import de.clearit.kindergarten.domain.PurchaseBean;
+import de.clearit.kindergarten.domain.VendorBean;
+
 /**
  * Consists only of static method to open frequently used dialogs.
  *
@@ -35,6 +38,40 @@ public final class Dialogs {
   }
 
   // API ********************************************************************
+
+  /**
+   * @return {@code true} if canceled, {@code false} otherwise
+   */
+  public static boolean vendorHasErrors(EventObject e, VendorBean vendor) {
+    String title = RESOURCES.getString("dialogs.documentHasErrors.title");
+    String mainInstruction = RESOURCES.getString("dialogs.documentHasErrors.mainInstruction", vendor.getLastName());
+    String contentText = RESOURCES.getString("dialogs.documentHasErrors.content", vendor.getLastName());
+
+    TaskPane pane = new TaskPane(MessageType.WARNING, mainInstruction, contentText, CommandValue.DISCARD,
+        CommandValue.CANCEL);
+    pane.setMarginContentTop(4);
+    pane.setMarginContentBottom(14);
+
+    pane.showDialog(e, title);
+    return pane.isCancelled();
+  }
+
+  /**
+   * @return {@code true} if canceled, {@code false} otherwise
+   */
+  public static boolean purchaseHasErrors(EventObject e, PurchaseBean purchase) {
+    String title = RESOURCES.getString("dialogs.documentHasErrors.title");
+    String mainInstruction = RESOURCES.getString("dialogs.documentHasErrors.mainInstruction", purchase.getItemNumber());
+    String contentText = RESOURCES.getString("dialogs.documentHasErrors.content", purchase.getItemNumber());
+
+    TaskPane pane = new TaskPane(MessageType.WARNING, mainInstruction, contentText, CommandValue.DISCARD,
+        CommandValue.CANCEL);
+    pane.setMarginContentTop(4);
+    pane.setMarginContentBottom(14);
+
+    pane.showDialog(e, title);
+    return pane.isCancelled();
+  }
 
   /**
    * Creates and shows a TaskPane to let the user choose how to proceed with a

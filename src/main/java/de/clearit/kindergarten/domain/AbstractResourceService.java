@@ -64,6 +64,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
   public void create(B bean) {
     E entity = toEntity(bean);
     entity.saveIt();
+    postCreate(bean, entity);
     flush();
   }
 
@@ -93,14 +94,18 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
    * @return the list of entities
    */
   protected abstract List<E> getEntities();
-
-  private List<B> fromEntities() {
-    return getEntities().stream().map(this::fromEntity).collect(Collectors.toList());
+  
+  protected void postCreate(B bean, E entity) {
+    // Template Pattern
   }
 
-  private void flush() {
+  protected void flush() {
     beans.clear();
     beans.addAll(fromEntities());
+  }
+  
+  private List<B> fromEntities() {
+    return getEntities().stream().map(this::fromEntity).collect(Collectors.toList());
   }
 
 }
