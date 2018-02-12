@@ -10,7 +10,7 @@ import java.util.List;
  * @param <E>
  *          The type of the entity class
  */
-interface ResourceService<B extends com.jgoodies.binding.beans.Model, E extends org.javalite.activejdbc.Model> {
+public interface ResourceService<B extends com.jgoodies.binding.beans.Model, E extends org.javalite.activejdbc.Model> {
 
   /**
    * Returns a list of all Resources with their elements as their respective Beans

@@ -35,5 +35,5 @@ public class VendorValidatable implements Validatable {
 
     return support.getResult();
   }
-  
+
 }

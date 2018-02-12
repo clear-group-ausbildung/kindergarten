@@ -23,7 +23,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 
-import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.export.entity.PayoffDataInternal;
 import de.clearit.kindergarten.domain.export.entity.PayoffDataInternalVendor;
 import de.clearit.kindergarten.domain.export.service.ExportDataService;
@@ -54,9 +53,7 @@ public class ExportInternalPayoff {
 
   /**
    * Creates an receipt in excel for the given vendor.
-   * 
-   * @param pVendor
-   *          {@link VendorBean}
+   *
    */
   public void createInternalPayoff() {
     try {
@@ -143,11 +140,8 @@ public class ExportInternalPayoff {
       vendorNumberLabelCell.setCellValue("Nummer(n)");
       vendorNumberLabelCell.setCellStyle(labelStyle);
       XSSFCell vendorNumberValueCell = vendorNumberRow.createCell(valueColumnIndex);
-      // TODO MJ Change the stream because of missed
-      // VendorNumberBean.getVendorNumber(), getting the VendorNumberBean from
-      // getVendorNumbers
       vendorNumberValueCell.setCellValue(payoffDataInternalVendor.getVendor().getVendorNumbers().stream().map(
-          Object::toString).collect(Collectors.joining(",")));
+          vendorNumber -> String.valueOf(vendorNumber.getVendorNumber())).collect(Collectors.joining(", ")));
       vendorNumberValueCell.setCellStyle(textStyle);
       rowCountGlobal++;
 

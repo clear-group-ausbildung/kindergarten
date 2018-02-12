@@ -25,7 +25,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 
   /**
    * Returns the singleton instance of the service.
-   * 
+   *
    * @return the singleton instance
    */
   public static VendorService getInstance() {
@@ -34,27 +34,18 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 
   @Override
   protected void postCreate(VendorBean bean, Vendor entity) {
+    super.postCreate(bean, entity);
     Integer createdVendorId = entity.getInteger(toSnakeCase(VendorBean.PROPERTY_ID));
-    bean.getVendorNumbers().stream().forEach(number -> number.setVendorId(createdVendorId));
-    bean.getVendorNumbers().stream().forEach(number -> entity.add(VendorNumberService.getInstance().toEntity(number)));
+    bean.getVendorNumbers().forEach(number -> number.setVendorId(createdVendorId));
+    bean.getVendorNumbers().forEach(number -> entity.add(VendorNumberService.getInstance().toEntity(number)));
     entity.saveIt();
-  }
-
-  @Override
-  protected void postUpdate(VendorBean bean, Vendor entity) {
-    // TODO: Update vendor numbers
-  }
-  
-  @Override
-  protected void postDelete(VendorBean bean, Vendor entity) {
-    // TODO: Delete vendor numbers
   }
 
   // Public API *************************************************************
 
   /**
    * Returns the list of Vendors as a ListModel.
-   * 
+   *
    * @return the ListModel
    */
   @SuppressWarnings("unchecked")
@@ -95,7 +86,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 
     return entity;
   }
-  
+
   @Override
   public void delete(VendorBean bean) {
     Vendor entity = toEntity(bean);
@@ -103,7 +94,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     postDelete(bean, entity);
     flush();
   }
-  
+
   @Override
   public void update(VendorBean bean) {
     delete(bean);
@@ -119,7 +110,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
    * Finds a VendorBean by the given {@code firstName} and {@code lastName}.
    * Furthermore, the list of vendor numbers is populated with the found vendor
    * numbers for this vendor.
-   * 
+   *
    * @param firstName
    *          the first name of the vendor
    * @param lastName
@@ -132,7 +123,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     result.setVendorNumbers(VendorNumberService.getInstance().findByVendorId(result.getId()));
     return result;
   }
-  
+
   private void createAsNew(VendorBean bean) {
     bean.setId(null);
     super.create(bean);

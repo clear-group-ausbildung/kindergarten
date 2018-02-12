@@ -37,7 +37,7 @@ public final class VendorNumberBean extends Model {
   /**
    * Constructor, creates a new {@link VendorNumberBean} with the given
    * attributes.
-   * 
+   *
    * @param id
    *          the id
    * @param vendorNumber
@@ -110,9 +110,7 @@ public final class VendorNumberBean extends Model {
       return false;
     if (vendorId != other.vendorId)
       return false;
-    if (vendorNumber != other.vendorNumber)
-      return false;
-    return true;
+    return vendorNumber == other.vendorNumber;
   }
 
   @Override

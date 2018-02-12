@@ -3,7 +3,7 @@ package de.clearit.kindergarten.appliance.vendor;
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
-import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
@@ -15,7 +15,6 @@ import com.jgoodies.jsdl.core.CommandValue;
 import de.clearit.kindergarten.desktop.DefaultAppliance;
 import de.clearit.kindergarten.desktop.DefaultDesktopFrame;
 import de.clearit.kindergarten.domain.VendorBean;
-import de.clearit.kindergarten.domain.VendorNumberBean;
 
 /**
  * The appliance for the vendor.
@@ -47,14 +46,6 @@ public final class VendorAppliance extends DefaultAppliance {
     final CommitCallback<CommandValue> callback = result -> outerCallback.committed(result == CommandValue.OK
         ? newVendor
         : null);
-//    ArrayList<VendorNumberBean> vendorNumbers = new ArrayList<>();
-//	  vendorNumbers.add(new VendorNumberBean(1,1,0));
-//	  vendorNumbers.add(new VendorNumberBean(2,2,0));
-//	  vendorNumbers.add(new VendorNumberBean(3,3,0));
-//	  vendorNumbers.add(new VendorNumberBean(4,4,0));
-//	  newVendor.setVendorNumbers(vendorNumbers);
-    
-    
     VendorEditorModel model = new VendorEditorModel(newVendor, callback);
     openVendorEditor(title, model);
   }
@@ -99,8 +90,9 @@ public final class VendorAppliance extends DefaultAppliance {
       }
       VendorBean vendor = (VendorBean) obj;
       toAppendTo.append("<html>");
-//      toAppendTo.append("Verk&auml;ufernummer: ").append(vendor.getVendorNumber());
-//      toAppendTo.append("<br>");
+      toAppendTo.append("Verk&auml;ufernummer: ").append(vendor.getVendorNumbers().stream().map(vendorNumber -> String
+          .valueOf(vendorNumber.getVendorNumber())).collect(Collectors.joining(", ")));
+      toAppendTo.append("<br>");
       toAppendTo.append("Vorname: ").append(vendor.getFirstName());
       toAppendTo.append("<br>");
       toAppendTo.append("Nachname: ").append(vendor.getLastName());
@@ -127,7 +119,8 @@ public final class VendorAppliance extends DefaultAppliance {
         return toAppendTo;
       }
       VendorBean vendor = (VendorBean) obj;
-//      toAppendTo.append("Verk&auml;ufernummer: ").append(vendor.getVendorNumber());
+      toAppendTo.append("Verk&auml;ufernummern: ").append(vendor.getVendorNumbers().stream().map(vendorNumber -> String
+          .valueOf(vendorNumber.getVendorNumber())).collect(Collectors.joining(", ")));
       toAppendTo.append("\n");
       toAppendTo.append("Vorname: ").append(vendor.getFirstName());
       toAppendTo.append("\n");

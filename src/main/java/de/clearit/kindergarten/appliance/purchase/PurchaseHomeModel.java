@@ -2,7 +2,9 @@ package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
 import java.util.logging.Logger;
@@ -31,6 +33,7 @@ import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
 import de.clearit.kindergarten.domain.VendorService;
 
 /**
@@ -47,11 +50,11 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
   private static final PurchaseService SERVICE = PurchaseService.getInstance();
   private static final VendorService VENDOR_SERVICE = VendorService.getInstance();
   private static PurchaseHomeModel instance;
-  private final SelectionInList<VendorBean> vendorList;
-  private final ValueModel itemCountModel = new ValueHolder(0);
-  private final ValueModel itemSumModel = new ValueHolder(0.0);
-  private final ValueModel kindergartenProfitModel = new ValueHolder(0.0);
-  private final ValueModel vendorPayoutModel = new ValueHolder(0.0);
+  private final transient SelectionInList<VendorBean> vendorList;
+  private final transient ValueModel itemCountModel = new ValueHolder(0);
+  private final transient ValueModel itemSumModel = new ValueHolder(0.0);
+  private final transient ValueModel kindergartenProfitModel = new ValueHolder(0.0);
+  private final transient ValueModel vendorPayoutModel = new ValueHolder(0.0);
 
   // Instance Creation ******************************************************
 
@@ -182,8 +185,8 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
       filteredOrAllPurchases.addAll(SERVICE.getAll());
     } else {
       filteredOrAllPurchases.addAll(SERVICE.getAll().stream().filter(bean -> selectedVendor.getVendorNumbers().stream()
-          .map(vendorNumber -> vendorNumber.getVendorNumber()).collect(Collectors.toList()).contains(bean
-              .getVendorNumber())).collect(Collectors.toList()));
+          .map(VendorNumberBean::getVendorNumber).collect(Collectors.toList()).contains(bean.getVendorNumber()))
+          .collect(Collectors.toList()));
     }
     getSelectionInList().getList().clear();
     getSelectionInList().getList().addAll(filteredOrAllPurchases);
@@ -209,10 +212,14 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     }
 
     @Override
-    protected List<PurchaseBean> doInBackground() throws Exception {
+    protected List<PurchaseBean> doInBackground() {
       final ObjectMapper mapper = new ObjectMapper();
-      return mapper.readValue(importFile, mapper.getTypeFactory().constructCollectionType(List.class,
-          PurchaseBean.class));
+      try {
+        return mapper.readValue(importFile, mapper.getTypeFactory().constructCollectionType(List.class,
+            PurchaseBean.class));
+      } catch (IOException e) {
+        return Collections.emptyList();
+      }
     }
 
     @Override
@@ -260,9 +267,13 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     }
 
     @Override
-    protected Void doInBackground() throws Exception {
+    protected Void doInBackground() {
       ObjectMapper mapper = new ObjectMapper();
-      mapper.writeValue(new File(exportPath), purchaseList);
+      try {
+        mapper.writeValue(new File(exportPath), purchaseList);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
       return null;
     }
 
