@@ -168,14 +168,14 @@ public class ExportInternalPayoff {
   private Cell getCellForPlaceholder(String pPlaceholder) {
     for (Row row : sheet) {
       for (Cell cell : row) {
-        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-          if (cell.getRichStringCellValue().getString().trim().startsWith(pPlaceholder)) {
-            return cell;
-          }
+        if (cell.getCellType() == Cell.CELL_TYPE_STRING && cell.getRichStringCellValue().getString().trim().startsWith(
+            pPlaceholder)) {
+          return cell;
         }
       }
     }
     return null;
+
   }
 
   private String getDateiname() {

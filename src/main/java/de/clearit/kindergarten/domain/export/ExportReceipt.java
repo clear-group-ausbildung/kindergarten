@@ -7,9 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,7 @@ import de.clearit.kindergarten.domain.export.service.ExportDataService;
  */
 public class ExportReceipt {
 
+  private static final String PALE_BLUE = "#CFDDFB";
   private static final Logger LOGGER = Logger.getLogger(ExportExcel.class.getName());
   private static final ExportReceipt INSTANCE = new ExportReceipt();
 
@@ -132,7 +134,7 @@ public class ExportReceipt {
     }
   }
 
-  private void createSoldItemList(ArrayList<PayoffSoldItemsData> pPayoffSoldItemDataList, Cell pStartCell) {
+  private void createSoldItemList(List<PayoffSoldItemsData> pPayoffSoldItemDataList, Cell pStartCell) {
 
     int rowCountGlobal = pStartCell.getRowIndex();
     int columnIndex = pStartCell.getColumnIndex();
@@ -173,15 +175,15 @@ public class ExportReceipt {
   private int createItemRows(int pRowCount, int pColIndex, PayoffSoldItemsData pPayoffSoldItemData) {
     int colIndexPrice = pColIndex + 1;
     Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
-    for (Integer key : soldItemMap.keySet()) {
+    for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {
       XSSFRow tempRow = sheet.createRow(pRowCount);
 
       XSSFCell numberCell = tempRow.createCell(pColIndex);
-      numberCell.setCellValue(key);
+      numberCell.setCellValue(entry.getKey());
       numberCell.setCellStyle(numberStyle);
 
       XSSFCell priceCell = tempRow.createCell(colIndexPrice);
-      priceCell.setCellValue(soldItemMap.get(key));
+      priceCell.setCellValue(soldItemMap.get(entry.getKey()));
       priceCell.setCellStyle(priceStyle);
 
       pRowCount++;
@@ -203,10 +205,9 @@ public class ExportReceipt {
   private Cell getCellForPlaceholder(String pPlaceholder) {
     for (Row row : sheet) {
       for (Cell cell : row) {
-        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-          if (cell.getRichStringCellValue().getString().trim().startsWith(pPlaceholder)) {
-            return cell;
-          }
+        if (cell.getCellType() == Cell.CELL_TYPE_STRING && cell.getRichStringCellValue().getString().trim().startsWith(
+            pPlaceholder)) {
+          return cell;
         }
       }
     }
@@ -246,10 +247,10 @@ public class ExportReceipt {
     numberStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
     numberStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
     numberStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-    numberStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
-    numberStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
-    numberStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
-    numberStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
+    numberStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(PALE_BLUE)));
+    numberStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(PALE_BLUE)));
+    numberStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode(PALE_BLUE)));
+    numberStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode(PALE_BLUE)));
 
     priceStyle = wb.createCellStyle();
     priceStyle.setDataFormat((short) 7);
@@ -258,10 +259,10 @@ public class ExportReceipt {
     priceStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
     priceStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
     priceStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-    priceStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
-    priceStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
-    priceStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
-    priceStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
+    priceStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(PALE_BLUE)));
+    priceStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(PALE_BLUE)));
+    priceStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode(PALE_BLUE)));
+    priceStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode(PALE_BLUE)));
 
     sumStyle = wb.createCellStyle();
     sumStyle.setAlignment(HorizontalAlignment.RIGHT);
@@ -269,14 +270,14 @@ public class ExportReceipt {
     sumStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
     sumStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
     sumStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-    sumStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
-    sumStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
-    sumStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
-    sumStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
+    sumStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(PALE_BLUE)));
+    sumStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(PALE_BLUE)));
+    sumStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode(PALE_BLUE)));
+    sumStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode(PALE_BLUE)));
     sumStyle.setFont(headerFont);
 
     vendorHeaderStyle = wb.createCellStyle();
-    vendorHeaderStyle.setFillForegroundColor(new XSSFColor(Color.decode("#CFDDFB")));
+    vendorHeaderStyle.setFillForegroundColor(new XSSFColor(Color.decode(PALE_BLUE)));
     vendorHeaderStyle.setFont(headerFont);
   }
 

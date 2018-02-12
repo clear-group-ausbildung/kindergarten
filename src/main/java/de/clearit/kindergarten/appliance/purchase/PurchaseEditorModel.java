@@ -1,7 +1,6 @@
 package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -42,7 +41,6 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   private static final long serialVersionUID = 1L;
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorModel.class);
   private static final PurchaseService SERVICE = PurchaseService.getInstance();
-  private static final int MODIFIER_FIRED_BY_MOUSE = 16;
   private static final int MODIFIER_FIRED_BY_ENTER = 0;
 
   // Constants **************************************************************
