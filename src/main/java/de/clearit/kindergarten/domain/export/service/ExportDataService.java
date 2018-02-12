@@ -52,7 +52,7 @@ public class ExportDataService {
 			}
 
 			payoffSoldItemsDataList.add(new PayoffSoldItemsData(vendorNumber, soldItemNumbersPricesMap,
-					purchaseService.getKindergartenProfitByPurchases(purchaseList).doubleValue()));
+					purchaseService.getItemSumByPurchases(purchaseList).doubleValue()));
 		}
 
 		return new PayoffDataReceipt(vendorNumberList, pVendor.getFirstName(), pVendor.getLastName(),
