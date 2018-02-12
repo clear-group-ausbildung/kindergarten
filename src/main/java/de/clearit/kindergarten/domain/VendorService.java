@@ -95,6 +95,14 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 
     return entity;
   }
+  
+  @Override
+  public void delete(VendorBean bean) {
+    Vendor entity = toEntity(bean);
+    entity.deleteCascade();
+    postDelete(bean, entity);
+    flush();
+  }
 
   @Override
   public List<Vendor> getEntities() {
