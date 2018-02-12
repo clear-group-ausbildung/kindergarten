@@ -112,11 +112,11 @@ public class ExportInternalPayoff {
 	}
 
 	private void createVendorList(PayoffDataInternal pPayoffDataInternal, Cell pStartCell) {
+		int rowCountGlobal = pStartCell.getRowIndex();
+		int labelColumnIndex = pStartCell.getColumnIndex();
+		int valueColumnIndex = labelColumnIndex + 1;
+		
 		for (PayoffDataInternalVendor payoffDataInternalVendor : pPayoffDataInternal.getPayoffDataInternalVendor()) {
-			int rowCountGlobal = pStartCell.getRowIndex();
-			int labelColumnIndex = pStartCell.getColumnIndex();
-			int valueColumnIndex = labelColumnIndex + 1;
-
 			rowCountGlobal = createPlaceholderRow(rowCountGlobal, labelColumnIndex, "");
 
 			XSSFRow nameRow = sheet.createRow(rowCountGlobal);
@@ -144,7 +144,7 @@ public class ExportInternalPayoff {
 			XSSFCell vendorNumberValueCell = vendorNumberRow.createCell(valueColumnIndex);
 			vendorNumberValueCell.setCellValue(payoffDataInternalVendor.getVendor().getVendorNumbers().stream()
 					.map(Object::toString).collect(Collectors.joining(",")));
-			firstnameValueCell.setCellStyle(textStyle);
+			vendorNumberValueCell.setCellStyle(textStyle);
 			rowCountGlobal++;
 
 			XSSFRow paymentRow = sheet.createRow(rowCountGlobal);
@@ -228,7 +228,6 @@ public class ExportInternalPayoff {
 		labelStyle.setFont(headerFont);
 		
 		textStyle = wb.createCellStyle();
-		textStyle.setAlignment(HorizontalAlignment.CENTER);
 		textStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
 		textStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
 		textStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
