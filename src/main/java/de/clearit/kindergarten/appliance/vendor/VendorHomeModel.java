@@ -217,7 +217,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 			progressPane.setProgressIndeterminate(true);
 			progressPane.setProgressVisible(true);
 			progressPane.setVisible(true);
-			ExportExcel.getInstance().createExcelForAllVendors();
+			ExportExcel.getInstance().createExcelForInternalPayoff();
 		}
 
 		@Override
