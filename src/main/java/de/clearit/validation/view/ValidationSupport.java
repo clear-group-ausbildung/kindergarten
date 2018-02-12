@@ -66,11 +66,11 @@ public final class ValidationSupport {
 
   // API ********************************************************************
 
-  private Validatable getValidatable() {
+  public Validatable getValidatable() {
     return validatable;
   }
 
-  private void setValidatable(Validatable newValidator) {
+  public void setValidatable(Validatable newValidator) {
     if (newValidator == null) {
       throw new NullPointerException("The Validatable must not be null.");
     }
@@ -104,20 +104,6 @@ public final class ValidationSupport {
     }
     LOGGER.log(Level.FINER, "Validating in foreground");
     resultModel().setResult(getValidatable().validate());
-  }
-
-  /**
-   * Cancels a running worker - if any - and starts a new worker.
-   *
-   * TODO: Check if we shall cancel a running worker, or block until this worker
-   * has finished.
-   */
-  private void updateDelayed() {
-    if (worker != null) {
-      worker.cancel(true);
-    }
-    worker = new ValidationWorker();
-    worker.execute();
   }
 
   private final class ValidationWorker extends SwingWorker<ValidationResult, Object> {
@@ -155,6 +141,20 @@ public final class ValidationSupport {
     @Override
     public void delayedPropertyChange(PropertyChangeEvent evt) {
       updateDelayed();
+    }
+
+    /**
+     * Cancels a running worker - if any - and starts a new worker.
+     *
+     * TODO: Check if we shall cancel a running worker, or block until this worker
+     * has finished.
+     */
+    private void updateDelayed() {
+      if (worker != null) {
+        worker.cancel(true);
+      }
+      worker = new ValidationWorker();
+      worker.execute();
     }
 
   }

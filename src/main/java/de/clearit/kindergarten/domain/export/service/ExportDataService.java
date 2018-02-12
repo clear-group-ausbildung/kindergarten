@@ -22,75 +22,77 @@ import de.clearit.kindergarten.domain.export.entity.PayoffSoldItemsData;
  */
 public class ExportDataService {
 
-	/**
-	 * Returns a {@link PayoffDataReceipt} for the given {@link VendorBean}.
-	 * 
-	 * @param pVendor
-	 *            the vendor to get the data for.
-	 * 
-	 * @return {@link PayoffDataReceipt} to create the receipts.
-	 */
-	public static PayoffDataReceipt getPayoffDataForVendor(VendorBean pVendor) {
-		PurchaseService purchaseService = PurchaseService.getInstance();
-		List<PurchaseBean> purchaseAllList = purchaseService.getAll();
+  private ExportDataService() {
+    super();
+  }
 
-		ArrayList<Integer> vendorNumberList = new ArrayList<>();
-		ArrayList<PayoffSoldItemsData> payoffSoldItemsDataList = new ArrayList<>();
-		List<PurchaseBean> totalPurchaseList = new ArrayList<>();
+  /**
+   * Returns a {@link PayoffDataReceipt} for the given {@link VendorBean}.
+   * 
+   * @param pVendor
+   *          the vendor to get the data for.
+   * 
+   * @return {@link PayoffDataReceipt} to create the receipts.
+   */
+  public static PayoffDataReceipt getPayoffDataForVendor(VendorBean pVendor) {
+    PurchaseService purchaseService = PurchaseService.getInstance();
+    List<PurchaseBean> purchaseAllList = purchaseService.getAll();
 
-		for (VendorNumberBean vendorNumberBean : pVendor.getVendorNumbers()) {
-			int vendorNumber = vendorNumberBean.getVendorNumber();
-			vendorNumberList.add(vendorNumber);
+    ArrayList<Integer> vendorNumberList = new ArrayList<>();
+    ArrayList<PayoffSoldItemsData> payoffSoldItemsDataList = new ArrayList<>();
+    List<PurchaseBean> totalPurchaseList = new ArrayList<>();
 
-			List<PurchaseBean> purchaseList = purchaseAllList.stream()
-					.filter(purchase -> purchase.getVendorNumber().equals(vendorNumber)).collect(Collectors.toList());
-			totalPurchaseList.addAll(purchaseList);
+    for (VendorNumberBean vendorNumberBean : pVendor.getVendorNumbers()) {
+      int vendorNumber = vendorNumberBean.getVendorNumber();
+      vendorNumberList.add(vendorNumber);
 
-			HashMap<Integer, Double> soldItemNumbersPricesMap = new HashMap<>();
-			for (PurchaseBean purchase : purchaseList) {
-				soldItemNumbersPricesMap.put(purchase.getItemNumber(), purchase.getItemPrice().doubleValue());
-			}
+      List<PurchaseBean> purchaseList = purchaseAllList.stream().filter(purchase -> purchase.getVendorNumber().equals(
+          vendorNumber)).collect(Collectors.toList());
+      totalPurchaseList.addAll(purchaseList);
 
-			payoffSoldItemsDataList.add(new PayoffSoldItemsData(vendorNumber, soldItemNumbersPricesMap,
-					purchaseService.getItemSumByPurchases(purchaseList).doubleValue()));
-		}
+      HashMap<Integer, Double> soldItemNumbersPricesMap = new HashMap<>();
+      for (PurchaseBean purchase : purchaseList) {
+        soldItemNumbersPricesMap.put(purchase.getItemNumber(), purchase.getItemPrice().doubleValue());
+      }
 
-		return new PayoffDataReceipt(vendorNumberList, pVendor.getFirstName(), pVendor.getLastName(),
-				purchaseService.getItemSumByPurchases(totalPurchaseList).doubleValue(),
-				purchaseService.getKindergartenProfitByPurchases(totalPurchaseList).doubleValue(),
-				purchaseService.getVendorPayoutByPurchases(totalPurchaseList).doubleValue(),
-				purchaseService.getItemCountByPurchases(totalPurchaseList), payoffSoldItemsDataList);
-	}
+      payoffSoldItemsDataList.add(new PayoffSoldItemsData(vendorNumber, soldItemNumbersPricesMap, purchaseService
+          .getItemSumByPurchases(purchaseList).doubleValue()));
+    }
 
-	/**
-	 * Returns a {@link PayoffDataInternal} for the Internal Payoff.
-	 * 
-	 * @return {@link PayoffDataInternal} to create the internal payoff.
-	 */
-	public static PayoffDataInternal getPayoffDataInternal() {
-		PurchaseService purchaseService = PurchaseService.getInstance();
-		List<PurchaseBean> purchaseAllList = purchaseService.getAll();
+    return new PayoffDataReceipt(vendorNumberList, pVendor.getFirstName(), pVendor.getLastName(), purchaseService
+        .getItemSumByPurchases(totalPurchaseList).doubleValue(), purchaseService.getKindergartenProfitByPurchases(
+            totalPurchaseList).doubleValue(), purchaseService.getVendorPayoutByPurchases(totalPurchaseList)
+                .doubleValue(), purchaseService.getItemCountByPurchases(totalPurchaseList), payoffSoldItemsDataList);
+  }
 
-		Double totalSum = purchaseService.getItemSumByPurchases(purchaseAllList).doubleValue();
-		Double totalProfit = purchaseService.getKindergartenProfitByPurchases(purchaseAllList).doubleValue();
-		Double totalPayout = purchaseService.getVendorPayoutByPurchases(purchaseAllList).doubleValue();
-		Integer totalItemCount = purchaseService.getItemCountByPurchases(purchaseAllList);
+  /**
+   * Returns a {@link PayoffDataInternal} for the Internal Payoff.
+   * 
+   * @return {@link PayoffDataInternal} to create the internal payoff.
+   */
+  public static PayoffDataInternal getPayoffDataInternal() {
+    PurchaseService purchaseService = PurchaseService.getInstance();
+    List<PurchaseBean> purchaseAllList = purchaseService.getAll();
 
-		ArrayList<PayoffDataInternalVendor> payoffDataInternalVendorList = new ArrayList<>();
-		List<VendorBean> vendorList = VendorService.getInstance().getAll();
-		for (VendorBean vendor : vendorList) {
-			List<PurchaseBean> vendorPurchaseList = new ArrayList<>();
-			for (VendorNumberBean vendorNumberBean : vendor.getVendorNumbers()) {
-				int vendorNumber = vendorNumberBean.getVendorNumber();
-				List<PurchaseBean> purchaseList = purchaseAllList.stream()
-						.filter(purchase -> purchase.getVendorNumber().equals(vendorNumber))
-						.collect(Collectors.toList());
-				vendorPurchaseList.addAll(purchaseList);
-			}
-			payoffDataInternalVendorList.add(new PayoffDataInternalVendor(vendor,
-					purchaseService.getVendorPayoutByPurchases(vendorPurchaseList).doubleValue()));
-		}
+    Double totalSum = purchaseService.getItemSumByPurchases(purchaseAllList).doubleValue();
+    Double totalProfit = purchaseService.getKindergartenProfitByPurchases(purchaseAllList).doubleValue();
+    Double totalPayout = purchaseService.getVendorPayoutByPurchases(purchaseAllList).doubleValue();
+    Integer totalItemCount = purchaseService.getItemCountByPurchases(purchaseAllList);
 
-		return new PayoffDataInternal(totalSum, totalProfit, totalPayout, totalItemCount, payoffDataInternalVendorList);
-	}
+    ArrayList<PayoffDataInternalVendor> payoffDataInternalVendorList = new ArrayList<>();
+    List<VendorBean> vendorList = VendorService.getInstance().getAll();
+    for (VendorBean vendor : vendorList) {
+      List<PurchaseBean> vendorPurchaseList = new ArrayList<>();
+      for (VendorNumberBean vendorNumberBean : vendor.getVendorNumbers()) {
+        int vendorNumber = vendorNumberBean.getVendorNumber();
+        List<PurchaseBean> purchaseList = purchaseAllList.stream().filter(purchase -> purchase.getVendorNumber().equals(
+            vendorNumber)).collect(Collectors.toList());
+        vendorPurchaseList.addAll(purchaseList);
+      }
+      payoffDataInternalVendorList.add(new PayoffDataInternalVendor(vendor, purchaseService.getVendorPayoutByPurchases(
+          vendorPurchaseList).doubleValue()));
+    }
+
+    return new PayoffDataInternal(totalSum, totalProfit, totalPayout, totalItemCount, payoffDataInternalVendorList);
+  }
 }

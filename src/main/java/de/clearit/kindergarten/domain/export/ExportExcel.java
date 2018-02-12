@@ -12,34 +12,35 @@ import de.clearit.kindergarten.domain.VendorService;
  */
 public class ExportExcel {
 
-	private static final ExportExcel INSTANCE = new ExportExcel();
+  private static final ExportExcel INSTANCE = new ExportExcel();
 
-	private ExportExcel() {
-	}
+  private ExportExcel() {
+    super();
+  }
 
-	public static ExportExcel getInstance() {
-		return INSTANCE;
-	}
+  public static ExportExcel getInstance() {
+    return INSTANCE;
+  }
 
-	/**
-	 * Creates an receipt in excel for each existing vendor.
-	 */
-	public void createExcelForAllVendors() {
-		List<VendorBean> vendorList = VendorService.getInstance().getAll();
-		vendorList.forEach(this::createExcelForOneVendor);
-	}
+  /**
+   * Creates an receipt in excel for each existing vendor.
+   */
+  public void createExcelForAllVendors() {
+    List<VendorBean> vendorList = VendorService.getInstance().getAll();
+    vendorList.forEach(this::createExcelForOneVendor);
+  }
 
-	/**
-	 * Creates an receipt in excel for the given vendor.
-	 * 
-	 * @param pVendor
-	 *            {@link VendorBean}
-	 */
-	public void createExcelForOneVendor(VendorBean pVendor) {
-		ExportReceipt.getInstance().createReceipt(pVendor);
-	}
+  /**
+   * Creates an receipt in excel for the given vendor.
+   * 
+   * @param pVendor
+   *          {@link VendorBean}
+   */
+  public void createExcelForOneVendor(VendorBean pVendor) {
+    ExportReceipt.getInstance().createReceipt(pVendor);
+  }
 
-	public void createExcelForInternalPayoff() {
-		ExportInternalPayoff.getInstance().createInternalPayoff();
-	}
+  public void createExcelForInternalPayoff() {
+    ExportInternalPayoff.getInstance().createInternalPayoff();
+  }
 }
