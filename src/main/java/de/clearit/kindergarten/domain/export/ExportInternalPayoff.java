@@ -48,6 +48,8 @@ public class ExportInternalPayoff {
 	private XSSFSheet sheet;
 
 	private XSSFCellStyle priceStyle;
+	private XSSFCellStyle labelStyle;
+	private XSSFCellStyle textStyle;
 
 	/**
 	 * Creates an receipt in excel for the given vendor.
@@ -117,35 +119,42 @@ public class ExportInternalPayoff {
 
 			rowCountGlobal = createPlaceholderRow(rowCountGlobal, labelColumnIndex, "");
 
-			rowCountGlobal = createPlaceholderRow(rowCountGlobal, labelColumnIndex, "Verk&auml;ufer:");
-
 			XSSFRow nameRow = sheet.createRow(rowCountGlobal);
 			XSSFCell nameLabelCell = nameRow.createCell(labelColumnIndex);
 			nameLabelCell.setCellValue("Name");
+			nameLabelCell.setCellStyle(labelStyle);
 			XSSFCell nameValueCell = nameRow.createCell(valueColumnIndex);
 			nameValueCell.setCellValue(payoffDataInternalVendor.getVendor().getLastName());
+			nameValueCell.setCellStyle(textStyle);
 			rowCountGlobal++;
 
 			XSSFRow firstnameRow = sheet.createRow(rowCountGlobal);
 			XSSFCell firstnameLabelCell = firstnameRow.createCell(labelColumnIndex);
 			firstnameLabelCell.setCellValue("Vorname");
+			firstnameLabelCell.setCellStyle(labelStyle);
 			XSSFCell firstnameValueCell = firstnameRow.createCell(valueColumnIndex);
 			firstnameValueCell.setCellValue(payoffDataInternalVendor.getVendor().getFirstName());
+			firstnameValueCell.setCellStyle(textStyle);
+			rowCountGlobal++;
 
 			XSSFRow vendorNumberRow = sheet.createRow(rowCountGlobal);
 			XSSFCell vendorNumberLabelCell = vendorNumberRow.createCell(labelColumnIndex);
-			vendorNumberLabelCell.setCellValue("Ver&auml;ufernummer(n)");
+			vendorNumberLabelCell.setCellValue("Nummer(n)");
+			vendorNumberLabelCell.setCellStyle(labelStyle);
 			XSSFCell vendorNumberValueCell = vendorNumberRow.createCell(valueColumnIndex);
 			vendorNumberValueCell.setCellValue(payoffDataInternalVendor.getVendor().getVendorNumbers().stream()
 					.map(Object::toString).collect(Collectors.joining(",")));
+			firstnameValueCell.setCellStyle(textStyle);
+			rowCountGlobal++;
 
 			XSSFRow paymentRow = sheet.createRow(rowCountGlobal);
 			XSSFCell paymentLabelCell = paymentRow.createCell(labelColumnIndex);
-			paymentLabelCell.setCellValue("Name");
+			paymentLabelCell.setCellValue("Auszahlungsbetrag");
+			paymentLabelCell.setCellStyle(labelStyle);
 			XSSFCell paymentValueCell = paymentRow.createCell(valueColumnIndex);
 			paymentValueCell.setCellValue(payoffDataInternalVendor.getVendorPayment());
 			paymentValueCell.setCellStyle(priceStyle);
-
+			rowCountGlobal++;
 		}
 	}
 
@@ -203,6 +212,28 @@ public class ExportInternalPayoff {
 		priceStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
 		priceStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
 		priceStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
+		
+		labelStyle = wb.createCellStyle();
+		labelStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		labelStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		labelStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		labelStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		labelStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
+		labelStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
+		labelStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
+		labelStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
+		labelStyle.setFont(headerFont);
+		
+		textStyle = wb.createCellStyle();
+		textStyle.setAlignment(HorizontalAlignment.CENTER);
+		textStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		textStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		textStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		textStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		textStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
+		textStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
+		textStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
+		textStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
 	}
 
 }
