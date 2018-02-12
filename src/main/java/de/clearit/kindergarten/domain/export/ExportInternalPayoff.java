@@ -143,7 +143,7 @@ public class ExportInternalPayoff {
 			vendorNumberLabelCell.setCellStyle(labelStyle);
 			XSSFCell vendorNumberValueCell = vendorNumberRow.createCell(valueColumnIndex);
 			vendorNumberValueCell.setCellValue(payoffDataInternalVendor.getVendor().getVendorNumbers().stream()
-					.map(x -> x.getVendorNumber()::toString).collect(Collectors.joining(",")));
+					.map(Object::toString).collect(Collectors.joining(",")));
 			vendorNumberValueCell.setCellStyle(textStyle);
 			rowCountGlobal++;
 
