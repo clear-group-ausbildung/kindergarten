@@ -18,10 +18,10 @@ public final class ToolBarButtonBorder extends AbstractBorder {
 
   private static final Insets INSETS = new Insets(4, 4, 4, 4);
 
-  private final Image rolloverImage;
+  private final transient Image rolloverImage;
   private final int rolloverWidth;
   private final int rolloverHeight;
-  private final Image pressedImage;
+  private final transient Image pressedImage;
   private final int pressedWidth;
   private final int pressedHeight;
 

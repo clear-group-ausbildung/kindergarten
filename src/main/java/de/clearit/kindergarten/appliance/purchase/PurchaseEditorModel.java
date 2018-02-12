@@ -1,6 +1,8 @@
 package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventObject;
@@ -9,6 +11,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
@@ -34,6 +38,7 @@ import de.clearit.kindergarten.domain.PurchaseService;
 
 public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements FormPaneModel {
 
+  private static final String REGEX_NUMERIC = "^(?=\\d*[1-9])\\d+$";
   private static final long serialVersionUID = 1L;
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorModel.class);
   private static final PurchaseService SERVICE = PurchaseService.getInstance();
@@ -47,10 +52,10 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
   // Instance Fields ********************************************************
 
-  private final CommitCallback<CommandValue> commitCallback;
-  private SelectionInList<PurchaseBean> selectionInList;
-  private final ValueModel itemCountModel = new ValueHolder(0);
-  private final ValueModel itemSumModel = new ValueHolder(0.0);
+  private final transient CommitCallback<CommandValue> commitCallback;
+  private transient SelectionInList<PurchaseBean> selectionInList;
+  private final transient ValueModel itemCountModel = new ValueHolder(0);
+  private final transient ValueModel itemSumModel = new ValueHolder(0.0);
 
   // Instance Creation ******************************************************
 
@@ -61,11 +66,11 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     initPresentationLogic();
   }
 
-  // Initialization *********************************************************
+  // Initialisation *********************************************************
 
   private void initModels() {
     selectionInList = new SelectionInList<>();
-    if (selectionInList.getList().size() > 0) {
+    if (CollectionUtils.isNotEmpty(selectionInList.getList())) {
       selectionInList.setSelectionIndex(0);
     }
     handleSelectionChange(selectionInList.hasSelection());
@@ -112,7 +117,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     TextComponentUtils.commitImmediately();
     triggerCommit();
 
-    if (checkBeanContent(getBean())) {
+    if (checkBeanContent()) {
       getSelectionInList().getList().add(getBean());
       refreshSummary();
       setBean(new PurchaseBean());
@@ -120,7 +125,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   }
 
   // Check Bean Not Null ******************************************************
-  private Boolean checkBeanContent(PurchaseBean pBean) {
+  private Boolean checkBeanContent() {
     boolean state = false;
 
     Pattern p = Pattern.compile("\\d+$");
@@ -131,23 +136,23 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
     Matcher match = p.matcher(itemPrice);
 
-    if (vendorNumber.matches("^(?=\\d*[1-9])\\d+$") && itemNumber.matches("^(?=\\d*[1-9])\\d+$") && match.find()) {
+    if (vendorNumber.matches(REGEX_NUMERIC) && itemNumber.matches(REGEX_NUMERIC) && match.find()) {
       state = true;
       PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocus();
     } else {
       JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befuellen!");
-      if (!vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+      if (!vendorNumber.matches(REGEX_NUMERIC)) {
         PurchaseAppliance.getInstance().getView().setVendorNumber(null);
       }
-      if (!itemNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+      if (!itemNumber.matches(REGEX_NUMERIC)) {
         PurchaseAppliance.getInstance().getView().setItemNumber(null);
-        if (vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+        if (vendorNumber.matches(REGEX_NUMERIC)) {
           PurchaseAppliance.getInstance().getView().getItemNumber().requestFocus();
         }
       }
       if (!match.find()) {
         PurchaseAppliance.getInstance().getView().setItemPrice(null);
-        if (itemNumber.matches("^(?=\\d*[1-9])\\d+$") && vendorNumber.matches("^(?=\\d*[1-9])\\d+$")) {
+        if (itemNumber.matches(REGEX_NUMERIC) && vendorNumber.matches(REGEX_NUMERIC)) {
           PurchaseAppliance.getInstance().getView().getItemPrice().requestFocus();
         }
       }
@@ -176,7 +181,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
     if (e instanceof ActionEvent) {
       ActionEvent event = (ActionEvent) e;
-      if (MODIFIER_FIRED_BY_MOUSE == event.getModifiers()) {
+      if (MouseEvent.BUTTON1_MASK == event.getModifiers()) {
         TextComponentUtils.commitImmediately();
         triggerCommit();
         getSelectionInList().getList().forEach(SERVICE::create);

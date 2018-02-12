@@ -38,246 +38,246 @@ import de.clearit.kindergarten.domain.export.service.ExportDataService;
  */
 public class ExportReceipt {
 
-	private static final Logger LOGGER = Logger.getLogger(ExportExcel.class.getName());
-	private static final ExportReceipt INSTANCE = new ExportReceipt();
+  private static final Logger LOGGER = Logger.getLogger(ExportExcel.class.getName());
+  private static final ExportReceipt INSTANCE = new ExportReceipt();
 
-	private ExportReceipt() {
-	}
+  private ExportReceipt() {
+  }
 
-	public static ExportReceipt getInstance() {
-		return INSTANCE;
-	}
+  public static ExportReceipt getInstance() {
+    return INSTANCE;
+  }
 
-	private XSSFWorkbook wb;
-	private XSSFSheet sheet;
+  private XSSFWorkbook wb;
+  private XSSFSheet sheet;
 
-	private XSSFCellStyle numberStyle;
-	private XSSFCellStyle priceStyle;
-	private XSSFCellStyle sumStyle;
-	private XSSFCellStyle vendorHeaderStyle;
+  private XSSFCellStyle numberStyle;
+  private XSSFCellStyle priceStyle;
+  private XSSFCellStyle sumStyle;
+  private XSSFCellStyle vendorHeaderStyle;
 
-	/**
-	 * Creates an receipt in excel for the given vendor.
-	 * 
-	 * @param pVendor
-	 *            {@link VendorBean}
-	 */
-	public void createReceipt(VendorBean pVendor) {
-		try {
-			wb = new XSSFWorkbook(new FileInputStream("./abrechnung_template.xlsx"));
-			sheet = wb.getSheetAt(0);
-			createStyles();
+  /**
+   * Creates an receipt in excel for the given vendor.
+   * 
+   * @param pVendor
+   *          {@link VendorBean}
+   */
+  public void createReceipt(VendorBean pVendor) {
+    try {
+      wb = new XSSFWorkbook(new FileInputStream("./abrechnung_template.xlsx"));
+      sheet = wb.getSheetAt(0);
+      createStyles();
 
-			PayoffDataReceipt payoffData = ExportDataService.getPayoffDataForVendor(pVendor);
-			fillInPlaceholders(payoffData);
+      PayoffDataReceipt payoffData = ExportDataService.getPayoffDataForVendor(pVendor);
+      fillInPlaceholders(payoffData);
 
-			FileOutputStream fileOut = new FileOutputStream(getDateiname(payoffData));
-			wb.write(fileOut);
-			fileOut.close();
-			wb.close();
-		} catch (FileNotFoundException e) {
-			LOGGER.fine("Error - Excel Template not found");
-			e.printStackTrace();
-		} catch (IOException e) {
-			LOGGER.fine("Error Exel Export");
-			e.printStackTrace();
-		}
-	}
+      FileOutputStream fileOut = new FileOutputStream(getDateiname(payoffData));
+      wb.write(fileOut);
+      fileOut.close();
+      wb.close();
+    } catch (FileNotFoundException e) {
+      LOGGER.fine("Error - Excel Template not found");
+      e.printStackTrace();
+    } catch (IOException e) {
+      LOGGER.fine("Error Exel Export");
+      e.printStackTrace();
+    }
+  }
 
-	private void fillInPlaceholders(PayoffDataReceipt pPayoffData) {
-		Cell vendorCell = getCellForPlaceholder("$vendor");
-		if (vendorCell != null) {
-			vendorCell.setCellValue(
-					pPayoffData.getVendorNumberList().stream().map(Object::toString).collect(Collectors.joining(",")));
-		}
+  private void fillInPlaceholders(PayoffDataReceipt pPayoffData) {
+    Cell vendorCell = getCellForPlaceholder("$vendor");
+    if (vendorCell != null) {
+      vendorCell.setCellValue(pPayoffData.getVendorNumberList().stream().map(Object::toString).collect(Collectors
+          .joining(", ")));
+    }
 
-		Cell lastNameCell = getCellForPlaceholder("$lastName");
-		if (lastNameCell != null) {
-			lastNameCell.setCellValue(pPayoffData.getLastName());
-		}
+    Cell lastNameCell = getCellForPlaceholder("$lastName");
+    if (lastNameCell != null) {
+      lastNameCell.setCellValue(pPayoffData.getLastName());
+    }
 
-		Cell firstNameCell = getCellForPlaceholder("$firstName");
-		if (firstNameCell != null) {
-			firstNameCell.setCellValue(pPayoffData.getFirstName());
-		}
+    Cell firstNameCell = getCellForPlaceholder("$firstName");
+    if (firstNameCell != null) {
+      firstNameCell.setCellValue(pPayoffData.getFirstName());
+    }
 
-		Cell totalSoldItemsCell = getCellForPlaceholder("$totalSoldItems");
-		if (totalSoldItemsCell != null) {
-			totalSoldItemsCell.setCellValue(pPayoffData.getTotalSoldItems());
-		}
+    Cell totalSoldItemsCell = getCellForPlaceholder("$totalSoldItems");
+    if (totalSoldItemsCell != null) {
+      totalSoldItemsCell.setCellValue(pPayoffData.getTotalSoldItems());
+    }
 
-		Cell turnoverCell = getCellForPlaceholder("$turnover");
-		if (turnoverCell != null) {
-			turnoverCell.setCellValue(pPayoffData.getTurnover());
-		}
+    Cell turnoverCell = getCellForPlaceholder("$turnover");
+    if (turnoverCell != null) {
+      turnoverCell.setCellValue(pPayoffData.getTurnover());
+    }
 
-		Cell profitCell = getCellForPlaceholder("$profit");
-		if (profitCell != null) {
-			profitCell.setCellValue(pPayoffData.getProfit());
-		}
+    Cell profitCell = getCellForPlaceholder("$profit");
+    if (profitCell != null) {
+      profitCell.setCellValue(pPayoffData.getProfit());
+    }
 
-		Cell paymentCell = getCellForPlaceholder("$payment");
-		if (paymentCell != null) {
-			paymentCell.setCellValue(pPayoffData.getPayment());
-		}
+    Cell paymentCell = getCellForPlaceholder("$payment");
+    if (paymentCell != null) {
+      paymentCell.setCellValue(pPayoffData.getPayment());
+    }
 
-		Cell dateCell = getCellForPlaceholder("$date");
-		if (dateCell != null) {
-			dateCell.setCellValue(new Date());
-		}
+    Cell dateCell = getCellForPlaceholder("$date");
+    if (dateCell != null) {
+      dateCell.setCellValue(new Date());
+    }
 
-		Cell soldItemListStartCell = getCellForPlaceholder("$soldItemListStart");
-		if (soldItemListStartCell != null) {
-			createSoldItemList(pPayoffData.getPayoffSoldItemsData(), soldItemListStartCell);
-		}
-	}
+    Cell soldItemListStartCell = getCellForPlaceholder("$soldItemListStart");
+    if (soldItemListStartCell != null) {
+      createSoldItemList(pPayoffData.getPayoffSoldItemsData(), soldItemListStartCell);
+    }
+  }
 
-	private void createSoldItemList(ArrayList<PayoffSoldItemsData> pPayoffSoldItemDataList, Cell pStartCell) {
+  private void createSoldItemList(ArrayList<PayoffSoldItemsData> pPayoffSoldItemDataList, Cell pStartCell) {
 
-		int rowCountGlobal = pStartCell.getRowIndex();
-		int columnIndex = pStartCell.getColumnIndex();
+    int rowCountGlobal = pStartCell.getRowIndex();
+    int columnIndex = pStartCell.getColumnIndex();
 
-		for (PayoffSoldItemsData payoffSoldItemData : pPayoffSoldItemDataList) {
+    for (PayoffSoldItemsData payoffSoldItemData : pPayoffSoldItemDataList) {
 
-			rowCountGlobal = createPlaceholderRow(rowCountGlobal, columnIndex, "");
-			rowCountGlobal = createVendorHeaderRow(rowCountGlobal, columnIndex, payoffSoldItemData.getVendorNumber());
-			if (payoffSoldItemData.getSoldItemNumbersPricesMap().isEmpty()) {
-				rowCountGlobal = createPlaceholderRow(rowCountGlobal, columnIndex, "Keine Artikel verkauft");
-			} else {
-				rowCountGlobal = createItemRows(rowCountGlobal, columnIndex, payoffSoldItemData);
-			}
-		}
-	}
+      rowCountGlobal = createPlaceholderRow(rowCountGlobal, columnIndex, "");
+      rowCountGlobal = createVendorHeaderRow(rowCountGlobal, columnIndex, payoffSoldItemData.getVendorNumber());
+      if (payoffSoldItemData.getSoldItemNumbersPricesMap().isEmpty()) {
+        rowCountGlobal = createPlaceholderRow(rowCountGlobal, columnIndex, "Keine Artikel verkauft");
+      } else {
+        rowCountGlobal = createItemRows(rowCountGlobal, columnIndex, payoffSoldItemData);
+      }
+    }
+  }
 
-	private int createPlaceholderRow(int pRowCount, int pColIndex, String pValue) {
-		XSSFRow tempRow = sheet.createRow(pRowCount);
-		if (pValue != null && !pValue.equals("")) {
-			tempRow.createCell(pColIndex).setCellValue(pValue);
-		}
+  private int createPlaceholderRow(int pRowCount, int pColIndex, String pValue) {
+    XSSFRow tempRow = sheet.createRow(pRowCount);
+    if (pValue != null && !pValue.equals("")) {
+      tempRow.createCell(pColIndex).setCellValue(pValue);
+    }
 
-		return ++pRowCount;
-	}
+    return ++pRowCount;
+  }
 
-	private int createVendorHeaderRow(int pRowCount, int pColIndex, Integer pVendorNumber) {
-		XSSFRow vendorRow = sheet.createRow(pRowCount);
-		XSSFCell vendorNumberCell = vendorRow.createCell(pColIndex);
-		vendorNumberCell.setCellValue("Verk" + "\u00E4" + "ufer Nummer: " + pVendorNumber);
-		vendorNumberCell.setCellStyle(vendorHeaderStyle);
+  private int createVendorHeaderRow(int pRowCount, int pColIndex, Integer pVendorNumber) {
+    XSSFRow vendorRow = sheet.createRow(pRowCount);
+    XSSFCell vendorNumberCell = vendorRow.createCell(pColIndex);
+    vendorNumberCell.setCellValue("Verk" + "\u00E4" + "ufer Nummer: " + pVendorNumber);
+    vendorNumberCell.setCellStyle(vendorHeaderStyle);
 
-		sheet.addMergedRegion(new CellRangeAddress(pRowCount, pRowCount, vendorNumberCell.getColumnIndex(),
-				vendorNumberCell.getColumnIndex() + 1));
+    sheet.addMergedRegion(new CellRangeAddress(pRowCount, pRowCount, vendorNumberCell.getColumnIndex(), vendorNumberCell
+        .getColumnIndex() + 1));
 
-		return ++pRowCount;
-	}
+    return ++pRowCount;
+  }
 
-	private int createItemRows(int pRowCount, int pColIndex, PayoffSoldItemsData pPayoffSoldItemData) {
-		int colIndexPrice = pColIndex + 1;
-		Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
-		for (Integer key : soldItemMap.keySet()) {
-			XSSFRow tempRow = sheet.createRow(pRowCount);
+  private int createItemRows(int pRowCount, int pColIndex, PayoffSoldItemsData pPayoffSoldItemData) {
+    int colIndexPrice = pColIndex + 1;
+    Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
+    for (Integer key : soldItemMap.keySet()) {
+      XSSFRow tempRow = sheet.createRow(pRowCount);
 
-			XSSFCell numberCell = tempRow.createCell(pColIndex);
-			numberCell.setCellValue(key);
-			numberCell.setCellStyle(numberStyle);
+      XSSFCell numberCell = tempRow.createCell(pColIndex);
+      numberCell.setCellValue(key);
+      numberCell.setCellStyle(numberStyle);
 
-			XSSFCell priceCell = tempRow.createCell(colIndexPrice);
-			priceCell.setCellValue(soldItemMap.get(key));
-			priceCell.setCellStyle(priceStyle);
+      XSSFCell priceCell = tempRow.createCell(colIndexPrice);
+      priceCell.setCellValue(soldItemMap.get(key));
+      priceCell.setCellStyle(priceStyle);
 
-			pRowCount++;
-		}
+      pRowCount++;
+    }
 
-		XSSFRow sumRow = sheet.createRow(pRowCount);
+    XSSFRow sumRow = sheet.createRow(pRowCount);
 
-		XSSFCell labelCell = sumRow.createCell(pColIndex);
-		labelCell.setCellValue("Summe:");
-    		labelCell.setCellStyle(sumStyle);
+    XSSFCell labelCell = sumRow.createCell(pColIndex);
+    labelCell.setCellValue("Summe:");
+    labelCell.setCellStyle(sumStyle);
 
-		XSSFCell priceCell = sumRow.createCell(colIndexPrice);
-		priceCell.setCellValue(pPayoffSoldItemData.getSoldItemSum());
-		priceCell.setCellStyle(priceStyle);
+    XSSFCell priceCell = sumRow.createCell(colIndexPrice);
+    priceCell.setCellValue(pPayoffSoldItemData.getSoldItemSum());
+    priceCell.setCellStyle(priceStyle);
 
-		return ++pRowCount;
-	}
+    return ++pRowCount;
+  }
 
-	private Cell getCellForPlaceholder(String pPlaceholder) {
-		for (Row row : sheet) {
-			for (Cell cell : row) {
-				if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-					if (cell.getRichStringCellValue().getString().trim().startsWith(pPlaceholder)) {
-						return cell;
-					}
-				}
-			}
-		}
-		return null;
-	}
+  private Cell getCellForPlaceholder(String pPlaceholder) {
+    for (Row row : sheet) {
+      for (Cell cell : row) {
+        if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+          if (cell.getRichStringCellValue().getString().trim().startsWith(pPlaceholder)) {
+            return cell;
+          }
+        }
+      }
+    }
+    return null;
+  }
 
-	private String getDateiname(PayoffDataReceipt pPayoffData) {
-		String folder = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";
-		StringBuilder dateiName = new StringBuilder();
-		if (!Files.isDirectory(Paths.get(folder))) {
-			try {
-				Files.createDirectory(Paths.get(folder));
-				dateiName.append(folder);
-				dateiName.append("/");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			dateiName.append(folder);
-			dateiName.append("/");
-		}
-		dateiName.append("Abrechnung_");
-		dateiName.append(pPayoffData.getVendorNumberList().get(0));
-		dateiName.append("_");
-		dateiName.append(pPayoffData.getLastName());
-		dateiName.append(".xlsx");
-		return dateiName.toString();
-	}
+  private String getDateiname(PayoffDataReceipt pPayoffData) {
+    String folder = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";
+    StringBuilder dateiName = new StringBuilder();
+    if (!Files.isDirectory(Paths.get(folder))) {
+      try {
+        Files.createDirectory(Paths.get(folder));
+        dateiName.append(folder);
+        dateiName.append("/");
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    } else {
+      dateiName.append(folder);
+      dateiName.append("/");
+    }
+    dateiName.append("Abrechnung_");
+    dateiName.append(pPayoffData.getVendorNumberList().get(0));
+    dateiName.append("_");
+    dateiName.append(pPayoffData.getLastName());
+    dateiName.append(".xlsx");
+    return dateiName.toString();
+  }
 
-	private void createStyles() {
-		XSSFFont headerFont = wb.createFont();
-		headerFont.setColor(new XSSFColor(Color.decode("#103FA6")));
-		
-		numberStyle = wb.createCellStyle();
-		numberStyle.setAlignment(HorizontalAlignment.CENTER);
-		numberStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-		numberStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-		numberStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-		numberStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-		numberStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
-		numberStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
-		numberStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
-		numberStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
+  private void createStyles() {
+    XSSFFont headerFont = wb.createFont();
+    headerFont.setColor(new XSSFColor(Color.decode("#103FA6")));
 
-		priceStyle = wb.createCellStyle();
-		priceStyle.setDataFormat((short) 7);
-		priceStyle.setAlignment(HorizontalAlignment.LEFT);
-		priceStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-		priceStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-		priceStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-		priceStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-		priceStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
-		priceStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
-		priceStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
-		priceStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
-		
-		sumStyle = wb.createCellStyle();
-		sumStyle.setAlignment(HorizontalAlignment.RIGHT);
-		sumStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-		sumStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-		sumStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-		sumStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-		sumStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
-		sumStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
-		sumStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
-		sumStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
-		sumStyle.setFont(headerFont);
+    numberStyle = wb.createCellStyle();
+    numberStyle.setAlignment(HorizontalAlignment.CENTER);
+    numberStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+    numberStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+    numberStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+    numberStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    numberStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
+    numberStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
+    numberStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
+    numberStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
 
-		vendorHeaderStyle = wb.createCellStyle();
-		vendorHeaderStyle.setFillForegroundColor(new XSSFColor(Color.decode("#CFDDFB")));
-		vendorHeaderStyle.setFont(headerFont);
-	}
+    priceStyle = wb.createCellStyle();
+    priceStyle.setDataFormat((short) 7);
+    priceStyle.setAlignment(HorizontalAlignment.LEFT);
+    priceStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+    priceStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+    priceStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+    priceStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    priceStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
+    priceStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
+    priceStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
+    priceStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
+
+    sumStyle = wb.createCellStyle();
+    sumStyle.setAlignment(HorizontalAlignment.RIGHT);
+    sumStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+    sumStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+    sumStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+    sumStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    sumStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
+    sumStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
+    sumStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
+    sumStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
+    sumStyle.setFont(headerFont);
+
+    vendorHeaderStyle = wb.createCellStyle();
+    vendorHeaderStyle.setFillForegroundColor(new XSSFColor(Color.decode("#CFDDFB")));
+    vendorHeaderStyle.setFont(headerFont);
+  }
 
 }

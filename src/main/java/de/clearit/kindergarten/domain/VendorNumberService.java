@@ -13,7 +13,7 @@ import de.clearit.kindergarten.utils.CollectorUtils;
  */
 public final class VendorNumberService extends AbstractResourceService<VendorNumberBean, VendorNumber> {
 
-  private static VendorNumberService INSTANCE = new VendorNumberService();
+  private static final VendorNumberService INSTANCE = new VendorNumberService();
 
   /**
    * Private constructor to prevent instantiation.

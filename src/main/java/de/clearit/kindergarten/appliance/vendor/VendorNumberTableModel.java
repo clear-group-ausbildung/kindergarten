@@ -28,10 +28,9 @@ public class VendorNumberTableModel extends AbstractTableAdapter<VendorNumberBea
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
     VendorNumberBean vendorNumberBean = getRow(rowIndex);
-    switch (columnIndex) {
-    case 0:
+    if (columnIndex == 0) {
       return vendorNumberBean.getVendorNumber();
-    default:
+    } else {
       throw new IllegalStateException("Can't handle column index " + columnIndex);
     }
   }

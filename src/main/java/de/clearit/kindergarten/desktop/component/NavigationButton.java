@@ -103,8 +103,7 @@ public final class NavigationButton extends JButton {
     paintGradient(g2, x, y, w, h, height, startColor, endColor);
   }
 
-  private void paintGradient(Graphics2D g2, int x, int y, int w, int h, int height, Color startColor,
-                             Color endColor) {
+  private void paintGradient(Graphics2D g2, int x, int y, int w, int h, int height, Color startColor, Color endColor) {
     g2.setPaint(new GradientPaint(0, 0, startColor, 0, height, endColor, true));
     g2.fillRect(x, y, w, h);
   }

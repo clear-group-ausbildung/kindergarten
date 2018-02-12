@@ -33,9 +33,9 @@ public final class DefaultDesktopFrame extends DesktopFrame {
 
   // Instance Fields ********************************************************
 
-  private final ToolBarSpec contextSpec;
-  private final NavigationBarSpec navigationSpec;
-  private final JComponent statusPane;
+  private final transient ToolBarSpec contextSpec;
+  private final transient NavigationBarSpec navigationSpec;
+  private final transient JComponent statusPane;
 
   // Instance Creation ****************************************************
 

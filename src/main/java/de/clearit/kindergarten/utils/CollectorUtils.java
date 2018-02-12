@@ -10,9 +10,14 @@ import java.util.stream.Collector;
  */
 public class CollectorUtils {
 
+  private CollectorUtils() {
+    super();
+  }
+
   /**
-   * Returns a Collector to transform a one-element sized List to its single element.
-   * If the List is has zero or more than one element, an exception is thrown.
+   * Returns a Collector to transform a one-element sized List to its single
+   * element. If the List is has zero or more than one element, an exception is
+   * thrown.
    * 
    * @return the first element of the collection or an exception
    */
