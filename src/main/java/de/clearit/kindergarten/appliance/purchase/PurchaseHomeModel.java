@@ -201,9 +201,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     ImportPurchasesTask() {
       super(BlockingScope.APPLICATION);
       importFile = getImportPath();
-      TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Der Verkaufsimport wird gestartet.", CommandValue.OK);
-      infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
-      infoPane.showDialog(getEventObject(), "Verkaufsimport");
       progressPane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
       progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
       progressPane.setProgressIndeterminate(true);
