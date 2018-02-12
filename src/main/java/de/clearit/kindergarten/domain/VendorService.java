@@ -103,6 +103,12 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     postDelete(bean, entity);
     flush();
   }
+  
+  @Override
+  public void update(VendorBean bean) {
+    delete(bean);
+    createAsNew(bean);
+  }
 
   @Override
   public List<Vendor> getEntities() {
@@ -125,6 +131,11 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
         .getLastName().equals(lastName)).collect(CollectorUtils.singletonCollector());
     result.setVendorNumbers(VendorNumberService.getInstance().findByVendorId(result.getId()));
     return result;
+  }
+  
+  private void createAsNew(VendorBean bean) {
+    bean.setId(null);
+    super.create(bean);
   }
 
 }
