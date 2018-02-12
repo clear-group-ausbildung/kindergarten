@@ -99,8 +99,8 @@ public final class VendorHomeView extends AbstractView {
       switch (columnIndex) {
       case 0:
         if (!vendor.getVendorNumbers().isEmpty()) {
-          return StringUtils.join(vendor.getVendorNumbers().stream().map(vendorNumber -> String.valueOf(vendorNumber
-              .getVendorNumber())).collect(Collectors.toList()), ", ");
+          return vendor.getVendorNumbers().stream().map(vendorNumber -> String.valueOf(vendorNumber.getVendorNumber()))
+              .collect(Collectors.joining(", "));
         } else {
           return "Keine Vorhanden";
         }
