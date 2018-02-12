@@ -53,7 +53,7 @@ public class ExportReceipt {
 
 	private XSSFCellStyle numberStyle;
 	private XSSFCellStyle priceStyle;
-	private XSSFCellStyle rightStyle;
+	private XSSFCellStyle sumStyle;
 	private XSSFCellStyle vendorHeaderStyle;
 
 	/**
@@ -191,7 +191,7 @@ public class ExportReceipt {
 
 		XSSFCell labelCell = sumRow.createCell(pColIndex);
 		labelCell.setCellValue("Summe:");
-    		labelCell.setCellStyle(rightStyle);
+    		labelCell.setCellStyle(sumStyle);
 
 		XSSFCell priceCell = sumRow.createCell(colIndexPrice);
 		priceCell.setCellValue(pPayoffSoldItemData.getSoldItemSum());
@@ -237,6 +237,9 @@ public class ExportReceipt {
 	}
 
 	private void createStyles() {
+		XSSFFont headerFont = wb.createFont();
+		headerFont.setColor(new XSSFColor(Color.decode("#103FA6")));
+		
 		numberStyle = wb.createCellStyle();
 		numberStyle.setAlignment(HorizontalAlignment.CENTER);
 		numberStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
@@ -260,11 +263,18 @@ public class ExportReceipt {
 		priceStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
 		priceStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
 		
-		rightStyle = wb.createCellStyle();
-    		rightStyle.setAlignment(CellStyle.ALIGN_RIGHT);
+		sumStyle = wb.createCellStyle();
+		sumStyle.setAlignment(HorizontalAlignment.RIGHT);
+		sumStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		sumStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		sumStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		sumStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		sumStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
+		sumStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
+		sumStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
+		sumStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
+		sumStyle.setFont(headerFont);
 
-		XSSFFont headerFont = wb.createFont();
-		headerFont.setColor(new XSSFColor(Color.decode("#103FA6")));
 		vendorHeaderStyle = wb.createCellStyle();
 		vendorHeaderStyle.setFillForegroundColor(new XSSFColor(Color.decode("#CFDDFB")));
 		vendorHeaderStyle.setFont(headerFont);
