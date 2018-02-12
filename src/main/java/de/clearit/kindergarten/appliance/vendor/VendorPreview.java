@@ -41,10 +41,15 @@ public final class VendorPreview extends AbstractView {
   // Building ***************************************************************
 
   private void initComponents() {
-    List<VendorNumberBean> listVendorNumberBeans = model.getBean().getVendorNumbers();
-    String vendorNumberDisplayString = listVendorNumberBeans.stream().map(vendor -> String.valueOf(vendor
-        .getVendorNumber())).collect(Collectors.joining(", "));
+    String vendorNumberDisplayString = "";
+    if (model.getBeanChannel().getValue() != null && ((VendorBean) model.getBeanChannel().getValue())
+        .getVendorNumbers() != null && !((VendorBean) model.getBeanChannel().getValue()).getVendorNumbers().isEmpty()) {
+      List<VendorNumberBean> listVendorNumberBeans = model.getBean().getVendorNumbers();
+      vendorNumberDisplayString = listVendorNumberBeans.stream().map(vendor -> String.valueOf(vendor.getVendorNumber()))
+          .collect(Collectors.joining(", "));
+    }
     vendorNumberField = KindergartenComponentFactory.createReadOnlyTextField(vendorNumberDisplayString);
+
     firstNameField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(
         VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(VendorBean.PROPERTY_LAST_NAME));
