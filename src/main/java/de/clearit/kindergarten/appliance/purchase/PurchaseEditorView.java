@@ -25,7 +25,7 @@ import de.clearit.kindergarten.appliance.DoubleToStringConverter;
 import de.clearit.kindergarten.appliance.IntegerToStringConverter;
 import de.clearit.kindergarten.domain.PurchaseBean;
 
-public class PurchaseEditorView extends AbstractView{
+public class PurchaseEditorView extends AbstractView {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorView.class);
 
@@ -66,23 +66,21 @@ public class PurchaseEditorView extends AbstractView{
     pane.setBackground(RESOURCES.getColor("content.background"));
     return pane;
   }
-  
 
   private void initComponents() {
     itemNumberLabel = new JLabel(RESOURCES.getString("purchase.itemNumber"));
     itemNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_NUMBER)));
-    
+
     itemPriceLabel = new JLabel(RESOURCES.getString("purchase.itemPrice"));
     itemPriceField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_PRICE)));
-    
+
     vendorNumberLabel = new JLabel(RESOURCES.getString("purchase.vendor"));
     vendorNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
-        PurchaseBean.PROPERTY_VENDOR_NUMBER)));    
+        PurchaseBean.PROPERTY_VENDOR_NUMBER)));
     addButton = new JButton(model.getAction(PurchaseEditorModel.ACTION_ADD_LINE_ITEM));
     addButton.addActionListener(e -> vendorNumberField.requestFocusInWindow());
-    
 
     table = new StripedTable(new PurchaseTableModel(model.getSelectionInList()));
     table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
@@ -122,29 +120,29 @@ public class PurchaseEditorView extends AbstractView{
     builder.addButton(addButton);
     return builder.getPanel();
   }
-  
+
   public JTextField getVendorNumber() {
-	  return (JTextField) vendorNumberField;
+    return (JTextField) vendorNumberField;
   }
-  
+
   public void setVendorNumber(String vendorNumber) {
-	  ((JTextField) vendorNumberField).setText(vendorNumber);
+    ((JTextField) vendorNumberField).setText(vendorNumber);
   }
-  
+
   public JTextField getItemNumber() {
-	  return (JTextField) itemNumberField;
+    return (JTextField) itemNumberField;
   }
-  
+
   public void setItemNumber(String itemNumber) {
-	  ((JTextField) itemNumberField).setText(itemNumber);
+    ((JTextField) itemNumberField).setText(itemNumber);
   }
-  
+
   public JTextField getItemPrice() {
-	  return (JTextField) itemPriceField;
+    return (JTextField) itemPriceField;
   }
 
   public void setItemPrice(String itemPrice) {
-	  ((JTextField) itemPriceField).setText(itemPrice);
+    ((JTextField) itemPriceField).setText(itemPrice);
   }
-  
+
 }

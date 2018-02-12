@@ -7,8 +7,6 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListModel;
 
-import org.sqlite.util.StringUtils;
-
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.binding.adapter.AbstractTableAdapter;

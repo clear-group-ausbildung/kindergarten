@@ -123,7 +123,7 @@ public final class ValidationSupport {
   private final class ValidationWorker extends SwingWorker<ValidationResult, Object> {
 
     @Override
-    protected ValidationResult doInBackground() throws Exception {
+    protected ValidationResult doInBackground() {
       LOGGER.log(Level.FINER, "Validating in background");
       return getValidatable().validate();
     }

@@ -44,7 +44,7 @@ public final class VendorEditorView extends AbstractView {
     this.model = model;
   }
 
-  // Initialization *********************************************************
+  // Initialisation *********************************************************
   private void initComponents() {
     firstNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_LAST_NAME));

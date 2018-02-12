@@ -142,11 +142,9 @@ public final class Dialogs {
 
   // Helper Code ************************************************************
 
-  @SuppressWarnings("deprecation")
   private static List<Document> getSelectedDocuments(JList<?> list) {
-    Object[] values = list.getSelectedValues();
     List<Document> result = new LinkedList<>();
-    for (Object element : values) {
+    for (Object element : list.getSelectedValuesList()) {
       result.add((Document) element);
     }
     return result;

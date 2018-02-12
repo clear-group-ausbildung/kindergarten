@@ -41,7 +41,7 @@ public final class VendorBean extends Model {
 
   /**
    * Constructor, creates a new {@link VendorBean} with the given Attributes.
-   * 
+   *
    * @param id
    *          the id
    * @param firstName
@@ -157,11 +157,8 @@ public final class VendorBean extends Model {
     } else if (!phoneNumber.equals(other.phoneNumber))
       return false;
     if (vendorNumbers == null) {
-      if (other.vendorNumbers != null)
-        return false;
-    } else if (!vendorNumbers.equals(other.vendorNumbers))
-      return false;
-    return true;
+      return other.vendorNumbers == null;
+    } else return vendorNumbers.equals(other.vendorNumbers);
   }
 
   @Override

@@ -13,12 +13,12 @@ public class IntegerToStringConverter extends AbstractConverter {
 
   @Override
   public void setValue(Object newValue) {
-	  try {
-	    Integer integerValue = Integer.valueOf((String) newValue);
-	    subject.setValue(integerValue);
-	  }catch(NumberFormatException e) {
-	    	
-	    }
+    try {
+      Integer integerValue = Integer.valueOf((String) newValue);
+      subject.setValue(integerValue);
+    } catch (NumberFormatException e) {
+      System.err.println(e.getMessage());
+    }
   }
 
   @Override

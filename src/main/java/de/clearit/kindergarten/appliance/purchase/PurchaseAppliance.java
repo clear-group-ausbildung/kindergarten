@@ -60,9 +60,9 @@ public class PurchaseAppliance extends DefaultAppliance {
   }
 
   public PurchaseEditorView getView() {
-	  return view;
+    return view;
   }
-  
+
   // Implementing Abstract Behavior *****************************************
 
   /**
@@ -71,11 +71,11 @@ public class PurchaseAppliance extends DefaultAppliance {
    */
   @Override
   protected DesktopFrame createHomeFrame() {
-    PurchaseHomeModel model = PurchaseHomeModel.getInstance();
-    PurchaseHomeView view = PurchaseHomeView.getInstance();
+    PurchaseHomeModel homeModel = PurchaseHomeModel.getInstance();
+    PurchaseHomeView homeView = PurchaseHomeView.getInstance();
 
-    return new DefaultDesktopFrame(null, RESOURCES.getString("purchaseHome.title"), false, this, null, model
-        .contextSpec(), null, view.getPanel(), null);
+    return new DefaultDesktopFrame(null, RESOURCES.getString("purchaseHome.title"), false, this, null, homeModel
+        .contextSpec(), null, homeView.getPanel(), null);
   }
 
 }
