@@ -75,5 +75,6 @@ distZip {
         from '.'
         include 'kindergarten.sqlite'
         include 'abrechnung_template.xlsx'
+	include 'abrechnung_intern_template.xlsx'
     }
 }
