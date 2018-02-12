@@ -106,13 +106,11 @@ public class PurchaseEditorSummary extends AbstractView {
 
       // Format the ItemPrice / Sum with 2 decimal places and return this as String
       private String formatNumber(BigDecimal itemSum) {
-        BigDecimal sumToFormat = itemSum;
-
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMinimumFractionDigits(2);
         nf.setMaximumFractionDigits(2);
         nf.setRoundingMode(RoundingMode.HALF_UP);
-        return nf.format(sumToFormat);
+        return nf.format(itemSum);
       }
 
     });

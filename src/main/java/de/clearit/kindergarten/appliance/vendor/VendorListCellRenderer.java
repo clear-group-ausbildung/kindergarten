@@ -32,7 +32,8 @@ public class VendorListCellRenderer extends DefaultListCellRenderer {
       List<VendorNumberBean> listVendorNumberBeans = vendor.getVendorNumbers();
       String vendorNumberDisplayString = listVendorNumberBeans.stream().map(vendorNumberBean -> String.valueOf(
           vendorNumberBean.getVendorNumber())).collect(Collectors.joining(", "));
-      builder.append(vendorNumberDisplayString + ": ");
+      builder.append(vendorNumberDisplayString);
+      builder.append(": ");
       builder.append(vendor.getLastName());
       if (!Strings.isNullOrEmpty(vendor.getFirstName())) {
         builder.append(", ");

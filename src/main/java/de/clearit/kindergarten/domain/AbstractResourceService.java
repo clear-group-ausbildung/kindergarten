@@ -48,7 +48,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
    * <p>
    * {@code toSnakeCase("firstName");  // becomes "first_name"}
    * </p>
-   * 
+   *
    * @param camelCase
    *          the camelCase formatted String to be converted
    * @return the snake_case converted String
@@ -98,7 +98,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
 
   /**
    * Returns all resources as a list of entities.
-   * 
+   *
    * @return the list of entities
    */
   protected abstract List<E> getEntities();

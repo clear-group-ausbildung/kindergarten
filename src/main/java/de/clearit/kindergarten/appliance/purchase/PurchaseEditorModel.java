@@ -1,6 +1,8 @@
 package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventObject;
@@ -179,7 +181,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
     if (e instanceof ActionEvent) {
       ActionEvent event = (ActionEvent) e;
-      if (MODIFIER_FIRED_BY_MOUSE == event.getModifiers()) {
+      if (MouseEvent.BUTTON1_MASK == event.getModifiers()) {
         TextComponentUtils.commitImmediately();
         triggerCommit();
         getSelectionInList().getList().forEach(SERVICE::create);

@@ -30,7 +30,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
 
   /**
    * Returns the singleton instance of the service.
-   * 
+   *
    * @return the singleton instance
    */
   public static PurchaseService getInstance() {
@@ -41,7 +41,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
 
   /**
    * Returns the list of Vendors as a ListModel.
-   * 
+   *
    * @return the ListModel
    */
   @SuppressWarnings("unchecked")
@@ -78,7 +78,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
 
   /**
    * Calculates the profit for the kindergarten for the given list of purchases.
-   * 
+   *
    * @param listPurchases
    *          The list of purchases to summarise the kindergarten profit for
    * @return The summarised profit for the kindergarten
@@ -90,7 +90,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
 
   /**
    * Calculates the payout amount for the vendors for the given list of purchases.
-   * 
+   *
    * @param listPurchases
    *          The list of purchases to summarise the vendor payout amount for
    * @return The summarized vendor payout amount
@@ -102,7 +102,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
 
   /**
    * Calculates the sum of item prices for the given list of purchases.
-   * 
+   *
    * @param listPurchases
    *          The list of purchases to summarise the item prices for
    * @return The sum of item prices
@@ -120,7 +120,7 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    * Returns the number of items in the given list of purchases. (Which
    * effectively is simply the list size, since 1 purchase equals 1 item in a
    * "shopping cart")
-   * 
+   *
    * @param listPurchases
    *          The list of purchases to count the items
    * @return The count of items
