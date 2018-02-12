@@ -53,6 +53,7 @@ public class ExportReceipt {
 
 	private XSSFCellStyle numberStyle;
 	private XSSFCellStyle priceStyle;
+	private XSSFCellStyle rightStyle;
 	private XSSFCellStyle vendorHeaderStyle;
 
 	/**
@@ -190,6 +191,7 @@ public class ExportReceipt {
 
 		XSSFCell labelCell = sumRow.createCell(pColIndex);
 		labelCell.setCellValue("Summe:");
+    		labelCell.setCellStyle(rightStyle);
 
 		XSSFCell priceCell = sumRow.createCell(colIndexPrice);
 		priceCell.setCellValue(pPayoffSoldItemData.getSoldItemSum());
@@ -257,6 +259,9 @@ public class ExportReceipt {
 		priceStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
 		priceStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
 		priceStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
+		
+		rightStyle = wb.createCellStyle();
+    		rightStyle.setAlignment(CellStyle.ALIGN_RIGHT);
 
 		XSSFFont headerFont = wb.createFont();
 		headerFont.setColor(new XSSFColor(Color.decode("#103FA6")));
