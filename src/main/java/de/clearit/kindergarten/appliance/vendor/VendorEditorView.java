@@ -76,7 +76,6 @@ public final class VendorEditorView extends AbstractView {
     builder.add(lastNameField, CC.xy(1, 5));
     builder.addI15dLabel("vendor.phoneNumber", CC.xy(1, 7));
     builder.add(phoneNumberField, CC.xy(1, 8));
-    builder.add(buildValidationFeedback(), CC.xywh(3, 1, 2, 8));
     builder.addI15dLabel("vendor.vendorNumber", CC.xy(1, 10));
     builder.add(vendorNumberField, CC.xy(1, 12));
     builder.add(addVendorNumberButton, CC.xy(3, 12));

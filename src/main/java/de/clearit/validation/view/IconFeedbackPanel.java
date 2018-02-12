@@ -207,7 +207,7 @@ public final class IconFeedbackPanel extends JLayeredPane {
    * @throws NullPointerException
    *           if the result is {@code null}
    */
-  private JComponent createFeedbackComponent(ValidationResult result, Component contentComponent) {
+  public JComponent createFeedbackComponent(ValidationResult result, Component contentComponent) {
     Icon icon = ValidationResultViewFactory.getSmallIcon(result.getSeverity());
     JLabel label = new JLabel(icon);
     label.setToolTipText(getMessagesToolTipText(result));

@@ -1,6 +1,6 @@
 package de.clearit.kindergarten.domain.export.entity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The class PayoffData
@@ -9,57 +9,56 @@ import java.util.ArrayList;
  */
 public class PayoffDataReceipt {
 
-	private final ArrayList<Integer> vendorNumberList;
-	private final String firstName;
-	private final String lastName;
-	private final Double turnover;
-	private final Double profit;
-	private final Double payment;
-	private final Integer totalSoldItems;
-	private final ArrayList<PayoffSoldItemsData> payoffSoldItemsData;
+  private final List<Integer> vendorNumberList;
+  private final String firstName;
+  private final String lastName;
+  private final Double turnover;
+  private final Double profit;
+  private final Double payment;
+  private final Integer totalSoldItems;
+  private final List<PayoffSoldItemsData> payoffSoldItemsData;
 
-	public PayoffDataReceipt(ArrayList<Integer> pVendorNumbers, String pFirstName, String pLastName, Double pTurnover,
-			Double pProfit, Double pPayment, Integer pTotalSoldItems,
-			ArrayList<PayoffSoldItemsData> pPayoffSoldItemsData) {
-		vendorNumberList = pVendorNumbers;
-		firstName = pFirstName;
-		lastName = pLastName;
-		turnover = pTurnover;
-		profit = pProfit;
-		payment = pPayment;
-		totalSoldItems = pTotalSoldItems;
-		payoffSoldItemsData = pPayoffSoldItemsData;
-	}
+  public PayoffDataReceipt(List<Integer> pVendorNumbers, String pFirstName, String pLastName, Double pTurnover,
+      Double pProfit, Double pPayment, Integer pTotalSoldItems, List<PayoffSoldItemsData> pPayoffSoldItemsData) {
+    vendorNumberList = pVendorNumbers;
+    firstName = pFirstName;
+    lastName = pLastName;
+    turnover = pTurnover;
+    profit = pProfit;
+    payment = pPayment;
+    totalSoldItems = pTotalSoldItems;
+    payoffSoldItemsData = pPayoffSoldItemsData;
+  }
 
-	public ArrayList<Integer> getVendorNumberList() {
-		return vendorNumberList;
-	}
+  public List<Integer> getVendorNumberList() {
+    return vendorNumberList;
+  }
 
-	public String getLastName() {
-		return lastName;
-	}
+  public String getLastName() {
+    return lastName;
+  }
 
-	public String getFirstName() {
-		return firstName;
-	}
+  public String getFirstName() {
+    return firstName;
+  }
 
-	public Double getTurnover() {
-		return turnover;
-	}
+  public Double getTurnover() {
+    return turnover;
+  }
 
-	public Double getProfit() {
-		return profit;
-	}
+  public Double getProfit() {
+    return profit;
+  }
 
-	public Double getPayment() {
-		return payment;
-	}
+  public Double getPayment() {
+    return payment;
+  }
 
-	public Integer getTotalSoldItems() {
-		return totalSoldItems;
-	}
+  public Integer getTotalSoldItems() {
+    return totalSoldItems;
+  }
 
-	public ArrayList<PayoffSoldItemsData> getPayoffSoldItemsData() {
-		return payoffSoldItemsData;
-	}
+  public List<PayoffSoldItemsData> getPayoffSoldItemsData() {
+    return payoffSoldItemsData;
+  }
 }
