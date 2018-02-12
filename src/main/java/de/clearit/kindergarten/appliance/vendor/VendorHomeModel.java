@@ -106,7 +106,6 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 		pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
 		if (pane.getCommitValue() == CommandValue.YES) {
 			SERVICE.delete(vendor);
-			// TODO and delete vendor numbers
 		}
 	}
 

@@ -209,7 +209,6 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     TextComponentUtils.commitImmediately();
     if (!isChanged() && !isBuffering()) { // Test for searching
       System.out.println("Nichts geaendert");
-      // TODO entfernen
       cancelOp.run();
       return;
     }
