@@ -5,6 +5,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.ListModel;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.desktop.spec.ToolBarSpec;
 import com.jgoodies.uif2.application.UIFModel;
@@ -38,21 +40,21 @@ public abstract class AbstractHomeModel<T> extends UIFModel {
     initPresentationLogic();
   }
 
-  // Initialization *********************************************************
+  // Initialisation *********************************************************
 
   protected abstract ListModel<?> getListModel();
 
   private void initModels() {
     selectionInList = new SelectionInList<>(getListModel());
-    if (selectionInList.getList().size() > 0) {
+    if (CollectionUtils.isNotEmpty(selectionInList.getList())) {
       selectionInList.setSelectionIndex(0);
     }
     handleSelectionChange(selectionInList.hasSelection());
   }
 
   private void initPresentationLogic() {
-    getSelectionInList().addPropertyChangeListener(SelectionInList.PROPERTYNAME_SELECTION,
-        new SelectionChangeHandler<>(this));
+    getSelectionInList().addPropertyChangeListener(SelectionInList.PROPERTYNAME_SELECTION, new SelectionChangeHandler<>(
+        this));
   }
 
   // Models *****************************************************************

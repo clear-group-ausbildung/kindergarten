@@ -21,8 +21,8 @@ public abstract class AbstractToolBarButton extends JButton {
 
   // Instance Fields ********************************************************
 
-  private final Image rolloverBackground;
-  private final Image pressedBackground;
+  private final transient Image rolloverBackground;
+  private final transient Image pressedBackground;
 
   // Instance Creation ******************************************************
 

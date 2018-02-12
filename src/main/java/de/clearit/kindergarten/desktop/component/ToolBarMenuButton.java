@@ -26,7 +26,7 @@ public final class ToolBarMenuButton extends AbstractToolBarButton {
 
   private static ActionListener showMenuListener;
 
-  private final Icon downIcon;
+  private final transient Icon downIcon;
   private final int downIconTextGap;
 
   private JPopupMenu popupMenu;

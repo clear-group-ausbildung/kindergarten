@@ -22,8 +22,6 @@ public final class MainView extends AbstractView {
   @SuppressWarnings("unused")
   private final MainModel mainModel;
 
-  private CardPanel cardPanel;
-
   // Instance Creation ******************************************************
 
   public MainView(MainModel mainModel) {
@@ -39,7 +37,7 @@ public final class MainView extends AbstractView {
 
   @Override
   protected JComponent buildPanel() {
-    cardPanel = new CardPanel();
+    CardPanel cardPanel = new CardPanel();
     cardPanel.add("Desktop", new DesktopView().getPanel());
 
     return cardPanel;

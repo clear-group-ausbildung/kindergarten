@@ -42,7 +42,7 @@ public class PurchaseBean extends Model {
    * Constructor, creates a new {@link PurchaseBean} with the given attributes and
    * default (empty (String), zero (Integer) or false(Boolean)) values for the
    * remaining attributes.
-   * 
+   *
    * @param itemNumber
    *          the article number
    * @param itemPrice
@@ -56,7 +56,7 @@ public class PurchaseBean extends Model {
 
   /**
    * Constructor; creates a new {@link PurchaseBean} with the given attributes.
-   * 
+   *
    * @param id
    *          the id
    * @param itemNumber
@@ -157,11 +157,8 @@ public class PurchaseBean extends Model {
     } else if (!itemPrice.equals(other.itemPrice))
       return false;
     if (vendorNumber == null) {
-      if (other.vendorNumber != null)
-        return false;
-    } else if (!vendorNumber.equals(other.vendorNumber))
-      return false;
-    return true;
+      return other.vendorNumber == null;
+    } else return vendorNumber.equals(other.vendorNumber);
   }
 
   @Override

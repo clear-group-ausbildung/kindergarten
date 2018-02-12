@@ -40,16 +40,6 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     entity.saveIt();
   }
 
-  @Override
-  protected void postUpdate(VendorBean bean, Vendor entity) {
-    // TODO: Update vendor numbers
-  }
-  
-  @Override
-  protected void postDelete(VendorBean bean, Vendor entity) {
-    // TODO: Delete vendor numbers
-  }
-
   // Public API *************************************************************
 
   /**
@@ -95,7 +85,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 
     return entity;
   }
-  
+
   @Override
   public void delete(VendorBean bean) {
     Vendor entity = toEntity(bean);
@@ -103,7 +93,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     postDelete(bean, entity);
     flush();
   }
-  
+
   @Override
   public void update(VendorBean bean) {
     delete(bean);
@@ -132,7 +122,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     result.setVendorNumbers(VendorNumberService.getInstance().findByVendorId(result.getId()));
     return result;
   }
-  
+
   private void createAsNew(VendorBean bean) {
     bean.setId(null);
     super.create(bean);

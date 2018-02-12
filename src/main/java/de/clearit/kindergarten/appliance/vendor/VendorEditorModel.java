@@ -5,6 +5,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventObject;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import com.jgoodies.application.Action;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.ValueHolder;
@@ -17,7 +19,6 @@ import com.jgoodies.jsdl.core.pane.form.FormPaneModel;
 import com.jgoodies.jsdl.core.util.JSDLUtils;
 import com.jgoodies.uif2.application.UIFPresentationModel;
 import com.jgoodies.uif2.util.TextComponentUtils;
-import com.jgoodies.validation.ValidationResult;
 
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.VendorBean;
@@ -39,10 +40,10 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
 
   // Instance Fields ********************************************************
 
-  private final CommitCallback<CommandValue> commitCallback;
-  private final ValidationSupport validationSupport;
-  private SelectionInList<VendorNumberBean> selectionInList;
-  private final ValueModel vendorNumberFieldModel = new ValueHolder();
+  private final transient CommitCallback<CommandValue> commitCallback;
+  private final transient ValidationSupport validationSupport;
+  private transient SelectionInList<VendorNumberBean> selectionInList;
+  private final transient ValueModel vendorNumberFieldModel = new ValueHolder();
 
   // Instance Creation ******************************************************
 
@@ -54,12 +55,12 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     initPresentationLogic();
   }
 
-  // Initialization *********************************************************
+  // Initialisation *********************************************************
 
   private void initModels() {
     selectionInList = new SelectionInList<>();
     selectionInList.getList().addAll(getBean().getVendorNumbers());
-    if (selectionInList.getList().size() > 0) {
+    if (CollectionUtils.isNotEmpty(selectionInList.getList())) {
       selectionInList.setSelectionIndex(0);
     }
     handleSelectionChange(selectionInList.hasSelection());

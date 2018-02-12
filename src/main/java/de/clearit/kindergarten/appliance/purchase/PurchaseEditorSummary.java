@@ -23,8 +23,8 @@ import de.clearit.kindergarten.domain.PurchaseService;
 
 public class PurchaseEditorSummary extends AbstractView {
 
-  private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorSummary.class);  
-  
+  private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorSummary.class);
+
   private JLabel itemCountLabel;
   private JLabel itemCountField;
   private JComponent itemSumLabel;
@@ -98,23 +98,21 @@ public class PurchaseEditorSummary extends AbstractView {
         Integer itemCount = service.getItemCountByPurchases(model.getSelectionInList().getList());
         itemCountField.setText(itemCount.toString());
         BigDecimal itemSum = service.getItemSumByPurchases(model.getSelectionInList().getList());
-        
+
         String itemSumWithDots = formatNumber(itemSum);
         String itemSumWithComma = itemSumWithDots.replace('.', ',');
         itemSumField.setText(itemSumWithComma + " \u20ac");
       }
-      
-      // Format the ItemPrice / Sum with 2 decimal places and return this as String   
+
+      // Format the ItemPrice / Sum with 2 decimal places and return this as String
       private String formatNumber(BigDecimal itemSum) {
-    	  BigDecimal sumToFormat = itemSum;
-    	  
-    	  NumberFormat nf = NumberFormat.getInstance();    	  
-    	  nf.setMinimumFractionDigits(2);
-    	  nf.setMaximumFractionDigits(2);
-    	  nf.setRoundingMode(RoundingMode.HALF_UP);
-    	  String formattedString = nf.format(sumToFormat);
-    	  
-    	  return formattedString;
+        BigDecimal sumToFormat = itemSum;
+
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMinimumFractionDigits(2);
+        nf.setMaximumFractionDigits(2);
+        nf.setRoundingMode(RoundingMode.HALF_UP);
+        return nf.format(sumToFormat);
       }
 
     });
