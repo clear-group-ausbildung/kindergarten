@@ -142,6 +142,7 @@ public class ExportInternalPayoff {
 			vendorNumberLabelCell.setCellValue("Nummer(n)");
 			vendorNumberLabelCell.setCellStyle(labelStyle);
 			XSSFCell vendorNumberValueCell = vendorNumberRow.createCell(valueColumnIndex);
+			// TODO MJ Change the stream because of missed VendorNumberBean.getVendorNumber(), getting the VendorNumberBean from getVendorNumbers
 			vendorNumberValueCell.setCellValue(payoffDataInternalVendor.getVendor().getVendorNumbers().stream()
 					.map(Object::toString).collect(Collectors.joining(",")));
 			vendorNumberValueCell.setCellStyle(textStyle);
