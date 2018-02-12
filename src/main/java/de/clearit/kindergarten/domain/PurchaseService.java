@@ -1,5 +1,6 @@
 package de.clearit.kindergarten.domain;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -7,8 +8,12 @@ import java.util.Optional;
 import javax.swing.ListModel;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
 
 import de.clearit.kindergarten.domain.entity.Purchase;
+import de.clearit.kindergarten.utils.JacksonUtils;
+import io.reactivex.Emitter;
 
 /**
  * The service for the Purchase resource.
@@ -127,6 +132,30 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
    */
   public Integer getItemCountByPurchases(List<PurchaseBean> listPurchases) {
     return CollectionUtils.isNotEmpty(listPurchases) ? listPurchases.size() : 0;
+  }
+
+  public PurchaseBean readPurchase(JsonParser parser) throws IOException {
+    JacksonUtils.debugParser(parser);
+    parser.nextToken(); // JsonToken.START_ARRAY;
+    final PurchaseBean purchaseBean = new PurchaseBean();
+    purchaseBean.setItemNumber(JacksonUtils.readInt(parser));
+    purchaseBean.setItemPrice(BigDecimal.valueOf(JacksonUtils.readDouble(parser)));
+    purchaseBean.setVendorNumber(JacksonUtils.readInt(parser));
+    parser.nextToken(); // JsonToken.END_ARRAY;
+    return purchaseBean;
+  }
+
+  public void pullOrComplete(JsonParser parser, Emitter<PurchaseBean> emitter) throws IOException {
+    JacksonUtils.debugParser(parser);
+    JsonToken currentToken = parser.getCurrentToken();
+    if (parser != null && currentToken != null) {
+      if (!JsonToken.END_OBJECT.equals(currentToken)) {
+        final PurchaseBean purchaseBean = readPurchase(parser);
+        emitter.onNext(purchaseBean);
+      } else {
+        emitter.onComplete();
+      }
+    }
   }
 
 }
