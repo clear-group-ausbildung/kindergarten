@@ -1,5 +1,8 @@
 package de.clearit.kindergarten.appliance.vendor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.swing.JComponent;
 
 import com.jgoodies.application.Application;
@@ -11,7 +14,6 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 
-import de.clearit.kindergarten.appliance.IntegerToStringConverter;
 import de.clearit.kindergarten.application.KindergartenComponentFactory;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
@@ -39,10 +41,10 @@ public final class VendorPreview extends AbstractView {
   // Building ***************************************************************
 
   private void initComponents() {
-//    vendorNumberField = KindergartenComponentFactory.createReadOnlyTextField(new IntegerToStringConverter(model
-//        .getModel(VendorNumberBean.PROPERTY_VENDOR_NUMBER)));
-	    vendorNumberField = KindergartenComponentFactory.createReadOnlyTextField("");
-    //TODO an neue Datenstruktur anpassen done??
+    List<VendorNumberBean> listVendorNumberBeans = model.getBean().getVendorNumbers();
+    String vendorNumberDisplayString = listVendorNumberBeans.stream().map(vendor -> String.valueOf(vendor
+        .getVendorNumber())).collect(Collectors.joining(", "));
+    vendorNumberField = KindergartenComponentFactory.createReadOnlyTextField(vendorNumberDisplayString);
     firstNameField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(
         VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(VendorBean.PROPERTY_LAST_NAME));

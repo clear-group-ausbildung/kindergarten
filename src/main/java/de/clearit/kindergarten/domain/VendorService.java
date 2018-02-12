@@ -40,6 +40,16 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     entity.saveIt();
   }
 
+  @Override
+  protected void postUpdate(VendorBean bean, Vendor entity) {
+    // TODO: Update vendor numbers
+  }
+  
+  @Override
+  protected void postDelete(VendorBean bean, Vendor entity) {
+    // TODO: Delete vendor numbers
+  }
+
   // Public API *************************************************************
 
   /**
