@@ -78,6 +78,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
   public void update(B bean) {
     E entity = toEntity(bean);
     entity.saveIt();
+    postUpdate(bean, entity);
     flush();
   }
 
@@ -85,6 +86,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
   public void delete(B bean) {
     E entity = toEntity(bean);
     entity.delete();
+    postDelete(bean, entity);
     flush();
   }
 
@@ -98,7 +100,15 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
   protected void postCreate(B bean, E entity) {
     // Template Pattern
   }
+  
+  protected void postUpdate(B bean, E entity) {
+    // Template Pattern
+  }
 
+  protected void postDelete(B bean, E entity) {
+    // Template Pattern
+  }
+  
   protected void flush() {
     beans.clear();
     beans.addAll(fromEntities());
