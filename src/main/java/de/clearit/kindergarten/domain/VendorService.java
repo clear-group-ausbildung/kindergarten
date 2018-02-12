@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.swing.ListModel;
 
-import org.apache.poi.ss.formula.functions.Address;
-
 import de.clearit.kindergarten.domain.entity.Vendor;
 import de.clearit.kindergarten.domain.entity.VendorNumber;
 import de.clearit.kindergarten.utils.CollectorUtils;
@@ -17,7 +15,6 @@ import de.clearit.kindergarten.utils.CollectorUtils;
 public final class VendorService extends AbstractResourceService<VendorBean, Vendor> {
 
   private static final VendorService INSTANCE = new VendorService();
-  private static final VendorNumberService NUMBER_SERVICE = VendorNumberService.getInstance();
 
   /**
    * Private constructor to prevent instantiation.
@@ -39,7 +36,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
   protected void postCreate(VendorBean bean, Vendor entity) {
     Integer createdVendorId = entity.getInteger(toSnakeCase(VendorBean.PROPERTY_ID));
     bean.getVendorNumbers().stream().forEach(number -> number.setVendorId(createdVendorId));
-    bean.getVendorNumbers().stream().forEach(number -> entity.add(NUMBER_SERVICE.toEntity(number)));
+    bean.getVendorNumbers().stream().forEach(number -> entity.add(VendorNumberService.getInstance().toEntity(number)));
     entity.saveIt();
   }
 
@@ -63,10 +60,13 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     bean.setLastName(entity.getString(toSnakeCase(VendorBean.PROPERTY_LAST_NAME)));
     bean.setPhoneNumber(entity.getString(toSnakeCase(VendorBean.PROPERTY_PHONE_NUMBER)));
     // Load Vendor Numbers
-    List<VendorNumber> vendorNumbers = entity.getAll(VendorNumber.class);
-    List<VendorNumberBean> vendorNumberBeans = new ArrayList<>();
-    vendorNumbers.stream().forEach(number -> vendorNumberBeans.addAll(NUMBER_SERVICE.findByVendorId(bean.getId())));
-    bean.setVendorNumbers(vendorNumberBeans);
+    List<VendorNumber> listVendorNumberEntities = entity.getAll(VendorNumber.class);
+    List<VendorNumberBean> listVendorNumberBeans = new ArrayList<>();
+    for (VendorNumber vendorNumberEntity : listVendorNumberEntities) {
+      VendorNumberBean vendorNumberBean = VendorNumberService.getInstance().fromEntity(vendorNumberEntity);
+      listVendorNumberBeans.add(vendorNumberBean);
+    }
+    bean.setVendorNumbers(listVendorNumberBeans);
     return bean;
   }
 
