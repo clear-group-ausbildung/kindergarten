@@ -201,6 +201,9 @@ public class ExportInternalPayoff {
 	}
 
 	private void createStyles() {
+		XSSFFont headerFont = wb.createFont();
+		headerFont.setColor(new XSSFColor(Color.decode("#103FA6")));
+		
 		priceStyle = wb.createCellStyle();
 		priceStyle.setDataFormat((short) 7);
 		priceStyle.setAlignment(HorizontalAlignment.LEFT);
