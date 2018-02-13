@@ -28,6 +28,10 @@ repositories {
 dependencies {
   	  // https://mvnrepository.com/artifact/com.google.guava/guava
   	  compile group: 'com.google.guava', name: 'guava', version: '23.0'
+  	  // https://mvnrepository.com/artifact/com.itextpdf/itext7-core
+    compile group: 'com.itextpdf', name: 'itext7-core', version: '7.1.1'
+    // https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.9'
   	  // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
     compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
     	// https://mvnrepository.com/artifact/org.apache.poi/poi

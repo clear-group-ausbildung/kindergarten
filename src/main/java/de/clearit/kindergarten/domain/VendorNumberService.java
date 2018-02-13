@@ -1,6 +1,7 @@
 package de.clearit.kindergarten.domain;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.swing.ListModel;
@@ -12,6 +13,8 @@ import de.clearit.kindergarten.utils.CollectorUtils;
  * The service for the Vendor resource.
  */
 public final class VendorNumberService extends AbstractResourceService<VendorNumberBean, VendorNumber> {
+
+  private static final Logger LOGGER = Logger.getLogger(VendorService.class.getName());
 
   private static final VendorNumberService INSTANCE = new VendorNumberService();
 
@@ -45,21 +48,29 @@ public final class VendorNumberService extends AbstractResourceService<VendorNum
 
   @Override
   public VendorNumberBean fromEntity(VendorNumber entity) {
+    LOGGER.entering(VendorNumberService.class.getSimpleName(), "fromEntity(VendorNumber entity)", new Object[] {
+        entity });
     VendorNumberBean bean = new VendorNumberBean();
     bean.setId(entity.getInteger(toSnakeCase(VendorNumberBean.PROPERTY_ID)));
     bean.setVendorNumber(entity.getInteger(toSnakeCase(VendorNumberBean.PROPERTY_VENDOR_NUMBER)));
     bean.setVendorId(entity.getInteger(toSnakeCase(VendorNumberBean.PROPERTY_VENDOR_ID)));
+    LOGGER.exiting(VendorNumberService.class.getSimpleName(), "fromEntity(VendorNumber entity)", new Object[] { bean });
     return bean;
   }
 
   @Override
   public VendorNumber toEntity(VendorNumberBean bean) {
+    LOGGER.entering(VendorNumberService.class.getSimpleName(), "toEntity(VendorNumberBean bean)", new Object[] {
+        bean });
     VendorNumber entity = VendorNumber.findById(bean.getId());
     if (entity == null) {
       entity = new VendorNumber();
+      LOGGER.fine("New VendorNumber entity!");
     }
     entity.setInteger(toSnakeCase(VendorNumberBean.PROPERTY_VENDOR_NUMBER), bean.getVendorNumber());
     entity.setInteger(toSnakeCase(VendorNumberBean.PROPERTY_VENDOR_ID), bean.getVendorId());
+    LOGGER.exiting(VendorNumberService.class.getSimpleName(), "toEntity(VendorNumberBean bean)", new Object[] {
+        entity });
     return entity;
   }
 

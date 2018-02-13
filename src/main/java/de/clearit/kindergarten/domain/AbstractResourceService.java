@@ -1,6 +1,7 @@
 package de.clearit.kindergarten.domain;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
     implements ResourceService<B, E> {
 
   private static final Logger LOGGER = Logger.getLogger(AbstractResourceService.class.getName());
+  private static final String LOG_MSG_FLUSH_PREFIX = "Successfully flushed! #Beans now: ";
 
   private static boolean connectionEstablished = false;
 
@@ -29,11 +31,16 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
 
   AbstractResourceService() {
     super();
+    LOGGER.entering(AbstractResourceService.class.getSimpleName(), "constructor()");
     if (!connectionEstablished) {
+      LOGGER.fine("Establishing connection to database...");
       Base.open("org.sqlite.JDBC", "jdbc:sqlite:./kindergarten.sqlite", "", "");
+      LOGGER.log(Level.FINE, () -> "Connection to database " + Base.connection().toString()
+          + " successfully established!");
       connectionEstablished = true;
     }
     beans = new ArrayListModel<>(fromEntities());
+    LOGGER.exiting(AbstractResourceService.class.getSimpleName(), "constructor()");
   }
 
   /**
@@ -59,41 +66,103 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
 
   @Override
   public List<B> getAll() {
+    LOGGER.entering(AbstractResourceService.class.getSimpleName(), "getAll()");
     flush();
+    LOGGER.log(Level.FINE, () -> LOG_MSG_FLUSH_PREFIX + beans.size());
+    LOGGER.exiting(AbstractResourceService.class.getSimpleName(), "getAll()");
     return beans;
   }
 
   @Override
+  public void preCreate(B bean, E entity) {
+    LOGGER.entering(AbstractResourceService.class.getName(), "preCreate(B bean, E entity)", new Object[] { bean,
+        entity });
+  }
+
+  @Override
   public void create(B bean) {
+    LOGGER.entering(AbstractResourceService.class.getSimpleName(), "create(B bean)", new Object[] { bean });
     E entity = toEntity(bean);
     preCreate(bean, entity);
     entity.saveIt();
     postCreate(bean, entity);
     flush();
+    LOGGER.log(Level.FINE, () -> LOG_MSG_FLUSH_PREFIX + beans.size());
+    LOGGER.exiting(AbstractResourceService.class.getSimpleName(), "create(B bean)");
+  }
+
+  @Override
+  public void postCreate(B bean, E entity) {
+    LOGGER.entering(AbstractResourceService.class.getName(), "postCreate(B bean, E entity)", new Object[] { bean,
+        entity });
   }
 
   @Override
   public B getById(Integer id) {
+    LOGGER.entering(AbstractResourceService.class.getSimpleName(), "getById(Integer id)", new Object[] { id });
     E entity = E.findById(id);
+    LOGGER.exiting(AbstractResourceService.class.getSimpleName(), "getById(Integer id)", new Object[] { entity });
     return fromEntity(entity);
   }
 
   @Override
+  public void preUpdate(B bean, E entity) {
+    LOGGER.entering(AbstractResourceService.class.getName(), "preUpdate(B bean, E entity)", new Object[] { bean,
+        entity });
+  }
+
+  @Override
   public void update(B bean) {
+    LOGGER.entering(AbstractResourceService.class.getSimpleName(), "update(B bean)", new Object[] { bean });
     E entity = toEntity(bean);
     preUpdate(bean, entity);
     entity.saveIt();
     postUpdate(bean, entity);
     flush();
+    LOGGER.log(Level.FINE, () -> LOG_MSG_FLUSH_PREFIX + beans.size());
+    LOGGER.exiting(AbstractResourceService.class.getSimpleName(), "update(B bean)");
+  }
+
+  @Override
+  public void postUpdate(B bean, E entity) {
+    LOGGER.entering(AbstractResourceService.class.getName(), "postUpdate(B bean, E entity)", new Object[] { bean,
+        entity });
+  }
+
+  @Override
+  public void preDelete(B bean, E entity) {
+    LOGGER.entering(AbstractResourceService.class.getName(), "preDelete(B bean, E entity)", new Object[] { bean,
+        entity });
   }
 
   @Override
   public void delete(B bean) {
+    LOGGER.entering(AbstractResourceService.class.getSimpleName(), "delete(B bean)", new Object[] { bean });
     E entity = toEntity(bean);
     preDelete(bean, entity);
     entity.delete();
     postDelete(bean, entity);
     flush();
+    LOGGER.log(Level.FINE, () -> LOG_MSG_FLUSH_PREFIX + beans.size());
+    LOGGER.exiting(AbstractResourceService.class.getSimpleName(), "delete(B bean)");
+  }
+
+  @Override
+  public void postDelete(B bean, E entity) {
+    LOGGER.entering(AbstractResourceService.class.getName(), "postDelete(B bean, E entity)", new Object[] { bean,
+        entity });
+  }
+
+  /**
+   * Flushes the instance cached beans and recreates all Beans from the current
+   * persisted entities.
+   */
+  protected void flush() {
+    LOGGER.entering(AbstractResourceService.class.getName(), "flush");
+    beans.clear();
+    beans.addAll(fromEntities());
+    LOGGER.log(Level.FINE, () -> LOG_MSG_FLUSH_PREFIX + beans.size());
+    LOGGER.exiting(AbstractResourceService.class.getName(), "flush ", new Object[] { beans.size() });
   }
 
   /**
@@ -102,37 +171,6 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
    * @return the list of entities
    */
   protected abstract List<E> getEntities();
-
-  protected void preCreate(B bean, E entity) {
-    LOGGER.entering(AbstractResourceService.class.getName(), "create", new Object[] { bean, entity });
-  }
-
-  protected void postCreate(B bean, E entity) {
-    LOGGER.exiting(AbstractResourceService.class.getName(), "create", new Object[] { bean, entity });
-  }
-
-  protected void preUpdate(B bean, E entity) {
-    LOGGER.entering(AbstractResourceService.class.getName(), "update", new Object[] { bean, entity });
-  }
-
-  protected void postUpdate(B bean, E entity) {
-    LOGGER.exiting(AbstractResourceService.class.getName(), "update", new Object[] { bean, entity });
-  }
-
-  protected void preDelete(B bean, E entity) {
-    LOGGER.entering(AbstractResourceService.class.getName(), "delete", new Object[] { bean, entity });
-  }
-
-  protected void postDelete(B bean, E entity) {
-    LOGGER.exiting(AbstractResourceService.class.getName(), "delete", new Object[] { bean, entity });
-  }
-
-  protected void flush() {
-    LOGGER.entering(AbstractResourceService.class.getName(), "flush");
-    beans.clear();
-    beans.addAll(fromEntities());
-    LOGGER.exiting(AbstractResourceService.class.getName(), "flush ", new Object[] { beans.size() });
-  }
 
   private List<B> fromEntities() {
     return getEntities().stream().map(this::fromEntity).collect(Collectors.toList());

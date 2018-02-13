@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
 import java.util.logging.Logger;
@@ -14,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.jgoodies.application.Action;
@@ -35,6 +35,8 @@ import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
 import de.clearit.kindergarten.domain.VendorService;
+import de.clearit.kindergarten.utils.JacksonUtils;
+import io.reactivex.Flowable;
 
 /**
  * The home model for the purchase.
@@ -210,13 +212,13 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
     @Override
     protected List<PurchaseBean> doInBackground() {
-      final ObjectMapper mapper = new ObjectMapper();
-      try {
-        return mapper.readValue(importFile, mapper.getTypeFactory().constructCollectionType(List.class,
-            PurchaseBean.class));
-      } catch (IOException e) {
-        return Collections.emptyList();
-      }
+      List<PurchaseBean> result = new ArrayList<>();
+      final Flowable<PurchaseBean> purchaseBeans = Flowable.generate(() -> JacksonUtils.createJsonParserFor(importFile),
+          SERVICE::pullOrComplete, JsonParser::close);
+      purchaseBeans.blockingSubscribe(purchaseBean -> {
+        result.add(purchaseBean);
+      }, throwable -> LOGGER.fine(throwable.getMessage()));
+      return result;
     }
 
     @Override
@@ -269,7 +271,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
       try {
         mapper.writeValue(new File(exportPath), purchaseList);
       } catch (IOException e) {
-        e.printStackTrace();
+        LOGGER.fine(e.getMessage());
       }
       return null;
     }
