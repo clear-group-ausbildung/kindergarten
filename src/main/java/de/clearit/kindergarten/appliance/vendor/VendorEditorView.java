@@ -17,7 +17,6 @@ import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 import com.jgoodies.uif2.component.StripedTable;
 
-import de.clearit.kindergarten.desktop.DesktopUtils;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.validation.view.IconFeedbackPanel;
 
@@ -82,11 +81,6 @@ public final class VendorEditorView extends AbstractView {
     builder.add(new JScrollPane(vendorNumberTable), CC.xywh(1, 14, 1, 3));
     builder.add(removeVendorNumberButton, CC.xy(3, 16));
     return IconFeedbackPanel.getWrappedComponentTree(model.getValidationSupport().resultModel(), builder.getPanel());
-  }
-
-  private JComponent buildValidationFeedback() {
-    return DesktopUtils.buildValidationFeedbackPanel("Die Verk\u00e4ufernummer muss angegeben werden.",
-        "Der Vorname ist optional.", "Der Nachname muss angegeben werden.", "Die Telefonnummer ist optional.");
   }
 
 }

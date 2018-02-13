@@ -213,18 +213,11 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     @Override
     protected List<PurchaseBean> doInBackground() {
       List<PurchaseBean> result = new ArrayList<>();
-      final Flowable<PurchaseBean> purchaseBeans = Flowable.generate(() -> JacksonUtils.parser(importFile),
+      final Flowable<PurchaseBean> purchaseBeans = Flowable.generate(() -> JacksonUtils.createJsonParserFor(importFile),
           SERVICE::pullOrComplete, JsonParser::close);
-      // purchaseBeans.subscribe(purchaseBean -> {
-      // result.add(purchaseBean);
-      // SERVICE.create(purchaseBean);
-      // getSelectionInList().getList().add(purchaseBean);
-      // refreshSummary();
-      // },);
       purchaseBeans.blockingSubscribe(purchaseBean -> {
         result.add(purchaseBean);
       }, throwable -> LOGGER.fine(throwable.getMessage()));
-      // purchaseBeans.unsubscribeOn(Schedulers.io());
       return result;
     }
 
