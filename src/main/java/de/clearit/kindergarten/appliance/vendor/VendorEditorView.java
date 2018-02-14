@@ -69,8 +69,9 @@ public final class VendorEditorView extends AbstractView {
 		
 		@Override
 		public void focusLost(FocusEvent focusEvent) {
+			
 			addVendorNumberButton.setFocusable(true);
-			firstNameField.requestFocus();
+			addVendorNumberButton.requestFocus();
 			System.out.println("Focus Lost");
 			
 		}
@@ -89,8 +90,6 @@ public final class VendorEditorView extends AbstractView {
 					
 				}
 			});
-			
-			
 		}
 	});
   }  
