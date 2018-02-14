@@ -55,52 +55,69 @@ public final class VendorEditorView extends AbstractView {
     firstNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_LAST_NAME));
     phoneNumberField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_PHONE_NUMBER));
-    
-    
     vendorNumberTable = new StripedTable(new VendorNumberTableModel(model.getSelectionInList()));
     vendorNumberTable.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList()
         .getSelectionIndexHolder()));
     addVendorNumberButton = new JButton(model.getAction(VendorEditorModel.ACTION_ADD_VENDOR_NUMBER));
     removeVendorNumberButton = new JButton(model.getAction(VendorEditorModel.ACTION_REMOVE_VENDOR_NUMBER));
-    
-    
     vendorNumberField = BasicComponentFactory.createTextField(model.getVendorNumberFieldModel());
-    vendorNumberField.addFocusListener(new FocusListener() {
-		
-		@Override
-		public void focusLost(FocusEvent focusEvent) {
-			
-			addVendorNumberButton.setFocusable(true);
-			addVendorNumberButton.requestFocus();
-			System.out.println("Focus Lost");
-			
-		}
-		
-		@Override
-		public void focusGained(FocusEvent focusEvent) {
-			
-			addVendorNumberButton.setFocusable(false);
-			
-			System.out.println("Focus Active!");
-			((JTextField) vendorNumberField).addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					model.addVendorNumber(e);
-					
-				}
-			});
-		}
-	});
   }  
   
-  public JTextField getVendorNumberField() {
-	  return (JTextField) vendorNumberField;
+  private void initFocusHandling() {
+	  vendorNumberField.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent focusEvent) {
+				addVendorNumberButton.setFocusable(false);
+			}
+			@Override
+			public void focusLost(FocusEvent focusEvent) {
+				addVendorNumberButton.setFocusable(true);
+				addVendorNumberButton.requestFocusInWindow();  
+			}
+	  });
+  }
+  
+  private void initActionHandling() {
+	  ((JButton) addVendorNumberButton).addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try{
+				model.addVendorNumber(e);
+				vendorNumberField.requestFocusInWindow();
+			}catch(NumberFormatException ex) {
+				if(model.getVendorNumberFieldModel().getValue() == null) {
+					model.performAccept(e);
+				}else {
+					((JTextField)vendorNumberField).setText(null);
+					vendorNumberField.requestFocusInWindow();
+				}
+			}
+		}
+		  
+	  });
+	  ((JTextField) vendorNumberField).addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				try{
+					model.addVendorNumber(e);
+					vendorNumberField.requestFocusInWindow();
+				}catch(NumberFormatException ex) {
+					if(model.getVendorNumberFieldModel().getValue() == null) {
+						model.performAccept(e);
+					}else {
+						((JTextField)vendorNumberField).setText(null);
+					}
+				}
+			}
+		});			
   }
   
   @Override
   protected JComponent buildPanel() {
     initComponents();
+    initFocusHandling();
+    initActionHandling();
     FormPane pane = new FormPane(buildContent(), model);
     pane.setBackground(RESOURCES.getColor("content.background"));
     return pane;

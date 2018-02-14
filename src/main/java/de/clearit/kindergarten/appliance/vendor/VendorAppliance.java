@@ -24,7 +24,6 @@ public final class VendorAppliance extends DefaultAppliance {
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorAppliance.class);
 
   private static VendorAppliance instance;
-  private VendorEditorView view;
 
   // Instance Access ********************************************************
 
@@ -57,16 +56,12 @@ public final class VendorAppliance extends DefaultAppliance {
   }
 
   public void openVendorEditor(String title, VendorEditorModel model) {
-    view = new VendorEditorView(model);
+    VendorEditorView view = new VendorEditorView(model);
     DesktopFrame frame = new DefaultDesktopFrame(DesktopManager.activeFrame(), title, true, VendorAppliance
         .getInstance(), null, null, null, view.getPanel(), null);
     frame.setVisible(true);
   }
 
-  public VendorEditorView getVendorEditorView() {
-	  return view;
-  }
-  
   // Implementing Abstract Behavior *****************************************
 
   /**
