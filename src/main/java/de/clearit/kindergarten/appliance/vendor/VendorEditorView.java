@@ -1,9 +1,15 @@
 package de.clearit.kindergarten.appliance.vendor;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
@@ -43,20 +49,56 @@ public final class VendorEditorView extends AbstractView {
   public VendorEditorView(VendorEditorModel model) {
     this.model = model;
   }
-
+  
   // Initialisation *********************************************************
   private void initComponents() {
     firstNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_LAST_NAME));
     phoneNumberField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_PHONE_NUMBER));
-    vendorNumberField = BasicComponentFactory.createTextField(model.getVendorNumberFieldModel());
+    
+    
     vendorNumberTable = new StripedTable(new VendorNumberTableModel(model.getSelectionInList()));
     vendorNumberTable.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList()
         .getSelectionIndexHolder()));
     addVendorNumberButton = new JButton(model.getAction(VendorEditorModel.ACTION_ADD_VENDOR_NUMBER));
     removeVendorNumberButton = new JButton(model.getAction(VendorEditorModel.ACTION_REMOVE_VENDOR_NUMBER));
-  }
+    
+    
+    vendorNumberField = BasicComponentFactory.createTextField(model.getVendorNumberFieldModel());
+    vendorNumberField.addFocusListener(new FocusListener() {
+		
+		@Override
+		public void focusLost(FocusEvent focusEvent) {
+			addVendorNumberButton.setFocusable(true);
+			firstNameField.requestFocus();
+			System.out.println("Focus Lost");
+			
+		}
+		
+		@Override
+		public void focusGained(FocusEvent focusEvent) {
+			
+			addVendorNumberButton.setFocusable(false);
+			
+			System.out.println("Focus Active!");
+			((JTextField) vendorNumberField).addActionListener(new ActionListener() {
 
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					model.addVendorNumber(e);
+					
+				}
+			});
+			
+			
+		}
+	});
+  }  
+  
+  public JTextField getVendorNumberField() {
+	  return (JTextField) vendorNumberField;
+  }
+  
   @Override
   protected JComponent buildPanel() {
     initComponents();

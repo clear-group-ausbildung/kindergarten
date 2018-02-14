@@ -32,6 +32,7 @@ import de.clearit.validation.view.ValidationSupport;
 public final class VendorEditorModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
 
   private static final long serialVersionUID = 1L;
+  private VendorEditorView view;
 
   // Constants **************************************************************
 
@@ -114,7 +115,9 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     getBean().getVendorNumbers().add(vendorNumberBean);
     // Reset input field
     getVendorNumberFieldModel().setValue(null);
-
+    // Set Focus on TextField
+    VendorEditorView view = VendorAppliance.getInstance().getVendorEditorView();
+    view.getVendorNumberField().requestFocus();
   }
 
   @Action(enabled = false)
@@ -129,7 +132,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   // FormPaneModel Implementation *******************************************
 
   @Override
-  public void performAccept(EventObject e) {
+  public void performAccept(EventObject e) {	  
     TextComponentUtils.commitImmediately();
     // ValidationResult result = validationSupport.getResult();
     // if (!result.hasErrors()) {
@@ -160,7 +163,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   }
 
   @Override
-  public void paneClosing(EventObject e, Runnable operation) {
+  public void paneClosing(EventObject e, Runnable operation) {	  
     Runnable cancelOp = new WrappedOperation(commitCallback, CommandValue.CANCEL, operation);
     TextComponentUtils.commitImmediately();
     if (!isChanged() && !isBuffering()) { // Test for searching
