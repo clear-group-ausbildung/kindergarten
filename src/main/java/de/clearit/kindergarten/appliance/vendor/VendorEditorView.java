@@ -2,8 +2,8 @@ package de.clearit.kindergarten.appliance.vendor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -64,14 +64,9 @@ public final class VendorEditorView extends AbstractView {
   }  
   
   private void initFocusHandling() {
-	  vendorNumberField.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent focusEvent) {
-				addVendorNumberButton.setFocusable(false);
-			}
+	  vendorNumberField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent focusEvent) {
-				addVendorNumberButton.setFocusable(true);
 				addVendorNumberButton.requestFocusInWindow();  
 			}
 	  });
