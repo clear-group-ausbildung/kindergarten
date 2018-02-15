@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventObject;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -105,52 +104,31 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     setActionEnabled(ACTION_REMOVE_VENDOR_NUMBER, hasSelection);
   }
 
-  // Check if VendorNumber not available
-  private boolean checkVendorNumberNotAvailable() {
-	  List<VendorNumberBean> vendorNumberList = VendorNumberService.getInstance().getAll();
-	  for(int i = 0; i < vendorNumberList.size(); i++) {
-		  VendorNumberBean allVendorNumberBeans = vendorNumberList.get(i);
-		  List<VendorNumberBean> vendorNumberBean = getSelectionInList().getList();
-		  //Check from created Vendor
-		  if(allVendorNumberBeans.getVendorNumber() == Integer.valueOf((String)getVendorNumberFieldModel().getValue())) {
-			  return false;
-		  }else {
-			  if(i < vendorNumberBean.size()) {
-				  if(vendorNumberBean.get(i).getVendorNumber() == Integer.valueOf((String) getVendorNumberFieldModel().getValue())) {
-					  return false;
-				  }
-			  }
-		  }
-	  	}
-	  return true;
-  }
-  
-  
   // Actions ****************************************************************
 
-@Action
+  @Action
   public void addVendorNumber(ActionEvent e) {
     TextComponentUtils.commitImmediately();
-    VendorNumberBean vendorNumberBean = new VendorNumberBean();
-    
-    if(checkVendorNumberNotAvailable()) {
-	    // Read Vendor number from input field 
-		vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));   
-		// Add to model list
-		getSelectionInList().getList().add(vendorNumberBean);
-		// Add to bean list
-		getBean().getVendorNumbers().add(vendorNumberBean);
-		// Reset input field
-		getVendorNumberFieldModel().setValue(null);
-    }else {
-    	JOptionPane.showMessageDialog(new JFrame(), "Verkäufernummer bereits vorhanden!");
-    	getVendorNumberFieldModel().setValue(null);
+
+    if (!VendorNumberService.getInstance().isVendorNumberExisting(Integer.valueOf((String) getVendorNumberFieldModel()
+        .getValue()))) {
+      VendorNumberBean vendorNumberBean = new VendorNumberBean();
+      // Read Vendor number from input field
+      vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));
+      // Add to model list
+      getSelectionInList().getList().add(vendorNumberBean);
+      // Add to bean list
+      getBean().getVendorNumbers().add(vendorNumberBean);
+    } else {
+      JOptionPane.showMessageDialog(new JFrame(), "Verk\\u00e4ufernummer bereits vorhanden!");
     }
+    // Reset input field
+    getVendorNumberFieldModel().setValue(null);
   }
 
-@Action(enabled = false)
+  @Action(enabled = false)
   public void removeVendorNumber(ActionEvent e) {
-	VendorNumberBean vendorNumberBean = getSelection();
+    VendorNumberBean vendorNumberBean = getSelection();
     // Remove from model list
     getSelectionInList().getList().remove(vendorNumberBean);
     // Remove from bean list
@@ -160,7 +138,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   // FormPaneModel Implementation *******************************************
 
   @Override
-  public void performAccept(EventObject e) {	  
+  public void performAccept(EventObject e) {
     TextComponentUtils.commitImmediately();
     // ValidationResult result = validationSupport.getResult();
     // if (!result.hasErrors()) {
@@ -191,11 +169,10 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   }
 
   @Override
-  public void paneClosing(EventObject e, Runnable operation) {	  
+  public void paneClosing(EventObject e, Runnable operation) {
     Runnable cancelOp = new WrappedOperation(commitCallback, CommandValue.CANCEL, operation);
     TextComponentUtils.commitImmediately();
     if (!isChanged() && !isBuffering()) { // Test for searching
-      System.out.println("Nichts geaendert");
       cancelOp.run();
       return;
     }

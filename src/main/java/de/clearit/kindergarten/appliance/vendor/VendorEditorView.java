@@ -1,10 +1,5 @@
 package de.clearit.kindergarten.appliance.vendor;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -22,8 +17,8 @@ import com.jgoodies.jsdl.core.pane.form.FormPane;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 import com.jgoodies.uif2.component.StripedTable;
+import com.jgoodies.uif2.util.TextComponentUtils;
 
-import de.clearit.kindergarten.desktop.DesktopUtils;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.validation.view.IconFeedbackPanel;
 
@@ -40,7 +35,7 @@ public final class VendorEditorView extends AbstractView {
   private JComponent lastNameField;
   private JComponent phoneNumberField;
 
-  private JComponent vendorNumberField;
+  private JTextField vendorNumberField;
   private JTable vendorNumberTable;
   private JButton addVendorNumberButton;
   private JButton removeVendorNumberButton;
@@ -49,7 +44,7 @@ public final class VendorEditorView extends AbstractView {
   public VendorEditorView(VendorEditorModel model) {
     this.model = model;
   }
-  
+
   // Initialisation *********************************************************
   private void initComponents() {
     firstNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_FIRST_NAME));
@@ -61,59 +56,24 @@ public final class VendorEditorView extends AbstractView {
     addVendorNumberButton = new JButton(model.getAction(VendorEditorModel.ACTION_ADD_VENDOR_NUMBER));
     removeVendorNumberButton = new JButton(model.getAction(VendorEditorModel.ACTION_REMOVE_VENDOR_NUMBER));
     vendorNumberField = BasicComponentFactory.createTextField(model.getVendorNumberFieldModel());
-  }  
-  
-  private void initFocusHandling() {
-	  vendorNumberField.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent focusEvent) {
-				addVendorNumberButton.requestFocusInWindow();  
-			}
-	  });
   }
-  
+
   private void initActionHandling() {
-	  ((JButton) addVendorNumberButton).addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			try{
-				model.addVendorNumber(e);
-				vendorNumberField.requestFocusInWindow();
-			}catch(NumberFormatException ex) {
-				if(model.getVendorNumberFieldModel().getValue() == null) {
-					model.performAccept(e);
-				}else {
-					//JOptionPane.showMessageDialog(new JFrame(), "Bitte eine gültige Zahl eingeben!");
-					((JTextField)vendorNumberField).setText(null);
-					vendorNumberField.requestFocusInWindow();
-				}
-			}
-		}
-		  
-	  });
-	  ((JTextField) vendorNumberField).addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				try{
-					model.addVendorNumber(e);
-					vendorNumberField.requestFocusInWindow();
-				}catch(NumberFormatException ex) {
-					if(model.getVendorNumberFieldModel().getValue() == null) {
-						model.performAccept(e);
-					}else {
-						//JOptionPane.showMessageDialog(new JFrame(), "Bitte eine gültige Zahl eingeben!");
-						((JTextField)vendorNumberField).setText(null);
-					}
-				}
-			}
-		});			
+    vendorNumberField.addActionListener(actionEvent -> {
+      TextComponentUtils.commitImmediately();
+      if (model.getVendorNumberFieldModel().getValue() == null) {
+        model.performAccept(actionEvent);
+        return;
+      } else {
+        model.addVendorNumber(actionEvent);
+        vendorNumberField.requestFocusInWindow();
+      }
+    });
   }
-  
+
   @Override
   protected JComponent buildPanel() {
     initComponents();
-    initFocusHandling();
     initActionHandling();
     FormPane pane = new FormPane(buildContent(), model);
     pane.setBackground(RESOURCES.getColor("content.background"));
@@ -137,11 +97,6 @@ public final class VendorEditorView extends AbstractView {
     builder.add(new JScrollPane(vendorNumberTable), CC.xywh(1, 14, 1, 3));
     builder.add(removeVendorNumberButton, CC.xy(3, 16));
     return IconFeedbackPanel.getWrappedComponentTree(model.getValidationSupport().resultModel(), builder.getPanel());
-  }
-
-  private JComponent buildValidationFeedback() {
-    return DesktopUtils.buildValidationFeedbackPanel("Die Verk\u00e4ufernummer muss angegeben werden.",
-        "Der Vorname ist optional.", "Der Nachname muss angegeben werden.", "Die Telefonnummer ist optional.");
   }
 
 }
