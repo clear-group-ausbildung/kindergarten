@@ -4,6 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
@@ -16,8 +17,8 @@ import com.jgoodies.jsdl.core.pane.form.FormPane;
 import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 import com.jgoodies.uif2.component.StripedTable;
+import com.jgoodies.uif2.util.TextComponentUtils;
 
-import de.clearit.kindergarten.desktop.DesktopUtils;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.validation.view.IconFeedbackPanel;
 
@@ -34,7 +35,7 @@ public final class VendorEditorView extends AbstractView {
   private JComponent lastNameField;
   private JComponent phoneNumberField;
 
-  private JComponent vendorNumberField;
+  private JTextField vendorNumberField;
   private JTable vendorNumberTable;
   private JButton addVendorNumberButton;
   private JButton removeVendorNumberButton;
@@ -49,17 +50,31 @@ public final class VendorEditorView extends AbstractView {
     firstNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_LAST_NAME));
     phoneNumberField = BasicComponentFactory.createTextField(model.getBufferedModel(VendorBean.PROPERTY_PHONE_NUMBER));
-    vendorNumberField = BasicComponentFactory.createTextField(model.getVendorNumberFieldModel());
     vendorNumberTable = new StripedTable(new VendorNumberTableModel(model.getSelectionInList()));
     vendorNumberTable.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList()
         .getSelectionIndexHolder()));
     addVendorNumberButton = new JButton(model.getAction(VendorEditorModel.ACTION_ADD_VENDOR_NUMBER));
     removeVendorNumberButton = new JButton(model.getAction(VendorEditorModel.ACTION_REMOVE_VENDOR_NUMBER));
+    vendorNumberField = BasicComponentFactory.createTextField(model.getVendorNumberFieldModel());
+  }
+
+  private void initActionHandling() {
+    vendorNumberField.addActionListener(actionEvent -> {
+      TextComponentUtils.commitImmediately();
+      if (model.getVendorNumberFieldModel().getValue() == null) {
+        model.performAccept(actionEvent);
+        return;
+      } else {
+        model.addVendorNumber(actionEvent);
+        vendorNumberField.requestFocusInWindow();
+      }
+    });
   }
 
   @Override
   protected JComponent buildPanel() {
     initComponents();
+    initActionHandling();
     FormPane pane = new FormPane(buildContent(), model);
     pane.setBackground(RESOURCES.getColor("content.background"));
     return pane;
@@ -82,11 +97,6 @@ public final class VendorEditorView extends AbstractView {
     builder.add(new JScrollPane(vendorNumberTable), CC.xywh(1, 14, 1, 3));
     builder.add(removeVendorNumberButton, CC.xy(3, 16));
     return IconFeedbackPanel.getWrappedComponentTree(model.getValidationSupport().resultModel(), builder.getPanel());
-  }
-
-  private JComponent buildValidationFeedback() {
-    return DesktopUtils.buildValidationFeedbackPanel("Die Verk\u00e4ufernummer muss angegeben werden.",
-        "Der Vorname ist optional.", "Der Nachname muss angegeben werden.", "Die Telefonnummer ist optional.");
   }
 
 }

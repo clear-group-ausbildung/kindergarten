@@ -3,10 +3,12 @@ package de.clearit.kindergarten.application;
 import java.awt.event.ActionEvent;
 import java.util.EventObject;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jgoodies.application.Action;
 import com.jgoodies.application.ExitListener;
@@ -27,7 +29,7 @@ public final class MainModel extends UIFModel implements ExitListener {
 
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = Logger.getLogger(MainModel.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(MainModel.class);
 
   private static MainModel instance;
 
@@ -81,17 +83,17 @@ public final class MainModel extends UIFModel implements ExitListener {
    */
   @Override
   public void applicationExiting() {
-    LOGGER.fine("MainModel shutdown.");
+    LOGGER.debug("MainModel shutdown.");
   }
 
   void saveDocuments(List<Document> list) {
     for (Document document : list) {
-      LOGGER.fine("Saving document:" + document.getDisplayString());
+      LOGGER.debug("Saving document:" + document.getDisplayString());
     }
   }
 
   void discardDocuments() {
-    LOGGER.fine("Discarding selected documents");
+    LOGGER.debug("Discarding selected documents");
   }
 
   // Hyperlink Handling *****************************************************

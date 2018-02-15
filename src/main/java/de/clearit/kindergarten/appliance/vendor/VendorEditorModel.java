@@ -5,6 +5,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventObject;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import org.apache.commons.collections4.CollectionUtils;
 
 import com.jgoodies.application.Action;
@@ -23,6 +26,7 @@ import com.jgoodies.uif2.util.TextComponentUtils;
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
+import de.clearit.kindergarten.domain.VendorNumberService;
 import de.clearit.kindergarten.domain.validation.VendorValidatable;
 import de.clearit.validation.view.ValidationSupport;
 
@@ -105,16 +109,21 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   @Action
   public void addVendorNumber(ActionEvent e) {
     TextComponentUtils.commitImmediately();
-    VendorNumberBean vendorNumberBean = new VendorNumberBean();
-    // Read Vendor number from input field
-    vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));
-    // Add to model list
-    getSelectionInList().getList().add(vendorNumberBean);
-    // Add to bean list
-    getBean().getVendorNumbers().add(vendorNumberBean);
+
+    if (!VendorNumberService.getInstance().isVendorNumberExisting(Integer.valueOf((String) getVendorNumberFieldModel()
+        .getValue()))) {
+      VendorNumberBean vendorNumberBean = new VendorNumberBean();
+      // Read Vendor number from input field
+      vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));
+      // Add to model list
+      getSelectionInList().getList().add(vendorNumberBean);
+      // Add to bean list
+      getBean().getVendorNumbers().add(vendorNumberBean);
+    } else {
+      JOptionPane.showMessageDialog(new JFrame(), "Verk\\u00e4ufernummer bereits vorhanden!");
+    }
     // Reset input field
     getVendorNumberFieldModel().setValue(null);
-
   }
 
   @Action(enabled = false)
@@ -164,7 +173,6 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     Runnable cancelOp = new WrappedOperation(commitCallback, CommandValue.CANCEL, operation);
     TextComponentUtils.commitImmediately();
     if (!isChanged() && !isBuffering()) { // Test for searching
-      System.out.println("Nichts geaendert");
       cancelOp.run();
       return;
     }

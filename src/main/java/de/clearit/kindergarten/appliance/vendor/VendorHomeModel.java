@@ -1,9 +1,11 @@
 package de.clearit.kindergarten.appliance.vendor;
 
 import java.awt.event.ActionEvent;
-import java.util.logging.Logger;
 
 import javax.swing.ListModel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
@@ -31,7 +33,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   public static final String ACTION_PRINT_ALL_RECEIPTS = "printAllReceipts";
   public static final String ACTION_PRINT_INTERNAL_RECEIPT = "printInternalReceipt";
 
-  private static final Logger LOGGER = Logger.getLogger(VendorHomeModel.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(VendorHomeModel.class);
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorHomeModel.class);
   private static final VendorService SERVICE = VendorService.getInstance();
   private static VendorHomeModel instance;
@@ -111,19 +113,19 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
   @Action(enabled = false)
   public Task<Void, Void> printReceipt(ActionEvent e) {
-    LOGGER.fine("Printing receipt\u2026");
+    LOGGER.debug("Printing receipt\u2026");
     return new PrintSingleReceiptTask(getSelection());
   }
 
   @Action
   public Task<Void, Void> printAllReceipts(ActionEvent e) {
-    LOGGER.fine("Printing all receipts\u2026");
+    LOGGER.debug("Printing all receipts\u2026");
     return new PrintAllReceiptsTask();
   }
 
   @Action
   public Task<Void, Void> printInternalReceipt(ActionEvent e) {
-    LOGGER.fine("Printing internal receipt\u2026");
+    LOGGER.debug("Printing internal receipt\u2026");
     return new PrintInternalReceiptTask();
   }
 
