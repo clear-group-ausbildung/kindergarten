@@ -94,4 +94,13 @@ public final class VendorNumberService extends AbstractResourceService<VendorNum
         .singletonCollector());
   }
 
+  public boolean isVendorNumberExisting(Integer vendorNumber) {
+    try {
+      findByVendorNumber(vendorNumber);
+    } catch (IllegalStateException e) {
+      return false;
+    }
+    return true;
+  }
+
 }

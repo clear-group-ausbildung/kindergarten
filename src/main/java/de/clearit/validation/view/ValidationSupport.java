@@ -3,10 +3,10 @@ package de.clearit.validation.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.jdesktop.swingworker.SwingWorker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jgoodies.binding.beans.DelayedPropertyChangeHandler;
 import com.jgoodies.validation.Validatable;
@@ -21,7 +21,7 @@ import com.jgoodies.validation.util.DefaultValidationResultModel;
  */
 public final class ValidationSupport {
 
-  private static final Logger LOGGER = Logger.getLogger(ValidationSupport.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(ValidationSupport.class);
 
   private final DelayedPropertyChangeHandler delayedValidationHandler;
 
@@ -102,7 +102,7 @@ public final class ValidationSupport {
     if (worker != null) {
       worker.cancel(true);
     }
-    LOGGER.log(Level.FINER, "Validating in foreground");
+    LOGGER.debug("Validating in foreground");
     resultModel().setResult(getValidatable().validate());
   }
 
@@ -110,7 +110,7 @@ public final class ValidationSupport {
 
     @Override
     protected ValidationResult doInBackground() {
-      LOGGER.log(Level.FINER, "Validating in background");
+      LOGGER.debug("Validating in background");
       return getValidatable().validate();
     }
 
@@ -123,9 +123,9 @@ public final class ValidationSupport {
       try {
         resultModel().setResult(get());
       } catch (InterruptedException e) {
-        LOGGER.log(Level.FINEST, "ValidationWorker interrupted", e);
+        LOGGER.debug("ValidationWorker interrupted", e);
       } catch (ExecutionException e) {
-        LOGGER.log(Level.INFO, "ValidationWorker execution failed", e);
+        LOGGER.debug("ValidationWorker execution failed", e);
       }
       worker = null;
     }

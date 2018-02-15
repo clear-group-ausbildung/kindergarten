@@ -126,7 +126,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
   private Boolean checkBeanContent() {
     boolean state = false;
 
-    Pattern p = Pattern.compile("\\d+$");
+    Pattern p = Pattern.compile("^[0-9,;]+$");
 
     String vendorNumber = PurchaseAppliance.getInstance().getView().getVendorNumber().getText();
     String itemNumber = PurchaseAppliance.getInstance().getView().getItemNumber().getText();
@@ -134,7 +134,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
     Matcher match = p.matcher(itemPrice);
 
-    if (vendorNumber.matches(REGEX_NUMERIC) && itemNumber.matches(REGEX_NUMERIC) && match.find()) {
+    if (vendorNumber.matches(REGEX_NUMERIC) && itemNumber.matches(REGEX_NUMERIC) && match.matches()) {
       state = true;
       PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocus();
     } else {
@@ -148,7 +148,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
           PurchaseAppliance.getInstance().getView().getItemNumber().requestFocus();
         }
       }
-      if (!match.find()) {
+      if (!match.matches()) {
         PurchaseAppliance.getInstance().getView().setItemPrice(null);
         if (itemNumber.matches(REGEX_NUMERIC) && vendorNumber.matches(REGEX_NUMERIC)) {
           PurchaseAppliance.getInstance().getView().getItemPrice().requestFocus();
