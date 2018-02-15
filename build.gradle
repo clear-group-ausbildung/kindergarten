@@ -26,6 +26,10 @@ repositories {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/au.com.gridstone.rxstore/converter-gson
+    compile group: 'au.com.gridstone.rxstore', name: 'converter-gson', version: '6.0.0'
+    // https://mvnrepository.com/artifact/au.com.gridstone.rxstore/rxstore
+    compile group: 'au.com.gridstone.rxstore', name: 'rxstore', version: '6.0.0'
   	  // https://mvnrepository.com/artifact/com.google.guava/guava
   	  compile group: 'com.google.guava', name: 'guava', version: '23.0'
   	  // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
@@ -67,6 +71,7 @@ dependencies {
 mainClassName = "de.clearit.kindergarten.application.KindergartenLauncher"
 
 tasks.withType(JavaExec) {
+    jvmArgs '-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG'
     if (System.getProperty('DEBUG', 'false') == 'true') {
         jvmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9099'
     }
@@ -77,6 +82,6 @@ distZip {
         from '.'
         include 'kindergarten.sqlite'
         include 'abrechnung_template.xlsx'
-	include 'abrechnung_intern_template.xlsx'
+	      include 'abrechnung_intern_template.xlsx'
     }
 }
