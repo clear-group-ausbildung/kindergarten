@@ -1,11 +1,12 @@
 package de.clearit.kindergarten.domain.validation;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.validation.Validatable;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.util.PropertyValidationSupport;
-import com.jgoodies.validation.util.ValidationUtils;
 
 import de.clearit.kindergarten.domain.VendorBean;
 
@@ -26,10 +27,7 @@ public class VendorValidatable implements Validatable {
   public ValidationResult validate() {
     PropertyValidationSupport support = new PropertyValidationSupport(vendor, "");
 
-    if (ValidationUtils.isBlank(vendor.getLastName())) {
-      support.addError(VendorBean.PROPERTY_LAST_NAME, RESOURCES.getString("vendor.lastname.blank"));
-    }
-    if (vendor.getVendorNumbers() == null || vendor.getVendorNumbers().isEmpty()) {
+    if (CollectionUtils.isEmpty(vendor.getVendorNumbers())) {
       support.addError(VendorBean.PROPERTY_VENDOR_NUMBERS, RESOURCES.getString("vendor.vendornumbers.empty"));
     }
 
