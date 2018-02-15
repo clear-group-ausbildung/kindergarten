@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.swing.JFileChooser;
@@ -15,6 +14,8 @@ import javax.swing.ListModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
@@ -45,7 +46,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   public static final String ACTION_IMPORT_PURCHASES = "importPurchases";
   public static final String ACTION_EXPORT_PURCHASES = "exportPurchases";
-  private static final Logger LOGGER = Logger.getLogger(PurchaseHomeModel.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(PurchaseHomeModel.class);
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseHomeModel.class);
   private static final PurchaseService SERVICE = PurchaseService.getInstance();
   private static final VendorService VENDOR_SERVICE = VendorService.getInstance();
@@ -154,13 +155,13 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   @Action
   public Task<List<PurchaseBean>, Void> importPurchases(final ActionEvent e) {
-    LOGGER.fine("Importing purchase\u2026");
+    LOGGER.debug("Importing purchase\u2026");
     return new ImportPurchasesTask();
   }
 
   @Action
   public Task<Void, Void> exportPurchases(final ActionEvent e) {
-    LOGGER.fine("Exporting purchase\u2026");
+    LOGGER.debug("Exporting purchase\u2026");
     return new ExportPurchasesTask();
   }
 

@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -26,6 +25,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.export.entity.PayoffDataReceipt;
@@ -40,7 +41,7 @@ import de.clearit.kindergarten.domain.export.service.ExportDataService;
 public class ExportReceipt {
 
   private static final String PALE_BLUE = "#CFDDFB";
-  private static final Logger LOGGER = Logger.getLogger(ExportExcel.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(ExportExcel.class);
   private static final ExportReceipt INSTANCE = new ExportReceipt();
 
   private ExportReceipt() {
@@ -78,11 +79,11 @@ public class ExportReceipt {
       fileOut.close();
       wb.close();
     } catch (FileNotFoundException e) {
-      LOGGER.fine("Error - Excel Template not found");
-      e.printStackTrace();
+      LOGGER.debug("Error - Excel Template not found");
+      LOGGER.error(e.getMessage());
     } catch (IOException e) {
-      LOGGER.fine("Error Exel Export");
-      e.printStackTrace();
+      LOGGER.debug("Error Exel Export");
+      LOGGER.error(e.getMessage());
     }
   }
 

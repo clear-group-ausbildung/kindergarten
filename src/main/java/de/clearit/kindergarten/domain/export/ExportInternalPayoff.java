@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -22,6 +21,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.clearit.kindergarten.domain.export.entity.PayoffDataInternal;
 import de.clearit.kindergarten.domain.export.entity.PayoffDataInternalVendor;
@@ -34,7 +35,7 @@ import de.clearit.kindergarten.domain.export.service.ExportDataService;
  */
 public class ExportInternalPayoff {
 
-  private static final Logger LOGGER = Logger.getLogger(ExportExcel.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(ExportExcel.class);
   private static final ExportInternalPayoff INSTANCE = new ExportInternalPayoff();
 
   private ExportInternalPayoff() {
@@ -69,11 +70,11 @@ public class ExportInternalPayoff {
       fileOut.close();
       wb.close();
     } catch (FileNotFoundException e) {
-      LOGGER.fine("Error - Excel Template not found");
-      e.printStackTrace();
+      LOGGER.debug("Error - Excel Template not found");
+      LOGGER.error(e.getMessage());
     } catch (IOException e) {
-      LOGGER.fine("Error Exel Export");
-      e.printStackTrace();
+      LOGGER.debug("Error Exel Export");
+      LOGGER.error(e.getMessage());
     }
   }
 
