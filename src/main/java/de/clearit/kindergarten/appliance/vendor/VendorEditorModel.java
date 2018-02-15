@@ -32,7 +32,6 @@ import de.clearit.validation.view.ValidationSupport;
 public final class VendorEditorModel extends UIFPresentationModel<VendorBean> implements FormPaneModel {
 
   private static final long serialVersionUID = 1L;
-  private VendorEditorView view;
 
   // Constants **************************************************************
 
@@ -108,29 +107,18 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     TextComponentUtils.commitImmediately();
     VendorNumberBean vendorNumberBean = new VendorNumberBean();
     // Read Vendor number from input field 
-    if((String) getVendorNumberFieldModel().getValue() == null) {
-    	performAccept(e);
-    }else {
-    	try {
-			vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));   
-			// Add to model list
-			getSelectionInList().getList().add(vendorNumberBean);
-			// Add to bean list
-			getBean().getVendorNumbers().add(vendorNumberBean);
-			// Reset input field
-			getVendorNumberFieldModel().setValue(null);
-			// Set Focus on TextField
-			VendorEditorView view = VendorAppliance.getInstance().getVendorEditorView();
-			view.getVendorNumberField().requestFocus();
-    	}catch(NumberFormatException ex) {
-    		getVendorNumberFieldModel().setValue(null);
-    	}
-    }
+	vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));   
+	// Add to model list
+	getSelectionInList().getList().add(vendorNumberBean);
+	// Add to bean list
+	getBean().getVendorNumbers().add(vendorNumberBean);
+	// Reset input field
+	getVendorNumberFieldModel().setValue(null);
   }
 
 @Action(enabled = false)
   public void removeVendorNumber(ActionEvent e) {
-    VendorNumberBean vendorNumberBean = getSelection();
+	VendorNumberBean vendorNumberBean = getSelection();
     // Remove from model list
     getSelectionInList().getList().remove(vendorNumberBean);
     // Remove from bean list
