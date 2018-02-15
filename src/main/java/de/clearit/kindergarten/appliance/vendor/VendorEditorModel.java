@@ -4,6 +4,10 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventObject;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -23,6 +27,7 @@ import com.jgoodies.uif2.util.TextComponentUtils;
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
+import de.clearit.kindergarten.domain.VendorNumberService;
 import de.clearit.kindergarten.domain.validation.VendorValidatable;
 import de.clearit.validation.view.ValidationSupport;
 
@@ -100,20 +105,47 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     setActionEnabled(ACTION_REMOVE_VENDOR_NUMBER, hasSelection);
   }
 
+  // Check if VendorNumber not available
+  private boolean checkVendorNumberNotAvailable() {
+	  List<VendorNumberBean> vendorNumberList = VendorNumberService.getInstance().getAll();
+	  for(int i = 0; i < vendorNumberList.size(); i++) {
+		  VendorNumberBean allVendorNumberBeans = vendorNumberList.get(i);
+		  List<VendorNumberBean> vendorNumberBean = getSelectionInList().getList();
+		  //Check from created Vendor
+		  if(allVendorNumberBeans.getVendorNumber() == Integer.valueOf((String)getVendorNumberFieldModel().getValue())) {
+			  return false;
+		  }else {
+			  if(i < vendorNumberBean.size()) {
+				  if(vendorNumberBean.get(i).getVendorNumber() == Integer.valueOf((String) getVendorNumberFieldModel().getValue())) {
+					  return false;
+				  }
+			  }
+		  }
+	  	}
+	  return true;
+  }
+  
+  
   // Actions ****************************************************************
 
-  @Action
+@Action
   public void addVendorNumber(ActionEvent e) {
     TextComponentUtils.commitImmediately();
     VendorNumberBean vendorNumberBean = new VendorNumberBean();
-    // Read Vendor number from input field 
-	vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));   
-	// Add to model list
-	getSelectionInList().getList().add(vendorNumberBean);
-	// Add to bean list
-	getBean().getVendorNumbers().add(vendorNumberBean);
-	// Reset input field
-	getVendorNumberFieldModel().setValue(null);
+    
+    if(checkVendorNumberNotAvailable()) {
+	    // Read Vendor number from input field 
+		vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));   
+		// Add to model list
+		getSelectionInList().getList().add(vendorNumberBean);
+		// Add to bean list
+		getBean().getVendorNumbers().add(vendorNumberBean);
+		// Reset input field
+		getVendorNumberFieldModel().setValue(null);
+    }else {
+    	JOptionPane.showMessageDialog(new JFrame(), "Verkäufernummer bereits vorhanden!");
+    	getVendorNumberFieldModel().setValue(null);
+    }
   }
 
 @Action(enabled = false)

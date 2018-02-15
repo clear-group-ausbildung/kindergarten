@@ -83,6 +83,7 @@ public final class VendorEditorView extends AbstractView {
 				if(model.getVendorNumberFieldModel().getValue() == null) {
 					model.performAccept(e);
 				}else {
+					//JOptionPane.showMessageDialog(new JFrame(), "Bitte eine gültige Zahl eingeben!");
 					((JTextField)vendorNumberField).setText(null);
 					vendorNumberField.requestFocusInWindow();
 				}
@@ -101,6 +102,7 @@ public final class VendorEditorView extends AbstractView {
 					if(model.getVendorNumberFieldModel().getValue() == null) {
 						model.performAccept(e);
 					}else {
+						//JOptionPane.showMessageDialog(new JFrame(), "Bitte eine gültige Zahl eingeben!");
 						((JTextField)vendorNumberField).setText(null);
 					}
 				}
