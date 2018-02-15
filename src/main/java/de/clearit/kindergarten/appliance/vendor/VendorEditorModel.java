@@ -3,6 +3,8 @@ package de.clearit.kindergarten.appliance.vendor;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EventObject;
 
 import javax.swing.JFrame;
@@ -122,6 +124,10 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     } else {
       JOptionPane.showMessageDialog(new JFrame(), "Verk\\u00e4ufernummer bereits vorhanden!");
     }
+    Collections.sort(getBean().getVendorNumbers(), Comparator.<VendorNumberBean>comparingInt(
+        VendorNumberBean::getVendorNumber));
+    Collections.sort(getSelectionInList().getList(), Comparator.<VendorNumberBean>comparingInt(
+        VendorNumberBean::getVendorNumber));
     // Reset input field
     getVendorNumberFieldModel().setValue(null);
   }
