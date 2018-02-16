@@ -121,7 +121,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
       // Add to bean list
       getBean().getVendorNumbers().add(vendorNumberBean);
     } else {
-      JOptionPane.showMessageDialog(new JFrame(), "Verk\\u00e4ufernummer bereits vorhanden!");
+      JOptionPane.showMessageDialog(new JFrame(), "Verk\u00e4ufernummer bereits vorhanden!");
     }
     // Reset input field
     getVendorNumberFieldModel().setValue(null);
