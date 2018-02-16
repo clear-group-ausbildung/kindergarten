@@ -2,6 +2,7 @@ package de.clearit.kindergarten.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.ListModel;
 
@@ -13,6 +14,8 @@ import de.clearit.kindergarten.utils.CollectorUtils;
  * The service for the Vendor resource.
  */
 public final class VendorService extends AbstractResourceService<VendorBean, Vendor> {
+
+  private static final Logger LOGGER = Logger.getLogger(VendorService.class.getName());
 
   private static final VendorService INSTANCE = new VendorService();
 
@@ -33,12 +36,13 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
   }
 
   @Override
-  protected void postCreate(VendorBean bean, Vendor entity) {
+  public void postCreate(VendorBean bean, Vendor entity) {
     super.postCreate(bean, entity);
     Integer createdVendorId = entity.getInteger(toSnakeCase(VendorBean.PROPERTY_ID));
     bean.getVendorNumbers().forEach(number -> number.setVendorId(createdVendorId));
     bean.getVendorNumbers().forEach(number -> entity.add(VendorNumberService.getInstance().toEntity(number)));
     entity.saveIt();
+    LOGGER.exiting(VendorService.class.getSimpleName(), "postCreate(VendorBean bean, Vendor entity)");
   }
 
   // Public API *************************************************************
@@ -55,6 +59,7 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 
   @Override
   public VendorBean fromEntity(Vendor entity) {
+    LOGGER.entering(VendorService.class.getSimpleName(), "fromEntity(Vendor entity)", new Object[] { entity });
     VendorBean bean = new VendorBean();
     bean.setId(entity.getInteger(VendorBean.PROPERTY_ID));
     bean.setFirstName(entity.getString(toSnakeCase(VendorBean.PROPERTY_FIRST_NAME)));
@@ -68,13 +73,16 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
       listVendorNumberBeans.add(vendorNumberBean);
     }
     bean.setVendorNumbers(listVendorNumberBeans);
+    LOGGER.exiting(PurchaseService.class.getSimpleName(), "fromEntity(Vendor entity)", new Object[] { bean });
     return bean;
   }
 
   @Override
   public Vendor toEntity(VendorBean bean) {
+    LOGGER.entering(VendorService.class.getSimpleName(), "toEntity(VendorBean bean)", new Object[] { bean });
     Vendor entity = Vendor.findById(bean.getId());
     if (entity == null) {
+      LOGGER.fine("New Vendor entity!");
       entity = new Vendor();
     }
     if (bean.getId() != null && bean.getId() != 0) {
@@ -83,22 +91,26 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
     entity.setString(toSnakeCase(VendorBean.PROPERTY_FIRST_NAME), bean.getFirstName());
     entity.setString(toSnakeCase(VendorBean.PROPERTY_LAST_NAME), bean.getLastName());
     entity.setString(toSnakeCase(VendorBean.PROPERTY_PHONE_NUMBER), bean.getPhoneNumber());
-
+    LOGGER.exiting(VendorService.class.getSimpleName(), "toEntity(VendorBean bean)", new Object[] { entity });
     return entity;
   }
 
   @Override
   public void delete(VendorBean bean) {
+    LOGGER.entering(VendorService.class.getSimpleName(), "delete(VendorBean bean)", new Object[] { bean });
     Vendor entity = toEntity(bean);
     entity.deleteCascade();
     postDelete(bean, entity);
     flush();
+    LOGGER.exiting(VendorService.class.getSimpleName(), "delete(VendorBean bean)");
   }
 
   @Override
   public void update(VendorBean bean) {
+    LOGGER.entering(VendorService.class.getSimpleName(), "update(VendorBean bean)", new Object[] { bean });
     delete(bean);
     createAsNew(bean);
+    LOGGER.exiting(VendorService.class.getSimpleName(), "update(VendorBean bean)");
   }
 
   @Override
@@ -118,15 +130,21 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
    * @return the found {@link VendorBean} or {@code null}
    */
   public VendorBean findByName(String firstName, String lastName) {
+    LOGGER.entering(VendorService.class.getName(), "findByName(String firstName, String lastName)", new Object[] {
+        firstName, lastName });
     VendorBean result = getAll().stream().filter(element -> element.getFirstName().equals(firstName) && element
         .getLastName().equals(lastName)).collect(CollectorUtils.singletonCollector());
     result.setVendorNumbers(VendorNumberService.getInstance().findByVendorId(result.getId()));
+    LOGGER.exiting(VendorService.class.getName(), "findByName(String firstName, String lastName)", new Object[] {
+        result });
     return result;
   }
 
   private void createAsNew(VendorBean bean) {
+    LOGGER.entering(VendorService.class.getSimpleName(), "createAsNew(VendorBean bean)", new Object[] { bean });
     bean.setId(null);
     super.create(bean);
+    LOGGER.exiting(VendorService.class.getSimpleName(), "createAsNew(VendorBean bean)");
   }
 
 }

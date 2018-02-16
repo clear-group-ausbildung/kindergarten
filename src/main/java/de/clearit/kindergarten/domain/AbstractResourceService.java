@@ -22,7 +22,10 @@ import com.jgoodies.binding.list.ObservableList;
 public abstract class AbstractResourceService<B extends com.jgoodies.binding.beans.Model, E extends org.javalite.activejdbc.Model>
     implements ResourceService<B, E> {
 
+  private static final String CSN = AbstractResourceService.class.getSimpleName();
+  private static final String METHOD_PREFIX = "{}::";
   private static final Logger LOGGER = LoggerFactory.getLogger(AbstractResourceService.class);
+  private static final String LOG_MSG_FLUSH_PREFIX = "Successfully flushed! #Beans now: {}";
 
   private static boolean connectionEstablished = false;
 
@@ -30,11 +33,15 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
 
   AbstractResourceService() {
     super();
+    LOGGER.debug(METHOD_PREFIX + "constructor()", CSN);
     if (!connectionEstablished) {
+      LOGGER.debug("Establishing connection to database...");
       Base.open("org.sqlite.JDBC", "jdbc:sqlite:./kindergarten.sqlite", "", "");
+      LOGGER.debug("Connection to database {} successfully established!", Base.connection().toString());
       connectionEstablished = true;
     }
     beans = new ArrayListModel<>(fromEntities());
+    LOGGER.debug(METHOD_PREFIX + "constructor()", CSN);
   }
 
   /**
@@ -60,41 +67,97 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
 
   @Override
   public List<B> getAll() {
+    LOGGER.debug(METHOD_PREFIX + "getAll()", CSN);
     flush();
+    LOGGER.debug(LOG_MSG_FLUSH_PREFIX, beans.size());
+    LOGGER.debug(METHOD_PREFIX + "getAll()", CSN);
     return beans;
   }
 
   @Override
+  public void preCreate(B bean, E entity) {
+    LOGGER.debug(METHOD_PREFIX + "preCreate(B bean, E entity) -> ({}, {})", CSN, bean, entity);
+  }
+
+  @Override
   public void create(B bean) {
+    LOGGER.debug(METHOD_PREFIX + "create(B bean) -> ({})", CSN, bean);
     E entity = toEntity(bean);
     preCreate(bean, entity);
     entity.saveIt();
     postCreate(bean, entity);
     flush();
+    LOGGER.debug(LOG_MSG_FLUSH_PREFIX, beans.size());
+    LOGGER.debug(METHOD_PREFIX + "create(B bean)", CSN);
+  }
+
+  @Override
+  public void postCreate(B bean, E entity) {
+    LOGGER.debug(METHOD_PREFIX + "postCreate(B bean, E entity) -> ({}, {})", CSN, bean, entity);
   }
 
   @Override
   public B getById(Integer id) {
+    LOGGER.debug(METHOD_PREFIX + "getById(Integer id) -> ({})", CSN, id);
     E entity = E.findById(id);
+    LOGGER.debug(METHOD_PREFIX + "getById(Integer id) -> ({})", CSN, entity);
     return fromEntity(entity);
   }
 
   @Override
+  public void preUpdate(B bean, E entity) {
+    LOGGER.debug(METHOD_PREFIX + "preUpdate(B bean, E entity) -> ({}, {})", CSN, bean, entity);
+  }
+
+  @Override
   public void update(B bean) {
+    LOGGER.debug(METHOD_PREFIX + "update(B bean) -> ({})", CSN, bean);
     E entity = toEntity(bean);
     preUpdate(bean, entity);
     entity.saveIt();
     postUpdate(bean, entity);
     flush();
+    LOGGER.debug(LOG_MSG_FLUSH_PREFIX, beans.size());
+    LOGGER.debug(METHOD_PREFIX + "update(B bean)", CSN);
+  }
+
+  @Override
+  public void postUpdate(B bean, E entity) {
+    LOGGER.debug(METHOD_PREFIX + "postUpdate(B bean, E entity) -> ({}, {})", CSN, bean, entity);
+  }
+
+  @Override
+  public void preDelete(B bean, E entity) {
+    LOGGER.debug(METHOD_PREFIX + "preDelete(B bean, E entity) -> ({}, {})", CSN, bean, entity);
   }
 
   @Override
   public void delete(B bean) {
+    LOGGER.debug(METHOD_PREFIX + "delete(B bean)", CSN, bean);
     E entity = toEntity(bean);
     preDelete(bean, entity);
     entity.delete();
     postDelete(bean, entity);
     flush();
+    LOGGER.debug(LOG_MSG_FLUSH_PREFIX, beans.size());
+    LOGGER.debug(METHOD_PREFIX + "delete(B bean)", CSN);
+  }
+
+  @Override
+  public void postDelete(B bean, E entity) {
+    LOGGER.debug(METHOD_PREFIX + "postDelete(B bean, E entity) -> ({}, {})", CSN, bean, entity);
+  }
+
+  /**
+   * Flushes the instance cached beans and recreates all Beans from the current
+   * persisted entities.
+   */
+  protected void flush() {
+    LOGGER.debug(AbstractResourceService.class.getName(), "flush");
+    beans.clear();
+    beans.addAll(fromEntities());
+    LOGGER.debug(LOG_MSG_FLUSH_PREFIX, beans.size());
+    LOGGER.debug(AbstractResourceService.class.getName(), "flush");
   }
 
   /**
@@ -103,37 +166,6 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
    * @return the list of entities
    */
   protected abstract List<E> getEntities();
-
-  protected void preCreate(B bean, E entity) {
-    LOGGER.debug(AbstractResourceService.class.getName(), "create", new Object[] { bean, entity });
-  }
-
-  protected void postCreate(B bean, E entity) {
-    LOGGER.debug(AbstractResourceService.class.getName(), "create", new Object[] { bean, entity });
-  }
-
-  protected void preUpdate(B bean, E entity) {
-    LOGGER.debug(AbstractResourceService.class.getName(), "update", new Object[] { bean, entity });
-  }
-
-  protected void postUpdate(B bean, E entity) {
-    LOGGER.debug(AbstractResourceService.class.getName(), "update", new Object[] { bean, entity });
-  }
-
-  protected void preDelete(B bean, E entity) {
-    LOGGER.debug(AbstractResourceService.class.getName(), "delete", new Object[] { bean, entity });
-  }
-
-  protected void postDelete(B bean, E entity) {
-    LOGGER.debug(AbstractResourceService.class.getName(), "delete", new Object[] { bean, entity });
-  }
-
-  protected void flush() {
-    LOGGER.debug(AbstractResourceService.class.getName(), "flush");
-    beans.clear();
-    beans.addAll(fromEntities());
-    LOGGER.debug(AbstractResourceService.class.getName(), "flush ", new Object[] { beans.size() });
-  }
 
   private List<B> fromEntities() {
     return getEntities().stream().map(this::fromEntity).collect(Collectors.toList());
