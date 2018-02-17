@@ -7,8 +7,4 @@ import org.javalite.activejdbc.Model;
  */
 public class Vendor extends Model {
 
-  static {
-    validatePresenceOf("last_name");
-  }
-
 }

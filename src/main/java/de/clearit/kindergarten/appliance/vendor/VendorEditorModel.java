@@ -24,6 +24,7 @@ import com.jgoodies.jsdl.core.pane.form.FormPaneModel;
 import com.jgoodies.jsdl.core.util.JSDLUtils;
 import com.jgoodies.uif2.application.UIFPresentationModel;
 import com.jgoodies.uif2.util.TextComponentUtils;
+import com.jgoodies.validation.ValidationResult;
 
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.VendorBean;
@@ -56,7 +57,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   public VendorEditorModel(VendorBean vendor, CommitCallback<CommandValue> callback) {
     super(vendor);
     this.commitCallback = callback;
-    this.validationSupport = new ValidationSupport(new VendorValidatable(vendor), 1000);
+    this.validationSupport = new ValidationSupport(new VendorValidatable(getBean()));
     initModels();
     initPresentationLogic();
   }
@@ -122,7 +123,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
       // Add to bean list
       getBean().getVendorNumbers().add(vendorNumberBean);
     } else {
-      JOptionPane.showMessageDialog(new JFrame(), "Verk\\u00e4ufernummer bereits vorhanden!");
+      JOptionPane.showMessageDialog(new JFrame(), "Verk\u00e4ufernummer bereits vorhanden!");
     }
     Collections.sort(getBean().getVendorNumbers(), Comparator.<VendorNumberBean>comparingInt(
         VendorNumberBean::getVendorNumber));
@@ -146,17 +147,15 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   @Override
   public void performAccept(EventObject e) {
     TextComponentUtils.commitImmediately();
-    // ValidationResult result = validationSupport.getResult();
-    // if (!result.hasErrors()) {
-    triggerCommit();
-    commitCallback.committed(CommandValue.OK);
-    JSDLUtils.closePaneFor(e);
-    // }
-    // boolean canceled = Dialogs.vendorHasErrors(e, getBean());
-    // if (!canceled) {
-    // commitCallback.committed(CommandValue.CANCEL);
-    // JSDLUtils.closePaneFor(e);
-    // }
+    ValidationResult result = validationSupport.getResult();
+    if (!result.hasErrors()) {
+      triggerCommit();
+      commitCallback.committed(CommandValue.OK);
+      JSDLUtils.closePaneFor(e);
+      return;
+    }
+    Dialogs.vendorHasErrors(e, result);
+    validationSupport.setValidatable(new VendorValidatable(getBean()));
   }
 
   @Override
