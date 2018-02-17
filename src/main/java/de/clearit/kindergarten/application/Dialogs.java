@@ -19,9 +19,9 @@ import com.jgoodies.jsdl.core.MessageType;
 import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 import com.jgoodies.jsdl.core.util.JSDLUtils;
+import com.jgoodies.validation.ValidationResult;
 
 import de.clearit.kindergarten.domain.PurchaseBean;
-import de.clearit.kindergarten.domain.VendorBean;
 
 /**
  * Consists only of static method to open frequently used dialogs.
@@ -42,15 +42,21 @@ public final class Dialogs {
   /**
    * @return {@code true} if canceled, {@code false} otherwise
    */
-  public static boolean vendorHasErrors(EventObject e, VendorBean vendor) {
-    String title = RESOURCES.getString("dialogs.documentHasErrors.title");
-    String mainInstruction = RESOURCES.getString("dialogs.documentHasErrors.mainInstruction", vendor.getLastName());
-    String contentText = RESOURCES.getString("dialogs.documentHasErrors.content", vendor.getLastName());
+  public static boolean vendorHasErrors(EventObject e, ValidationResult result) {
+    String title = "Fehler bei der Eingabepr\u00fcfung";
+    String mainInstruction = "Es konnte aufgrund folgender Fehler nicht gespeichert werden:";
 
-    TaskPane pane = new TaskPane(MessageType.WARNING, mainInstruction, contentText, CommandValue.DISCARD,
-        CommandValue.CANCEL);
-    pane.setMarginContentTop(4);
-    pane.setMarginContentBottom(14);
+    StringBuilder contentTextBuilder = new StringBuilder("<html>");
+    contentTextBuilder.append(result.getMessagesText())/**
+                                                        * .append(result.getMessages().stream().map(
+                                                        * ValidationMessage::formattedText).collect(Collectors.joining("<br>
+                                                        * ")))/
+                                                        **/
+        .append("</html>");
+    String contentText = contentTextBuilder.toString();
+
+    TaskPane pane = new TaskPane(MessageType.ERROR, mainInstruction, contentText, CommandValue.CANCEL);
+    pane.setPreferredWidth(400);
 
     pane.showDialog(e, title);
     return pane.isCancelled();
