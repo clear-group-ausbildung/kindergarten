@@ -3,6 +3,7 @@ package de.clearit.kindergarten.domain;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import javax.swing.ListModel;
 
@@ -14,6 +15,8 @@ import de.clearit.kindergarten.domain.entity.Purchase;
  * The service for the Purchase resource.
  */
 public class PurchaseService extends AbstractResourceService<PurchaseBean, Purchase> {
+
+  private static final Logger LOGGER = Logger.getLogger(PurchaseService.class.getName());
 
   private static final BigDecimal ZERO = BigDecimal.valueOf(0.0d);
   private static final BigDecimal KINDERGARTEN_PROFIT_RATIO = BigDecimal.valueOf(0.2d);
@@ -51,23 +54,28 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
 
   @Override
   public PurchaseBean fromEntity(Purchase entity) {
+    LOGGER.entering(PurchaseService.class.getSimpleName(), "fromEntity(Purchase entity)", new Object[] { entity });
     PurchaseBean bean = new PurchaseBean();
     bean.setId(entity.getInteger(PurchaseBean.PROPERTY_ID));
     bean.setItemNumber(entity.getInteger(toSnakeCase(PurchaseBean.PROPERTY_ITEM_NUMBER)));
     bean.setItemPrice(entity.getBigDecimal(toSnakeCase(PurchaseBean.PROPERTY_ITEM_PRICE)));
     bean.setVendorNumber(entity.getInteger(toSnakeCase(PurchaseBean.PROPERTY_VENDOR_NUMBER)));
+    LOGGER.exiting(PurchaseService.class.getSimpleName(), "fromEntity(Purchase entity)", new Object[] { bean });
     return bean;
   }
 
   @Override
   public Purchase toEntity(PurchaseBean bean) {
+    LOGGER.entering(PurchaseService.class.getSimpleName(), "toEntity(PurchaseBean bean)", new Object[] { bean });
     Purchase entity = Purchase.findById(bean.getId());
     if (entity == null) {
+      LOGGER.fine("New Purchase entity!");
       entity = new Purchase();
     }
     entity.setInteger(toSnakeCase(PurchaseBean.PROPERTY_ITEM_NUMBER), bean.getItemNumber());
     entity.setBigDecimal(toSnakeCase(PurchaseBean.PROPERTY_ITEM_PRICE), bean.getItemPrice());
     entity.setInteger(toSnakeCase(PurchaseBean.PROPERTY_VENDOR_NUMBER), bean.getVendorNumber());
+    LOGGER.exiting(PurchaseService.class.getSimpleName(), "toEntity(PurchaseBean bean)", new Object[] { entity });
     return entity;
   }
 

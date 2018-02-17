@@ -2,14 +2,12 @@ package de.clearit.kindergarten.domain;
 
 import java.math.BigDecimal;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
+import com.google.gson.annotations.Expose;
 import com.jgoodies.binding.beans.Model;
 
 /**
  * The bean class for the Purchase resource.
  */
-@JsonIgnoreProperties({ "id", "propertyChangeListeners", "vetoableChangeListeners" })
 public class PurchaseBean extends Model {
 
   private static final long serialVersionUID = 1L;
@@ -24,8 +22,11 @@ public class PurchaseBean extends Model {
   // Fields *****************************************************************
 
   private Integer id;
+  @Expose
   private Integer itemNumber;
+  @Expose
   private BigDecimal itemPrice;
+  @Expose
   private Integer vendorNumber;
 
   // Instance Creation ******************************************************
@@ -158,7 +159,8 @@ public class PurchaseBean extends Model {
       return false;
     if (vendorNumber == null) {
       return other.vendorNumber == null;
-    } else return vendorNumber.equals(other.vendorNumber);
+    } else
+      return vendorNumber.equals(other.vendorNumber);
   }
 
   @Override

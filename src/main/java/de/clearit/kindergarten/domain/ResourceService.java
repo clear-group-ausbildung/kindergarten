@@ -20,12 +20,32 @@ public interface ResourceService<B extends com.jgoodies.binding.beans.Model, E e
   List<B> getAll();
 
   /**
+   * Lifecycle hook to handle logic before entity.saveIt() is called.
+   * 
+   * @param bean
+   *          the bean to create the entity from
+   * @param entity
+   *          the entity created from the bean
+   */
+  void preCreate(B bean, E entity);
+
+  /**
    * Persists the given {@code bean} to the database.
    * 
    * @param bean
    *          the bean to persist
    */
   void create(B bean);
+
+  /**
+   * Lifecycle hook to handle logic after entity.saveIt() is called.
+   * 
+   * @param bean
+   *          the bean to create the entity from
+   * @param entity
+   *          the entity created from the bean
+   */
+  void postCreate(B bean, E entity);
 
   /**
    * Looks up the bean by its given {@code id} and returns it
@@ -37,6 +57,16 @@ public interface ResourceService<B extends com.jgoodies.binding.beans.Model, E e
   B getById(Integer id);
 
   /**
+   * Lifecycle hook to handle logic before entity.saveIt() is called.
+   * 
+   * @param bean
+   *          the bean to create the entity from
+   * @param entity
+   *          the entity created from the bean
+   */
+  void preUpdate(B bean, E entity);
+
+  /**
    * Persists the changes for the given {@code bean} to the database.
    * 
    * @param bean
@@ -45,12 +75,42 @@ public interface ResourceService<B extends com.jgoodies.binding.beans.Model, E e
   void update(B bean);
 
   /**
+   * Lifecycle hook to handle logic after entity.saveIt() is called.
+   * 
+   * @param bean
+   *          the bean to create the entity from
+   * @param entity
+   *          the entity created from the bean
+   */
+  void postUpdate(B bean, E entity);
+
+  /**
+   * Lifecycle hook to handle logic before entity.delete() is called.
+   * 
+   * @param bean
+   *          the bean to create the entity from
+   * @param entity
+   *          the entity created from the bean
+   */
+  void preDelete(B bean, E entity);
+
+  /**
    * Deletes the given {@code bean} from the database.
    * 
    * @param bean
    *          the bean to delete
    */
   void delete(B bean);
+
+  /**
+   * Lifecycle hook to handle logic after entity.delete() is called.
+   * 
+   * @param bean
+   *          the bean to create the entity from
+   * @param entity
+   *          the entity created from the bean
+   */
+  void postDelete(B bean, E entity);
 
   /**
    * Converts the given {@code entity} to a bean.
