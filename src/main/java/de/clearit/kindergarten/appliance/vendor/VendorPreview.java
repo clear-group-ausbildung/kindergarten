@@ -62,7 +62,7 @@ public final class VendorPreview extends AbstractView {
   protected JComponent buildPanel() {
     initComponents();
 
-    FormLayout layout = new FormLayout("right:pref, $lcgap, pref", "4*(p)");
+    FormLayout layout = new FormLayout("right:pref, $lcgap, 300dlu", "4*(p)");
     layout.setRowGroups(new int[][] { { 1, 2, 3, 4 } });
     I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
 
