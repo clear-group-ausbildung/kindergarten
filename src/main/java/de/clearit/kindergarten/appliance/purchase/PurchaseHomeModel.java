@@ -2,9 +2,11 @@ package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EventObject;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,10 +15,12 @@ import javax.swing.JFileChooser;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonWriter;
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.BlockingScope;
@@ -36,6 +40,7 @@ import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
 import de.clearit.kindergarten.domain.VendorService;
+import io.reactivex.Observable;
 
 /**
  * The home model for the purchase.
@@ -96,7 +101,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     return vendorPayoutModel;
   }
 
-  // Initialization *********************************************************
+  // Initialisation *********************************************************
 
   @Override
   protected ListModel<PurchaseBean> getListModel() {
@@ -210,26 +215,29 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     }
 
     @Override
-    protected List<PurchaseBean> doInBackground() {
-      final ObjectMapper mapper = new ObjectMapper();
-      try {
-        return mapper.readValue(importFile, mapper.getTypeFactory().constructCollectionType(List.class,
-            PurchaseBean.class));
-      } catch (IOException e) {
-        return Collections.emptyList();
-      }
+    protected List<PurchaseBean> doInBackground() throws FileNotFoundException {
+      return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
+          new TypeToken<List<PurchaseBean>>() {
+          }.getType());
     }
 
     @Override
     protected void succeeded(List<PurchaseBean> result) {
       super.succeeded(result);
-      result.forEach(SERVICE::create);
-      progressPane.setVisible(false);
-      refreshSummary();
-      String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
-      TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
-      pane.setPreferredWidth(PreferredWidth.MEDIUM);
-      pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
+      LOGGER.debug("# Purchase elements to create: {}", result.size());
+      Observable<PurchaseBean> observablePurchases = Observable.fromIterable(result);
+      long beginNanos = System.nanoTime();
+      observablePurchases.subscribe(purchaseBean -> SERVICE.toEntity(purchaseBean).saveIt(), Observable::error, () -> {
+        SERVICE.flush();
+        LOGGER.debug("Finished Import after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
+        progressPane.setVisible(false);
+        refreshSummary();
+        String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
+        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+        pane.setPreferredWidth(PreferredWidth.MEDIUM);
+        pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
+      });
+
     }
 
     private File getImportPath() {
@@ -265,13 +273,16 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     }
 
     @Override
-    protected Void doInBackground() {
-      ObjectMapper mapper = new ObjectMapper();
-      try {
-        mapper.writeValue(new File(exportPath), purchaseList);
-      } catch (IOException e) {
-        e.printStackTrace();
+    protected Void doInBackground() throws IOException {
+      long beginNanos = System.nanoTime();
+      String listPurchasesAsJSONString = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(
+          purchaseList, new TypeToken<List<PurchaseBean>>() {
+          }.getType());
+      try (JsonWriter jsonWriter = new JsonWriter(new FileWriter(new File(exportPath)))) {
+        jsonWriter.jsonValue(listPurchasesAsJSONString);
+        jsonWriter.flush();
       }
+      LOGGER.debug("Finished Export after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
       return null;
     }
 
