@@ -19,6 +19,7 @@ import com.jgoodies.jsdl.core.pane.TaskPane;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
 import de.clearit.kindergarten.domain.VendorService;
 import de.clearit.kindergarten.domain.export.ExportExcel;
 
@@ -88,11 +89,33 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   private void editItem(String title, final VendorBean vendor, final boolean newItem) {
     VendorEditorModel model = new VendorEditorModel(vendor, value -> {
       if (value == CommandValue.OK) {
+        int indexOfNewOrUpdatedElement = 0;
         if (newItem) {
           SERVICE.create(vendor);
+          for (int i = 0; i < getSelectionInList().getList().size(); i++) {
+            VendorBean element = getSelectionInList().getList().get(i);
+            for (VendorNumberBean elementNumberBean : element.getVendorNumbers()) {
+              for (VendorNumberBean callbackNumberBean : vendor.getVendorNumbers()) {
+                if (callbackNumberBean.getVendorNumber() == elementNumberBean.getVendorNumber()) {
+                  indexOfNewOrUpdatedElement = i;
+                  break;
+                }
+              }
+              break;
+            }
+          }
         } else {
           SERVICE.update(vendor);
+          for (int i = 0; i < getSelectionInList().getList().size(); i++) {
+            VendorBean element = getSelectionInList().getList().get(i);
+            if (element.getId().equals(vendor.getId())) {
+              indexOfNewOrUpdatedElement = i;
+              break;
+            }
+          }
         }
+
+        getSelectionInList().setSelectionIndex(indexOfNewOrUpdatedElement);
       }
     });
     VendorAppliance.getInstance().openVendorEditor(title, model);
