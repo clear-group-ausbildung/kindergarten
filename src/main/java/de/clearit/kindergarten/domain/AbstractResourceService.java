@@ -152,7 +152,7 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
    * Flushes the instance cached beans and recreates all Beans from the current
    * persisted entities.
    */
-  protected void flush() {
+  public void flush() {
     LOGGER.debug(AbstractResourceService.class.getName(), "flush");
     beans.clear();
     beans.addAll(fromEntities());
