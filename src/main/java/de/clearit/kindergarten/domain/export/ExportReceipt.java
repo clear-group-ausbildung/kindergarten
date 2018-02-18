@@ -1,6 +1,7 @@
 package de.clearit.kindergarten.domain.export;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,6 +14,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
@@ -27,6 +38,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.export.entity.PayoffDataReceipt;
@@ -74,17 +86,37 @@ public class ExportReceipt {
       PayoffDataReceipt payoffData = ExportDataService.getPayoffDataForVendor(pVendor);
       fillInPlaceholders(payoffData);
 
-      FileOutputStream fileOut = new FileOutputStream(getDateiname(payoffData));
+      String fileOutName = getDateiname(payoffData);
+      FileOutputStream fileOut = new FileOutputStream(fileOutName);
       wb.write(fileOut);
       fileOut.close();
       wb.close();
+      createPDF(fileOutName);
     } catch (FileNotFoundException e) {
       LOGGER.debug("Error - Excel Template not found");
       LOGGER.error(e.getMessage());
     } catch (IOException e) {
       LOGGER.debug("Error Exel Export");
       LOGGER.error(e.getMessage());
+    } catch (ParserConfigurationException e) {
+      LOGGER.error(e.getMessage());
+    } catch (TransformerException e) {
+      LOGGER.error(e.getMessage());
     }
+  }
+
+  private void createPDF(String fileOutName) throws IOException, ParserConfigurationException, TransformerException {
+    Document doc = ExcelToHtmlConverter.process(new File(fileOutName));
+
+    DOMSource domSource = new DOMSource(doc);
+    StreamResult streamResult = new StreamResult(new File("./abrechnung.html"));
+
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    Transformer serializer = transformerFactory.newTransformer();
+    serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+    serializer.setOutputProperty(OutputKeys.INDENT, "no");
+    serializer.setOutputProperty(OutputKeys.METHOD, "html");
+    serializer.transform(domSource, streamResult);
   }
 
   private void fillInPlaceholders(PayoffDataReceipt pPayoffData) {
@@ -224,7 +256,7 @@ public class ExportReceipt {
         dateiName.append(folder);
         dateiName.append("/");
       } catch (IOException e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage());
       }
     } else {
       dateiName.append(folder);
@@ -244,10 +276,10 @@ public class ExportReceipt {
 
     numberStyle = wb.createCellStyle();
     numberStyle.setAlignment(HorizontalAlignment.CENTER);
-    numberStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-    numberStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-    numberStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-    numberStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    numberStyle.setBorderBottom(BorderStyle.THIN);
+    numberStyle.setBorderTop(BorderStyle.THIN);
+    numberStyle.setBorderRight(BorderStyle.THIN);
+    numberStyle.setBorderLeft(BorderStyle.THIN);
     numberStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(PALE_BLUE)));
     numberStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(PALE_BLUE)));
     numberStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode(PALE_BLUE)));
@@ -256,10 +288,10 @@ public class ExportReceipt {
     priceStyle = wb.createCellStyle();
     priceStyle.setDataFormat((short) 7);
     priceStyle.setAlignment(HorizontalAlignment.LEFT);
-    priceStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-    priceStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-    priceStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-    priceStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    priceStyle.setBorderBottom(BorderStyle.THIN);
+    priceStyle.setBorderTop(BorderStyle.THIN);
+    priceStyle.setBorderRight(BorderStyle.THIN);
+    priceStyle.setBorderLeft(BorderStyle.THIN);
     priceStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(PALE_BLUE)));
     priceStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(PALE_BLUE)));
     priceStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode(PALE_BLUE)));
@@ -267,10 +299,10 @@ public class ExportReceipt {
 
     sumStyle = wb.createCellStyle();
     sumStyle.setAlignment(HorizontalAlignment.RIGHT);
-    sumStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-    sumStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-    sumStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-    sumStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    sumStyle.setBorderBottom(BorderStyle.THIN);
+    sumStyle.setBorderTop(BorderStyle.THIN);
+    sumStyle.setBorderRight(BorderStyle.THIN);
+    sumStyle.setBorderLeft(BorderStyle.THIN);
     sumStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(PALE_BLUE)));
     sumStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(PALE_BLUE)));
     sumStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode(PALE_BLUE)));
