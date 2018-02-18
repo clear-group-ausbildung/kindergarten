@@ -1,6 +1,7 @@
 package de.clearit.kindergarten.domain.export;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -85,6 +86,11 @@ public class ExportReceipt {
       LOGGER.debug("Error Exel Export");
       LOGGER.error(e.getMessage());
     }
+    createPDF(pVendor);
+  }
+
+  private void createPDF(VendorBean pVendor) {
+    File pdfOutputFile = new File("./abrechnung.pdf");
   }
 
   private void fillInPlaceholders(PayoffDataReceipt pPayoffData) {
