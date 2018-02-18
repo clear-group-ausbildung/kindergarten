@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
@@ -206,20 +207,20 @@ public class ExportInternalPayoff {
     priceStyle = wb.createCellStyle();
     priceStyle.setDataFormat((short) 7);
     priceStyle.setAlignment(HorizontalAlignment.LEFT);
-    priceStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-    priceStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-    priceStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-    priceStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    priceStyle.setBorderBottom(BorderStyle.THIN);
+    priceStyle.setBorderTop(BorderStyle.THIN);
+    priceStyle.setBorderRight(BorderStyle.THIN);
+    priceStyle.setBorderLeft(BorderStyle.THIN);
     priceStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
     priceStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
     priceStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
     priceStyle.setBorderColor(BorderSide.LEFT, new XSSFColor(Color.decode("#CFDDFB")));
 
     labelStyle = wb.createCellStyle();
-    labelStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-    labelStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-    labelStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-    labelStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    labelStyle.setBorderBottom(BorderStyle.THIN);
+    labelStyle.setBorderTop(BorderStyle.THIN);
+    labelStyle.setBorderRight(BorderStyle.THIN);
+    labelStyle.setBorderLeft(BorderStyle.THIN);
     labelStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
     labelStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
     labelStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
@@ -227,10 +228,10 @@ public class ExportInternalPayoff {
     labelStyle.setFont(headerFont);
 
     textStyle = wb.createCellStyle();
-    textStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-    textStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-    textStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-    textStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    textStyle.setBorderBottom(BorderStyle.THIN);
+    textStyle.setBorderTop(BorderStyle.THIN);
+    textStyle.setBorderRight(BorderStyle.THIN);
+    textStyle.setBorderLeft(BorderStyle.THIN);
     textStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode("#CFDDFB")));
     textStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode("#CFDDFB")));
     textStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode("#CFDDFB")));
