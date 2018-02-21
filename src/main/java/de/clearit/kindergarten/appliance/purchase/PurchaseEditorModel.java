@@ -136,22 +136,28 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 
     if (vendorNumber.matches(REGEX_NUMERIC) && itemNumber.matches(REGEX_NUMERIC) && match.matches()) {
       state = true;
-      PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocus();
+      PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
     } else {
       JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befuellen!");
       if (!vendorNumber.matches(REGEX_NUMERIC)) {
         PurchaseAppliance.getInstance().getView().setVendorNumber(null);
+        PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
       }
       if (!itemNumber.matches(REGEX_NUMERIC)) {
         PurchaseAppliance.getInstance().getView().setItemNumber(null);
-        if (vendorNumber.matches(REGEX_NUMERIC)) {
-          PurchaseAppliance.getInstance().getView().getItemNumber().requestFocus();
+        PurchaseAppliance.getInstance().getView().getItemNumber().requestFocusInWindow();
+        if (!vendorNumber.matches(REGEX_NUMERIC)) {
+          PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
         }
       }
       if (!match.matches()) {
         PurchaseAppliance.getInstance().getView().setItemPrice(null);
-        if (itemNumber.matches(REGEX_NUMERIC) && vendorNumber.matches(REGEX_NUMERIC)) {
-          PurchaseAppliance.getInstance().getView().getItemPrice().requestFocus();
+        PurchaseAppliance.getInstance().getView().getItemPrice().requestFocusInWindow();
+        if (!itemNumber.matches(REGEX_NUMERIC)) {
+          PurchaseAppliance.getInstance().getView().getItemNumber().requestFocusInWindow();
+        }
+        if (!vendorNumber.matches(REGEX_NUMERIC)) {
+          PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
         }
       }
     }
