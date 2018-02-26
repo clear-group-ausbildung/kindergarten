@@ -18,6 +18,8 @@ import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
+import de.clearit.kindergarten.appliance.PostChangeHandler;
+import de.clearit.kindergarten.appliance.purchase.PurchaseHomeModel;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
 import de.clearit.kindergarten.domain.VendorService;
@@ -38,11 +40,13 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorHomeModel.class);
   private static final VendorService SERVICE = VendorService.getInstance();
   private static VendorHomeModel instance;
+  private final PostChangeHandler postChangeHandler;
 
   // Instance Creation ******************************************************
 
   private VendorHomeModel() {
     super();
+    postChangeHandler = PurchaseHomeModel.getInstance();
   }
 
   public static VendorHomeModel getInstance() {
@@ -92,6 +96,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
         int indexOfNewOrUpdatedElement = 0;
         if (newItem) {
           SERVICE.create(vendor);
+          postChangeHandler.onPostCreate();
           for (int i = 0; i < getSelectionInList().getList().size(); i++) {
             VendorBean element = getSelectionInList().getList().get(i);
             for (VendorNumberBean elementNumberBean : element.getVendorNumbers()) {
@@ -106,6 +111,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
           }
         } else {
           SERVICE.update(vendor);
+          postChangeHandler.onPostUpdate();
           for (int i = 0; i < getSelectionInList().getList().size(); i++) {
             VendorBean element = getSelectionInList().getList().get(i);
             if (element.getId().equals(vendor.getId())) {
@@ -131,6 +137,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
       SERVICE.delete(vendor);
+      postChangeHandler.onPostDelete();
     }
   }
 

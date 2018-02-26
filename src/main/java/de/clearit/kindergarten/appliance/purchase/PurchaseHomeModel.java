@@ -35,6 +35,7 @@ import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
+import de.clearit.kindergarten.appliance.PostChangeHandler;
 import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
@@ -45,7 +46,7 @@ import io.reactivex.Observable;
 /**
  * The home model for the purchase.
  */
-public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
+public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implements PostChangeHandler {
 
   private static final long serialVersionUID = 1L;
 
@@ -170,6 +171,24 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     return new ExportPurchasesTask();
   }
 
+  @Override
+  public void onPostCreate() {
+    refreshVendorList();
+    refreshSummary();
+  }
+
+  @Override
+  public void onPostUpdate() {
+    refreshVendorList();
+    refreshSummary();
+  }
+
+  @Override
+  public void onPostDelete() {
+    refreshVendorList();
+    refreshSummary();
+  }
+
   private void refreshSummary() {
     itemCountModel.setValue(SERVICE.getItemCountByPurchases(getSelectionInList().getList()));
     itemSumModel.setValue(SERVICE.getItemSumByPurchases(getSelectionInList().getList()));
@@ -197,6 +216,13 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     getSelectionInList().getList().clear();
     getSelectionInList().getList().addAll(filteredOrAllPurchases);
     refreshSummary();
+  }
+
+  private void refreshVendorList() {
+    vendorList.getList().clear();
+    vendorList.getList().add(alleVerkaeufer());
+    vendorList.getList().addAll(VENDOR_SERVICE.getAll());
+    vendorList.setSelectionIndex(0);
   }
 
   private final class ImportPurchasesTask extends Task<List<PurchaseBean>, Void> {
