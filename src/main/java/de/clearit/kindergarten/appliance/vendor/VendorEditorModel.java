@@ -31,6 +31,7 @@ import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
 import de.clearit.kindergarten.domain.VendorNumberService;
 import de.clearit.kindergarten.domain.validation.VendorValidatable;
+import de.clearit.kindergarten.utils.CollectorUtils;
 import de.clearit.validation.view.ValidationSupport;
 
 /**
@@ -112,6 +113,14 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   @Action
   public void addVendorNumber(ActionEvent e) {
     TextComponentUtils.commitImmediately();
+
+    // Check for vendor numbers in current model
+    if (vendorNumberAlreadyExists(Integer.valueOf((String) getVendorNumberFieldModel().getValue()))) {
+      JOptionPane.showMessageDialog(new JFrame(), "Verk\u00e4ufernummer bereits vorhanden!");
+      // Reset input field
+      getVendorNumberFieldModel().setValue(null);
+      return;
+    }
 
     if (!VendorNumberService.getInstance().isVendorNumberExisting(Integer.valueOf((String) getVendorNumberFieldModel()
         .getValue()))) {
@@ -216,6 +225,16 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     bean.setPhoneNumber((String) getBufferedValue(VendorBean.PROPERTY_PHONE_NUMBER));
     bean.getVendorNumbers().addAll(selectionInList.getList());
     return bean;
+  }
+
+  private boolean vendorNumberAlreadyExists(Integer newVendorNumber) {
+    try {
+      selectionInList.getList().stream().filter(element -> element.getVendorNumber() == newVendorNumber).collect(
+          CollectorUtils.singletonCollector());
+    } catch (IllegalStateException e) {
+      return false;
+    }
+    return true;
   }
 
   // Event Handlers *********************************************************
