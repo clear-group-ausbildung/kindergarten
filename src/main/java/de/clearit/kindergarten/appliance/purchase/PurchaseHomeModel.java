@@ -2,18 +2,25 @@ package de.clearit.kindergarten.appliance.purchase;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.swing.JFileChooser;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonWriter;
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.BlockingScope;
@@ -28,30 +35,33 @@ import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
+import de.clearit.kindergarten.appliance.PostChangeHandler;
 import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
 import de.clearit.kindergarten.domain.VendorService;
+import io.reactivex.Observable;
 
 /**
  * The home model for the purchase.
  */
-public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
+public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implements PostChangeHandler {
 
   private static final long serialVersionUID = 1L;
 
   public static final String ACTION_IMPORT_PURCHASES = "importPurchases";
   public static final String ACTION_EXPORT_PURCHASES = "exportPurchases";
-  private static final Logger LOGGER = Logger.getLogger(PurchaseHomeModel.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(PurchaseHomeModel.class);
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseHomeModel.class);
   private static final PurchaseService SERVICE = PurchaseService.getInstance();
   private static final VendorService VENDOR_SERVICE = VendorService.getInstance();
   private static PurchaseHomeModel instance;
-  private final SelectionInList<VendorBean> vendorList;
-  private final ValueModel itemCountModel = new ValueHolder(0);
-  private final ValueModel itemSumModel = new ValueHolder(0.0);
-  private final ValueModel kindergartenProfitModel = new ValueHolder(0.0);
-  private final ValueModel vendorPayoutModel = new ValueHolder(0.0);
+  private final transient SelectionInList<VendorBean> vendorList;
+  private final transient ValueModel itemCountModel = new ValueHolder(0);
+  private final transient ValueModel itemSumModel = new ValueHolder(0.0);
+  private final transient ValueModel kindergartenProfitModel = new ValueHolder(0.0);
+  private final transient ValueModel vendorPayoutModel = new ValueHolder(0.0);
 
   // Instance Creation ******************************************************
 
@@ -92,7 +102,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     return vendorPayoutModel;
   }
 
-  // Initialization *********************************************************
+  // Initialisation *********************************************************
 
   @Override
   protected ListModel<PurchaseBean> getListModel() {
@@ -151,14 +161,32 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
 
   @Action
   public Task<List<PurchaseBean>, Void> importPurchases(final ActionEvent e) {
-    LOGGER.fine("Importing purchase\u2026");
+    LOGGER.debug("Importing purchase\u2026");
     return new ImportPurchasesTask();
   }
 
   @Action
   public Task<Void, Void> exportPurchases(final ActionEvent e) {
-    LOGGER.fine("Exporting purchase\u2026");
+    LOGGER.debug("Exporting purchase\u2026");
     return new ExportPurchasesTask();
+  }
+
+  @Override
+  public void onPostCreate() {
+    refreshVendorList();
+    refreshSummary();
+  }
+
+  @Override
+  public void onPostUpdate() {
+    refreshVendorList();
+    refreshSummary();
+  }
+
+  @Override
+  public void onPostDelete() {
+    refreshVendorList();
+    refreshSummary();
   }
 
   private void refreshSummary() {
@@ -181,12 +209,20 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     if (alleVerkaeufer().equals(selectedVendor)) {
       filteredOrAllPurchases.addAll(SERVICE.getAll());
     } else {
-      filteredOrAllPurchases.addAll(SERVICE.getAll().stream().filter(bean -> bean.getVendorNumber().equals(
-          selectedVendor.getVendorNumber())).collect(Collectors.toList()));
+      filteredOrAllPurchases.addAll(SERVICE.getAll().stream().filter(bean -> selectedVendor.getVendorNumbers().stream()
+          .map(VendorNumberBean::getVendorNumber).collect(Collectors.toList()).contains(bean.getVendorNumber()))
+          .collect(Collectors.toList()));
     }
     getSelectionInList().getList().clear();
     getSelectionInList().getList().addAll(filteredOrAllPurchases);
     refreshSummary();
+  }
+
+  private void refreshVendorList() {
+    vendorList.getList().clear();
+    vendorList.getList().add(alleVerkaeufer());
+    vendorList.getList().addAll(VENDOR_SERVICE.getAll());
+    vendorList.setSelectionIndex(0);
   }
 
   private final class ImportPurchasesTask extends Task<List<PurchaseBean>, Void> {
@@ -197,9 +233,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     ImportPurchasesTask() {
       super(BlockingScope.APPLICATION);
       importFile = getImportPath();
-      TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Der Verkaufsimport wird gestartet.", CommandValue.OK);
-      infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
-      infoPane.showDialog(getEventObject(), "Verkaufsimport");
       progressPane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
       progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
       progressPane.setProgressIndeterminate(true);
@@ -208,22 +241,29 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     }
 
     @Override
-    protected List<PurchaseBean> doInBackground() throws Exception {
-      final ObjectMapper mapper = new ObjectMapper();
-      return mapper.readValue(importFile, mapper.getTypeFactory().constructCollectionType(List.class,
-          PurchaseBean.class));
+    protected List<PurchaseBean> doInBackground() throws FileNotFoundException {
+      return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
+          new TypeToken<List<PurchaseBean>>() {
+          }.getType());
     }
 
     @Override
     protected void succeeded(List<PurchaseBean> result) {
       super.succeeded(result);
-      result.forEach(SERVICE::create);
-      progressPane.setVisible(false);
-      refreshSummary();
-      String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
-      TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
-      pane.setPreferredWidth(PreferredWidth.MEDIUM);
-      pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
+      LOGGER.debug("# Purchase elements to create: {}", result.size());
+      Observable<PurchaseBean> observablePurchases = Observable.fromIterable(result);
+      long beginNanos = System.nanoTime();
+      observablePurchases.subscribe(purchaseBean -> SERVICE.toEntity(purchaseBean).saveIt(), Observable::error, () -> {
+        SERVICE.flush();
+        LOGGER.debug("Finished Import after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
+        progressPane.setVisible(false);
+        refreshSummary();
+        String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
+        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+        pane.setPreferredWidth(PreferredWidth.MEDIUM);
+        pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
+      });
+
     }
 
     private File getImportPath() {
@@ -259,9 +299,16 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> {
     }
 
     @Override
-    protected Void doInBackground() throws Exception {
-      ObjectMapper mapper = new ObjectMapper();
-      mapper.writeValue(new File(exportPath), purchaseList);
+    protected Void doInBackground() throws IOException {
+      long beginNanos = System.nanoTime();
+      String listPurchasesAsJSONString = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(
+          purchaseList, new TypeToken<List<PurchaseBean>>() {
+          }.getType());
+      try (JsonWriter jsonWriter = new JsonWriter(new FileWriter(new File(exportPath)))) {
+        jsonWriter.jsonValue(listPurchasesAsJSONString);
+        jsonWriter.flush();
+      }
+      LOGGER.debug("Finished Export after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
       return null;
     }
 

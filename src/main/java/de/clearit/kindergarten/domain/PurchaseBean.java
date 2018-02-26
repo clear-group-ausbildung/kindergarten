@@ -1,13 +1,13 @@
 package de.clearit.kindergarten.domain;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import java.math.BigDecimal;
 
+import com.google.gson.annotations.Expose;
 import com.jgoodies.binding.beans.Model;
 
 /**
  * The bean class for the Purchase resource.
  */
-@JsonIgnoreProperties({ "id", "propertyChangeListeners", "vetoableChangeListeners" })
 public class PurchaseBean extends Model {
 
   private static final long serialVersionUID = 1L;
@@ -22,8 +22,11 @@ public class PurchaseBean extends Model {
   // Fields *****************************************************************
 
   private Integer id;
+  @Expose
   private Integer itemNumber;
-  private Double itemPrice;
+  @Expose
+  private BigDecimal itemPrice;
+  @Expose
   private Integer vendorNumber;
 
   // Instance Creation ******************************************************
@@ -40,7 +43,7 @@ public class PurchaseBean extends Model {
    * Constructor, creates a new {@link PurchaseBean} with the given attributes and
    * default (empty (String), zero (Integer) or false(Boolean)) values for the
    * remaining attributes.
-   * 
+   *
    * @param itemNumber
    *          the article number
    * @param itemPrice
@@ -48,13 +51,13 @@ public class PurchaseBean extends Model {
    * @param vendorNumber
    *          the vendor number
    */
-  public PurchaseBean(Integer itemNumber, Double itemPrice, Integer vendorNumber) {
+  public PurchaseBean(Integer itemNumber, BigDecimal itemPrice, Integer vendorNumber) {
     this(null, itemNumber, itemPrice, vendorNumber);
   }
 
   /**
    * Constructor; creates a new {@link PurchaseBean} with the given attributes.
-   * 
+   *
    * @param id
    *          the id
    * @param itemNumber
@@ -64,7 +67,7 @@ public class PurchaseBean extends Model {
    * @param vendorNumber
    *          the vendor number
    */
-  public PurchaseBean(Integer id, Integer itemNumber, Double itemPrice, Integer vendorNumber) {
+  public PurchaseBean(Integer id, Integer itemNumber, BigDecimal itemPrice, Integer vendorNumber) {
     super();
     this.id = id;
     this.itemNumber = itemNumber;
@@ -94,14 +97,19 @@ public class PurchaseBean extends Model {
     firePropertyChange(PROPERTY_ITEM_NUMBER, oldValue, newValue);
   }
 
-  public Double getItemPrice() {
+  public BigDecimal getItemPrice() {
     return itemPrice;
   }
 
-  public void setItemPrice(Double newValue) {
-    Double oldValue = getItemPrice();
-    itemPrice = newValue;
-    firePropertyChange(PROPERTY_ITEM_PRICE, oldValue, newValue);
+  public void setItemPrice(BigDecimal newValue) {
+    if (newValue != null) {
+      BigDecimal oldValue = getItemPrice();
+      itemPrice = newValue;
+      itemPrice = itemPrice.setScale(2, BigDecimal.ROUND_DOWN);
+      firePropertyChange(PROPERTY_ITEM_PRICE, oldValue, newValue);
+    } else {
+      itemPrice = null;
+    }
   }
 
   public Integer getVendorNumber() {
@@ -150,24 +158,15 @@ public class PurchaseBean extends Model {
     } else if (!itemPrice.equals(other.itemPrice))
       return false;
     if (vendorNumber == null) {
-      if (other.vendorNumber != null)
-        return false;
-    } else if (!vendorNumber.equals(other.vendorNumber))
-      return false;
-    return true;
+      return other.vendorNumber == null;
+    } else
+      return vendorNumber.equals(other.vendorNumber);
   }
 
   @Override
   public String toString() {
-    return "PurchaseBean [id=" +
-        id +
-        ", itemNumber=" +
-        itemNumber +
-        ", itemPrice=" +
-        itemPrice +
-        ", vendorNumber=" +
-        vendorNumber +
-        "]";
+    return "PurchaseBean [id=" + id + ", itemNumber=" + itemNumber + ", itemPrice=" + itemPrice + ", vendorNumber="
+        + vendorNumber + "]";
   }
 
 }

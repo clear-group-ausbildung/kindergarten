@@ -21,6 +21,10 @@ import com.jgoodies.forms.layout.FormLayout;
  */
 public final class DesktopUtils {
 
+  private DesktopUtils() {
+    super();
+  }
+
   public static JComponent buildValidationFeedbackPanel(String message1, String message2, String message3,
       String message4) {
     FormLayout layout = new FormLayout("left:p:grow", "3*([8dlu,p], 3dlu), [8dlu,p]");

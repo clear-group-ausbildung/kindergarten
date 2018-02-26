@@ -14,7 +14,7 @@ public final class ImageBackgroundPanel extends JPanel {
 
   private static final long serialVersionUID = 1L;
 
-  private final Image image;
+  private final transient Image image;
   private final int sx1;
   private final int sy1;
   private final int sx2;

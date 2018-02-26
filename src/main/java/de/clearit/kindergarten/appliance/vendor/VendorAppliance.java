@@ -3,6 +3,7 @@ package de.clearit.kindergarten.appliance.vendor;
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
+import java.util.stream.Collectors;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
@@ -89,7 +90,8 @@ public final class VendorAppliance extends DefaultAppliance {
       }
       VendorBean vendor = (VendorBean) obj;
       toAppendTo.append("<html>");
-      toAppendTo.append("Verk&auml;ufernummer: ").append(vendor.getVendorNumber());
+      toAppendTo.append("Verk&auml;ufernummer: ").append(vendor.getVendorNumbers().stream().map(vendorNumber -> String
+          .valueOf(vendorNumber.getVendorNumber())).collect(Collectors.joining(", ")));
       toAppendTo.append("<br>");
       toAppendTo.append("Vorname: ").append(vendor.getFirstName());
       toAppendTo.append("<br>");
@@ -117,7 +119,8 @@ public final class VendorAppliance extends DefaultAppliance {
         return toAppendTo;
       }
       VendorBean vendor = (VendorBean) obj;
-      toAppendTo.append("Verk&auml;ufernummer: ").append(vendor.getVendorNumber());
+      toAppendTo.append("Verk&auml;ufernummern: ").append(vendor.getVendorNumbers().stream().map(vendorNumber -> String
+          .valueOf(vendorNumber.getVendorNumber())).collect(Collectors.joining(", ")));
       toAppendTo.append("\n");
       toAppendTo.append("Vorname: ").append(vendor.getFirstName());
       toAppendTo.append("\n");

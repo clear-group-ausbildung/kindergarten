@@ -1,27 +1,29 @@
 package de.clearit.kindergarten.appliance.vendor;
 
 import java.awt.event.ActionEvent;
-import java.util.logging.Logger;
 
 import javax.swing.ListModel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jgoodies.application.Action;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.BlockingScope;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.application.Task;
-import com.jgoodies.desktop.DesktopFrame;
-import com.jgoodies.desktop.DesktopManager;
 import com.jgoodies.jsdl.core.CommandValue;
 import com.jgoodies.jsdl.core.MessageType;
 import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 
 import de.clearit.kindergarten.appliance.AbstractHomeModel;
-import de.clearit.kindergarten.desktop.DefaultDesktopFrame;
-import de.clearit.kindergarten.domain.ExportExcel;
+import de.clearit.kindergarten.appliance.PostChangeHandler;
+import de.clearit.kindergarten.appliance.purchase.PurchaseHomeModel;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
 import de.clearit.kindergarten.domain.VendorService;
+import de.clearit.kindergarten.domain.export.ExportExcel;
 
 /**
  * The home model for the vendor.
@@ -31,18 +33,20 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   private static final long serialVersionUID = 1L;
 
   public static final String ACTION_PRINT_RECEIPT = "printReceipt";
-  public static final String ACTION_PRINT_MULTIPLE_RECEIPTS = "printMultipleReceipts";
   public static final String ACTION_PRINT_ALL_RECEIPTS = "printAllReceipts";
+  public static final String ACTION_PRINT_INTERNAL_RECEIPT = "printInternalReceipt";
 
-  private static final Logger LOGGER = Logger.getLogger(VendorHomeModel.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(VendorHomeModel.class);
   private static final ResourceMap RESOURCES = Application.getResourceMap(VendorHomeModel.class);
   private static final VendorService SERVICE = VendorService.getInstance();
   private static VendorHomeModel instance;
+  private final PostChangeHandler postChangeHandler;
 
   // Instance Creation ******************************************************
 
   private VendorHomeModel() {
     super();
+    postChangeHandler = PurchaseHomeModel.getInstance();
   }
 
   public static VendorHomeModel getInstance() {
@@ -52,7 +56,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     return instance;
   }
 
-  // Initialization *********************************************************
+  // Initialisation *********************************************************
 
   @Override
   protected ListModel<?> getListModel() {
@@ -89,11 +93,35 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   private void editItem(String title, final VendorBean vendor, final boolean newItem) {
     VendorEditorModel model = new VendorEditorModel(vendor, value -> {
       if (value == CommandValue.OK) {
+        int indexOfNewOrUpdatedElement = 0;
         if (newItem) {
           SERVICE.create(vendor);
+          postChangeHandler.onPostCreate();
+          for (int i = 0; i < getSelectionInList().getList().size(); i++) {
+            VendorBean element = getSelectionInList().getList().get(i);
+            for (VendorNumberBean elementNumberBean : element.getVendorNumbers()) {
+              for (VendorNumberBean callbackNumberBean : vendor.getVendorNumbers()) {
+                if (callbackNumberBean.getVendorNumber() == elementNumberBean.getVendorNumber()) {
+                  indexOfNewOrUpdatedElement = i;
+                  break;
+                }
+              }
+              break;
+            }
+          }
         } else {
           SERVICE.update(vendor);
+          postChangeHandler.onPostUpdate();
+          for (int i = 0; i < getSelectionInList().getList().size(); i++) {
+            VendorBean element = getSelectionInList().getList().get(i);
+            if (element.getId().equals(vendor.getId())) {
+              indexOfNewOrUpdatedElement = i;
+              break;
+            }
+          }
         }
+
+        getSelectionInList().setSelectionIndex(indexOfNewOrUpdatedElement);
       }
     });
     VendorAppliance.getInstance().openVendorEditor(title, model);
@@ -109,36 +137,26 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
     if (pane.getCommitValue() == CommandValue.YES) {
       SERVICE.delete(vendor);
+      postChangeHandler.onPostDelete();
     }
   }
 
   @Action(enabled = false)
   public Task<Void, Void> printReceipt(ActionEvent e) {
-    LOGGER.fine("Printing receipt\u2026");
+    LOGGER.debug("Printing receipt\u2026");
     return new PrintSingleReceiptTask(getSelection());
   }
 
   @Action
-  public void printMultipleReceipts(ActionEvent e) {
-    LOGGER.fine("Printing multiple receipt\u2026");
-
-    VendorNumberChooserModel model = new VendorNumberChooserModel(getSelection(), value -> {
-      if (value == CommandValue.OK) {
-        // Do nothing specific
-        LOGGER.fine("Successfully printed receipts.");
-      }
-    });
-
-    VendorNumberChooserView view = new VendorNumberChooserView(model);
-    DesktopFrame frame = new DefaultDesktopFrame(DesktopManager.activeFrame(), RESOURCES.getString(
-        "numberChooser.title"), true, VendorAppliance.getInstance(), null, null, null, view.getPanel(), null);
-    frame.setVisible(true);
+  public Task<Void, Void> printAllReceipts(ActionEvent e) {
+    LOGGER.debug("Printing all receipts\u2026");
+    return new PrintAllReceiptsTask();
   }
 
   @Action
-  public Task<Void, Void> printAllReceipts(ActionEvent e) {
-    LOGGER.fine("Printing all receipts\u2026");
-    return new PrintAllReceiptsTask();
+  public Task<Void, Void> printInternalReceipt(ActionEvent e) {
+    LOGGER.debug("Printing internal receipt\u2026");
+    return new PrintInternalReceiptTask();
   }
 
   private final class PrintSingleReceiptTask extends Task<Void, Void> {
@@ -148,9 +166,6 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
     PrintSingleReceiptTask(VendorBean vendor) {
       super(BlockingScope.APPLICATION);
-      TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Der Beleg wird gedruckt.", CommandValue.OK);
-      infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
-      infoPane.showDialog(getEventObject(), "Belegdruck");
       progressPane = new TaskPane(MessageType.INFORMATION, "Drucke Beleg", CommandValue.OK);
       progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
       progressPane.setProgressIndeterminate(true);
@@ -161,7 +176,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     }
 
     @Override
-    protected Void doInBackground() throws Exception {
+    protected Void doInBackground() {
       return null;
     }
 
@@ -169,8 +184,8 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     protected void succeeded(Void result) {
       super.succeeded(result);
       progressPane.setVisible(false);
-      
-      String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";      
+
+      String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";
       String mainInstruction = RESOURCES.getString("printReceipt.one.main", "Nr. " + vendor.getId() + " " + vendor
           .getLastName() + ", " + vendor.getFirstName(), path);
       TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
@@ -186,9 +201,6 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
     PrintAllReceiptsTask() {
       super(BlockingScope.APPLICATION);
-      TaskPane infoPane = new TaskPane(MessageType.INFORMATION, "Alle Belege werden gedruckt.", CommandValue.OK);
-      infoPane.setPreferredWidth(PreferredWidth.MEDIUM);
-      infoPane.showDialog(getEventObject(), "Belegedruck");
       progressPane = new TaskPane(MessageType.INFORMATION, "Drucke alle Belege", CommandValue.OK);
       progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
       progressPane.setProgressIndeterminate(true);
@@ -198,7 +210,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     }
 
     @Override
-    protected Void doInBackground() throws Exception {
+    protected Void doInBackground() {
       return null;
     }
 
@@ -206,11 +218,41 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     protected void succeeded(Void result) {
       super.succeeded(result);
       progressPane.setVisible(false);
-      String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";  
+      String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";
       TaskPane pane = new TaskPane(MessageType.INFORMATION, RESOURCES.getString("printReceipt.all.main", path),
           CommandValue.OK);
       pane.setPreferredWidth(PreferredWidth.MEDIUM);
       pane.showDialog(getEventObject(), RESOURCES.getString("printReceipt.all.title"));
+    }
+
+  }
+
+  private final class PrintInternalReceiptTask extends Task<Void, Void> {
+
+    private final TaskPane progressPane;
+
+    PrintInternalReceiptTask() {
+      super(BlockingScope.APPLICATION);
+      progressPane = new TaskPane(MessageType.INFORMATION, "Drucke internen Beleg", CommandValue.OK);
+      progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
+      progressPane.setProgressIndeterminate(true);
+      progressPane.setProgressVisible(true);
+      progressPane.setVisible(true);
+      ExportExcel.getInstance().createExcelForInternalPayoff();
+    }
+
+    @Override
+    protected Void doInBackground() {
+      return null;
+    }
+
+    @Override
+    protected void succeeded(Void result) {
+      super.succeeded(result);
+      progressPane.setVisible(false);
+      TaskPane pane = new TaskPane(MessageType.INFORMATION, "Die interne Abrechnung wurde erstellt.", CommandValue.OK);
+      pane.setPreferredWidth(PreferredWidth.MEDIUM);
+      pane.showDialog(getEventObject(), "Abrechnung erstellt");
     }
 
   }

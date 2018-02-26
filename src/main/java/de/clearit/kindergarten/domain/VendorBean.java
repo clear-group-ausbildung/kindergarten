@@ -1,5 +1,11 @@
 package de.clearit.kindergarten.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.CollectionUtils;
+
 import com.jgoodies.binding.beans.Model;
 
 /**
@@ -12,32 +18,53 @@ public final class VendorBean extends Model {
   // Names of the Bound Bean Properties *************************************
 
   public static final String PROPERTY_ID = "id";
-  public static final String PROPERTY_VENDOR_NUMBER = "vendorNumber";
   public static final String PROPERTY_FIRST_NAME = "firstName";
   public static final String PROPERTY_LAST_NAME = "lastName";
   public static final String PROPERTY_PHONE_NUMBER = "phoneNumber";
+  public static final String PROPERTY_VENDOR_NUMBERS = "vendorNumbers";
+  public static final String PROPERTY_VENDOR_NUMBERS_DISPLAY_STRING = "vendorNumbersDisplayString";
 
   // Fields *****************************************************************
 
   private Integer id;
-  private Integer vendorNumber;
   private String firstName;
   private String lastName;
   private String phoneNumber;
+  private List<VendorNumberBean> vendorNumbers;
 
   // Instance Creation ******************************************************
 
   /**
    * Default constructor; creates a new {@link VendorBean} with default (empty
-   * (String), zero (Integer) or false(Boolean)) values for the attributes.
+   * (String), zero (Integer) or false(Boolean)) values for the attributes. Also
+   * initialises the vendor numbers with an empty list.
    */
   public VendorBean() {
+    this(0, "", "", "", new ArrayList<>());
+  }
+
+  /**
+   * Constructor, creates a new {@link VendorBean} with the given Attributes.
+   *
+   * @param id
+   *          the id
+   * @param firstName
+   *          the first name
+   * @param lastName
+   *          the last name
+   * @param phoneNumber
+   *          the phone number
+   * @param vendorNumbers
+   *          the list of vendor numbers
+   */
+  public VendorBean(Integer id, String firstName, String lastName, String phoneNumber,
+      List<VendorNumberBean> vendorNumbers) {
     super();
-    this.id = 0;
-    this.vendorNumber = null;
-    this.firstName = "";
-    this.lastName = "";
-    this.phoneNumber = "";
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.phoneNumber = phoneNumber;
+    this.vendorNumbers = vendorNumbers;
   }
 
   // Accessors **************************************************************
@@ -50,16 +77,6 @@ public final class VendorBean extends Model {
     Integer oldValue = getId();
     id = newValue;
     firePropertyChange(PROPERTY_ID, oldValue, newValue);
-  }
-
-  public Integer getVendorNumber() {
-    return vendorNumber;
-  }
-
-  public void setVendorNumber(Integer newValue) {
-    Integer oldValue = getVendorNumber();
-    vendorNumber = newValue;
-    firePropertyChange(PROPERTY_VENDOR_NUMBER, oldValue, newValue);
   }
 
   public String getFirstName() {
@@ -92,14 +109,34 @@ public final class VendorBean extends Model {
     firePropertyChange(PROPERTY_PHONE_NUMBER, oldValue, newValue);
   }
 
+  public List<VendorNumberBean> getVendorNumbers() {
+    return vendorNumbers;
+  }
+
+  public void setVendorNumbers(List<VendorNumberBean> newValue) {
+    List<VendorNumberBean> oldValue = getVendorNumbers();
+    vendorNumbers = newValue;
+    firePropertyChange(PROPERTY_VENDOR_NUMBERS, oldValue, newValue);
+  }
+
+  public String getVendorNumbersDisplayString() {
+    String formattedString = "";
+    if (CollectionUtils.isNotEmpty(vendorNumbers)) {
+      formattedString = vendorNumbers.stream().map(vendor -> String.valueOf(vendor.getVendorNumber())).collect(
+          Collectors.joining(", "));
+    }
+    return formattedString;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
-    result = prime * result + ((vendorNumber == null) ? 0 : vendorNumber.hashCode());
+    result = prime * result + ((vendorNumbers == null) ? 0 : vendorNumbers.hashCode());
     return result;
   }
 
@@ -117,6 +154,11 @@ public final class VendorBean extends Model {
         return false;
     } else if (!firstName.equals(other.firstName))
       return false;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
     if (lastName == null) {
       if (other.lastName != null)
         return false;
@@ -127,27 +169,16 @@ public final class VendorBean extends Model {
         return false;
     } else if (!phoneNumber.equals(other.phoneNumber))
       return false;
-    if (vendorNumber == null) {
-      if (other.vendorNumber != null)
-        return false;
-    } else if (!vendorNumber.equals(other.vendorNumber))
-      return false;
-    return true;
+    if (vendorNumbers == null) {
+      return other.vendorNumbers == null;
+    } else
+      return vendorNumbers.equals(other.vendorNumbers);
   }
 
   @Override
   public String toString() {
-    return "VendorBean [id=" +
-        id +
-        ", vendorNumber=" +
-        vendorNumber +
-        ", firstName=" +
-        firstName +
-        ", lastName=" +
-        lastName +
-        ", phoneNumber=" +
-        phoneNumber +
-        "]";
+    return "VendorBean [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber="
+        + phoneNumber + ", vendorNumbers=" + vendorNumbers + "]";
   }
 
 }

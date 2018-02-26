@@ -3,10 +3,10 @@ package de.clearit.validation.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.jdesktop.swingworker.SwingWorker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jgoodies.binding.beans.DelayedPropertyChangeHandler;
 import com.jgoodies.validation.Validatable;
@@ -21,7 +21,7 @@ import com.jgoodies.validation.util.DefaultValidationResultModel;
  */
 public final class ValidationSupport {
 
-  private static final Logger LOGGER = Logger.getLogger(ValidationSupport.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(ValidationSupport.class);
 
   private final DelayedPropertyChangeHandler delayedValidationHandler;
 
@@ -66,11 +66,11 @@ public final class ValidationSupport {
 
   // API ********************************************************************
 
-  private Validatable getValidatable() {
+  public Validatable getValidatable() {
     return validatable;
   }
 
-  private void setValidatable(Validatable newValidator) {
+  public void setValidatable(Validatable newValidator) {
     if (newValidator == null) {
       throw new NullPointerException("The Validatable must not be null.");
     }
@@ -102,29 +102,15 @@ public final class ValidationSupport {
     if (worker != null) {
       worker.cancel(true);
     }
-    LOGGER.log(Level.FINER, "Validating in foreground");
+    LOGGER.debug("Validating in foreground");
     resultModel().setResult(getValidatable().validate());
-  }
-
-  /**
-   * Cancels a running worker - if any - and starts a new worker.
-   *
-   * TODO: Check if we shall cancel a running worker, or block until this worker
-   * has finished.
-   */
-  private void updateDelayed() {
-    if (worker != null) {
-      worker.cancel(true);
-    }
-    worker = new ValidationWorker();
-    worker.execute();
   }
 
   private final class ValidationWorker extends SwingWorker<ValidationResult, Object> {
 
     @Override
-    protected ValidationResult doInBackground() throws Exception {
-      LOGGER.log(Level.FINER, "Validating in background");
+    protected ValidationResult doInBackground() {
+      LOGGER.debug("Validating in background");
       return getValidatable().validate();
     }
 
@@ -137,9 +123,9 @@ public final class ValidationSupport {
       try {
         resultModel().setResult(get());
       } catch (InterruptedException e) {
-        LOGGER.log(Level.FINEST, "ValidationWorker interrupted", e);
+        LOGGER.debug("ValidationWorker interrupted", e);
       } catch (ExecutionException e) {
-        LOGGER.log(Level.INFO, "ValidationWorker execution failed", e);
+        LOGGER.debug("ValidationWorker execution failed", e);
       }
       worker = null;
     }
@@ -155,6 +141,20 @@ public final class ValidationSupport {
     @Override
     public void delayedPropertyChange(PropertyChangeEvent evt) {
       updateDelayed();
+    }
+
+    /**
+     * Cancels a running worker - if any - and starts a new worker.
+     *
+     * TODO: Check if we shall cancel a running worker, or block until this worker
+     * has finished.
+     */
+    private void updateDelayed() {
+      if (worker != null) {
+        worker.cancel(true);
+      }
+      worker = new ValidationWorker();
+      worker.execute();
     }
 
   }

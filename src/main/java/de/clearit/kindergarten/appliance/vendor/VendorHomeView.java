@@ -1,5 +1,7 @@
 package de.clearit.kindergarten.appliance.vendor;
 
+import java.util.stream.Collectors;
+
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -67,7 +69,7 @@ public final class VendorHomeView extends AbstractView {
     builder.setListView(table);
     builder.setListBar(model.getActionMap(), AbstractHomeModel.ACTION_NEW_ITEM, AbstractHomeModel.ACTION_EDIT_ITEM,
         AbstractHomeModel.ACTION_DELETE_ITEM, "---", VendorHomeModel.ACTION_PRINT_RECEIPT,
-        VendorHomeModel.ACTION_PRINT_MULTIPLE_RECEIPTS, VendorHomeModel.ACTION_PRINT_ALL_RECEIPTS);
+        VendorHomeModel.ACTION_PRINT_ALL_RECEIPTS, VendorHomeModel.ACTION_PRINT_INTERNAL_RECEIPT);
     builder.setPreview(preview.getPanel());
 
     return builder.getPanel();
@@ -94,7 +96,12 @@ public final class VendorHomeView extends AbstractView {
       VendorBean vendor = getRow(rowIndex);
       switch (columnIndex) {
       case 0:
-        return vendor.getVendorNumber();
+        if (!vendor.getVendorNumbers().isEmpty()) {
+          return vendor.getVendorNumbers().stream().map(vendorNumber -> String.valueOf(vendorNumber.getVendorNumber()))
+              .collect(Collectors.joining(", "));
+        } else {
+          return "Keine Vorhanden";
+        }
       case 1:
         return vendor.getFirstName();
 

@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
@@ -70,9 +71,11 @@ public class PurchaseEditorView extends AbstractView {
     itemNumberLabel = new JLabel(RESOURCES.getString("purchase.itemNumber"));
     itemNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_NUMBER)));
+
     itemPriceLabel = new JLabel(RESOURCES.getString("purchase.itemPrice"));
     itemPriceField = BasicComponentFactory.createTextField(new DoubleToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_ITEM_PRICE)));
+
     vendorNumberLabel = new JLabel(RESOURCES.getString("purchase.vendor"));
     vendorNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
         PurchaseBean.PROPERTY_VENDOR_NUMBER)));
@@ -116,6 +119,30 @@ public class PurchaseEditorView extends AbstractView {
     final ButtonBarBuilder2 builder = new ButtonBarBuilder2();
     builder.addButton(addButton);
     return builder.getPanel();
+  }
+
+  public JTextField getVendorNumber() {
+    return (JTextField) vendorNumberField;
+  }
+
+  public void setVendorNumber(String vendorNumber) {
+    ((JTextField) vendorNumberField).setText(vendorNumber);
+  }
+
+  public JTextField getItemNumber() {
+    return (JTextField) itemNumberField;
+  }
+
+  public void setItemNumber(String itemNumber) {
+    ((JTextField) itemNumberField).setText(itemNumber);
+  }
+
+  public JTextField getItemPrice() {
+    return (JTextField) itemPriceField;
+  }
+
+  public void setItemPrice(String itemPrice) {
+    ((JTextField) itemPriceField).setText(itemPrice);
   }
 
 }

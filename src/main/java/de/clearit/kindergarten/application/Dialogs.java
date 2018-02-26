@@ -19,6 +19,9 @@ import com.jgoodies.jsdl.core.MessageType;
 import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 import com.jgoodies.jsdl.core.util.JSDLUtils;
+import com.jgoodies.validation.ValidationResult;
+
+import de.clearit.kindergarten.domain.PurchaseBean;
 
 /**
  * Consists only of static method to open frequently used dialogs.
@@ -35,6 +38,46 @@ public final class Dialogs {
   }
 
   // API ********************************************************************
+
+  /**
+   * @return {@code true} if canceled, {@code false} otherwise
+   */
+  public static boolean vendorHasErrors(EventObject e, ValidationResult result) {
+    String title = "Fehler bei der Eingabepr\u00fcfung";
+    String mainInstruction = "Es konnte aufgrund folgender Fehler nicht gespeichert werden:";
+
+    StringBuilder contentTextBuilder = new StringBuilder("<html>");
+    contentTextBuilder.append(result.getMessagesText())/**
+                                                        * .append(result.getMessages().stream().map(
+                                                        * ValidationMessage::formattedText).collect(Collectors.joining("<br>
+                                                        * ")))/
+                                                        **/
+        .append("</html>");
+    String contentText = contentTextBuilder.toString();
+
+    TaskPane pane = new TaskPane(MessageType.ERROR, mainInstruction, contentText, CommandValue.CANCEL);
+    pane.setPreferredWidth(400);
+
+    pane.showDialog(e, title);
+    return pane.isCancelled();
+  }
+
+  /**
+   * @return {@code true} if canceled, {@code false} otherwise
+   */
+  public static boolean purchaseHasErrors(EventObject e, PurchaseBean purchase) {
+    String title = RESOURCES.getString("dialogs.documentHasErrors.title");
+    String mainInstruction = RESOURCES.getString("dialogs.documentHasErrors.mainInstruction", purchase.getItemNumber());
+    String contentText = RESOURCES.getString("dialogs.documentHasErrors.content", purchase.getItemNumber());
+
+    TaskPane pane = new TaskPane(MessageType.WARNING, mainInstruction, contentText, CommandValue.DISCARD,
+        CommandValue.CANCEL);
+    pane.setMarginContentTop(4);
+    pane.setMarginContentBottom(14);
+
+    pane.showDialog(e, title);
+    return pane.isCancelled();
+  }
 
   /**
    * Creates and shows a TaskPane to let the user choose how to proceed with a
@@ -105,11 +148,9 @@ public final class Dialogs {
 
   // Helper Code ************************************************************
 
-  @SuppressWarnings("deprecation")
   private static List<Document> getSelectedDocuments(JList<?> list) {
-    Object[] values = list.getSelectedValues();
     List<Document> result = new LinkedList<>();
-    for (Object element : values) {
+    for (Object element : list.getSelectedValuesList()) {
       result.add((Document) element);
     }
     return result;
