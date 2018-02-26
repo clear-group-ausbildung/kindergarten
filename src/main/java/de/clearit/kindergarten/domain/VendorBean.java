@@ -2,6 +2,9 @@ package de.clearit.kindergarten.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import com.jgoodies.binding.beans.Model;
 
@@ -19,6 +22,7 @@ public final class VendorBean extends Model {
   public static final String PROPERTY_LAST_NAME = "lastName";
   public static final String PROPERTY_PHONE_NUMBER = "phoneNumber";
   public static final String PROPERTY_VENDOR_NUMBERS = "vendorNumbers";
+  public static final String PROPERTY_VENDOR_NUMBERS_DISPLAY_STRING = "vendorNumbersDisplayString";
 
   // Fields *****************************************************************
 
@@ -115,6 +119,15 @@ public final class VendorBean extends Model {
     firePropertyChange(PROPERTY_VENDOR_NUMBERS, oldValue, newValue);
   }
 
+  public String getVendorNumbersDisplayString() {
+    String formattedString = "";
+    if (CollectionUtils.isNotEmpty(vendorNumbers)) {
+      formattedString = vendorNumbers.stream().map(vendor -> String.valueOf(vendor.getVendorNumber())).collect(
+          Collectors.joining(", "));
+    }
+    return formattedString;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -158,7 +171,8 @@ public final class VendorBean extends Model {
       return false;
     if (vendorNumbers == null) {
       return other.vendorNumbers == null;
-    } else return vendorNumbers.equals(other.vendorNumbers);
+    } else
+      return vendorNumbers.equals(other.vendorNumbers);
   }
 
   @Override

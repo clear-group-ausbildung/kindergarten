@@ -1,8 +1,5 @@
 package de.clearit.kindergarten.appliance.vendor;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.swing.JComponent;
 
 import com.jgoodies.application.Application;
@@ -16,7 +13,6 @@ import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 
 import de.clearit.kindergarten.application.KindergartenComponentFactory;
 import de.clearit.kindergarten.domain.VendorBean;
-import de.clearit.kindergarten.domain.VendorNumberBean;
 
 /**
  * The preview for a vendor.
@@ -41,21 +37,13 @@ public final class VendorPreview extends AbstractView {
   // Building ***************************************************************
 
   private void initComponents() {
-    String vendorNumberDisplayString = "";
-    if (model.getBeanChannel().getValue() != null && ((VendorBean) model.getBeanChannel().getValue())
-        .getVendorNumbers() != null && !((VendorBean) model.getBeanChannel().getValue()).getVendorNumbers().isEmpty()) {
-      List<VendorNumberBean> listVendorNumberBeans = model.getBean().getVendorNumbers();
-      vendorNumberDisplayString = listVendorNumberBeans.stream().map(vendor -> String.valueOf(vendor.getVendorNumber()))
-          .collect(Collectors.joining(", "));
-    }
-    vendorNumberField = KindergartenComponentFactory.createReadOnlyTextField(vendorNumberDisplayString);
-
+    vendorNumberField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(
+        VendorBean.PROPERTY_VENDOR_NUMBERS_DISPLAY_STRING));
     firstNameField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(
         VendorBean.PROPERTY_FIRST_NAME));
     lastNameField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(VendorBean.PROPERTY_LAST_NAME));
     phoneNumberField = KindergartenComponentFactory.createReadOnlyTextField(model.getModel(
         VendorBean.PROPERTY_PHONE_NUMBER));
-
   }
 
   @Override
