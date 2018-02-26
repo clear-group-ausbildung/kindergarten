@@ -57,7 +57,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   public VendorEditorModel(VendorBean vendor, CommitCallback<CommandValue> callback) {
     super(vendor);
     this.commitCallback = callback;
-    this.validationSupport = new ValidationSupport(new VendorValidatable(getBean()));
+    this.validationSupport = new ValidationSupport(new VendorValidatable(vendor));
     initModels();
     initPresentationLogic();
   }
@@ -120,8 +120,6 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
       vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));
       // Add to model list
       getSelectionInList().getList().add(vendorNumberBean);
-      // Add to bean list
-      getBean().getVendorNumbers().add(vendorNumberBean);
     } else {
       JOptionPane.showMessageDialog(new JFrame(), "Verk\u00e4ufernummer bereits vorhanden!");
     }
@@ -144,9 +142,10 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
 
   @Override
   public void performAccept(EventObject e) {
+    TextComponentUtils.commitImmediately();
     getBean().getVendorNumbers().clear();
     getBean().getVendorNumbers().addAll(selectionInList.getList());
-    TextComponentUtils.commitImmediately();
+    validationSupport.setValidatable(new VendorValidatable(fromCurrentValues()));
     ValidationResult result = validationSupport.getResult();
     if (!result.hasErrors()) {
       triggerCommit();
@@ -155,7 +154,6 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
       return;
     }
     Dialogs.vendorHasErrors(e, result);
-    validationSupport.setValidatable(new VendorValidatable(getBean()));
   }
 
   @Override
@@ -176,7 +174,6 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   @Override
   public void paneClosing(EventObject e, Runnable operation) {
     Runnable cancelOp = new WrappedOperation(commitCallback, CommandValue.CANCEL, operation);
-    TextComponentUtils.commitImmediately();
     if (!isChanged() && !isBuffering()) { // Test for searching
       cancelOp.run();
       return;
@@ -210,6 +207,15 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   public void release() {
     removeBeanPropertyChangeListener(validationSupport.delayedValidationHandler());
     setBean(null);
+  }
+
+  private VendorBean fromCurrentValues() {
+    VendorBean bean = new VendorBean();
+    bean.setFirstName((String) getBufferedValue(VendorBean.PROPERTY_FIRST_NAME));
+    bean.setLastName((String) getBufferedValue(VendorBean.PROPERTY_LAST_NAME));
+    bean.setPhoneNumber((String) getBufferedValue(VendorBean.PROPERTY_PHONE_NUMBER));
+    bean.getVendorNumbers().addAll(selectionInList.getList());
+    return bean;
   }
 
   // Event Handlers *********************************************************
