@@ -138,14 +138,14 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     VendorNumberBean vendorNumberBean = getSelection();
     // Remove from model list
     getSelectionInList().getList().remove(vendorNumberBean);
-    // Remove from bean list
-    getBean().getVendorNumbers().remove(vendorNumberBean);
   }
 
   // FormPaneModel Implementation *******************************************
 
   @Override
   public void performAccept(EventObject e) {
+    getBean().getVendorNumbers().clear();
+    getBean().getVendorNumbers().addAll(selectionInList.getList());
     TextComponentUtils.commitImmediately();
     ValidationResult result = validationSupport.getResult();
     if (!result.hasErrors()) {
