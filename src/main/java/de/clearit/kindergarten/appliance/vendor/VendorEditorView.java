@@ -69,6 +69,9 @@ public final class VendorEditorView extends AbstractView {
         vendorNumberField.requestFocusInWindow();
       }
     });
+    addVendorNumberButton.addActionListener(actionEvent -> {
+      vendorNumberField.requestFocusInWindow();
+    });
   }
 
   @Override
