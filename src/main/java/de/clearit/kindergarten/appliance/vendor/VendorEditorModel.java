@@ -18,7 +18,6 @@ import com.jgoodies.binding.value.ValueHolder;
 import com.jgoodies.binding.value.ValueModel;
 import com.jgoodies.desktop.CommitCallback;
 import com.jgoodies.desktop.DesktopManager;
-import com.jgoodies.jsdl.core.CloseRequestHandler;
 import com.jgoodies.jsdl.core.CommandValue;
 import com.jgoodies.jsdl.core.pane.form.FormPaneModel;
 import com.jgoodies.jsdl.core.util.JSDLUtils;
@@ -178,7 +177,9 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
 
   @Override
   public void performCancel(EventObject e) {
-    paneClosing(e, CloseRequestHandler.NO_OPERATION);
+    Runnable cancelOp = new WrappedOperation(commitCallback, CommandValue.CANCEL, NO_OPERATION);
+    cancelOp.run();
+    return;
   }
 
   @Override
