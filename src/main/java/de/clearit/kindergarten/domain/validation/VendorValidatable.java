@@ -29,11 +29,16 @@ public class VendorValidatable implements Validatable {
     PropertyValidationSupport support = new PropertyValidationSupport(vendor, "");
 
     if (ValidationUtils.isBlank(vendor.getLastName())) {
-      support.addError(VendorBean.PROPERTY_LAST_NAME, RESOURCES.getString("vendor.lastname.blank"));
+//    support.addError(" ", RESOURCES.getString("vendor.lastname.blank")); 
+      support.addError(VendorBean.PROPERTY_LAST_NAME.replaceAll("^[a-zA-Z]+$", " "), RESOURCES.getString("vendor.lastname.blank"));
+//    support.addError(VendorBean.PROPERTY_LAST_NAME.replaceAll("^[a-zA-Z]+$", " "), ("Geben Sie einen Nachnamen ein"));
+      
+      
     }
 
     if (CollectionUtils.isEmpty(vendor.getVendorNumbers())) {
-      support.addError(VendorBean.PROPERTY_VENDOR_NUMBERS, RESOURCES.getString("vendor.vendornumbers.empty"));
+    support.addError(VendorBean.PROPERTY_VENDOR_NUMBERS.replaceAll("^[a-zA-Z]+$", " "), RESOURCES.getString( "vendor.vendornumbers.empty"));
+//  support.addError(" ", RESOURCES.getString("vendor.vendornumbers.empty"));
     }
 
     return support.getResult();

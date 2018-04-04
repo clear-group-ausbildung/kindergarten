@@ -5,6 +5,7 @@ import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
@@ -19,6 +20,7 @@ import com.jgoodies.jsdl.core.MessageType;
 import com.jgoodies.jsdl.core.PreferredWidth;
 import com.jgoodies.jsdl.core.pane.TaskPane;
 import com.jgoodies.jsdl.core.util.JSDLUtils;
+import com.jgoodies.validation.ValidationMessage;
 import com.jgoodies.validation.ValidationResult;
 
 import de.clearit.kindergarten.domain.PurchaseBean;
@@ -47,13 +49,12 @@ public final class Dialogs {
     String mainInstruction = "Es konnte aufgrund folgender Fehler nicht gespeichert werden:";
 
     StringBuilder contentTextBuilder = new StringBuilder("<html>");
-    contentTextBuilder.append(result.getMessagesText())/**
-                                                        * .append(result.getMessages().stream().map(
-                                                        * ValidationMessage::formattedText).collect(Collectors.joining("<br>
-                                                        * ")))/
-                                                        **/
-        .append("</html>");
-    String contentText = contentTextBuilder.toString();
+    contentTextBuilder.append(result.getMessages().stream().map(
+                                 ValidationMessage::formattedText).collect(Collectors.joining("<br>")));
+    
+	// ich kann den Punkt nur hier entfernen deswegen habe ich noch in
+    // VendorValidatable den PROPERTY String separat entfernt
+    String contentText = contentTextBuilder.toString().replace('.', ' ').trim();  
 
     TaskPane pane = new TaskPane(MessageType.ERROR, mainInstruction, contentText, CommandValue.CANCEL);
     pane.setPreferredWidth(400);

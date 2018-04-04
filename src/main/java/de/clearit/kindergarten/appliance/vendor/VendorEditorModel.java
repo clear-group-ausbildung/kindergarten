@@ -156,6 +156,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
     getBean().getVendorNumbers().addAll(selectionInList.getList());
     validationSupport.setValidatable(new VendorValidatable(fromCurrentValues()));
     ValidationResult result = validationSupport.getResult();
+    
     if (!result.hasErrors()) {
       triggerCommit();
       commitCallback.committed(CommandValue.OK);
