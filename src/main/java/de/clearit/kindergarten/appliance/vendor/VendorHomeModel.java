@@ -130,14 +130,28 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   @Action(enabled = false)
   public void deleteItem(ActionEvent e) {
     VendorBean vendor = getSelection();
-    String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", vendor.getLastName() + ", " + vendor
-        .getFirstName());
-    TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
-    pane.setPreferredWidth(PreferredWidth.MEDIUM);
-    pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
-    if (pane.getCommitValue() == CommandValue.YES) {
-      SERVICE.delete(vendor);
-      postChangeHandler.onPostDelete();
+    
+    //If Abfrage wegen dem Komma
+    if(vendor.getFirstName().isEmpty()){
+    	 String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", vendor.getLastName());
+    	 TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
+    	    pane.setPreferredWidth(PreferredWidth.MEDIUM);
+    	    pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
+    	    if (pane.getCommitValue() == CommandValue.YES) {
+    	        SERVICE.delete(vendor);
+    	        postChangeHandler.onPostDelete();
+    }
+   }
+    else{
+    	 String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", vendor.getLastName()+", "+vendor.getFirstName());
+    	 TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
+    	    pane.setPreferredWidth(PreferredWidth.MEDIUM);
+    	    pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
+    	    if (pane.getCommitValue() == CommandValue.YES) {
+    	        SERVICE.delete(vendor);
+    	        postChangeHandler.onPostDelete();
+      }
+    	
     }
   }
 
