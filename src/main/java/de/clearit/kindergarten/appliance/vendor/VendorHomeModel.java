@@ -310,8 +310,11 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	      super.succeeded(result);
 	      LOGGER.debug("# Vendor elements to create: {}", result.size());
 	      Observable<VendorBean> observableVendors = Observable.fromIterable(result);
+	      
+	      System.out.println("RESULT = " + result);
+	      
 	      long beginNanos = System.nanoTime();
-	      observableVendors.subscribe(vendorBean -> SERVICE.toEntity(vendorBean).saveIt(), Observable::error, () -> {
+	      observableVendors.subscribe(vendorBean -> SERVICE.importVendors(vendorBean), Observable::error, () -> {
 	        SERVICE.flush();
 	        LOGGER.debug("Finished Import after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
 	        progressPane.setVisible(false);
@@ -319,9 +322,8 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	        String mainInstruction = RESOURCES.getString("importVendors.message.text", result.size());
 	        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
 	        pane.setPreferredWidth(PreferredWidth.MEDIUM);
-	        pane.showDialog(getEventObject(), RESOURCES.getString("importVendors.message.title"));
-	      });
-
+	        pane.showDialog(getEventObject(), RESOURCES.getString("importVendors.message.title"));	        
+	      });	      
 	    }
 
 	    private File getImportPath() {
