@@ -1,5 +1,6 @@
 package de.clearit.kindergarten.domain;
 
+import com.google.gson.annotations.Expose;
 import com.jgoodies.binding.beans.Model;
 
 /**
@@ -18,7 +19,9 @@ public final class VendorNumberBean extends Model {
   // Fields *****************************************************************
 
   private Integer id;
+  @Expose
   private int vendorNumber;
+  @Expose
   private int vendorId;
 
   // Instance Creation ******************************************************

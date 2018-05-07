@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import com.google.gson.annotations.Expose;
 import com.jgoodies.binding.beans.Model;
 
 /**
@@ -27,9 +28,13 @@ public final class VendorBean extends Model {
   // Fields *****************************************************************
 
   private Integer id;
+  @Expose
   private String firstName;
+  @Expose
   private String lastName;
+  @Expose
   private String phoneNumber;
+  @Expose
   private List<VendorNumberBean> vendorNumbers;
 
   // Instance Creation ******************************************************
