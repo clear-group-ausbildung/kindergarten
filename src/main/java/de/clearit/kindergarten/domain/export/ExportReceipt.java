@@ -1,19 +1,19 @@
 package de.clearit.kindergarten.domain.export;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import javax.swing.text.DateFormatter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -22,28 +22,24 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.*;
 import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.export.entity.PayoffDataReceipt;
 import de.clearit.kindergarten.domain.export.entity.PayoffSoldItemsData;
 import de.clearit.kindergarten.domain.export.service.ExportDataService;
+import org.w3c.dom.Document;
 
 /**
  * The class ExportReceipt
@@ -71,9 +67,11 @@ public class ExportReceipt {
   private XSSFCellStyle sumStyle;
   private XSSFCellStyle vendorHeaderStyle;
 
+  private PdfStamper stamper;
+
   /**
    * Creates an receipt in excel for the given vendor.
-   * 
+   *
    * @param pVendor
    *          {@link VendorBean}
    */
@@ -91,18 +89,33 @@ public class ExportReceipt {
       wb.write(fileOut);
       fileOut.close();
       wb.close();
-      createPDF(fileOutName);
+//      createPDF(fileOutName);
+      createPDF(payoffData);
     } catch (FileNotFoundException e) {
       LOGGER.debug("Error - Excel Template not found");
       LOGGER.error(e.getMessage());
     } catch (IOException e) {
-      LOGGER.debug("Error Exel Export");
+      LOGGER.debug("Error Excel Export");
       LOGGER.error(e.getMessage());
-    } catch (ParserConfigurationException e) {
-      LOGGER.error(e.getMessage());
-    } catch (TransformerException e) {
+//    } catch (ParserConfigurationException e) {
+//      LOGGER.error(e.getMessage());
+//    } catch (TransformerException e) {
+//      LOGGER.error(e.getMessage());
+//    } catch (SAXException e) {
+//      LOGGER.error(e.getMessage());
+    } catch (DocumentException e) {
       LOGGER.error(e.getMessage());
     }
+  }
+
+  private void createPDF(PayoffDataReceipt payoffData) throws IOException, DocumentException {
+    PdfReader reader = new PdfReader("./abrechnung_template.pdf");
+    stamper = new PdfStamper(reader, new FileOutputStream(getDateiname(payoffData).replace("xlsx", "pdf")));
+
+    fillInPDFPlaceholders(payoffData);
+
+    stamper.close();
+    reader.close();
   }
 
   private void createPDF(String fileOutName) throws IOException, ParserConfigurationException, TransformerException {
@@ -117,6 +130,31 @@ public class ExportReceipt {
     serializer.setOutputProperty(OutputKeys.INDENT, "no");
     serializer.setOutputProperty(OutputKeys.METHOD, "html");
     serializer.transform(domSource, streamResult);
+  }
+
+  private void fillInPDFPlaceholders(PayoffDataReceipt pPayoffData) throws IOException, DocumentException {
+    AcroFields form = stamper.getAcroFields();
+
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+    form.setField("date", now.format(formatter));
+    form.setField("vendorID", pPayoffData.getVendorNumberList().stream().map(Object::toString).collect(Collectors
+      .joining(", ")));
+    form.setField("lastName",pPayoffData.getLastName());
+    form.setField("firstName", pPayoffData.getFirstName());
+    form.setField("totalSoldItems", String.valueOf(pPayoffData.getTotalSoldItems()));
+    form.setField("turnover", String.valueOf(pPayoffData.getTurnover()));
+    form.setField("profit",  String.valueOf(pPayoffData.getProfit()));
+    form.setField("payment",  String.valueOf(pPayoffData.getPayment()));
+    form.setField("soldItemListStart", createPDFSoldItemList(pPayoffData.getPayoffSoldItemsData()));
+
+    form.setGenerateAppearances(true);
+    stamper.setFormFlattening(true);
+  }
+
+  private String createPDFSoldItemList(List<PayoffSoldItemsData> pPayoffSoldItemDataList) {
+    return "Noch nicht implementiert!";
   }
 
   private void fillInPlaceholders(PayoffDataReceipt pPayoffData) {

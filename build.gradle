@@ -74,6 +74,7 @@ dependencies {
    	compile name: 'swing-worker'
    	compile name: 'uif2-0.9.18'
    	compile name: 'validation-2.0.1'
+   	compile name: 'itextpdf-5.5.13'
 }
 
 mainClassName = "de.clearit.kindergarten.application.KindergartenLauncher"
