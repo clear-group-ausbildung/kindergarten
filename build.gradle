@@ -35,7 +35,7 @@ dependencies {
   	  // https://mvnrepository.com/artifact/com.google.guava/guava
   	  compile group: 'com.google.guava', name: 'guava', version: '23.0'
   	  // https://mvnrepository.com/artifact/com.itextpdf/itext7-core
-    compile group: 'com.itextpdf', name: 'itext7-core', version: '7.1.1'
+    compile group: 'com.itextpdf', name: 'itext7-core', version: '7.1.2'
     // https://mvnrepository.com/artifact/io.reactivex.rxjava2/rxjava
     compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.9'
   	  // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
@@ -74,7 +74,6 @@ dependencies {
    	compile name: 'swing-worker'
    	compile name: 'uif2-0.9.18'
    	compile name: 'validation-2.0.1'
-   	compile name: 'itextpdf-5.5.13'
 }
 
 mainClassName = "de.clearit.kindergarten.application.KindergartenLauncher"
