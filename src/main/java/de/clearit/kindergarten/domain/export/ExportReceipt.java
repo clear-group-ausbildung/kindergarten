@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import javax.swing.text.DateFormatter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -22,8 +21,18 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.*;
+import com.itextpdf.forms.PdfAcroForm;
+import com.itextpdf.forms.fields.PdfFormField;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.IBlockElement;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.layout.LayoutArea;
+import com.itextpdf.layout.layout.LayoutResult;
+import com.itextpdf.layout.renderer.DocumentRenderer;
 import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -67,7 +76,7 @@ public class ExportReceipt {
   private XSSFCellStyle sumStyle;
   private XSSFCellStyle vendorHeaderStyle;
 
-  private PdfStamper stamper;
+  private PdfDocument pdfDocument;
 
   /**
    * Creates an receipt in excel for the given vendor.
@@ -89,7 +98,6 @@ public class ExportReceipt {
       wb.write(fileOut);
       fileOut.close();
       wb.close();
-//      createPDF(fileOutName);
       createPDF(payoffData);
     } catch (FileNotFoundException e) {
       LOGGER.debug("Error - Excel Template not found");
@@ -97,25 +105,19 @@ public class ExportReceipt {
     } catch (IOException e) {
       LOGGER.debug("Error Excel Export");
       LOGGER.error(e.getMessage());
-//    } catch (ParserConfigurationException e) {
-//      LOGGER.error(e.getMessage());
-//    } catch (TransformerException e) {
-//      LOGGER.error(e.getMessage());
-//    } catch (SAXException e) {
-//      LOGGER.error(e.getMessage());
-    } catch (DocumentException e) {
-      LOGGER.error(e.getMessage());
     }
   }
 
-  private void createPDF(PayoffDataReceipt payoffData) throws IOException, DocumentException {
+  private void createPDF(PayoffDataReceipt payoffData) throws IOException {
     PdfReader reader = new PdfReader("./abrechnung_template.pdf");
-    stamper = new PdfStamper(reader, new FileOutputStream(getDateiname(payoffData).replace("xlsx", "pdf")));
+    PdfWriter writer = new PdfWriter(getDateiname(payoffData).replace("xlsx", "pdf"));
+    pdfDocument = new PdfDocument(reader, writer);
 
     fillInPDFPlaceholders(payoffData);
 
-    stamper.close();
     reader.close();
+    writer.close();
+    pdfDocument.close();
   }
 
   private void createPDF(String fileOutName) throws IOException, ParserConfigurationException, TransformerException {
@@ -132,29 +134,83 @@ public class ExportReceipt {
     serializer.transform(domSource, streamResult);
   }
 
-  private void fillInPDFPlaceholders(PayoffDataReceipt pPayoffData) throws IOException, DocumentException {
-    AcroFields form = stamper.getAcroFields();
+  private void fillInPDFPlaceholders(PayoffDataReceipt pPayoffData) {
+    com.itextpdf.layout.Document doc = new com.itextpdf.layout.Document(pdfDocument);
+
+    PdfAcroForm form = PdfAcroForm.getAcroForm(pdfDocument, true);
+    Map<String, PdfFormField> fields = form.getFormFields();
 
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    form.setField("date", now.format(formatter));
-    form.setField("vendorID", pPayoffData.getVendorNumberList().stream().map(Object::toString).collect(Collectors
+    fields.get("date").setValue(now.format(formatter));
+    fields.get("vendorID").setValue(pPayoffData.getVendorNumberList().stream().map(Object::toString).collect(Collectors
       .joining(", ")));
-    form.setField("lastName",pPayoffData.getLastName());
-    form.setField("firstName", pPayoffData.getFirstName());
-    form.setField("totalSoldItems", String.valueOf(pPayoffData.getTotalSoldItems()));
-    form.setField("turnover", String.valueOf(pPayoffData.getTurnover()));
-    form.setField("profit",  String.valueOf(pPayoffData.getProfit()));
-    form.setField("payment",  String.valueOf(pPayoffData.getPayment()));
-    form.setField("soldItemListStart", createPDFSoldItemList(pPayoffData.getPayoffSoldItemsData()));
+    fields.get("lastName").setValue(pPayoffData.getLastName());
+    fields.get("firstName").setValue(pPayoffData.getFirstName());
+    fields.get("totalSoldItems").setValue(String.valueOf(pPayoffData.getTotalSoldItems()));
+    fields.get("turnover").setValue(formatCurrency(pPayoffData.getTurnover()));
+    fields.get("profit").setValue(formatCurrency(pPayoffData.getProfit()));
+    fields.get("payment").setValue(formatCurrency(pPayoffData.getPayment()));
+    fields.get("soldItemListStart").setValue("");
+    form.flattenFields();
 
-    form.setGenerateAppearances(true);
-    stamper.setFormFlattening(true);
+    Table soldItemsTable = createPDFSoldItemList(pPayoffData.getPayoffSoldItemsData());
+
+    doc.setRenderer(new DocumentRenderer(doc) {
+      @Override
+      protected LayoutArea updateCurrentArea(LayoutResult overflowResult) {
+        LayoutArea area = super.updateCurrentArea(overflowResult);
+        if (area.getPageNumber() == 1) {
+          area.getBBox().decreaseHeight(316);
+        }
+        return area;
+      }
+    });
+
+    doc.add(soldItemsTable);
+    doc.close();
   }
 
-  private String createPDFSoldItemList(List<PayoffSoldItemsData> pPayoffSoldItemDataList) {
-    return "Noch nicht implementiert!";
+  private String formatCurrency(Double amountOfMoney) {
+    return String.format("%.2f", amountOfMoney) + " \u20AC";
+  }
+
+  private Table createPDFSoldItemList(List<PayoffSoldItemsData> pPayoffSoldItemDataList) {
+    Table table = new Table(new float[]{1, 15});
+    table.setBorder(Border.NO_BORDER);
+    for (PayoffSoldItemsData payoffSoldItemData : pPayoffSoldItemDataList) {
+      table.addCell(getFormattedCell(1, 2, ""));
+      table.addCell(getFormattedCell(1, 2, "Verk" + "\u00E4" + "ufer Nummer: " + payoffSoldItemData.getVendorNumber()));
+
+      if (payoffSoldItemData.getSoldItemNumbersPricesMap().isEmpty()) {
+        table.addCell(getFormattedCell(1, 2, "Keine Artikel verkauft"));
+      } else {
+        createItemRows(payoffSoldItemData, table);
+      }
+    }
+    return table;
+  }
+
+  private void createItemRows(PayoffSoldItemsData pPayoffSoldItemData, Table table) {
+    Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
+    for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {
+      table.addCell(getFormattedCell(String.valueOf(entry.getKey())));
+      table.addCell(getFormattedCell(formatCurrency(entry.getValue())));
+      table.addCell(getFormattedCell("Summe:"));
+      table.addCell(getFormattedCell(formatCurrency(pPayoffSoldItemData.getSoldItemSum())));
+    }
+  }
+
+  private com.itextpdf.layout.element.Cell getFormattedCell(String content) {
+    return getFormattedCell(1, 1, content);
+  }
+
+  private com.itextpdf.layout.element.Cell getFormattedCell(int rowspan, int colspan, String content) {
+    com.itextpdf.layout.element.Cell cell = new com.itextpdf.layout.element.Cell(rowspan,colspan);
+    cell.add(new Paragraph(content));
+    cell.setBorder(Border.NO_BORDER);
+    return cell;
   }
 
   private void fillInPlaceholders(PayoffDataReceipt pPayoffData) {
@@ -247,7 +303,7 @@ public class ExportReceipt {
     int colIndexPrice = pColIndex + 1;
     Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
     for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {
-      XSSFRow tempRow = sheet.createRow(pRowCount);
+        XSSFRow tempRow = sheet.createRow(pRowCount);
 
       XSSFCell numberCell = tempRow.createCell(pColIndex);
       numberCell.setCellValue(entry.getKey());
