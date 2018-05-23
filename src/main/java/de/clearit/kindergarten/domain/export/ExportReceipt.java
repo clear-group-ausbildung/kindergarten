@@ -341,7 +341,7 @@ public class ExportReceipt {
     return null;
   }
 
-  private String getDateiname(PayoffDataReceipt pPayoffData) {
+  public String getDateiname(PayoffDataReceipt pPayoffData) {
     String folder = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";
     StringBuilder dateiName = new StringBuilder();
     if (!Files.isDirectory(Paths.get(folder))) {

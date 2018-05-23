@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import de.clearit.kindergarten.domain.print.PrintingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,7 +104,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     String title = RESOURCES.getString("editVendor.title");
     editItem(title, getSelection(), false);
   }
-  
+
   @Action
   public Task<List<VendorBean>, Void> importVendors(final ActionEvent e) {
     LOGGER.debug("Importing vendors\u2026");
@@ -156,7 +157,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
   @Action(enabled = false)
   public void deleteItem(ActionEvent e) {
     VendorBean vendor = getSelection();
-    
+
     //If Abfrage wegen dem Komma
     if(vendor.getFirstName().isEmpty()){
     	 String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", vendor.getLastName());
@@ -177,7 +178,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     	        SERVICE.delete(vendor);
     	        postChangeHandler.onPostDelete();
       }
-    	
+
     }
   }
 
@@ -247,6 +248,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
       progressPane.setProgressVisible(true);
       progressPane.setVisible(true);
       ExportExcel.getInstance().createExcelForAllVendors();
+      PrintingService.printAllExportedFiles();
     }
 
     @Override
@@ -296,7 +298,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     }
 
   }
-  
+
   private final class ImportVendorsTask extends Task<List<VendorBean>, Void> {
 
 	    private final TaskPane progressPane;
@@ -324,9 +326,9 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	      super.succeeded(result);
 	      LOGGER.debug("# Vendor elements to create: {}", result.size());
 	      Observable<VendorBean> observableVendors = Observable.fromIterable(result);
-	      
+
 	      System.out.println("RESULT = " + result);
-	      
+
 	      long beginNanos = System.nanoTime();
 	      observableVendors.subscribe(vendorBean -> SERVICE.importVendors(vendorBean), Observable::error, () -> {
 	        SERVICE.flush();
@@ -336,8 +338,8 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	        String mainInstruction = RESOURCES.getString("importVendors.message.text", result.size());
 	        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
 	        pane.setPreferredWidth(PreferredWidth.MEDIUM);
-	        pane.showDialog(getEventObject(), RESOURCES.getString("importVendors.message.title"));	        
-	      });	      
+	        pane.showDialog(getEventObject(), RESOURCES.getString("importVendors.message.title"));
+	      });
 	    }
 
 	    private File getImportPath() {
