@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -23,13 +22,16 @@ import javax.xml.transform.stream.StreamResult;
 
 import com.itextpdf.forms.PdfAcroForm;
 import com.itextpdf.forms.fields.PdfFormField;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.layout.LayoutArea;
 import com.itextpdf.layout.layout.LayoutResult;
 import com.itextpdf.layout.renderer.DocumentRenderer;
@@ -77,6 +79,7 @@ public class ExportReceipt {
   private XSSFCellStyle vendorHeaderStyle;
 
   private PdfDocument pdfDocument;
+  private PdfFont font;
 
   /**
    * Creates an receipt in excel for the given vendor.
@@ -137,21 +140,23 @@ public class ExportReceipt {
   private void fillInPDFPlaceholders(PayoffDataReceipt pPayoffData) {
     com.itextpdf.layout.Document doc = new com.itextpdf.layout.Document(pdfDocument);
 
+    setFont();
+
     PdfAcroForm form = PdfAcroForm.getAcroForm(pdfDocument, true);
     Map<String, PdfFormField> fields = form.getFormFields();
 
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    fields.get("date").setValue(now.format(formatter));
+    fields.get("date").setValue(now.format(formatter), font, 11);
     fields.get("vendorID").setValue(pPayoffData.getVendorNumberList().stream().map(Object::toString).collect(Collectors
-      .joining(", ")));
-    fields.get("lastName").setValue(pPayoffData.getLastName());
-    fields.get("firstName").setValue(pPayoffData.getFirstName());
-    fields.get("totalSoldItems").setValue(String.valueOf(pPayoffData.getTotalSoldItems()));
-    fields.get("turnover").setValue(formatCurrency(pPayoffData.getTurnover()));
-    fields.get("profit").setValue(formatCurrency(pPayoffData.getProfit()));
-    fields.get("payment").setValue(formatCurrency(pPayoffData.getPayment()));
+      .joining(", ")), font, 11); //TODO: Bold
+    fields.get("lastName").setValue(pPayoffData.getLastName(), font, 11);
+    fields.get("firstName").setValue(pPayoffData.getFirstName(), font, 11);
+    fields.get("totalSoldItems").setValue(String.valueOf(pPayoffData.getTotalSoldItems()), font, 11);
+    fields.get("turnover").setValue(formatCurrency(pPayoffData.getTurnover()), font, 11);
+    fields.get("profit").setValue(formatCurrency(pPayoffData.getProfit()), font, 11);
+    fields.get("payment").setValue(formatCurrency(pPayoffData.getPayment()), font, 14);  //TODO: Bold
     fields.get("soldItemListStart").setValue("");
     form.flattenFields();
 
@@ -176,6 +181,7 @@ public class ExportReceipt {
     return String.format("%.2f", amountOfMoney) + " \u20AC";
   }
 
+  //TODO: Richtige Positionierung der Tabelle muss implementiert werden
   private Table createPDFSoldItemList(List<PayoffSoldItemsData> pPayoffSoldItemDataList) {
     Table table = new Table(new float[]{1, 15});
     table.setBorder(Border.NO_BORDER);
@@ -208,9 +214,18 @@ public class ExportReceipt {
 
   private com.itextpdf.layout.element.Cell getFormattedCell(int rowspan, int colspan, String content) {
     com.itextpdf.layout.element.Cell cell = new com.itextpdf.layout.element.Cell(rowspan,colspan);
-    cell.add(new Paragraph(content));
+    cell.add(new Paragraph(new Text(content).setFont(font).setFontSize(11)));
     cell.setBorder(Border.NO_BORDER);
     return cell;
+  }
+
+  private void setFont() {
+    try {
+      font = PdfFontFactory.createFont("./Calibri.ttf", PdfEncodings.IDENTITY_H, true);
+    } catch (IOException e) {
+      LOGGER.debug("Error - Font not found");
+      LOGGER.error(e.getMessage());
+    }
   }
 
   private void fillInPlaceholders(PayoffDataReceipt pPayoffData) {
