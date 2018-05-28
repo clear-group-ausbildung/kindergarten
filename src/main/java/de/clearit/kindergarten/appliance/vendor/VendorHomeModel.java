@@ -12,7 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import de.clearit.kindergarten.domain.print.PrintService;
+import de.clearit.kindergarten.domain.print.PrintingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -248,7 +248,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
       progressPane.setProgressVisible(true);
       progressPane.setVisible(true);
       ExportExcel.getInstance().createExcelForAllVendors();
-      PrintService.printAllExportedFiles();
+      PrintingService.printAllExportedFiles();
     }
 
     @Override

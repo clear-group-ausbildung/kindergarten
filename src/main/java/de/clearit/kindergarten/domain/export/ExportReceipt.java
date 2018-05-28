@@ -1,29 +1,47 @@
 package de.clearit.kindergarten.domain.export;
 
 import java.awt.Color;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import com.itextpdf.forms.PdfAcroForm;
+import com.itextpdf.forms.fields.PdfFormField;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.layout.LayoutArea;
+import com.itextpdf.layout.layout.LayoutResult;
+import com.itextpdf.layout.renderer.DocumentRenderer;
+import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +50,7 @@ import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.export.entity.PayoffDataReceipt;
 import de.clearit.kindergarten.domain.export.entity.PayoffSoldItemsData;
 import de.clearit.kindergarten.domain.export.service.ExportDataService;
+import org.w3c.dom.Document;
 
 /**
  * The class ExportReceipt
@@ -59,6 +78,9 @@ public class ExportReceipt {
   private XSSFCellStyle sumStyle;
   private XSSFCellStyle vendorHeaderStyle;
 
+  private PdfDocument pdfDocument;
+  private PdfFont font;
+
   /**
    * Creates an receipt in excel for the given vendor.
    *
@@ -74,15 +96,134 @@ public class ExportReceipt {
       PayoffDataReceipt payoffData = ExportDataService.getPayoffDataForVendor(pVendor);
       fillInPlaceholders(payoffData);
 
-      FileOutputStream fileOut = new FileOutputStream(getDateiname(payoffData));
+      String fileOutName = getDateiname(payoffData);
+      FileOutputStream fileOut = new FileOutputStream(fileOutName);
       wb.write(fileOut);
       fileOut.close();
       wb.close();
+      createPDF(payoffData);
     } catch (FileNotFoundException e) {
       LOGGER.debug("Error - Excel Template not found");
       LOGGER.error(e.getMessage());
     } catch (IOException e) {
-      LOGGER.debug("Error Exel Export");
+      LOGGER.debug("Error Excel Export");
+      LOGGER.error(e.getMessage());
+    }
+  }
+
+  private void createPDF(PayoffDataReceipt payoffData) throws IOException {
+    PdfReader reader = new PdfReader("./abrechnung_template.pdf");
+    PdfWriter writer = new PdfWriter(getDateiname(payoffData).replace("xlsx", "pdf"));
+    pdfDocument = new PdfDocument(reader, writer);
+
+    fillInPDFPlaceholders(payoffData);
+
+    reader.close();
+    writer.close();
+    pdfDocument.close();
+  }
+
+  private void createPDF(String fileOutName) throws IOException, ParserConfigurationException, TransformerException {
+    Document doc = ExcelToHtmlConverter.process(new File(fileOutName));
+
+    DOMSource domSource = new DOMSource(doc);
+    StreamResult streamResult = new StreamResult(new File("./abrechnung.html"));
+
+    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    Transformer serializer = transformerFactory.newTransformer();
+    serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+    serializer.setOutputProperty(OutputKeys.INDENT, "no");
+    serializer.setOutputProperty(OutputKeys.METHOD, "html");
+    serializer.transform(domSource, streamResult);
+  }
+
+  private void fillInPDFPlaceholders(PayoffDataReceipt pPayoffData) {
+    com.itextpdf.layout.Document doc = new com.itextpdf.layout.Document(pdfDocument);
+
+    setFont();
+
+    PdfAcroForm form = PdfAcroForm.getAcroForm(pdfDocument, true);
+    Map<String, PdfFormField> fields = form.getFormFields();
+
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+    fields.get("date").setValue(now.format(formatter), font, 11);
+    fields.get("vendorID").setValue(pPayoffData.getVendorNumberList().stream().map(Object::toString).collect(Collectors
+      .joining(", ")), font, 11); //TODO: Bold
+    fields.get("lastName").setValue(pPayoffData.getLastName(), font, 11);
+    fields.get("firstName").setValue(pPayoffData.getFirstName(), font, 11);
+    fields.get("totalSoldItems").setValue(String.valueOf(pPayoffData.getTotalSoldItems()), font, 11);
+    fields.get("turnover").setValue(formatCurrency(pPayoffData.getTurnover()), font, 11);
+    fields.get("profit").setValue(formatCurrency(pPayoffData.getProfit()), font, 11);
+    fields.get("payment").setValue(formatCurrency(pPayoffData.getPayment()), font, 14);  //TODO: Bold
+    fields.get("soldItemListStart").setValue("");
+    form.flattenFields();
+
+    Table soldItemsTable = createPDFSoldItemList(pPayoffData.getPayoffSoldItemsData());
+
+    doc.setRenderer(new DocumentRenderer(doc) {
+      @Override
+      protected LayoutArea updateCurrentArea(LayoutResult overflowResult) {
+        LayoutArea area = super.updateCurrentArea(overflowResult);
+        if (area.getPageNumber() == 1) {
+          area.getBBox().decreaseHeight(316);
+        }
+        return area;
+      }
+    });
+
+    doc.add(soldItemsTable);
+    doc.close();
+  }
+
+  private String formatCurrency(Double amountOfMoney) {
+    return String.format("%.2f", amountOfMoney) + " \u20AC";
+  }
+
+  //TODO: Richtige Positionierung der Tabelle muss implementiert werden
+  private Table createPDFSoldItemList(List<PayoffSoldItemsData> pPayoffSoldItemDataList) {
+    Table table = new Table(new float[]{1, 15});
+    table.setBorder(Border.NO_BORDER);
+    for (PayoffSoldItemsData payoffSoldItemData : pPayoffSoldItemDataList) {
+      table.addCell(getFormattedCell(1, 2, ""));
+      table.addCell(getFormattedCell(1, 2, "Verk" + "\u00E4" + "ufer Nummer: " + payoffSoldItemData.getVendorNumber()));
+
+      if (payoffSoldItemData.getSoldItemNumbersPricesMap().isEmpty()) {
+        table.addCell(getFormattedCell(1, 2, "Keine Artikel verkauft"));
+      } else {
+        createItemRows(payoffSoldItemData, table);
+      }
+    }
+    return table;
+  }
+
+  private void createItemRows(PayoffSoldItemsData pPayoffSoldItemData, Table table) {
+    Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
+    for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {
+      table.addCell(getFormattedCell(String.valueOf(entry.getKey())));
+      table.addCell(getFormattedCell(formatCurrency(entry.getValue())));
+      table.addCell(getFormattedCell("Summe:"));
+      table.addCell(getFormattedCell(formatCurrency(pPayoffSoldItemData.getSoldItemSum())));
+    }
+  }
+
+  private com.itextpdf.layout.element.Cell getFormattedCell(String content) {
+    return getFormattedCell(1, 1, content);
+  }
+
+  private com.itextpdf.layout.element.Cell getFormattedCell(int rowspan, int colspan, String content) {
+    com.itextpdf.layout.element.Cell cell = new com.itextpdf.layout.element.Cell(rowspan,colspan);
+    cell.add(new Paragraph(new Text(content).setFont(font).setFontSize(11)));
+    cell.setBorder(Border.NO_BORDER);
+    return cell;
+  }
+
+  private void setFont() {
+    try {
+      font = PdfFontFactory.createFont("./Calibri.ttf", PdfEncodings.IDENTITY_H, true);
+    } catch (IOException e) {
+      LOGGER.debug("Error - Font not found");
       LOGGER.error(e.getMessage());
     }
   }
@@ -177,7 +318,7 @@ public class ExportReceipt {
     int colIndexPrice = pColIndex + 1;
     Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
     for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {
-      XSSFRow tempRow = sheet.createRow(pRowCount);
+        XSSFRow tempRow = sheet.createRow(pRowCount);
 
       XSSFCell numberCell = tempRow.createCell(pColIndex);
       numberCell.setCellValue(entry.getKey());
@@ -224,7 +365,7 @@ public class ExportReceipt {
         dateiName.append(folder);
         dateiName.append("/");
       } catch (IOException e) {
-        e.printStackTrace();
+        LOGGER.error(e.getMessage());
       }
     } else {
       dateiName.append(folder);
@@ -244,10 +385,10 @@ public class ExportReceipt {
 
     numberStyle = wb.createCellStyle();
     numberStyle.setAlignment(HorizontalAlignment.CENTER);
-    numberStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-    numberStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-    numberStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-    numberStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    numberStyle.setBorderBottom(BorderStyle.THIN);
+    numberStyle.setBorderTop(BorderStyle.THIN);
+    numberStyle.setBorderRight(BorderStyle.THIN);
+    numberStyle.setBorderLeft(BorderStyle.THIN);
     numberStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(PALE_BLUE)));
     numberStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(PALE_BLUE)));
     numberStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode(PALE_BLUE)));
@@ -256,10 +397,10 @@ public class ExportReceipt {
     priceStyle = wb.createCellStyle();
     priceStyle.setDataFormat((short) 7);
     priceStyle.setAlignment(HorizontalAlignment.LEFT);
-    priceStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-    priceStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-    priceStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-    priceStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    priceStyle.setBorderBottom(BorderStyle.THIN);
+    priceStyle.setBorderTop(BorderStyle.THIN);
+    priceStyle.setBorderRight(BorderStyle.THIN);
+    priceStyle.setBorderLeft(BorderStyle.THIN);
     priceStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(PALE_BLUE)));
     priceStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(PALE_BLUE)));
     priceStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode(PALE_BLUE)));
@@ -267,10 +408,10 @@ public class ExportReceipt {
 
     sumStyle = wb.createCellStyle();
     sumStyle.setAlignment(HorizontalAlignment.RIGHT);
-    sumStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-    sumStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-    sumStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-    sumStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+    sumStyle.setBorderBottom(BorderStyle.THIN);
+    sumStyle.setBorderTop(BorderStyle.THIN);
+    sumStyle.setBorderRight(BorderStyle.THIN);
+    sumStyle.setBorderLeft(BorderStyle.THIN);
     sumStyle.setBorderColor(BorderSide.BOTTOM, new XSSFColor(Color.decode(PALE_BLUE)));
     sumStyle.setBorderColor(BorderSide.TOP, new XSSFColor(Color.decode(PALE_BLUE)));
     sumStyle.setBorderColor(BorderSide.RIGHT, new XSSFColor(Color.decode(PALE_BLUE)));
