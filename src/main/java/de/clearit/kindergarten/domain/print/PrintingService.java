@@ -1,25 +1,28 @@
 package de.clearit.kindergarten.domain.print;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
+import javax.print.PrintServiceLookup;
+import javax.print.ServiceUI;
+import javax.print.SimpleDoc;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorService;
 import de.clearit.kindergarten.domain.export.ExportReceipt;
 import de.clearit.kindergarten.domain.export.entity.PayoffDataReceipt;
 import de.clearit.kindergarten.domain.export.service.ExportDataService;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.printing.PDFPageable;
-import org.apache.pdfbox.printing.PDFPrintable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.print.*;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import java.awt.print.Book;
-import java.awt.print.PageFormat;
-import java.awt.print.PrinterJob;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 public class PrintingService {
 
@@ -42,14 +45,14 @@ public class PrintingService {
     DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
 
     PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-    PrintService[] services = PrintServiceLookup.lookupPrintServices(flavor, attributes);
-    PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();
+    javax.print.PrintService[] services = PrintServiceLookup.lookupPrintServices(flavor, attributes);
+    javax.print.PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();
 
     if (defaultService == null) {
       LOGGER.debug("Error - No default print service found");
     }
     else {
-      PrintService service = ServiceUI.printDialog(null, 200, 200, services, defaultService, flavor, attributes);
+      javax.print.PrintService service = ServiceUI.printDialog(null, 200, 200, services, defaultService, flavor, attributes);
 
       if(service != null) {
         DocPrintJob docPrintJob = service.createPrintJob();

@@ -1,7 +1,11 @@
 package de.clearit.kindergarten.domain.export;
 
 import java.awt.Color;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -20,6 +24,24 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+
 import com.itextpdf.forms.PdfAcroForm;
 import com.itextpdf.forms.fields.PdfFormField;
 import com.itextpdf.io.font.PdfEncodings;
@@ -35,22 +57,11 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.layout.LayoutArea;
 import com.itextpdf.layout.layout.LayoutResult;
 import com.itextpdf.layout.renderer.DocumentRenderer;
-import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.*;
-import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.export.entity.PayoffDataReceipt;
 import de.clearit.kindergarten.domain.export.entity.PayoffSoldItemsData;
 import de.clearit.kindergarten.domain.export.service.ExportDataService;
-import org.w3c.dom.Document;
 
 /**
  * The class ExportReceipt
