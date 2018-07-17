@@ -133,33 +133,42 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     String itemPrice = PurchaseAppliance.getInstance().getView().getItemPrice().getText();
 
     Matcher match = p.matcher(itemPrice);
-
-    if (vendorNumber.matches(REGEX_NUMERIC) && itemNumber.matches(REGEX_NUMERIC) && match.matches()) {
-      state = true;
-      PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
-    } else {
-      JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befuellen!");
-      if (!vendorNumber.matches(REGEX_NUMERIC)) {
-        PurchaseAppliance.getInstance().getView().setVendorNumber(null);
-        PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
-      }
-      if (!itemNumber.matches(REGEX_NUMERIC)) {
-        PurchaseAppliance.getInstance().getView().setItemNumber(null);
-        PurchaseAppliance.getInstance().getView().getItemNumber().requestFocusInWindow();
-        if (!vendorNumber.matches(REGEX_NUMERIC)) {
-          PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
-        }
-      }
-      if (!match.matches()) {
-        PurchaseAppliance.getInstance().getView().setItemPrice(null);
-        PurchaseAppliance.getInstance().getView().getItemPrice().requestFocusInWindow();
-        if (!itemNumber.matches(REGEX_NUMERIC)) {
-          PurchaseAppliance.getInstance().getView().getItemNumber().requestFocusInWindow();
-        }
-        if (!vendorNumber.matches(REGEX_NUMERIC)) {
-          PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
-        }
-      }
+    if(vendorNumber.equals("") && itemNumber.equals("") && !match.matches()) {
+    	//Close View by Pressing Enter in the Editor View
+    	TextComponentUtils.commitImmediately();
+        triggerCommit();
+        getSelectionInList().getList().forEach(SERVICE::create);
+        commitCallback.committed(CommandValue.OK);
+    	final Runnable acceptOp = new WrappedOperation(commitCallback, CommandValue.OK, CloseRequestHandler.NO_OPERATION);
+    	acceptOp.run();
+    }else {
+	    if (vendorNumber.matches(REGEX_NUMERIC) && itemNumber.matches(REGEX_NUMERIC) && match.matches()) {
+	      state = true;
+	      PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
+	    } else {
+	      JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befuellen!");
+	      if (!vendorNumber.matches(REGEX_NUMERIC)) {
+	        PurchaseAppliance.getInstance().getView().setVendorNumber(null);
+	        PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
+	      }
+	      if (!itemNumber.matches(REGEX_NUMERIC)) {
+	        PurchaseAppliance.getInstance().getView().setItemNumber(null);
+	        PurchaseAppliance.getInstance().getView().getItemNumber().requestFocusInWindow();
+	        if (!vendorNumber.matches(REGEX_NUMERIC)) {
+	          PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
+	        }
+	      }
+	      if (!match.matches()) {
+	        PurchaseAppliance.getInstance().getView().setItemPrice(null);
+	        PurchaseAppliance.getInstance().getView().getItemPrice().requestFocusInWindow();
+	        if (!itemNumber.matches(REGEX_NUMERIC)) {
+	          PurchaseAppliance.getInstance().getView().getItemNumber().requestFocusInWindow();
+	        }
+	        if (!vendorNumber.matches(REGEX_NUMERIC)) {
+	          PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
+	        }
+	      }
+	    }
     }
     return state;
   }
