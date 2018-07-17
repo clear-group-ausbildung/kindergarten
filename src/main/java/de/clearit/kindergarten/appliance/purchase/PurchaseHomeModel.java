@@ -203,19 +203,20 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   }
 
   private void filterPurchases() {
-    VendorBean selectedVendor = getVendorList().getSelection();
-    List<PurchaseBean> filteredOrAllPurchases = new ArrayList<>();
-
-    if (alleVerkaeufer().equals(selectedVendor)) {
-      filteredOrAllPurchases.addAll(SERVICE.getAll());
-    } else {
-      filteredOrAllPurchases.addAll(SERVICE.getAll().stream().filter(bean -> selectedVendor.getVendorNumbers().stream()
-          .map(VendorNumberBean::getVendorNumber).collect(Collectors.toList()).contains(bean.getVendorNumber()))
-          .collect(Collectors.toList()));
-    }
-    getSelectionInList().getList().clear();
-    getSelectionInList().getList().addAll(filteredOrAllPurchases);
-    refreshSummary();
+	  VendorBean selectedVendor = getVendorList().getSelection();
+	  if(selectedVendor != null) {
+		  List<PurchaseBean> filteredOrAllPurchases = new ArrayList<>();
+		  if (alleVerkaeufer().equals(selectedVendor)) {
+			  filteredOrAllPurchases.addAll(SERVICE.getAll());
+		  } else {
+			  filteredOrAllPurchases.addAll(SERVICE.getAll().stream().filter(bean -> selectedVendor.getVendorNumbers().stream()
+		          .map(VendorNumberBean::getVendorNumber).collect(Collectors.toList()).contains(bean.getVendorNumber()))
+		          .collect(Collectors.toList()));
+		  }
+		  getSelectionInList().getList().clear();
+		  getSelectionInList().getList().addAll(filteredOrAllPurchases);
+		  refreshSummary();
+	    }
   }
 
   private void refreshVendorList() {
