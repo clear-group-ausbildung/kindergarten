@@ -212,11 +212,13 @@ public class ExportReceipt {
   private void createItemRows(PayoffSoldItemsData pPayoffSoldItemData, Table table) {
     Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
     for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {
-      table.addCell(getFormattedCell(String.valueOf(entry.getKey())));
-      table.addCell(getFormattedCell(formatCurrency(entry.getValue())));
-      table.addCell(getFormattedCell("Summe:"));
-      table.addCell(getFormattedCell(formatCurrency(pPayoffSoldItemData.getSoldItemSum())));
+      System.out.println("Entry.GetKex() ( ValueOf ) = " + String.valueOf(entry.getKey()));
+      
+      table.addCell(getFormattedCell(String.valueOf(entry.getKey()))); // Artikelnummer
+      table.addCell(getFormattedCell(formatCurrency(entry.getValue()))); // Preis
     }
+    table.addCell(getFormattedCell("Summe:"));
+    table.addCell(getFormattedCell(formatCurrency(pPayoffSoldItemData.getSoldItemSum())));
   }
 
   private com.itextpdf.layout.element.Cell getFormattedCell(String content) {

@@ -112,31 +112,38 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   @Action
   public void addVendorNumber(ActionEvent e) {
     TextComponentUtils.commitImmediately();
-    if (getVendorNumberFieldModel().getValue() != null) {
-      // Check for vendor numbers in current model
-      if (vendorNumberAlreadyExists(Integer.valueOf((String) getVendorNumberFieldModel().getValue()))) {
-        JOptionPane.showMessageDialog(new JFrame(), "Verk\u00e4ufernummer bereits vorhanden!");
-        // Reset input field
-        getVendorNumberFieldModel().setValue(null);
-        return;
-      }
-
-      if (!VendorNumberService.getInstance().isVendorNumberExisting(Integer.valueOf((String) getVendorNumberFieldModel()
-          .getValue()))) {
-        VendorNumberBean vendorNumberBean = new VendorNumberBean();
-        // Read Vendor number from input field
-        vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));
-        // Add to model list
-        getSelectionInList().getList().add(vendorNumberBean);
-      } else {
-        JOptionPane.showMessageDialog(new JFrame(), "Verk\u00e4ufernummer bereits vorhanden!");
-      }
-      Collections.sort(getBean().getVendorNumbers(), Comparator.<VendorNumberBean>comparingInt(
-          VendorNumberBean::getVendorNumber));
-      Collections.sort(getSelectionInList().getList(), Comparator.<VendorNumberBean>comparingInt(
-          VendorNumberBean::getVendorNumber));
-      // Reset input field
-      getVendorNumberFieldModel().setValue(null);
+    // Try Catch does not allow special characters + message to user
+    try {
+	    if (getVendorNumberFieldModel().getValue() != null) {
+	      // Check for vendor numbers in current model
+	      if (vendorNumberAlreadyExists(Integer.valueOf((String) getVendorNumberFieldModel().getValue()))) {
+	        JOptionPane.showMessageDialog(new JFrame(), "Verk\u00e4ufernummer bereits vorhanden!");
+	        // Reset input field
+	        getVendorNumberFieldModel().setValue(null);
+	        return;
+	      }
+	
+	      if (!VendorNumberService.getInstance().isVendorNumberExisting(Integer.valueOf((String) getVendorNumberFieldModel()
+	          .getValue()))) {
+	        VendorNumberBean vendorNumberBean = new VendorNumberBean();
+	        // Read Vendor number from input field
+	        vendorNumberBean.setVendorNumber(Integer.valueOf((String) getVendorNumberFieldModel().getValue()));
+	        // Add to model list
+	        getSelectionInList().getList().add(vendorNumberBean);
+	      } else {
+	        JOptionPane.showMessageDialog(new JFrame(), "Verk\u00e4ufernummer bereits vorhanden!");
+	      }
+	      Collections.sort(getBean().getVendorNumbers(), Comparator.<VendorNumberBean>comparingInt(
+	          VendorNumberBean::getVendorNumber));
+	      Collections.sort(getSelectionInList().getList(), Comparator.<VendorNumberBean>comparingInt(
+	          VendorNumberBean::getVendorNumber));
+	      // Reset input field
+	      getVendorNumberFieldModel().setValue(null);
+	    }
+    }catch(java.lang.NumberFormatException ex) {
+    	JOptionPane.showMessageDialog(new JFrame(), "Keine Gültige Verk\u00e4ufernummer! Es sind nur Zahlen erlaubt!");
+    	getVendorNumberFieldModel().setValue(null);
+    	return;
     }
   }
 

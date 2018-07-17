@@ -1,6 +1,7 @@
 package de.clearit.kindergarten.application;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
@@ -141,6 +142,7 @@ public final class Dialogs {
 
     TaskPane pane = new TaskPane(RESOURCES.getIcon("application.logo"), mainInstruction, contentText,
         CommandValue.CLOSE);
+    pane.setPreferredSize(new Dimension(300, 150));
     pane.setMarginContentTop(4);
     pane.setMarginContentBottom(14);
 
