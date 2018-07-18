@@ -269,13 +269,13 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
 		  {
 			  List <PurchaseVendorEntity> entityList = new ArrayList<>();
 
-			  Comparator<PurchaseVendorEntity> sortByName = Comparator.comparing(PurchaseVendorEntity::getVendorFullName)
-	              .thenComparing(PurchaseVendorEntity::getVendorNumber);
+			  Comparator<PurchaseVendorEntity> sortByNameAndVendorNumberAndItemNumber = Comparator.comparing(PurchaseVendorEntity::getVendorFullName)
+	              .thenComparing(PurchaseVendorEntity::getVendorNumber).thenComparing(PurchaseVendorEntity::getItemNumber);
 
 			  List<PurchaseBean> allBeans = SERVICE.getAll();
 
 			  entityList = transformToPurchaseVendorEntity(allBeans);
-			  Collections.sort(entityList, sortByName);
+			  Collections.sort(entityList, sortByNameAndVendorNumberAndItemNumber);
 
 			  vendorsToBeSorted.addAll(transformToPurchaseBean(entityList));
 		  }
