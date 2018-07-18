@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EventObject;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,12 +43,13 @@ import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
 import de.clearit.kindergarten.domain.VendorService;
+import de.clearit.kindergarten.domain.entity.PurchaseVendorEntity;
 import io.reactivex.Observable;
 
 /**
  * The home model for the purchase.
  */
-public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implements PostChangeHandler {
+public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implements PostChangeHandler  {
 
   private static final long serialVersionUID = 1L;
 
@@ -58,21 +61,24 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   private static final VendorService VENDOR_SERVICE = VendorService.getInstance();
   private static PurchaseHomeModel instance;
   private final transient SelectionInList<VendorBean> vendorList;
+  private final transient SelectionInList<String> sortList;
   private final transient ValueModel itemCountModel = new ValueHolder(0);
   private final transient ValueModel itemSumModel = new ValueHolder(0.0);
   private final transient ValueModel kindergartenProfitModel = new ValueHolder(0.0);
-  private final transient ValueModel vendorPayoutModel = new ValueHolder(0.0);
+  private final transient ValueModel vendorPayoutModel = new ValueHolder(0.0);  
 
   // Instance Creation ******************************************************
 
   private PurchaseHomeModel() {
     super();
     vendorList = new SelectionInList<>();
+    sortList = new SelectionInList<>();
     vendorList.getList().add(alleVerkaeufer());
     vendorList.getList().addAll(VENDOR_SERVICE.getAll());
     vendorList.setSelectionIndex(0);
     refreshSummary();
-    vendorList.addValueChangeListener(evt -> filterPurchases());
+    vendorList.addValueChangeListener(klickEvent -> filterPurchases());
+    sortList.addValueChangeListener(klickEvent -> sortPurchases());
   }
 
   public static PurchaseHomeModel getInstance() {
@@ -84,6 +90,14 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
 
   public SelectionInList<VendorBean> getVendorList() {
     return vendorList;
+  }
+  
+  public SelectionInList<String> getSortList()
+  {
+	  sortList.getList().add(0, "Chronologisch");
+	  sortList.getList().add(1, "Nach Verkäufer und Verkäufernummer");
+	  sortList.setSelectionIndex(0);
+	  return sortList;
   }
 
   public ValueModel getItemCountModel() {
@@ -126,7 +140,8 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   @Action
   public void newItem(final ActionEvent e) {
     final String title = RESOURCES.getString("newPurchase.title");
-    editItem(e, title, new PurchaseBean(), true);
+    //editItem(e, title, new PurchaseBean(), true);
+    editItem(e, title, new PurchaseVendorEntity(), true);
   }
 
   @Action(enabled = false)
@@ -147,7 +162,8 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
 
   @Action(enabled = false)
   public void deleteItem(final ActionEvent e) {
-    final PurchaseBean purchase = getSelection();
+    //final PurchaseBean purchase = getSelection();
+	final PurchaseVendorEntity purchase = (PurchaseVendorEntity) getSelection();
     final String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", "Artikel-Nr: " + purchase
         .getItemNumber());
     final TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
@@ -190,10 +206,11 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   }
 
   private void refreshSummary() {
-    itemCountModel.setValue(SERVICE.getItemCountByPurchases(getSelectionInList().getList()));
-    itemSumModel.setValue(SERVICE.getItemSumByPurchases(getSelectionInList().getList()));
-    kindergartenProfitModel.setValue(SERVICE.getKindergartenProfitByPurchases(getSelectionInList().getList()));
-    vendorPayoutModel.setValue(SERVICE.getVendorPayoutByPurchases(getSelectionInList().getList()));
+    List<PurchaseBean> purchaseBeanList = getSelectionInList().getList();
+	itemCountModel.setValue(SERVICE.getItemCountByPurchases(purchaseBeanList));
+    itemSumModel.setValue(SERVICE.getItemSumByPurchases(purchaseBeanList));
+    kindergartenProfitModel.setValue(SERVICE.getKindergartenProfitByPurchases(purchaseBeanList));
+    vendorPayoutModel.setValue(SERVICE.getVendorPayoutByPurchases(purchaseBeanList));
   }
 
   private VendorBean alleVerkaeufer() {
@@ -201,24 +218,114 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
     alleVerkaeufer.setLastName("Alle");
     return alleVerkaeufer;
   }
-
+  
   private void filterPurchases() {
-	  VendorBean selectedVendor = getVendorList().getSelection();
-	  if(selectedVendor != null) {
-		  List<PurchaseBean> filteredOrAllPurchases = new ArrayList<>();
-		  if (alleVerkaeufer().equals(selectedVendor)) {
-			  filteredOrAllPurchases.addAll(SERVICE.getAll());
-		  } else {
-			  filteredOrAllPurchases.addAll(SERVICE.getAll().stream().filter(bean -> selectedVendor.getVendorNumbers().stream()
-		          .map(VendorNumberBean::getVendorNumber).collect(Collectors.toList()).contains(bean.getVendorNumber()))
-		          .collect(Collectors.toList()));
-		  }
-		  getSelectionInList().getList().clear();
-		  getSelectionInList().getList().addAll(filteredOrAllPurchases);
-		  refreshSummary();
+	  
+	    VendorBean selectedVendor = getVendorList().getSelection();
+	    
+	    if(selectedVendor != null){
+	    List<PurchaseVendorEntity> filteredOrAllPurchases = new ArrayList<>();
+
+	    if (alleVerkaeufer().equals(selectedVendor)) {
+	      filteredOrAllPurchases.addAll(transformToPurchaseVendorEntity(SERVICE.getAll()));
+	    } else {
+	      // 1. Hole alle Purchases vom Service
+	      List<PurchaseBean> allPurchases = SERVICE.getAll();
+
+	      // 2. Filtere dabei nach Purchases, bei welchem die VendorNumber == eine der
+	      // VendorNumbers des selektierten Vendors aus der ComboBox ist
+
+	      List<PurchaseBean> filteredPurchases = allPurchases.stream().filter(bean -> selectedVendor.getVendorNumbers()
+	          .stream().map(VendorNumberBean::getVendorNumber).collect(Collectors.toList()).contains(bean
+	              .getVendorNumber())).collect(Collectors.toList());
+
+	      // 3. Fuege die gefilterten Suchergebnisse der Ergebnisliste hinzu
+	      filteredOrAllPurchases.addAll(transformToPurchaseVendorEntity(filteredPurchases));
 	    }
+	    // 4. Leere die Tabelle der Purchases
+	    getSelectionInList().getList().clear();
+	    // 5. Fuege der Tabelle die Ergebnisliste mit den gefilterten Surchergebnissen
+	    // hinzu
+	    getSelectionInList().getList().addAll(filteredOrAllPurchases);
+	    // 6. Aktualisiere die Daten in der Gesamtberechnung rechts oben
+	    refreshSummary();
+	  }
   }
 
+	
+	 private void sortPurchases()
+	  {
+		  String selectedSortMode = sortList.getSelection();
+		  List<PurchaseBean> vendorsToBeSorted = new ArrayList<>();
+
+		  // Chronologische Sortierung
+		  if (selectedSortMode.equals(sortList.getElementAt(0)))
+		  {
+			  vendorsToBeSorted.addAll(SERVICE.getAll());
+		  }
+
+		  //Sortierung nach Name und VendorNumber
+		  else
+		  {
+			  List <PurchaseVendorEntity> entityList = new ArrayList<>();
+
+			  Comparator<PurchaseVendorEntity> sortByName = Comparator.comparing(PurchaseVendorEntity::getVendorFullName)
+	              .thenComparing(PurchaseVendorEntity::getVendorNumber);
+
+			  List<PurchaseBean> allBeans = SERVICE.getAll();
+
+			  entityList = transformToPurchaseVendorEntity(allBeans);
+			  Collections.sort(entityList, sortByName);
+
+			  vendorsToBeSorted.addAll(transformToPurchaseBean(entityList));
+		  }
+
+	    getSelectionInList().getList().clear();
+	    getSelectionInList().getList().addAll(vendorsToBeSorted);
+	  }
+
+		private List<PurchaseVendorEntity> transformToPurchaseVendorEntity(List<PurchaseBean> purchaseBeans)
+		{
+			List<PurchaseVendorEntity> entityList = new ArrayList<>();
+			for(PurchaseBean purchase : purchaseBeans) {
+				  PurchaseVendorEntity entity = new PurchaseVendorEntity();
+				  entity.setId(purchase.getId());
+				  entity.setItemNumber(purchase.getItemNumber());
+				  entity.setItemPrice(purchase.getItemPrice());
+				  entity.setVendorNumber(purchase.getVendorNumber());
+				  VendorBean vendorBean = VendorService.getInstance().findByVendorNumber(purchase.getVendorNumber());
+				  if (vendorBean != null) {
+	          entity.setVendorFullName(vendorBean.getLastName() + ", " + vendorBean.getFirstName());
+	        }
+				  entityList.add(entity);
+			  }
+			return entityList;
+		}
+
+		private List<PurchaseBean> transformToPurchaseBean(List<PurchaseVendorEntity> entityList) {
+	    List<PurchaseBean> purchaseBeanList = new ArrayList<>();
+	    for(PurchaseVendorEntity entity: entityList) {
+	      //Downcasting
+	      PurchaseBean purchaseBean = new PurchaseBean();
+	      purchaseBean.setId(entity.getId());
+	      purchaseBean.setItemNumber(entity.getItemNumber());
+	      purchaseBean.setItemPrice(entity.getItemPrice());
+	      purchaseBean.setVendorNumber(entity.getVendorNumber());
+	      purchaseBeanList.add(purchaseBean);
+	    }
+
+	    return purchaseBeanList;
+	  }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
   private void refreshVendorList() {
     vendorList.getList().clear();
     vendorList.getList().add(alleVerkaeufer());

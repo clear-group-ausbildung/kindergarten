@@ -1,12 +1,16 @@
 package de.clearit.kindergarten.appliance.purchase;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 
+import com.itextpdf.layout.renderer.CellRenderer;
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.adapter.SingleListSelectionAdapter;
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.debug.FormDebugPanel;
 import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.jsdl.core.component.factory.JSDLFactory;
@@ -28,6 +32,7 @@ public class PurchaseHomeView extends AbstractView {
   private final PurchaseHomeModel model;
 
   private JComponent vendorBox;
+  private JComponent sortBox;
   private JTable table;
   private PurchaseHomeSummary summary;
 
@@ -48,9 +53,10 @@ public class PurchaseHomeView extends AbstractView {
 
   private void initComponents() {
     vendorBox = BasicComponentFactory.createComboBox(model.getVendorList(), new VendorListCellRenderer());
+    sortBox = BasicComponentFactory.createComboBox(model.getSortList(), new DefaultListCellRenderer());
     table = new StripedTable(new PurchaseTableModel(model.getSelectionInList()));
     table.setSelectionModel(new SingleListSelectionAdapter(model.getSelectionInList().getSelectionIndexHolder()));
-    TableUtils.configureColumns(table, "[30dlu,60dlu], [50dlu,pref], [50dlu,pref]");
+    TableUtils.configureColumns(table, "[30dlu,70dlu], [50dlu,pref], [50dlu,pref], [50dlu,pref]");
     summary = new PurchaseHomeSummary(model);
   }
 
@@ -69,11 +75,13 @@ public class PurchaseHomeView extends AbstractView {
   }
 
   private JComponent buildTitleView() {
-    FormLayout layout = new FormLayout("left:pref, 25dlu, left:pref, $lcgap, 150dlu", "p");
+    FormLayout layout = new FormLayout("left:pref, 25dlu, left:pref, $lcgap, 150dlu, 25dlu, left:pref, $lcgap, 150dlu", "p");
     I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
     builder.add(JSDLFactory.createHeaderLabel(RESOURCES.getString("purchaseHome.mainInstruction")), CC.xy(1, 1));
-    builder.addI15dLabel(RESOURCES.getString("filter.label"), CC.xy(3, 1));
-    builder.add(vendorBox, CC.xy(5, 1));
+    builder.addI15dLabel(RESOURCES.getString("sort.label"), CC.xy(3, 1));
+    builder.add(sortBox, CC.xy(5, 1));
+    builder.addI15dLabel(RESOURCES.getString("filter.label"), CC.xy(7, 1));
+    builder.add(vendorBox, CC.xy(9, 1));
     return builder.getPanel();
   }
 

@@ -141,6 +141,28 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 				new Object[] { result });
 		return result;
 	}
+	
+	public VendorBean findByVendorNumber(Integer vendorNumber) {
+        LOGGER.entering(VendorService.class.getName(), "findByVendorNumber(Integer vendorNumber)", new Object[] {
+                vendorNumber});
+        VendorBean result = null;
+        // 1. Alle Vendors ermitteln
+        List<VendorBean> allVendors = getAll();
+        // 2. Ueber alle Vendors iterieren
+        for(VendorBean oneVendor : allVendors) {
+            // 2.1 Ueber alle VendorNumbers von oneVendor iterieren
+            for(VendorNumberBean oneVendorNumber : oneVendor.getVendorNumbers()) {
+                // 2.1.1 -> entspricht die aktuelle VendorNumber dem uebergebenen vendorNumber Parameter?
+                if(Integer.valueOf(oneVendorNumber.getVendorNumber()).equals(vendorNumber)) {
+                    // Huzzah, Ergebnis gefunden -> zurueckgeben
+                    return oneVendor;
+                }
+            }
+        }
+        LOGGER.exiting(VendorService.class.getName(), "findByVendorNumber(Integer vendorNumber)", new Object[] {
+                result });
+      return result;
+ }
 
 	private void createAsNew(VendorBean bean) {
 		LOGGER.entering(VendorService.class.getSimpleName(), "createAsNew(VendorBean bean)", new Object[] { bean });
@@ -148,6 +170,8 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 		super.create(bean);
 		LOGGER.exiting(VendorService.class.getSimpleName(), "createAsNew(VendorBean bean)");
 	}
+	
+	
 	
 	/**
 	 * import Vendors from a JSON File
