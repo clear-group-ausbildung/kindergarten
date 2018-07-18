@@ -19,6 +19,7 @@ import com.jgoodies.looks.Options;
 import com.jgoodies.uif2.application.UIFApplication;
 import com.jgoodies.uif2.splash.SplashWindow;
 
+import de.clearit.kindergarten.appliance.accounting.AccountAppliance;
 import de.clearit.kindergarten.appliance.documents.DocumentsAppliance;
 import de.clearit.kindergarten.appliance.purchase.PurchaseAppliance;
 import de.clearit.kindergarten.appliance.vendor.VendorAppliance;
@@ -49,6 +50,10 @@ public final class KindergartenApplication extends UIFApplication {
     action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 2"));
     spec.add(action);
 
+    action = DesktopManager.createActivationAction(AccountAppliance.getInstance());
+    action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 3"));
+    spec.add(action);
+    
     spec.addUnrelatedGap();
     spec.add(getResourceMap().getString("navigation.help"));
     spec.add(MainModel.getInstance().getActionMap(), "openAboutDialog");

@@ -2,6 +2,7 @@ package de.clearit.kindergarten.application;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +34,8 @@ import de.clearit.kindergarten.domain.PurchaseBean;
 public final class Dialogs {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(Dialogs.class);
-
+  private final static String lineSeparator = System.getProperty("line.separator");
+  
   // Instance Creation ******************************************************
 
   private Dialogs() {
@@ -135,14 +137,17 @@ public final class Dialogs {
   }
 
   public static void about(EventObject e) {
+	  
+	GridBagLayout g = new GridBagLayout();
     String title = RESOURCES.getString("dialogs.about.title");
     String mainInstruction = RESOURCES.getString("application.name") + " " + RESOURCES.getString("application.version");
     String contentText = RESOURCES.getString("dialogs.about.content", RESOURCES.getString("application.copyright"),
         RESOURCES.getString("application.buildNo"), RESOURCES.getDate("application.buildDate"));
 
+    // TODO Label soll oben sein Text Darunter!
     TaskPane pane = new TaskPane(RESOURCES.getIcon("application.logo"), mainInstruction, contentText,
         CommandValue.CLOSE);
-    pane.setPreferredSize(new Dimension(300, 150));
+    pane.setPreferredSize(new Dimension(400, 150));
     pane.setMarginContentTop(4);
     pane.setMarginContentBottom(14);
 

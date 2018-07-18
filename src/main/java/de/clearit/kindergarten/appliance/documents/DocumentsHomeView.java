@@ -96,5 +96,4 @@ public final class DocumentsHomeView extends AbstractView {
     }
 
   }
-
 }

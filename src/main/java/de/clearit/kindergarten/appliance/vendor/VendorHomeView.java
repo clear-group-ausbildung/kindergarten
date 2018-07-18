@@ -68,8 +68,7 @@ public final class VendorHomeView extends AbstractView {
     builder.setTitle(RESOURCES.getString("vendorHome.mainInstruction"));
     builder.setListView(table);
     builder.setListBar(model.getActionMap(), AbstractHomeModel.ACTION_NEW_ITEM, AbstractHomeModel.ACTION_EDIT_ITEM,
-        AbstractHomeModel.ACTION_DELETE_ITEM, "---", VendorHomeModel.ACTION_PRINT_RECEIPT,
-        VendorHomeModel.ACTION_PRINT_ALL_RECEIPTS, VendorHomeModel.ACTION_PRINT_INTERNAL_RECEIPT, VendorHomeModel.ACTION_IMPORT_VENDORS, VendorHomeModel.ACTION_EXPORT_VENDORS);
+        AbstractHomeModel.ACTION_DELETE_ITEM, "---", VendorHomeModel.ACTION_IMPORT_VENDORS, VendorHomeModel.ACTION_EXPORT_VENDORS);
     builder.setPreview(preview.getPanel());
 
     return builder.getPanel();
