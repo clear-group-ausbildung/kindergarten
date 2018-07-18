@@ -162,8 +162,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
 
   @Action(enabled = false)
   public void deleteItem(final ActionEvent e) {
-    //final PurchaseBean purchase = getSelection();
-	final PurchaseVendorEntity purchase = (PurchaseVendorEntity) getSelection();
+    final PurchaseBean purchase = getSelection();
     final String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", "Artikel-Nr: " + purchase
         .getItemNumber());
     final TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
