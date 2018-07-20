@@ -65,6 +65,8 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
     return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, camelCase);
   }
 
+  
+  //TODO
   @Override
   public List<B> getAll() {
     LOGGER.debug(METHOD_PREFIX + "getAll()", CSN);
@@ -152,9 +154,10 @@ public abstract class AbstractResourceService<B extends com.jgoodies.binding.bea
    * Flushes the instance cached beans and recreates all Beans from the current
    * persisted entities.
    */
+  //TODO
   public void flush() {
     LOGGER.debug(AbstractResourceService.class.getName(), "flush");
-    beans.clear();
+    beans.clear();    
     beans.addAll(fromEntities());
     LOGGER.debug(LOG_MSG_FLUSH_PREFIX, beans.size());
     LOGGER.debug(AbstractResourceService.class.getName(), "flush");

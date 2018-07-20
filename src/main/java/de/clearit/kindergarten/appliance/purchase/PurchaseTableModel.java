@@ -26,12 +26,12 @@ public class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
    return new String[] { RESOURCES.getString("purchase.table.vendorNumber"), RESOURCES.getString("purchase.table.vendorName"),
            RESOURCES.getString("purchase.table.itemNumber"), RESOURCES.getString("purchase.table.itemPrice") };
  }
-
+ 
  @Override
  public Object getValueAt(int rowIndex, int columnIndex) {
       
    PurchaseBean purchase = getRow(rowIndex);
-    PurchaseVendorEntity purchaseEntity = new PurchaseVendorEntity();
+   PurchaseVendorEntity purchaseEntity = new PurchaseVendorEntity();
    VendorBean vendorOfPurchase = VendorService.getInstance().findByVendorNumber(purchase.getVendorNumber());
    if (vendorOfPurchase != null) {
        purchaseEntity.setVendorFullName(vendorOfPurchase.getLastName() + ", " + vendorOfPurchase.getFirstName());

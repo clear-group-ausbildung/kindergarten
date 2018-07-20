@@ -2,7 +2,6 @@ package de.clearit.kindergarten.application;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
@@ -138,22 +137,33 @@ public final class Dialogs {
 
   public static void about(EventObject e) {
 	  
-	GridBagLayout g = new GridBagLayout();
     String title = RESOURCES.getString("dialogs.about.title");
     String mainInstruction = RESOURCES.getString("application.name") + " " + RESOURCES.getString("application.version");
     String contentText = RESOURCES.getString("dialogs.about.content", RESOURCES.getString("application.copyright"),
         RESOURCES.getString("application.buildNo"), RESOURCES.getDate("application.buildDate"));
-
+    
     // TODO Label soll oben sein Text Darunter!
-    TaskPane pane = new TaskPane(RESOURCES.getIcon("application.logo"), mainInstruction, contentText,
-        CommandValue.CLOSE);
-    pane.setPreferredSize(new Dimension(400, 150));
-    pane.setMarginContentTop(4);
+    TaskPane pane = new TaskPane(RESOURCES.getIcon("application.logo"), mainInstruction, contentText, CommandValue.CLOSE);
+
+    pane.setGapMainInstructionIconText(20);
+    pane.setPreferredSize(new Dimension(600, 300));
+    pane.setMarginContentTop(1);
     pane.setMarginContentBottom(14);
 
     pane.showDialog(e, title);
   }
 
+  public static void shortcuts(EventObject e) {
+	  String shortcutTitle = RESOURCES.getString("dialogs.about.shortcuts");
+	  String shortcutMainInstruction = RESOURCES.getString("dialogs.about.shortCutContent");
+	  TaskPane shortcutPane = new TaskPane(shortcutTitle, shortcutMainInstruction, CommandValue.CLOSE);
+	  shortcutPane.setPreferredSize(new Dimension(400, 150));
+	  shortcutPane.setMarginContentTop(4);
+	  shortcutPane.setMarginContentBottom(14);
+	    
+	  shortcutPane.showDialog(e, shortcutTitle);
+  }
+  
   // Helper Code ************************************************************
 
   private static List<Document> getSelectedDocuments(JList<?> list) {

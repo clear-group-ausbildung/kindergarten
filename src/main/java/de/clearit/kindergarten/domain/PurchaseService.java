@@ -60,14 +60,14 @@ public class PurchaseService extends AbstractResourceService<PurchaseBean, Purch
     bean.setItemNumber(entity.getInteger(toSnakeCase(PurchaseBean.PROPERTY_ITEM_NUMBER)));
     bean.setItemPrice(entity.getBigDecimal(toSnakeCase(PurchaseBean.PROPERTY_ITEM_PRICE)));
     bean.setVendorNumber(entity.getInteger(toSnakeCase(PurchaseBean.PROPERTY_VENDOR_NUMBER)));
-    LOGGER.exiting(PurchaseService.class.getSimpleName(), "fromEntity(Purchase entity)", new Object[] { bean });
+    LOGGER.exiting(PurchaseService.class.getSimpleName(), "fromEntity(Purchase entity)", new Object[] { bean });    
     return bean;
   }
 
   @Override
   public Purchase toEntity(PurchaseBean bean) {
     LOGGER.entering(PurchaseService.class.getSimpleName(), "toEntity(PurchaseBean bean)", new Object[] { bean });
-    Purchase entity = Purchase.findById(bean.getId());
+    Purchase entity = Purchase.findById(bean.getId());    
     if (entity == null) {
       LOGGER.fine("New Purchase entity!");
       entity = new Purchase();

@@ -65,6 +65,11 @@ public final class MainModel extends UIFModel implements ExitListener {
     Dialogs.about(e);
   }
 
+  @Action
+  public void openShortcuts(ActionEvent e) {
+	  Dialogs.shortcuts(e);
+  }
+  
   // Application Shutdown ***************************************************
 
   @Override

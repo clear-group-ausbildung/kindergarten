@@ -1,10 +1,12 @@
 package de.clearit.kindergarten.appliance.purchase;
 import java.awt.Font;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
@@ -17,10 +19,12 @@ import com.jgoodies.uif2.AbstractView;
 import com.jgoodies.uif2.builder.I15dPanelBuilder2;
 import com.jgoodies.uif2.component.StripedTable;
 import com.jgoodies.uif2.util.TableUtils;
+
 import de.clearit.kindergarten.appliance.DoubleToStringConverter;
 import de.clearit.kindergarten.appliance.IntegerToStringConverter;
 import de.clearit.kindergarten.domain.PurchaseBean;
 public class PurchaseEditorView extends AbstractView {
+	
   private static final ResourceMap RESOURCES = Application.getResourceMap(PurchaseEditorView.class);
   private final PurchaseEditorModel model;
   private JComponent itemNumberLabel;
@@ -32,10 +36,12 @@ public class PurchaseEditorView extends AbstractView {
   private JButton addButton;
   private JTable table;
   private PurchaseEditorSummary summary;
+  
   // Instance Creation ******************************************************
   public PurchaseEditorView(final PurchaseEditorModel model) {
     this.model = model;
   }
+  
   // Building ***************************************************************
   @Override
   protected JComponent buildPanel() {
@@ -52,6 +58,7 @@ public class PurchaseEditorView extends AbstractView {
     pane.setBackground(RESOURCES.getColor("content.background"));
     return pane;
   }
+  
   private void initComponents() {
     itemNumberLabel = new JLabel(RESOURCES.getString("purchase.itemNumber"));
     itemNumberField = BasicComponentFactory.createTextField(new IntegerToStringConverter(model.getBufferedModel(
@@ -69,6 +76,7 @@ public class PurchaseEditorView extends AbstractView {
     TableUtils.configureColumns(table, "[30dlu,60dlu], [50dlu,pref], [50dlu,pref], [50dlu,pref]");
     summary = new PurchaseEditorSummary(model);
   }
+  
   private void initFonts() {
     final Font regurlar18PtFieldFont = itemNumberLabel.getFont().deriveFont(18.0f);
     itemNumberLabel.setFont(regurlar18PtFieldFont);
@@ -79,6 +87,7 @@ public class PurchaseEditorView extends AbstractView {
     vendorNumberField.setFont(regurlar18PtFieldFont);
     addButton.setFont(regurlar18PtFieldFont);
   }
+  
   private JComponent buildEditor() {
     final FormLayout layout = new FormLayout("2*(left:pref, $lcgap, 25dlu, $rgap), left:pref, $lcgap, 50dlu", "p");
     final I15dPanelBuilder2 builder = new I15dPanelBuilder2(layout, RESOURCES);
@@ -91,27 +100,35 @@ public class PurchaseEditorView extends AbstractView {
     builder.add(itemPriceField, CC.xy(11, 1));
     return builder.getPanel();
   }
+  
   private JComponent buildActions() {
     final ButtonBarBuilder2 builder = new ButtonBarBuilder2();
     builder.addButton(addButton);
     return builder.getPanel();
   }
+  
   public JTextField getVendorNumber() {
     return (JTextField) vendorNumberField;
   }
+  
   public void setVendorNumber(String vendorNumber) {
     ((JTextField) vendorNumberField).setText(vendorNumber);
   }
+  
   public JTextField getItemNumber() {
     return (JTextField) itemNumberField;
   }
+  
   public void setItemNumber(String itemNumber) {
     ((JTextField) itemNumberField).setText(itemNumber);
   }
+  
   public JTextField getItemPrice() {
     return (JTextField) itemPriceField;
   }
+  
   public void setItemPrice(String itemPrice) {
     ((JTextField) itemPriceField).setText(itemPrice);
   }
+  
 }

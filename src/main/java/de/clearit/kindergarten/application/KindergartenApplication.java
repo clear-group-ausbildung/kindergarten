@@ -57,7 +57,8 @@ public final class KindergartenApplication extends UIFApplication {
     spec.addUnrelatedGap();
     spec.add(getResourceMap().getString("navigation.help"));
     spec.add(MainModel.getInstance().getActionMap(), "openAboutDialog");
-
+    spec.add(MainModel.getInstance().getActionMap(), "openShortcuts");
+    
     return spec;
   }
 

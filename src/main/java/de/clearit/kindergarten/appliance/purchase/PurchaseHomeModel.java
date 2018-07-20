@@ -42,6 +42,7 @@ import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
+import de.clearit.kindergarten.domain.VendorNumberService;
 import de.clearit.kindergarten.domain.VendorService;
 import de.clearit.kindergarten.domain.entity.PurchaseVendorEntity;
 import io.reactivex.Observable;
@@ -65,8 +66,9 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   private final transient ValueModel itemCountModel = new ValueHolder(0);
   private final transient ValueModel itemSumModel = new ValueHolder(0.0);
   private final transient ValueModel kindergartenProfitModel = new ValueHolder(0.0);
-  private final transient ValueModel vendorPayoutModel = new ValueHolder(0.0);  
-
+  private final transient ValueModel vendorPayoutModel = new ValueHolder(0.0);
+  private File file;
+  
   // Instance Creation ******************************************************
 
   private PurchaseHomeModel() {
@@ -302,7 +304,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
 		}
 
 		private List<PurchaseBean> transformToPurchaseBean(List<PurchaseVendorEntity> entityList) {
-	    List<PurchaseBean> purchaseBeanList = new ArrayList<>();
+	    List<PurchaseBean> purchaseBeanList = new ArrayList<>();	    
 	    for(PurchaseVendorEntity entity: entityList) {
 	      //Downcasting
 	      PurchaseBean purchaseBean = new PurchaseBean();
@@ -315,16 +317,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
 
 	    return purchaseBeanList;
 	  }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
   private void refreshVendorList() {
     vendorList.getList().clear();
     vendorList.getList().add(alleVerkaeufer());
@@ -346,10 +339,10 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
       progressPane.setProgressVisible(true);
       progressPane.setVisible(true);
     }
-
+    
     @Override
     protected List<PurchaseBean> doInBackground() throws FileNotFoundException {
-      return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
+    	return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
           new TypeToken<List<PurchaseBean>>() {
           }.getType());
     }
@@ -357,6 +350,24 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
     @Override
     protected void succeeded(List<PurchaseBean> result) {
       super.succeeded(result);
+      
+      List<PurchaseBean> allBeans = SERVICE.getAll();
+      List<PurchaseBean> beansToRemove = new ArrayList<>();
+      
+      for(int resultCount = 0; resultCount < result.size(); resultCount++) {
+    	  PurchaseBean resultBean = result.get(resultCount);
+    	  for(int allBeansCount = 0; allBeansCount<allBeans.size(); allBeansCount++) {
+    		  PurchaseBean existingBean = allBeans.get(allBeansCount);
+    		  if(existingBean.getItemNumber().equals(resultBean.getItemNumber()) && existingBean.getVendorNumber().equals(resultBean.getVendorNumber())) {
+    			  beansToRemove.add(resultBean);
+    			  writeLog(existingBean, resultBean);
+    		  }
+    	  }
+      }
+      //TODO Doppelanlegung nicht möglich beim Import!	
+	  for(PurchaseBean bean : beansToRemove) {
+	   	result.remove(bean);
+	  }
       LOGGER.debug("# Purchase elements to create: {}", result.size());
       Observable<PurchaseBean> observablePurchases = Observable.fromIterable(result);
       long beginNanos = System.nanoTime();
@@ -370,9 +381,39 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
         pane.setPreferredWidth(PreferredWidth.MEDIUM);
         pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
       });
-
     }
-
+    
+    //TODO write in Log
+    //TODO NEED FIX NOT WORKING APP IS CRASHING WHEN IMPORTING!
+    private void writeLog(PurchaseBean existingBean, PurchaseBean importetBean) {
+		try {
+			if(file == null) {
+				file = new File("testLog.txt");
+			}
+			FileWriter filewriter = new FileWriter(file);		
+	    	VendorService vService = VendorService.getInstance();
+	    	VendorNumberService vendorNumberService = VendorNumberService.getInstance();
+	    	
+	    	 
+	    	
+	    	VendorNumberBean vnb = vendorNumberService.findByVendorNumber(existingBean.getVendorNumber());
+	    	VendorBean vendor = vService.getById(vnb.getId());
+	    	//Artikel hat VendorNumber
+	    	//VendorNumber hat VendorID
+	    	//VendorID hat VendorName
+	    	
+	    	String vendorName = vendor.getFirstName() + " " + vendor.getLastName();
+	    	String logMessageExist = vendorName + " " + existingBean.getVendorNumber().toString() + " " +  existingBean.getItemNumber().toString() + " " + existingBean.getItemPrice().toString();
+			
+	    	filewriter.write(logMessageExist);
+	    	filewriter.flush();
+	    	filewriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("IOEXCEPTION = " + e);
+		}
+    }
+    
     private File getImportPath() {
       final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
       fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));

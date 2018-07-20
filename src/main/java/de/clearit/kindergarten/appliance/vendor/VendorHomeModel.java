@@ -185,16 +185,16 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	    ImportVendorsTask() {
 	      super(BlockingScope.APPLICATION);
 	      importFile = getImportPath();
-	      progressPane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
-	      progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
-	      progressPane.setProgressIndeterminate(true);
-	      progressPane.setProgressVisible(true);
-	      progressPane.setVisible(true);
+		  progressPane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
+		  progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
+		  progressPane.setProgressIndeterminate(true);
+		  progressPane.setProgressVisible(true);
+		  progressPane.setVisible(true);
 	    }
 
 	    @Override
-	    protected List<VendorBean> doInBackground() throws FileNotFoundException {
-	      return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
+	    protected List<VendorBean> doInBackground() throws FileNotFoundException{    	
+	    	return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
 	          new TypeToken<List<VendorBean>>() {
 	          }.getType());
 	    }
