@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,6 +17,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -67,7 +72,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   private final transient ValueModel itemSumModel = new ValueHolder(0.0);
   private final transient ValueModel kindergartenProfitModel = new ValueHolder(0.0);
   private final transient ValueModel vendorPayoutModel = new ValueHolder(0.0);
-  private File file;
   
   // Instance Creation ******************************************************
 
@@ -326,7 +330,10 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   }
 
   private final class ImportPurchasesTask extends Task<List<PurchaseBean>, Void> {
-
+	  
+	private File file;
+	private Path pathToFile = Paths.get("Doppelte Artikel.txt");
+	private List<String>logMessages = new ArrayList<>();
     private final TaskPane progressPane;
     private final File importFile;
 
@@ -364,10 +371,18 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
     		  }
     	  }
       }
-      //TODO Doppelanlegung nicht möglich beim Import!	
-	  for(PurchaseBean bean : beansToRemove) {
-	   	result.remove(bean);
-	  }
+      if(beansToRemove.isEmpty()) {
+    	  JOptionPane.showMessageDialog(null, "Import erfolgreich!");
+      }else {
+    	  for(PurchaseBean bean : beansToRemove) {
+		  result.remove(bean);
+    	  }
+	      try {
+	    	writeIntoLogData(logMessages);
+	      } catch (IOException e) {
+			e.printStackTrace();
+	      }
+      }
       LOGGER.debug("# Purchase elements to create: {}", result.size());
       Observable<PurchaseBean> observablePurchases = Observable.fromIterable(result);
       long beginNanos = System.nanoTime();
@@ -382,37 +397,52 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
         pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
       });
     }
-    
-    //TODO write in Log
-    //TODO NEED FIX NOT WORKING APP IS CRASHING WHEN IMPORTING!
-    private void writeLog(PurchaseBean existingBean, PurchaseBean importetBean) {
-		try {
-			if(file == null) {
-				file = new File("testLog.txt");
-			}
-			FileWriter filewriter = new FileWriter(file);		
-	    	VendorService vService = VendorService.getInstance();
-	    	VendorNumberService vendorNumberService = VendorNumberService.getInstance();
-	    	
-	    	 
-	    	
-	    	VendorNumberBean vnb = vendorNumberService.findByVendorNumber(existingBean.getVendorNumber());
-	    	VendorBean vendor = vService.getById(vnb.getId());
-	    	//Artikel hat VendorNumber
-	    	//VendorNumber hat VendorID
-	    	//VendorID hat VendorName
-	    	
-	    	String vendorName = vendor.getFirstName() + " " + vendor.getLastName();
-	    	String logMessageExist = vendorName + " " + existingBean.getVendorNumber().toString() + " " +  existingBean.getItemNumber().toString() + " " + existingBean.getItemPrice().toString();
-			
-	    	filewriter.write(logMessageExist);
-	    	filewriter.flush();
-	    	filewriter.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("IOEXCEPTION = " + e);
-		}
+    //TODO START
+    //Evtl eine andere Lösung als jedes mal die Datei zu löschen?
+    private File createNewFile() throws IOException{
+    	if(Files.exists(pathToFile)) {
+    		Files.delete(pathToFile);
+    	}
+		return file = new File(Files.createFile(pathToFile).toString());
     }
+    
+    private void writeLog(PurchaseBean existingBean, PurchaseBean importetBean) {		
+	    VendorService vService = VendorService.getInstance();
+	    VendorNumberService vendorNumberService = VendorNumberService.getInstance();
+	    VendorBean vendor = vService.findByVendorNumber(vendorNumberService.findByVendorNumber(existingBean.getVendorNumber()).getVendorNumber());
+
+	    String vendorName = vendor.getFirstName() + " " + vendor.getLastName();
+	    String logMessageExist = "Bereits Vorhandener Artikel   " + vendorName + " " + "ADDSPACE" + existingBean.getVendorNumber().toString() + " " + "ADDSPACE" + 
+	    		existingBean.getItemNumber().toString() + " " + "ADDSPACE" + existingBean.getItemPrice().toString() + System.getProperty("line.separator") + 
+	    		"Importierter Artikel          " + vendorName + "ADDSPACE" + " " + importetBean.getVendorNumber().toString() + "ADDSPACE" + " " + 
+	    		importetBean.getItemNumber().toString() + "ADDSPACE" + " " + importetBean.getItemPrice().toString();
+	    logMessages.add(logMessageExist);
+    }
+
+    //Message the shows in the Log Data
+    private void writeIntoLogData(List<String> logMessages) throws IOException {
+    	file = createNewFile();
+		System.out.println("File = " + file);
+		FileWriter filewriter = new FileWriter(file);
+		filewriter.write("Automatisch erstellte Datei. Zeigt alle Artikel welche Doppelt importiert wurden!" + System.getProperty("line.separator") + System.getProperty("line.separator"));
+		
+		for (String logMessageExist : logMessages) {
+			filewriter.write("                              " + "Verkäufername | Verkäufernummer | Artikelnummer | Preis");
+			filewriter.write(System.getProperty("line.separator"));
+			filewriter.write(logMessageExist.replace("ADDSPACE", "             "));
+			filewriter.write(System.getProperty("line.separator"));
+			filewriter.write(System.getProperty("line.separator"));
+		}	
+    	filewriter.flush();
+    	filewriter.close();
+    	
+    	String messageForPane = "<html>Import Erfolgreich, allerdings sind Artikel doppelt vorhanden!<br>"
+    							+ "<b>Siehe: " + file.getAbsolutePath() +"</b>";
+    	JLabel label = new JLabel(messageForPane);
+    	JOptionPane.showMessageDialog(null, label);
+    	
+    }
+    //TODO END
     
     private File getImportPath() {
       final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));

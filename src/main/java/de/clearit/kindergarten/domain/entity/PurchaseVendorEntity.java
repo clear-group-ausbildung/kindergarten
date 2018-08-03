@@ -4,6 +4,10 @@ import de.clearit.kindergarten.domain.PurchaseBean;
 
 public class PurchaseVendorEntity extends PurchaseBean
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String vendorFullName;
 	private Integer vendorNumber;
 	
