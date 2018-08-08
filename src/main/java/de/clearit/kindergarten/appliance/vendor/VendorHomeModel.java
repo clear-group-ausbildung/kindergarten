@@ -186,38 +186,45 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	      super(BlockingScope.APPLICATION);
 	      importFile = getImportPath();
 		  progressPane = new TaskPane(MessageType.INFORMATION, "Importiere", CommandValue.OK);
-		  progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
-		  progressPane.setProgressIndeterminate(true);
-		  progressPane.setProgressVisible(true);
-		  progressPane.setVisible(true);
+		  if(importFile != null) {
+			  progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
+			  progressPane.setProgressIndeterminate(true);
+			  progressPane.setProgressVisible(true);
+			  progressPane.setVisible(true);
+		  }
 	    }
 
 	    @Override
-	    protected List<VendorBean> doInBackground() throws FileNotFoundException{    	
-	    	return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
-	          new TypeToken<List<VendorBean>>() {
-	          }.getType());
+	    protected List<VendorBean> doInBackground() throws FileNotFoundException{  
+	    	if(importFile != null) {
+		    	return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
+		          new TypeToken<List<VendorBean>>() {
+		          }.getType());
+	    	}
+	    	return null;
 	    }
 
 	    @Override
 	    protected void succeeded(List<VendorBean> result) {
 	      super.succeeded(result);
-	      LOGGER.debug("# Vendor elements to create: {}", result.size());
-	      Observable<VendorBean> observableVendors = Observable.fromIterable(result);
-
-	      System.out.println("RESULT = " + result);
-
-	      long beginNanos = System.nanoTime();
-	      observableVendors.subscribe(vendorBean -> SERVICE.importVendors(vendorBean), Observable::error, () -> {
-	        SERVICE.flush();
-	        LOGGER.debug("Finished Import after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
-	        progressPane.setVisible(false);
-//	        refreshSummary();
-	        String mainInstruction = RESOURCES.getString("importVendors.message.text", result.size());
-	        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
-	        pane.setPreferredWidth(PreferredWidth.MEDIUM);
-	        pane.showDialog(getEventObject(), RESOURCES.getString("importVendors.message.title"));
-	      });
+	      if(result != null) {
+		      LOGGER.debug("# Vendor elements to create: {}", result.size());
+		      Observable<VendorBean> observableVendors = Observable.fromIterable(result);
+	
+		      System.out.println("RESULT = " + result);
+	
+		      long beginNanos = System.nanoTime();
+		      observableVendors.subscribe(vendorBean -> SERVICE.importVendors(vendorBean), Observable::error, () -> {
+		        SERVICE.flush();
+		        LOGGER.debug("Finished Import after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
+		        progressPane.setVisible(false);
+	//	        refreshSummary();
+		        String mainInstruction = RESOURCES.getString("importVendors.message.text", result.size());
+		        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+		        pane.setPreferredWidth(PreferredWidth.MEDIUM);
+		        pane.showDialog(getEventObject(), RESOURCES.getString("importVendors.message.title"));
+		      });
+	      }
 	    }
 
 	    private File getImportPath() {
@@ -245,10 +252,10 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	      super(BlockingScope.APPLICATION);
 	      exportPath = getExportPath() + ".json";
 	      progressPane = new TaskPane(MessageType.INFORMATION, "Exportiere", CommandValue.OK);
-	      progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
-	      progressPane.setProgressIndeterminate(true);
-	      progressPane.setProgressVisible(true);
-	      progressPane.setVisible(true);
+		  progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
+		  progressPane.setProgressIndeterminate(true);
+		  progressPane.setProgressVisible(true);
+		  progressPane.setVisible(true);
 	      vendorList = SERVICE.getAll();
 	    }
 
@@ -269,11 +276,13 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	    @Override
 	    protected void succeeded(Void result) {
 	      super.succeeded(result);
-	      progressPane.setVisible(false);
-	      String mainInstruction = RESOURCES.getString("exportVendors.message.text", vendorList.size(), exportPath);
-	      TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
-	      pane.setPreferredWidth(PreferredWidth.MEDIUM);
-	      pane.showDialog(getEventObject(), RESOURCES.getString("exportVendors.message.title"));
+	      if(result != null) {
+		      progressPane.setVisible(false);
+		      String mainInstruction = RESOURCES.getString("exportVendors.message.text", vendorList.size(), exportPath);
+		      TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+		      pane.setPreferredWidth(PreferredWidth.MEDIUM);
+		      pane.showDialog(getEventObject(), RESOURCES.getString("exportVendors.message.title"));
+	      }
 	    }
 
 	    private String getExportPath() {
@@ -285,8 +294,12 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	      fileChooser.setVisible(true);
 	      fileChooser.showSaveDialog(null);
 	      fileChooser.setVisible(false);
-
-	      return fileChooser.getSelectedFile().toString();
+	      
+	      File selectedFile = fileChooser.getSelectedFile();
+	      if(selectedFile != null) {
+	    	  return selectedFile.toString();
+	      }
+	      return null;
 	    }
 
 	  }

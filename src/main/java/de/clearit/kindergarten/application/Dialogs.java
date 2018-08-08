@@ -2,6 +2,11 @@ package de.clearit.kindergarten.application;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,13 +14,19 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.jgoodies.application.Application;
 import com.jgoodies.application.ResourceMap;
 import com.jgoodies.desktop.DesktopManager;
 import com.jgoodies.desktop.Document;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.jsdl.core.CommandValue;
 import com.jgoodies.jsdl.core.MessageType;
 import com.jgoodies.jsdl.core.PreferredWidth;
@@ -135,33 +146,60 @@ public final class Dialogs {
     return pane.isCancelled();
   }
 
+  
+  //Show About / Help for the Application
   public static void about(EventObject e) {
 	  
     String title = RESOURCES.getString("dialogs.about.title");
     String mainInstruction = RESOURCES.getString("application.name") + " " + RESOURCES.getString("application.version");
     String contentText = RESOURCES.getString("dialogs.about.content", RESOURCES.getString("application.copyright"),
         RESOURCES.getString("application.buildNo"), RESOURCES.getDate("application.buildDate"));
+    String contactDetails = RESOURCES.getString("dialogs.about.contactDetails");
     
-    // TODO Label soll oben sein Text Darunter!
-    TaskPane pane = new TaskPane(RESOURCES.getIcon("application.logo"), mainInstruction, contentText, CommandValue.CLOSE);
+    JLabel imageLabel = new JLabel(RESOURCES.getIcon("application.logo"));
 
-    pane.setGapMainInstructionIconText(20);
-    pane.setPreferredSize(new Dimension(600, 300));
-    pane.setMarginContentTop(1);
-    pane.setMarginContentBottom(14);
-
-    pane.showDialog(e, title);
+    JFrame frame = new JFrame(title);
+    FormLayout layout = new FormLayout("5dlu, pref, 5dlu", "4dlu, pref, 10dlu, pref, pref, 10dlu, pref, 4dlu");
+    JPanel aboutPanel = new JPanel(layout);
+    CellConstraints cc = new CellConstraints();
+    aboutPanel.add(imageLabel, cc.xy(2, 2, CellConstraints.CENTER, CellConstraints.CENTER));
+    aboutPanel.add(new JLabel(mainInstruction), cc.xy(2, 4, CellConstraints.CENTER, CellConstraints.CENTER));
+    aboutPanel.add(new JLabel(contentText), cc.xy(2, 5, CellConstraints.CENTER, CellConstraints.CENTER));
+    aboutPanel.add(new JLabel(contactDetails), cc.xy(2, 7, CellConstraints.CENTER, CellConstraints.CENTER));
+    frame.add(aboutPanel);
+    frame.setVisible(true);
+    frame.setLocationRelativeTo(null);
+    frame.setMinimumSize(new Dimension(320,300));
   }
 
+  //Show all Shortcuts 
   public static void shortcuts(EventObject e) {
 	  String shortcutTitle = RESOURCES.getString("dialogs.about.shortcuts");
 	  String shortcutMainInstruction = RESOURCES.getString("dialogs.about.shortCutContent");
-	  TaskPane shortcutPane = new TaskPane(shortcutTitle, shortcutMainInstruction, CommandValue.CLOSE);
-	  shortcutPane.setPreferredSize(new Dimension(400, 150));
-	  shortcutPane.setMarginContentTop(4);
-	  shortcutPane.setMarginContentBottom(14);
-	    
-	  shortcutPane.showDialog(e, shortcutTitle);
+	  JFrame frame = new JFrame(shortcutTitle);
+	  JButton copyButton = new JButton("Kopieren");
+	  copyButton.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			String newString = shortcutMainInstruction;
+			
+			newString.replaceAll("\\<[^>]*>",""); //Klappt nicht... 
+			StringSelection selection = new StringSelection(newString);
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clipboard.setContents(selection, null);			
+		}	  
+	  });
+	  FormLayout layout = new FormLayout("5dlu, pref, pref", "4dlu, pref, pref, 4dlu");
+	  JPanel shortcutPanel = new JPanel(layout);
+	  CellConstraints cc = new CellConstraints();
+	   
+	  shortcutPanel.add(new JLabel(shortcutMainInstruction), cc.xy(2, 2, CellConstraints.CENTER, CellConstraints.CENTER));
+	  shortcutPanel.add(copyButton, cc.xy(3, 3, CellConstraints.RIGHT, CellConstraints.BOTTOM));
+	  
+	  frame.add(shortcutPanel);
+	  frame.setVisible(true);
+	  frame.setLocationRelativeTo(null);
+	  frame.setMinimumSize(new Dimension(320,300));
   }
   
   // Helper Code ************************************************************
