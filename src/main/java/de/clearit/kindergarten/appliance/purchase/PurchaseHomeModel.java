@@ -349,53 +349,60 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
     
     @Override
     protected List<PurchaseBean> doInBackground() throws FileNotFoundException {
+    	if (importFile != null)
+		{
     	return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
           new TypeToken<List<PurchaseBean>>() {
           }.getType());
+		}
+		return null;
     }
 
     @Override
     protected void succeeded(List<PurchaseBean> result) {
       super.succeeded(result);
       
-      List<PurchaseBean> allBeans = SERVICE.getAll();
-      List<PurchaseBean> beansToRemove = new ArrayList<>();
-      
-      for(int resultCount = 0; resultCount < result.size(); resultCount++) {
-    	  PurchaseBean resultBean = result.get(resultCount);
-    	  for(int allBeansCount = 0; allBeansCount<allBeans.size(); allBeansCount++) {
-    		  PurchaseBean existingBean = allBeans.get(allBeansCount);
-    		  if(existingBean.getItemNumber().equals(resultBean.getItemNumber()) && existingBean.getVendorNumber().equals(resultBean.getVendorNumber())) {
-    			  beansToRemove.add(resultBean);
-    			  writeLog(existingBean, resultBean);
-    		  }
-    	  }
-      }
-      if(beansToRemove.isEmpty()) {
-    	  JOptionPane.showMessageDialog(null, "Import erfolgreich!");
-      }else {
-    	  for(PurchaseBean bean : beansToRemove) {
-		  result.remove(bean);
-    	  }
-	      try {
-	    	writeIntoLogData(logMessages);
-	      } catch (IOException e) {
-			e.printStackTrace();
+      if (result != null)
+      {
+	      List<PurchaseBean> allBeans = SERVICE.getAll();
+	      List<PurchaseBean> beansToRemove = new ArrayList<>();
+	      
+	      for(int resultCount = 0; resultCount < result.size(); resultCount++) {
+	    	  PurchaseBean resultBean = result.get(resultCount);
+	    	  for(int allBeansCount = 0; allBeansCount<allBeans.size(); allBeansCount++) {
+	    		  PurchaseBean existingBean = allBeans.get(allBeansCount);
+	    		  if(existingBean.getItemNumber().equals(resultBean.getItemNumber()) && existingBean.getVendorNumber().equals(resultBean.getVendorNumber())) {
+	    			  beansToRemove.add(resultBean);
+	    			  writeLog(existingBean, resultBean);
+	    		  }
+	    	  }
 	      }
-      }
-      LOGGER.debug("# Purchase elements to create: {}", result.size());
-      Observable<PurchaseBean> observablePurchases = Observable.fromIterable(result);
-      long beginNanos = System.nanoTime();
-      observablePurchases.subscribe(purchaseBean -> SERVICE.toEntity(purchaseBean).saveIt(), Observable::error, () -> {
-        SERVICE.flush();
-        LOGGER.debug("Finished Import after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
-        progressPane.setVisible(false);
-        refreshSummary();
-        String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
-        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
-        pane.setPreferredWidth(PreferredWidth.MEDIUM);
-        pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
-      });
+	      if(beansToRemove.isEmpty()) {
+	    	  JOptionPane.showMessageDialog(null, "Import erfolgreich!");
+	      }else {
+	    	  for(PurchaseBean bean : beansToRemove) {
+			  result.remove(bean);
+	    	  }
+		      try {
+		    	writeIntoLogData(logMessages);
+		      } catch (IOException e) {
+				e.printStackTrace();
+		      }
+	      }
+	      LOGGER.debug("# Purchase elements to create: {}", result.size());
+	      Observable<PurchaseBean> observablePurchases = Observable.fromIterable(result);
+	      long beginNanos = System.nanoTime();
+	      observablePurchases.subscribe(purchaseBean -> SERVICE.toEntity(purchaseBean).saveIt(), Observable::error, () -> {
+	        SERVICE.flush();
+	        LOGGER.debug("Finished Import after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
+	        progressPane.setVisible(false);
+	        refreshSummary();
+	        String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
+	        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+	        pane.setPreferredWidth(PreferredWidth.MEDIUM);
+	        pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
+	      });
+	    }
     }
     //TODO START
     //Evtl eine andere Lösung als jedes mal die Datei zu löschen?
@@ -493,24 +500,31 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
     @Override
     protected void succeeded(Void result) {
       super.succeeded(result);
+      if (result != null)
+      {
       progressPane.setVisible(false);
       String mainInstruction = RESOURCES.getString("exportPurchases.message.text", purchaseList.size(), exportPath);
       TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
       pane.setPreferredWidth(PreferredWidth.MEDIUM);
       pane.showDialog(getEventObject(), RESOURCES.getString("exportPurchases.message.title"));
+      }
     }
 
     private String getExportPath() {
-      final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
-      fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-      fileChooser.setDialogTitle("Speichern unter...");
-      fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));
-      fileChooser.setAcceptAllFileFilterUsed(false);
-      fileChooser.setVisible(true);
-      fileChooser.showSaveDialog(null);
-      fileChooser.setVisible(false);
+    	final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
+    	fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+    	fileChooser.setDialogTitle("Speichern unter...");
+    	fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));
+    	fileChooser.setAcceptAllFileFilterUsed(false);
+    	fileChooser.setVisible(true);
+    	fileChooser.showSaveDialog(null);
+    	fileChooser.setVisible(false);
 
-      return fileChooser.getSelectedFile().toString();
+    	if (fileChooser.getSelectedFile() != null)
+    	{
+    		return fileChooser.getSelectedFile().toString();
+    	}
+    	return null;
     }
 
   }
