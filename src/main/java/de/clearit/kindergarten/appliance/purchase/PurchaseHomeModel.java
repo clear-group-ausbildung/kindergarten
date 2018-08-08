@@ -351,9 +351,9 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
     protected List<PurchaseBean> doInBackground() throws FileNotFoundException {
     	if (importFile != null)
 		{
-    	return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
-          new TypeToken<List<PurchaseBean>>() {
-          }.getType());
+	    	return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
+	          new TypeToken<List<PurchaseBean>>() {
+	          }.getType());
 		}
 		return null;
     }
