@@ -1,9 +1,9 @@
 # Inhaltsverzeichnis
 
  * __Erfassung der Verkäufer__
-	* HInzufügen eines neuen Verkäufers
+	* Hinzufügen eines neuen Verkäufers
 	* Hinzufügen einer Verkäufernummer
-	* Entfernen einer Vekräufernummer
+	* Entfernen einer Verkäufernummer
 	* Import / Export von Kundendaten
 		* Import
 		* Export 
@@ -25,7 +25,7 @@ Um in die Verkäufer Erfassung zu gelangen benötigt es einen Klick auf „Verk�
 ![Bild 1] (https://github.com/clear-group-ausbildung/kindergarten/blob/develop/Screenshots/Bild%201.png?raw=true)
 
 ###Hinzufügen eines neuen Verkäufers
-Die Erfassung der Kundendaten erfolgt mit einem Klick auf dem Neu-Button in der Verkäuferansicht. 
+Die Erfassung der Kundendaten erfolgt mit einem Klick auf den Neu-Button in der Verkäuferansicht. 
 Es öffnet sich ein neues Fenster.
 ![Bild 2] (https://github.com/clear-group-ausbildung/kindergarten/blob/develop/Screenshots/Bild%202.png?raw=true)
 
@@ -37,7 +37,7 @@ Mit klick auf „OK“ wird der Verkäufer angelegt und die Maske schließt sich
 
 ###Entfernen einer Verkäufernummer
 Um einem Verkäufer eine Verkäufernummer zu entfernen, benötigt es einen klick auf die jeweilige Nummer.
-Der „Entfernen“ Button wird aktiviert und mit klick auf den Button wird die Nummer entfernt.
+Der „Entfernen“ Button wird aktiviert und mit Klick auf den Button wird die Nummer entfernt.
 ![Bild 3] (https://github.com/clear-group-ausbildung/kindergarten/blob/develop/Screenshots/Bild%204.png?raw=true)
 
 ###Import/Export von Kundendaten
@@ -127,7 +127,7 @@ Nachdem Klick öffnet sich ein Dialog. Hier ist der Dateipfad beschrieben wo das
 
 ###Alle Abrechnungen Drucken
 
-Um alle Abrechnungen zu drucken, benötigt es einen Klick auf „Alle Abrechnungen Drucken“. Nachdem Klick öffnet sich ein Fenster, hier kann der Drucker ausgewählt werden.
+Um alle Abrechnungen zu drucken, benötigt es einen Klick auf „Alle Abrechnungen Drucken“. Nach dem Klick öffnet sich ein Fenster, hier kann der Drucker ausgewählt werden.
 ![Bild 23] (https://github.com/clear-group-ausbildung/kindergarten/blob/develop/Screenshots/Bild%2025.png?raw=true)
 Zusätzlich werden alle Rechnungen als PDF und Excel Datei in einem Ordner auf dem Desktop gespeichert.
 
@@ -159,6 +159,6 @@ Um die Bedienung zu vereinfachen, befinden sich in der Anwendung folgende Shortc
 * Strg - 1 Ansicht Verkäufer
 	* Wechselt in die Ansicht "Verkäufer"
 * Strg - 2 Anischt Verkäufe
-	* Wechselt in die Ansicht "Verkäue"
+	* Wechselt in die Ansicht "Verkäufe"
 * Strg - 3 Ansicht Abrechnungen
 	* Wechselt in die Ansicht "Abrechnungen"
