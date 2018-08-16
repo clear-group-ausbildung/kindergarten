@@ -1,24 +1,23 @@
 # Inhaltsverzeichnis
 
- * __Erfassung der Verkäufer__
+ * [__Erfassung der Verkäufer__](#erfassung-der-verkäufer)
 	* Hinzufügen eines neuen Verkäufers
 	* Hinzufügen einer Verkäufernummer
-	* Entfernen einer Verkäufernummer
+	* Entfernen einer Verkäufernummer        
 	* Import / Export von Kundendaten
 		* Import
 		* Export 
 	* Bearbeiten eines Verkäufers
-* __Erfassung der Artikel__ 
+* [__Erfassung der Artikel__](#erfassung-der-artikel) 
 	* Hinzufügen eines Artikels
 	* Import / Export von Artikeln 
 	* Sortieren und Filtern
-* __Abrechnung__
+* [__Abrechnung__](#abrechnung)
 	* Abrechnungen drucken
 	* Alle Abrechnung drucken 
 	* Interne Abrechnung drucken
-* __Info__
-* __Shortcuts__
-
+* [__Info__](#info)
+* [__Shortcuts__](#shortcuts)
 
 ### Erfassung der Verkäufer
 Um in die Verkäufer Erfassung zu gelangen benötigt es einen Klick auf „Verkäufer“. Wird die Anwendung gestartet ist diese Maske bereits geöffnet.
