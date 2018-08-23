@@ -78,8 +78,8 @@ Klicken Sie auf die Datei und anschließend auf Öffnen
 
 ![Verkäufer importieren Oberfläche](Bild7.png "Verkäufer importieren Oberfläche")
 
-Die Daten werden importiert und der Benutzer erhält nach dem Import eine Benachrichtigung.
-
+Die Daten werden importiert und die Verkäuferliste wird aufgefüllt.
+Der Benutzer erhält eine Benachrichtigung wenn alles geklappt hat.
 
 ###Bearbeiten eines Verk&auml;ufers
 
@@ -118,8 +118,8 @@ Danach können weiterhin beliebig viele Artikel erfasst werden.
 Um den Verkauf abzuschließen benötigt es nur einen Klick auf „Verkauf abschließen“.
 
 <span style="color:red"> **!Wichtig! klicken Sie erst auf Verkauf abschließen, wenn der Kunde gezahlt hat. 
-Erst nachdem Sie auf Verkauf abschließen klicken werden ihre Einträge gespeichert. Wenn Sie zwischendrin auf abbrechen klicken 
-sind ihre Einträge verworfen!**</span>
+Erst nachdem Sie auf Verkauf abschließen klicken werden Ihre Einträge gespeichert. Wenn Sie zwischendrin auf abbrechen klicken 
+sind Ihre Einträge verworfen!**</span>
 
 ![Verkauf abschließen](Bild15.png "Verkauf abschließen")
 
@@ -144,11 +144,11 @@ In diesem Fenster wählt man wieder den Speicherort aus, gibt der Datei einen Na
 
 ![Verkäufe exportieren Oberfläche](Bild20.png "Verkäufe exportieren Oberfläche")
 
-Am ausgewählten Ort wird eine Datei „Dateiname.JSON“ erstellt.
+Nun gibt man seinen Dateinamen ein, wählt den Speicherort aus und bestätigt alles mit Klick auf „Speichern“.
+Am Speicherort befindet sich nun eine „Dateiname.JSON“ Datei mit allen vorhandenen Verkäufen.
+Diese Datei kann nun auf einen USB Stick gespeichert werden und an andere PC's gesteckt werden.
 
-
-
-Mit Klick auf „Verkäufe Importieren“ öffnet sich ein neues Fenster. 
+Um die vorher exportierten Verkäufe auf einen anderen PC zu übertragen kann hier die Import-Funktion genutzt werden.
 
 ![Verkäufer importieren](Bild17.png "Verkäufer importieren")
 
@@ -156,22 +156,29 @@ Es öffnet sich ein neues Fenster um die Datei auszuwählen.
 
 ![Verkäufe importieren Oberfläche](Bild18.png "Verkäufe importieren Oberfläche")
 
-Nachdem an die passende Stelle navigiert wurde und die zu importierende Datei ausgewählt ist, beendet man den Vorgang mit einem Klick auf „Öffnen“.
-Der Vorgang wird beendet und die Datensätze werden in der Artikelerfassung hinzugefügt.
+Nachdem an die passende Stelle navigiert wurde und die zu importierende Datei ausgewählt ist beendet man den Vorgang mit einem Klick auf „Öffnen“.
+Die Daten werden importiert und die Artikelliste wird aufgefüllt.
+Der Benutzer erhält eine Benachrichtigung wenn alles geklappt hat.
 
 ###Sortieren und Filtern
 
-Artikel können sortiert werden. Mit Klick auf „Sortiere Nach“ können die Artikel „Chronologisch“ oder 
-„Nach Verkäufer und Verkäufernummer“ sortiert werden.
+Die Verkäufe ansicht verfügt zusätzlich über eine Sortier - und Filterfunktion.
+Man hat die Möglichkeit die Liste zu Sortieren um sich einen besseren Überblick zu verschaffen.
+Wenn nach "Chronologisch" sortiert wird, werden die Artikel in der Reihenfolge angeordnet in der sie verkauft wurden
+mit zuerst verkauften Artikel ganz oben stehend.
+
+Bei "Nach Verkäufer und Verkäufernummer" sortieren, werden die Verkäufer erst alphabetisch
+und dann nach der Verkäufernummer aufsteigend sortiert.
 
 ![Artikel sortieren](Bild21.png "Artikel sortieren")
 
-Artikel können nach Verkäufer gefiltert werden. Hierzu benötigt es einen Klick auf 
-„Filter nach Verkäufernummer“. Hier werden nun alle Verkäufer in einem Dropdown aufgelistet, welche Artikel verkauft haben. Mit einem Klick auf den jeweiligen Verkäufer werden nur dessen Daten angezeigt. 
+Sollte man nur die Informationen über einen einzelnen Verkäufer brauchen,
+falls zum Beispiel ein Verkäufer wissen will, welche und wie viele Artikel er bisher verkauft hat
+kann man bei dem Dropdown-Menü "Filter nach Verkäufernummer" den gewünschten Verkäufer oder seine Verkäufernummer heraussuchen.
+Dabei wird in der Liste nur noch dieser Verkäufer gelistet mit seinen bisher verkauften Artikeln.
+Um das wieder rückgängig zu machen, muss in dem Dropdown-Menü nur der oberste Punkt "Alle" ausgewählt werden.
 
 ![Artikel filtern](Bild22.png "Artikel filtern")
-
-Um wieder alle Artikel sehen zu können, reicht ein Klick auf „Alle“.
 
 ###Abrechnung
 
@@ -189,23 +196,37 @@ Um eine einzelne Abrechnung zu drucken, wird der jeweilige Verkäufer selektiert
 ![Abrechnung drucken](Bild24.png "Abrechnung drucken")
 
 Nachdem Klick öffnet sich ein Dialog. Hier ist der Dateipfad beschrieben wo das Dokument gespeichert wurde.
+Auf dem Desktop wird ein Ordner namens "Basar Abrechnungen" erstellt. Hier befindet sich dann für jeden Verkäufer
+jeweils eine PDF und eine Excel Datei mit einer Übersicht seiner verkauften Artikel.
 
 ###Alle Abrechnungen drucken
 
-Um alle Abrechnungen zu drucken, benötigt es einen Klick auf „Alle Abrechnungen drucken“. Nach dem Klick öffnet sich ein Fenster, hier kann der Drucker ausgewählt werden.
+Um alle Abrechnungen zu drucken, benötigt es einen Klick auf „Alle Abrechnungen drucken“.
+Nach dem Klick öffnet sich ein Fenster, hier kann der Drucker ausgewählt werden.
 
 ![Alle Abrechnungen drucken](Bild25.png "Alle Abrechnungen drucken")
 
-Zusätzlich werden alle Rechnungen als PDF und Excel Datei in einem Ordner auf dem Desktop gespeichert.
+Außerdem werden wie oben bei "Abrechnung drucken" beschrieben, für jeden Verkäufer automatisch 
+eine PDF und eine Excel Datei mit einer Übersicht seiner verkauften Artikel angelegt und im Ordner gespeichert.
 
 ###Interne Abrechnung drucken
 
-„Interne Abrechnung drucken“ erstellt eine Datei in der alle Verkäufer mit ihren verkauften Artikeln aufgelistet sind. 
+„Interne Abrechnung drucken“ erstellt eine Übersicht von allen Verkäufen die getätigt wurden.
+Hier sind Statistiken zu finden wie :
+
+* Insgesamt verkaufte Artikel
+* Insgesamter Umsatz
+* Insgesamte Auszahlung
+* Anteil des Kindergartens
+* Einnahmen und Auszahlungsbeträge an die jeweiligen Verkäufer
+
 ![Interne Abrechnung drucken](Bild26.png "Interne Abrechnung drucken")
 
 ###Info
 
-Ein Klick auf Info öffnet das Informationsfenster. ![Info Fenster](Bild27.png "Info Fenster")
+Ein Klick auf Info öffnet das Informationsfenster.
+
+![Info Fenster](Bild27.png "Info Fenster")
 
 Im Infofeld befinden sich die Kontaktdaten des Ansprechpartners und zusätzlich ein Link welcher die Hilfe Datei im Browser öffnet.
 
