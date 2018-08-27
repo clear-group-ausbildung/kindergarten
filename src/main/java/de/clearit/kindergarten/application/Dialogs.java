@@ -1,13 +1,11 @@
 package de.clearit.kindergarten.application;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.EventObject;
@@ -17,7 +15,6 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -48,7 +45,9 @@ public final class Dialogs {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(Dialogs.class);
   private final static String lineSeparator = System.getProperty("line.separator");
-  private final static String url = RESOURCES.getString("dialogs.about.help");
+  private final static String urlHelp = RESOURCES.getString("dialogs.about.help");
+  private final static String urlHowTo = RESOURCES.getString("dialogs.about.howTo");
+  private final static String urlInstall = RESOURCES.getString("dialogs.about.install");
   
   // Instance Creation ******************************************************
 
@@ -170,6 +169,7 @@ public final class Dialogs {
     aboutPanel.add(new JLabel(mainInstruction), cc.xy(2, 4, CellConstraints.CENTER, CellConstraints.CENTER));
     aboutPanel.add(new JLabel(contentText), cc.xy(2, 5, CellConstraints.CENTER, CellConstraints.CENTER));
     aboutPanel.add(new JLabel(contactDetails), cc.xy(2, 7, CellConstraints.CENTER, CellConstraints.CENTER));
+    aboutPanel.setBackground(Color.WHITE);
     frame.add(aboutPanel);
     frame.setVisible(true);
     frame.setLocationRelativeTo(null);
@@ -179,53 +179,143 @@ public final class Dialogs {
   //Show all Shortcuts 
   public static void shortcuts(EventObject e) {
 	  String shortcutTitle = RESOURCES.getString("dialogs.about.shortcuts");
-	  String shortcutMainInstruction = RESOURCES.getString("dialogs.about.shortCutContent");
+	  String shortcutMainTitle = RESOURCES.getString("dialogs.about.shortCutTitle");
+	  String shortcutVendor = RESOURCES.getString("dialogs.about.shortCutVendor");
 	  JFrame frame = new JFrame(shortcutTitle);
-	  JButton copyButton = new JButton("Kopieren");
-	  //TODO HTML Tags sollen noch entfernt werden
-	  copyButton.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			String newString = shortcutMainInstruction;
-			
-			newString.replaceAll("\\<[^>]*>",""); //Klappt nicht... 
-			StringSelection selection = new StringSelection(newString);
-			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-			clipboard.setContents(selection, null);			
-		}	  
-	  });
-	  FormLayout layout = new FormLayout("5dlu, pref, pref", "4dlu, pref, pref, 4dlu");
+	  FormLayout layout = new FormLayout("4dlu, pref, pref", "4dlu, pref, 100dlu, pref");
 	  JPanel shortcutPanel = new JPanel(layout);
 	  CellConstraints cc = new CellConstraints();
 	   
-	  shortcutPanel.add(new JLabel(shortcutMainInstruction), cc.xy(2, 2, CellConstraints.CENTER, CellConstraints.CENTER));
-	  shortcutPanel.add(copyButton, cc.xy(3, 3, CellConstraints.RIGHT, CellConstraints.BOTTOM));
+	  shortcutPanel.add(new JLabel(shortcutMainTitle), cc.xy(2, 2, CellConstraints.CENTER, CellConstraints.CENTER));
+	  shortcutPanel.add(new JLabel(shortcutVendor), cc.xy(2, 3, CellConstraints.CENTER, CellConstraints.CENTER));	  
+	  shortcutPanel.setBackground(Color.WHITE);
 	  
 	  frame.add(shortcutPanel);
 	  frame.setVisible(true);
 	  frame.setLocationRelativeTo(null);
-	  frame.setMinimumSize(new Dimension(320,300));
+	  frame.setMinimumSize(new Dimension(300,300));
   }
   
   //Open Help
   public static void help(EventObject e) throws IOException {
-	  File htmlFile = new File(url);
-	  Desktop.getDesktop().browse(htmlFile.toURI());
 	  String helpTitle = RESOURCES.getString("dialogs.about.help.title");
-	  String helpMainInstruction = RESOURCES.getString("dialogs.about.help");
-
+	  final JLabel helpIntro = new JLabel(RESOURCES.getString("dialogs.about.help.intro"));
+	  final JLabel helpLabel = new JLabel("<HTML><FONT color=\"#000000\"><U><b>" + "Benutzerhandbuch" + "</b></U></FONT></HTML>");
+	  final JLabel howToIntro = new JLabel(RESOURCES.getString("dialogs.about.howTo.intro"));
+	  final JLabel howToLabel = new JLabel("<HTML><FONT color=\"#000000\"><U><b>" + "HowTo Datei" + "</b></U></FONT></HTML>");
+	  final JLabel installIntro = new JLabel(RESOURCES.getString("dialogs.about.install.intro"));
+	  final JLabel installLabel = new JLabel("<HTML><FONT color=\"#000000\"><U><b>" + "Installations Datei" + "</b></U></FONT></HTML>");
+	  final JLabel logoLabel = new JLabel(RESOURCES.getIcon("application.logo")); 
+	  
+	  helpLabel.addMouseListener(new MouseListener() {
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+		
+		@Override
+		public void mousePressed(MouseEvent e) {}
+		
+		@Override
+		public void mouseExited(MouseEvent e) {
+			helpLabel.setText("<HTML><FONT color=\"#000000\"><U><b>" + "Benutzerhandbuch" + "</b></U></FONT></HTML>");
+		}
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			helpLabel.setText("<HTML><FONT color=\"#000099\"><U>" + "Klicken Sie hier um das Benutzerhandbuch zu öffnen." + "</U></FONT></HTML>");
+		}
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			File htmlFile = new File(urlHelp);
+			try {
+				Desktop.getDesktop().browse(htmlFile.toURI());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		}
+	});
+	  
+	  howToLabel.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				howToLabel.setText("<HTML><FONT color=\"#000000\"><U><b>" + "HowTo Datei" + "</b></U></FONT></HTML>");
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				howToLabel.setText("<HTML><FONT color=\"#000099\"><U>" + "Klicken Sie hier um die HowTo Datei zu öffnen." + "</U></FONT></HTML>");
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				File htmlFile = new File(urlHowTo);
+				try {
+					Desktop.getDesktop().browse(htmlFile.toURI());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	
+			}
+		});
+	  
+	  installLabel.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				installLabel.setText("<HTML><FONT color=\"#000000\"><U><b>" + "Installations Datei" + "</b></U></FONT></HTML>");
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				installLabel.setText("<HTML><FONT color=\"#000099\"><U>" + "Klicken Sie hier um die Installations Datei zu öffnen." + "</U></FONT></HTML>");
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				File htmlFile = new File(urlInstall);
+				try {
+					Desktop.getDesktop().browse(htmlFile.toURI());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	
+			}
+		});
 	  
 	  JFrame frame = new JFrame(helpTitle);		
-	  FormLayout layout = new FormLayout("5dlu, pref, pref", "4dlu, pref, pref, 4dlu");
+	  FormLayout layout = new FormLayout("5dlu, pref, pref", "4dlu, pref, 8dlu, pref, 1dlu, pref, 8dlu, pref, 1dlu, pref, 8dlu, pref, 1dlu, pref, 8dlu, pref, 1dlu");
 	  JPanel helpPanel = new JPanel(layout);
 	  CellConstraints cc = new CellConstraints();
-	   
-	  helpPanel.add(new JLabel(helpMainInstruction), cc.xy(2, 2, CellConstraints.CENTER, CellConstraints.CENTER));
-
+	  
+	  helpPanel.add(logoLabel, cc.xy(2, 2, CellConstraints.CENTER, CellConstraints.CENTER));
+	  helpPanel.add(installIntro, cc.xy(2, 4, CellConstraints.DEFAULT, CellConstraints.DEFAULT));
+	  helpPanel.add(installLabel, cc.xy(2, 6, CellConstraints.DEFAULT, CellConstraints.DEFAULT));
+	  helpPanel.add(howToIntro, cc.xy(2, 8, CellConstraints.DEFAULT, CellConstraints.DEFAULT));
+	  helpPanel.add(howToLabel, cc.xy(2, 10, CellConstraints.DEFAULT, CellConstraints.DEFAULT));
+	  helpPanel.add(helpIntro, cc.xy(2, 12, CellConstraints.DEFAULT, CellConstraints.DEFAULT));
+	  helpPanel.add(helpLabel, cc.xy(2, 14, CellConstraints.DEFAULT, CellConstraints.DEFAULT));
+	  
+	  helpPanel.setBackground(Color.WHITE);
+	  
 	  frame.add(helpPanel);
 	  frame.setVisible(true);
 	  frame.setLocationRelativeTo(null);
-	  frame.setMinimumSize(new Dimension(320,300));
+	  frame.setMinimumSize(new Dimension(380,300));
   }
   
   
