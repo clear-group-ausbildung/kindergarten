@@ -87,10 +87,16 @@ tasks.withType(JavaExec) {
 }
 
 distZip {
-    into(project.name + '-' + project.version + '/bin') {
-        from '.'
-        include 'kindergarten.sqlite'
-        include 'abrechnung_template.xlsx'
-	      include 'abrechnung_intern_template.xlsx'
-    }
+   into(project.name + '-' + project.version + '/bin') {
+       from '.'
+       include 'kindergarten.sqlite'
+       include 'abrechnung_template.xlsx'
+          include 'abrechnung_intern_template.xlsx'
+   }
+       into(project.name + '-' + project.version + '/hilfe') {
+       from '.'
+       include 'Benutzerhandbuch.html'
+       include 'HowTo.html'
+       include 'Installation.html'
+   }
 }
