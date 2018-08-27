@@ -73,11 +73,7 @@ public class ResetHomeModel extends DefaultAppliance{
 		      for (VendorBean VendorBean : allVendors) {
 				SERVICE.delete(VendorBean);
 			  }
-		      if(allVendors.isEmpty()) {
-		    	  JOptionPane.showMessageDialog(new JFrame(), "Alle Verkäufer wurden erfolgreich entfernt!", "Erfolgreicher Reset", JOptionPane.NO_OPTION);
-		      }else {
-		    	  JOptionPane.showMessageDialog(new JFrame(), "Es ist ein Fehler aufgetreten! Es konnten nicht alle Verkäufer gelöscht werden!", "Fehler beim Löschen", JOptionPane.ERROR_MESSAGE);
-		      }
+		      JOptionPane.showMessageDialog(new JFrame(), "Alle Verkäufer wurden erfolgreich entfernt!", "Erfolgreicher Reset", JOptionPane.NO_OPTION);
 	      }
 	  }
 	    @Override
