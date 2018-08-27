@@ -1,12 +1,15 @@
 package de.clearit.kindergarten.application;
 
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,6 +48,7 @@ public final class Dialogs {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(Dialogs.class);
   private final static String lineSeparator = System.getProperty("line.separator");
+  private final static String url = RESOURCES.getString("dialogs.about.help");
   
   // Instance Creation ******************************************************
 
@@ -147,7 +151,7 @@ public final class Dialogs {
   }
 
   
-  //Show About / Help for the Application
+  //Show About
   public static void about(EventObject e) {
 	  
     String title = RESOURCES.getString("dialogs.about.title");
@@ -178,6 +182,7 @@ public final class Dialogs {
 	  String shortcutMainInstruction = RESOURCES.getString("dialogs.about.shortCutContent");
 	  JFrame frame = new JFrame(shortcutTitle);
 	  JButton copyButton = new JButton("Kopieren");
+	  //TODO HTML Tags sollen noch entfernt werden
 	  copyButton.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -201,6 +206,29 @@ public final class Dialogs {
 	  frame.setLocationRelativeTo(null);
 	  frame.setMinimumSize(new Dimension(320,300));
   }
+  
+  //Open Help
+  public static void help(EventObject e) throws IOException {
+	  File htmlFile = new File(url);
+	  Desktop.getDesktop().browse(htmlFile.toURI());
+	  String helpTitle = RESOURCES.getString("dialogs.about.help.title");
+	  String helpMainInstruction = RESOURCES.getString("dialogs.about.help");
+
+	  
+	  JFrame frame = new JFrame(helpTitle);		
+	  FormLayout layout = new FormLayout("5dlu, pref, pref", "4dlu, pref, pref, 4dlu");
+	  JPanel helpPanel = new JPanel(layout);
+	  CellConstraints cc = new CellConstraints();
+	   
+	  helpPanel.add(new JLabel(helpMainInstruction), cc.xy(2, 2, CellConstraints.CENTER, CellConstraints.CENTER));
+
+	  frame.add(helpPanel);
+	  frame.setVisible(true);
+	  frame.setLocationRelativeTo(null);
+	  frame.setMinimumSize(new Dimension(320,300));
+  }
+  
+  
   
   // Helper Code ************************************************************
 

@@ -431,12 +431,13 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
     	file = createNewFile();
 		System.out.println("File = " + file);
 		FileWriter filewriter = new FileWriter(file);
-		filewriter.write("Automatisch erstellte Datei. Zeigt alle Artikel welche Doppelt importiert wurden!" + System.getProperty("line.separator") + System.getProperty("line.separator"));
+		filewriter.write("Automatisch erstellte Datei. Zeigt alle Artikel welche Doppelt importiert wurden!" + 
+						System.getProperty("line.separator") + System.getProperty("line.separator"));
 		
 		for (String logMessageExist : logMessages) {
 			filewriter.write("                              " + "Verkäufername | Verkäufernummer | Artikelnummer | Preis");
 			filewriter.write(System.getProperty("line.separator"));
-			filewriter.write(logMessageExist.replace("ADDSPACE", "             "));
+			filewriter.write(logMessageExist.replace("ADDSPACE", "             ")); //TODO schönere Lösung als 100 Spaces?
 			filewriter.write(System.getProperty("line.separator"));
 			filewriter.write(System.getProperty("line.separator"));
 		}	

@@ -142,7 +142,6 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
             }
           }
         }
-
         getSelectionInList().setSelectionIndex(indexOfNewOrUpdatedElement);
       }
     });

@@ -109,8 +109,14 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 	@Override
 	public void update(VendorBean bean) {
 		LOGGER.entering(VendorService.class.getSimpleName(), "update(VendorBean bean)", new Object[] { bean });
-		delete(bean);
-		createAsNew(bean);
+		if(getAll().size() == 1) {
+			delete(bean);
+			create(bean);
+			createAsNew(bean);
+		}else {
+			delete(bean);
+			createAsNew(bean);
+		}
 		LOGGER.exiting(VendorService.class.getSimpleName(), "update(VendorBean bean)");
 	}
 
@@ -181,7 +187,6 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 		List<VendorBean> allVendors = getAll();
 		boolean check = true;
 		for(int i = 0; i < allVendors.size(); i++) {
-			
 			if(bean.getLastName().equals(allVendors.get(i).getLastName()) || bean.getFirstName().equals(allVendors.get(i).getFirstName())) {
 				check = false;
 			}

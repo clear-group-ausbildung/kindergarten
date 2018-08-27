@@ -1,6 +1,7 @@
 package de.clearit.kindergarten.application;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.EventObject;
 import java.util.List;
 
@@ -67,7 +68,12 @@ public final class MainModel extends UIFModel implements ExitListener {
 
   @Action
   public void openShortcuts(ActionEvent e) {
-	  Dialogs.shortcuts(e);
+	Dialogs.shortcuts(e);
+  }
+
+  @Action
+  public void openHelp(ActionEvent e) throws IOException {
+	  Dialogs.help(e);
   }
   
   // Application Shutdown ***************************************************

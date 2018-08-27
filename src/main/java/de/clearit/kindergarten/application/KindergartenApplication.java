@@ -22,6 +22,7 @@ import com.jgoodies.uif2.splash.SplashWindow;
 import de.clearit.kindergarten.appliance.accounting.AccountAppliance;
 import de.clearit.kindergarten.appliance.documents.DocumentsAppliance;
 import de.clearit.kindergarten.appliance.purchase.PurchaseAppliance;
+import de.clearit.kindergarten.appliance.reset.ResetAppliance;
 import de.clearit.kindergarten.appliance.vendor.VendorAppliance;
 
 /**
@@ -29,120 +30,125 @@ import de.clearit.kindergarten.appliance.vendor.VendorAppliance;
  */
 public final class KindergartenApplication extends UIFApplication {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  public static void main(String[] args) {
-    Application.launch(KindergartenApplication.class, args);
-  }
+	public static void main(String[] args) {
+		Application.launch(KindergartenApplication.class, args);
+	}
 
-  // Application API Extensions *********************************************
+	// Application API Extensions *********************************************
 
-  public NavigationBarSpec applicationActions() {
-    NavigationBarSpec spec = new NavigationBarSpec();
+	public NavigationBarSpec applicationActions() {
+		NavigationBarSpec spec = new NavigationBarSpec();
 
-    Action action;
-    spec.add(getResourceMap().getString("navigation.applications"));
-    action = DesktopManager.createActivationAction(VendorAppliance.getInstance());
-    action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 1"));
-    spec.add(action);
+		Action action;
+		spec.add(getResourceMap().getString("navigation.applications"));
+		action = DesktopManager.createActivationAction(VendorAppliance.getInstance());
+		action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 1"));
+		spec.add(action);
 
-    action = DesktopManager.createActivationAction(PurchaseAppliance.getInstance());
-    action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 2"));
-    spec.add(action);
+		action = DesktopManager.createActivationAction(PurchaseAppliance.getInstance());
+		action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 2"));
+		spec.add(action);
 
-    action = DesktopManager.createActivationAction(AccountAppliance.getInstance());
-    action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 3"));
-    spec.add(action);
-    
-    spec.addUnrelatedGap();
-    spec.add(getResourceMap().getString("navigation.help"));
-    spec.add(MainModel.getInstance().getActionMap(), "openAboutDialog");
-    spec.add(MainModel.getInstance().getActionMap(), "openShortcuts");
-    
-    return spec;
-  }
+		action = DesktopManager.createActivationAction(AccountAppliance.getInstance());
+		action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 3"));
+		spec.add(action);
 
-  // Overriding/Extending Default Behavior **********************************
+		action = DesktopManager.createActivationAction(ResetAppliance.getInstance());
+		action.putValue(Action.ACCELERATOR_KEY, AWTKeyStroke.getAWTKeyStroke("ctrl 4"));
+		spec.add(action);
+		
+		spec.addUnrelatedGap();
+		spec.add(getResourceMap().getString("navigation.help"));
+		spec.add(MainModel.getInstance().getActionMap(), "openAboutDialog");
+		spec.add(MainModel.getInstance().getActionMap(), "openShortcuts");
+		spec.add(MainModel.getInstance().getActionMap(), "openHelp");
 
-  @Override
-  protected void configureUI() {
-    Options.setPopupDropShadowEnabled(true);
-    super.configureUI();
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+		return spec;
+	}
 
-  @Override
-  protected void configureHelp() {
-    super.configureHelp();
-    JSDLSetup.setDefaultHyperlinkHandler(MainModel.getInstance().createDefaultHyperlinkHandler());
-  }
+	// Overriding/Extending Default Behavior **********************************
 
-  /**
-   * In the default startup sequence, this method is invoked before the GUI
-   * creation.
-   */
-  @Override
-  protected void preCreateAndShowGUI() {
-    super.preCreateAndShowGUI();
-    registerAppliances();
-  }
+	@Override
+	protected void configureUI() {
+		Options.setPopupDropShadowEnabled(true);
+		super.configureUI();
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-  // Implementing Abstract Behavior *****************************************
+	@Override
+	protected void configureHelp() {
+		super.configureHelp();
+		JSDLSetup.setDefaultHyperlinkHandler(MainModel.getInstance().createDefaultHyperlinkHandler());
+	}
 
-  @Override
-  protected void createAndShowGUI() {
-    initializeDesktop();
+	/**
+	 * In the default startup sequence, this method is invoked before the GUI
+	 * creation.
+	 */
+	@Override
+	protected void preCreateAndShowGUI() {
+		super.preCreateAndShowGUI();
+		registerAppliances();
+	}
 
-    JFrame frame = buildFrame();
-    JOptionPane.setRootFrame(frame);
+	// Implementing Abstract Behavior *****************************************
 
-    VendorAppliance.getInstance().activate();
+	@Override
+	protected void createAndShowGUI() {
+		initializeDesktop();
 
-    frame.setSize(1200, 720);
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
-    SplashWindow.disposeSplash();
-  }
+		JFrame frame = buildFrame();
+		JOptionPane.setRootFrame(frame);
 
-  // Helper Code ************************************************************
+		VendorAppliance.getInstance().activate();
 
-  private void registerAppliances() {
-    // Appliances
-    DesktopManager.register(VendorAppliance.getInstance());
+		frame.setSize(1200, 720);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		SplashWindow.disposeSplash();
+	}
 
-    // Maintenance
-    // DesktopManager.register(ImporterAppliance.getInstance());
-    // DesktopManager.register(ExporterAppliance.getInstance());
+	// Helper Code ************************************************************
 
-    // Documents
-    DesktopManager.register(DocumentsAppliance.getInstance());
-  }
+	private void registerAppliances() {
+		// Appliances
+		DesktopManager.register(VendorAppliance.getInstance());
 
-  private void initializeDesktop() {
-    DesktopManager.initialize("unused set by MainView#updateFrameTitleFormat", DesktopManager.createActivationAction(
-        DocumentsAppliance.getInstance()));
-    DesktopManager.INSTANCE.setOpenDocumentsViewLimit(5);
-    addExitListener(MainModel.getInstance());
-    JSDLSetup.setDefaultCloseHandler(new DesktopCloseHandler());
-  }
+		// Maintenance
+		// DesktopManager.register(ImporterAppliance.getInstance());
+		// DesktopManager.register(ExporterAppliance.getInstance());
 
-  private JFrame buildFrame() {
-    JFrame frame = DesktopViews.buildDefaultFrame();
-    ImageIcon icon = new ImageIcon(KindergartenApplication.class.getResource("resources/images/logo.gif"));
-    frame.setIconImage(icon.getImage());
-    frame.add(new MainView(MainModel.getInstance()).getPanel());
-    return frame;
-  }
+		// Documents
+		DesktopManager.register(DocumentsAppliance.getInstance());
+	}
 
-  private static final class DesktopCloseHandler implements CloseHandler {
-    @Override
-    public void closePane(AbstractStyledPane pane) {
-      DesktopManager.closeActiveFrame();
-    }
-  }
+	private void initializeDesktop() {
+		DesktopManager.initialize("unused set by MainView#updateFrameTitleFormat",
+				DesktopManager.createActivationAction(DocumentsAppliance.getInstance()));
+		DesktopManager.INSTANCE.setOpenDocumentsViewLimit(5);
+		addExitListener(MainModel.getInstance());
+		JSDLSetup.setDefaultCloseHandler(new DesktopCloseHandler());
+	}
+
+	private JFrame buildFrame() {
+		JFrame frame = DesktopViews.buildDefaultFrame();
+		ImageIcon icon = new ImageIcon(KindergartenApplication.class.getResource("resources/images/logo.gif"));
+		frame.setIconImage(icon.getImage());
+		frame.add(new MainView(MainModel.getInstance()).getPanel());
+		return frame;
+	}
+
+	private static final class DesktopCloseHandler implements CloseHandler {
+		@Override
+		public void closePane(AbstractStyledPane pane) {
+			DesktopManager.closeActiveFrame();
+		}
+	}
 
 }

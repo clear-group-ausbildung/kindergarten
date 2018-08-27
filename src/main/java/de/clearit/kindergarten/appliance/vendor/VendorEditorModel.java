@@ -122,7 +122,6 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
 	        getVendorNumberFieldModel().setValue(null);
 	        return;
 	      }
-	
 	      if (!VendorNumberService.getInstance().isVendorNumberExisting(Integer.valueOf((String) getVendorNumberFieldModel()
 	          .getValue()))) {
 	        VendorNumberBean vendorNumberBean = new VendorNumberBean();
@@ -159,6 +158,7 @@ public final class VendorEditorModel extends UIFPresentationModel<VendorBean> im
   @Override
   public void performAccept(EventObject e) {
     TextComponentUtils.commitImmediately();
+    System.out.println("TEST1: " + selectionInList.getList());
     getBean().getVendorNumbers().clear();
     getBean().getVendorNumbers().addAll(selectionInList.getList());
     validationSupport.setValidatable(new VendorValidatable(fromCurrentValues()));
