@@ -1,6 +1,5 @@
 # Inhaltsverzeichnis
 
- * [__Starten der Anwendung__](#starten-der-anwendung)
  * [__Erfassung der Verkäufer__](#erfassung-der-verkufer)  
      * [Hinzufügen eines neuen Verkäufers](#hinzufgen-eines-neuen-verkufers)
 	* [Hinzufügen einer Verkäufernummer](#hinzufgen-einer-verkufernummer)
@@ -15,6 +14,7 @@
 	* [Abrechnungen drucken](#abrechnungen-drucken)
 	* [Alle Abrechnungen drucken](#alle-abrechnungen-drucken) 
 	* [Interne Abrechnung drucken](#interne-abrechnung-drucken)
+* [__Daten zurücksetzen__](#daten-zurcksetzen)	
 * [__Info__](#info)
 * [__Shortcuts__](#shortcuts)
 
@@ -112,6 +112,9 @@ Mit Klick auf „Neu“ öffnet sich eine neue Maske.
 
 Hier trägt man nun die Daten des jeweiligen Verkaufes ein.
 Mit der Tabulator Taste (Die Taste links von Q mit den 2 Pfeilen) ist es hier möglich schneller in das nächste Feld zu wechseln.
+Wurden alle Felder mit den jeweiligen Daten befüllt, fügt man mit Klick auf „Hinzufügen“ oder
+mit dem betätigen der Entertaste den verkauften Artikel hinzu.
+Danach können weiterhin beliebig viele Artikel erfasst werden.
 
 ![Artikel hinzufügen Oberfläche](pics/Bild14.png "Artikel hinzufügen Oberfläche")
 
@@ -163,17 +166,6 @@ Der Benutzer erhält eine Benachrichtigung wenn alles geklappt hat.
 Falls etwas schief läuft wird auch hier eine Benachrichtigung ausgegeben, beispielsweise wenn ein Eintrag doppelt vorhanden ist.
 Wie hiermit umzugehen ist wird genauer in der Howto Anleitung erklärt.
 
-Mit Klick auf „Verkäufe Importieren“ öffnet sich ein neues Fenster. 
-
-![Verkäufer importieren](Bild17.png "Verkäufer importieren")
-
-Es öffnet sich ein neues Fenster um die Datei auszuwählen.
-
-![Verkäufe importieren Oberfläche](Bild18.png "Verkäufe importieren Oberfläche")
-
-Nachdem an die passende Stelle navigiert wurde und die zu importierende Datei ausgewählt ist, beendet man den Vorgang mit einem Klick auf „Öffnen“.
-Der Vorgang wird beendet und die Datensätze werden in der Artikelerfassung hinzugefügt.
-
 ###Sortieren und Filtern
 
 Die Verkäufe Ansicht verfügt zusätzlich über eine Sortier - und Filterfunktion.
@@ -207,7 +199,6 @@ Hier werden in einer Tabelle alle gelisteten Verkäufer dargestellt.
 
 Um eine einzelne Abrechnung zu drucken, wird der jeweilige Verkäufer selektiert und der Button „Abrechnung drucken“ geklickt.
 
-
 ![Abrechnung drucken](pics/Bild24.png "Abrechnung drucken")
 
 Nachdem Klick öffnet sich ein Dialog. Hier ist der Dateipfad beschrieben wo das Dokument gespeichert wurde.
@@ -236,6 +227,17 @@ Hier sind Statistiken zu finden wie :
 * Einnahmen und Auszahlungsbeträge an die jeweiligen Verkäufer
 
 ![Interne Abrechnung drucken](pics/Bild26.png "Interne Abrechnung drucken")
+
+###Daten zur&uuml;cksetzen
+
+Als letzten Schritt soll die Datenbank zurückgesetzt werden um beim nächsten Mal wieder auf einem frischen Stand anfangen zu können.
+Hierzu klicken Sie auf "Administration". Alternativ kann man auch Strg + 4 (Steuerungstaste gedrückt halten und dann die 4 drücken) 
+um in die Administration Ansicht zu gelangen.
+In dieser Maske befindet sich ein Button "Zurücksetzen". 
+Klicken Sie auf den Button und die Anwendung fragt Sie ob Sie sicher sind.
+"Ja" Löscht alle Einträge und "Nein" bricht den Vorgang ab.
+
+![Administration](pics/reset.png "Datenbank zurücksetzen")
 
 ###Info
 
