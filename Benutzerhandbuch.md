@@ -1,6 +1,5 @@
 # Inhaltsverzeichnis
 
- * [__Starten der Anwendung__](#starten-der-anwendung)
  * [__Erfassung der Verkäufer__](#erfassung-der-verkufer)  
      * [Hinzufügen eines neuen Verkäufers](#hinzufgen-eines-neuen-verkufers)
 	* [Hinzufügen einer Verkäufernummer](#hinzufgen-einer-verkufernummer)
@@ -18,78 +17,81 @@
 * [__Info__](#info)
 * [__Shortcuts__](#shortcuts)
 
-###Starten der Anwendung
-
 ###Erfassung der Verk&auml;ufer
 
 Um in die Verkäufer Erfassung zu gelangen benötigt es einen Klick auf „Verkäufer“. Wird die Anwendung gestartet ist diese Maske bereits geöffnet.
 Alternativ kann man auch Strg + 1 (Steuerungstaste gedrückt halten und dann die 1 drücken) um in die Verkäufer Ansicht zu gelangen.
 
-![Übersicht aller Verkäufer](Bild1.png "Übersicht aller Verkäufer")
+![Übersicht aller Verkäufer](pics/Bild1.png "Übersicht aller Verkäufer")
 
 ###Hinzuf&uuml;gen eines neuen Verk&auml;ufers
 
 Die Erfassung der Kundendaten erfolgt mit einem Klick auf den Neu-Button in der Verkäuferansicht. 
 Es öffnet sich ein neues Fenster.
 
-![neuen Verkäufer anlegen](Bild2.png "neuen Verkäufer anlegen")
+![neuen Verkäufer anlegen](pics/Bild2.png "neuen Verkäufer anlegen")
 
 ###Hinzuf&uuml;gen einer Verk&auml;ufernummer
 
 Der Hinzufügen Button ermöglicht es, dem Verkäufer eine neue Verkäufernummer hinzuzufügen.
+Alternativ kann man hier auch die Enter Taste drücken um die Nummer einzutragen.
 Hier zuerst im Feld „Verkäufernummer“ die jeweilige Nummer eintragen.
 
-![neuen Verkäufer anlegen Ansicht](Bild3.png "neuen Verkäufer anlegen Ansicht")
+![neuen Verkäufer anlegen Ansicht](pics/Bild3.png "neuen Verkäufer anlegen Ansicht")
 
 Mit Klick auf „OK“ wird der Verkäufer angelegt und die Maske schließt sich.
+Alternativ kann man hierzu wenn man sich in keinem Eingabefeld befindet und keinen Eintrag in der Liste markiert hat
+die Enter Taste drücken um die Maske zu schließen.
 
 ###Entfernen einer Verk&auml;ufernummer
 
-Um einem Verkäufer eine Verkäufernummer zu entfernen, benötigt es einen Klick auf die jeweilige Nummer.
+Um von einem Verkäufer eine Verkäufernummer zu entfernen, benötigt es einen Klick auf die jeweilige Nummer.
 Der „Entfernen“ Button wird aktiviert und mit Klick auf den Button wird die Nummer entfernt.
 
-![Verkäufernummer entfernen](Bild4.png "Verkäufernummer entfernen")
+![Verkäufernummer entfernen](pics/Bild4.png "Verkäufernummer entfernen")
 
 ###Import und Export von Kundendaten
 
 Um bereits erfasste Verkäufer von einem PC zu einem anderen PC zu übertragen kann man die Export-Funktion nutzen.
 Die Verkäufer werden in einer Datei zusammengefasst und diese Datei am ausgewählten Ort gespeichert.
 
-![Verkäufer exportieren](Bild8.png "Verkäufer exportieren")
+![Verkäufer exportieren](pics/Bild8.png "Verkäufer exportieren")
 
 Es öffnet sich folgendes Fenster.
 
-![Verkäufer exportieren Oberfläche](Bild9.png "Verkäufer exportieren Oberfläche")
+![Verkäufer exportieren Oberfläche](pics/Bild9.png "Verkäufer exportieren Oberfläche")
 
 Nun gibt man seinen Dateinamen ein, wählt den Speicherort aus und bestätigt alles mit Klick auf „Speichern“.
-Am Speicherort befindet sich nun eine „Dateiname.JSON“ Datei mit allen vorhandenen Verkäufern.
+Am Speicherort befindet sich nun eine "Dateiname.JSON" Datei mit allen vorhandenen Verkäufern.
 Diese Datei kann nun auf einen USB Stick gespeichert werden und an andere PC's gesteckt werden.
 
 Um die vorher exportierten Verkäufer auf einen anderen PC zu übertragen kann hier die Import-Funktion genutzt werden.
 
-![Verkäufer importieren](Bild5.png "Verkäufer importieren")
+![Verkäufer importieren](pics/Bild5.png "Verkäufer importieren")
 
 Es öffnet sich folgendes Fenster
 
-![Verkäufer importieren Oberfläche](Bild6.png "Verkäufer importieren Oberfläche")
+![Verkäufer importieren Oberfläche](pics/Bild6.png "Verkäufer importieren Oberfläche")
 
-Hier sucht man auf dem USB Stick nach der vorher gespeicherten Dateiname.JSON Datei.
+Hier sucht man auf dem USB Stick nach der vorher gespeicherten "Dateiname.JSON" Datei.
 Klicken Sie auf die Datei und anschließend auf Öffnen 
 
-![Verkäufer importieren Oberfläche](Bild7.png "Verkäufer importieren Oberfläche")
+![Verkäufer importieren Oberfläche](pics/Bild7.png "Verkäufer importieren Oberfläche")
 
 Die Daten werden importiert und die Verkäuferliste wird aufgefüllt.
 Der Benutzer erhält eine Benachrichtigung wenn alles geklappt hat.
+Falls etwas schief läuft wird auch hier eine Benachrichtigung ausgegeben, beispielsweise wenn ein Eintrag doppelt vorhanden ist.
+Wie hiermit umzugehen ist wird genauer in der Howto Anleitung erklärt
 
 ###Bearbeiten eines Verk&auml;ufers
 
 Um einen bereits vorhanden Verkäufer zu bearbeiten, klickt man diesen an und klickt auf den Button „Bearbeiten“.
 
-![Bearbeiten eines Verkäufers](Bild10.png "Bearbeiten eines Verkäufers")
+![Bearbeiten eines Verkäufers](pics/Bild10.png "Bearbeiten eines Verkäufers")
 
 Es öffnet sich die Maske der "Neu Erfassung".
 
-![Verkäufer bearbeiten Oberfläche](Bild11.png "Verkäufer bearbeiten Oberfläche")
+![Verkäufer bearbeiten Oberfläche](pics/Bild11.png "Verkäufer bearbeiten Oberfläche")
 
 In dieser Maske besteht nun die Möglichkeit, den Namen, die Telefonnummer und die Verkäufernummern abzuändern oder zu ergänzen.
 
@@ -99,33 +101,34 @@ In dieser Maske besteht nun die Möglichkeit, den Namen, die Telefonnummer und d
 Um in die Artikelerfassung zu gelangen, benötigt es einen Klick auf "Verkäufe".
 Alternativ kann man auch Strg + 2 (Steuerungstaste gedrückt halten und dann die 2 drücken) um in die Verkäufe Ansicht zu gelangen.
 
-![Artikel erfassen Ansicht](Bild12.png "Artikel erfassen Ansicht")
+![Artikel erfassen Ansicht](pics/Bild12.png "Artikel erfassen Ansicht")
 
 ###Hinzuf&uuml;gen eines Artikels
 
 Mit Klick auf „Neu“ öffnet sich eine neue Maske. 
 
-![Artikel hinzufügen](Bild13.png "Artikel hinzufügen")
+![Artikel hinzufügen](pics/Bild13.png "Artikel hinzufügen")
 
-Hier trägt man nun die Daten des jeweiligen verkaufes ein.
-Mit der Tabulator taste (Die Taste links von Q mit den 2 Pfeilen) ist es hier möglich schneller in das nächste Feld zu wechseln.
+Hier trägt man nun die Daten des jeweiligen Verkaufes ein.
+Mit der Tabulator Taste (Die Taste links von Q mit den 2 Pfeilen) ist es hier möglich schneller in das nächste Feld zu wechseln.
 Wurden alle Felder mit den jeweiligen Daten befüllt, fügt man mit Klick auf „Hinzufügen“ oder
 mit dem betätigen der Entertaste den verkauften Artikel hinzu.
 Danach können weiterhin beliebig viele Artikel erfasst werden.
 
-![Artikel hinzufügen Oberfläche](Bild14.png "Artikel hinzufügen Oberfläche")
+![Artikel hinzufügen Oberfläche](pics/Bild14.png "Artikel hinzufügen Oberfläche")
 
 Um den Verkauf abzuschließen benötigt es nur einen Klick auf „Verkauf abschließen“.
+Alternativ kann man hier die Enter Taste drücken wenn man sich in keinem Eingabefeld befindet um den Verkauf abzuschließen
 
 <span style="color:red"> **!Wichtig! klicken Sie erst auf Verkauf abschließen, wenn der Kunde gezahlt hat. 
 Erst nachdem Sie auf Verkauf abschließen klicken werden Ihre Einträge gespeichert. Wenn Sie zwischendrin auf abbrechen klicken 
 sind Ihre Einträge verworfen!**</span>
 
-![Verkauf abschließen](Bild15.png "Verkauf abschließen")
+![Verkauf abschließen](pics/Bild15.png "Verkauf abschließen")
 
 Ein Artikel kann entweder bei der Erfassung, oder im Nachhinein entfernt werden. Hierzu den jeweiligen Artikel anklicken und auf den „Entfernen“ Button Klicken.
 
-![Artikel löschen](Bild16.png "Artikel löschen")
+![Artikel löschen](pics/Bild16.png "Artikel löschen")
 
 Bevor der Artikel entfernt wird, fragt das Programm den Benutzer ob er diesen Artikel wirklich löschen möchte. Hier mit „Ja“ (der Artikel wird gelöscht) oder „Nein“ (der Artikel bleibt vorhanden) bestätigen.
 
@@ -138,31 +141,33 @@ Die Verkäufe werden in einer Datei zusammengefasst und diese Datei am ausgewäh
 
 Mit einem Klick auf „Verkäufe Exportieren“ öffnet sich ein neues Fenster. 
 
-![Verkäufe exportieren](Bild19.png "Verkäufe exportieren")
+![Verkäufe exportieren](pics/Bild19.png "Verkäufe exportieren")
 
 In diesem Fenster wählt man wieder den Speicherort aus, gibt der Datei einen Namen und schließt den Vorgang mit einem Klick auf „Speichern“ ab.
 
-![Verkäufe exportieren Oberfläche](Bild20.png "Verkäufe exportieren Oberfläche")
+![Verkäufe exportieren Oberfläche](pics/Bild20.png "Verkäufe exportieren Oberfläche")
 
 Nun gibt man seinen Dateinamen ein, wählt den Speicherort aus und bestätigt alles mit Klick auf „Speichern“.
-Am Speicherort befindet sich nun eine „Dateiname.JSON“ Datei mit allen vorhandenen Verkäufen.
+Am Speicherort befindet sich nun eine "Dateiname.JSON" Datei mit allen vorhandenen Artikeln.
 Diese Datei kann nun auf einen USB Stick gespeichert werden und an andere PC's gesteckt werden.
 
 Um die vorher exportierten Verkäufe auf einen anderen PC zu übertragen kann hier die Import-Funktion genutzt werden.
 
-![Verkäufer importieren](Bild17.png "Verkäufer importieren")
+![Verkäufer importieren](pics/Bild17.png "Verkäufer importieren")
 
 Es öffnet sich ein neues Fenster um die Datei auszuwählen.
 
-![Verkäufe importieren Oberfläche](Bild18.png "Verkäufe importieren Oberfläche")
+![Verkäufe importieren Oberfläche](pics/Bild18.png "Verkäufe importieren Oberfläche")
 
 Nachdem an die passende Stelle navigiert wurde und die zu importierende Datei ausgewählt ist beendet man den Vorgang mit einem Klick auf „Öffnen“.
 Die Daten werden importiert und die Artikelliste wird aufgefüllt.
 Der Benutzer erhält eine Benachrichtigung wenn alles geklappt hat.
+Falls etwas schief läuft wird auch hier eine Benachrichtigung ausgegeben, beispielsweise wenn ein Eintrag doppelt vorhanden ist.
+Wie hiermit umzugehen ist wird genauer in der Howto Anleitung erklärt.
 
 ###Sortieren und Filtern
 
-Die Verkäufe ansicht verfügt zusätzlich über eine Sortier - und Filterfunktion.
+Die Verkäufe Ansicht verfügt zusätzlich über eine Sortier - und Filterfunktion.
 Man hat die Möglichkeit die Liste zu Sortieren um sich einen besseren Überblick zu verschaffen.
 Wenn nach "Chronologisch" sortiert wird, werden die Artikel in der Reihenfolge angeordnet in der sie verkauft wurden
 mit zuerst verkauften Artikel ganz oben stehend.
@@ -170,7 +175,7 @@ mit zuerst verkauften Artikel ganz oben stehend.
 Bei "Nach Verkäufer und Verkäufernummer" sortieren, werden die Verkäufer erst alphabetisch
 und dann nach der Verkäufernummer aufsteigend sortiert.
 
-![Artikel sortieren](Bild21.png "Artikel sortieren")
+![Artikel sortieren](pics/Bild21.png "Artikel sortieren")
 
 Sollte man nur die Informationen über einen einzelnen Verkäufer brauchen,
 falls zum Beispiel ein Verkäufer wissen will, welche und wie viele Artikel er bisher verkauft hat
@@ -178,14 +183,14 @@ kann man bei dem Dropdown-Menü "Filter nach Verkäufernummer" den gewünschten 
 Dabei wird in der Liste nur noch dieser Verkäufer gelistet mit seinen bisher verkauften Artikeln.
 Um das wieder rückgängig zu machen, muss in dem Dropdown-Menü nur der oberste Punkt "Alle" ausgewählt werden.
 
-![Artikel filtern](Bild22.png "Artikel filtern")
+![Artikel filtern](pics/Bild22.png "Artikel filtern")
 
 ###Abrechnung
 
 Um in die Abrechnung zu gelangen, benötigt es einen Klick auf „Abrechnung“.
 Alternativ kann man auch Strg + 3 (Steuerungstaste gedrückt halten und dann die 3 drücken) um in die Abrechnung Ansicht zu gelangen.
 
-![Abrechnungen Oberfläche](Bild23.png "Abrechnungen Oberfläche")
+![Abrechnungen Oberfläche](pics/Bild23.png "Abrechnungen Oberfläche")
 
 Hier werden in einer Tabelle alle gelisteten Verkäufer dargestellt.
 
@@ -193,7 +198,7 @@ Hier werden in einer Tabelle alle gelisteten Verkäufer dargestellt.
 
 Um eine einzelne Abrechnung zu drucken, wird der jeweilige Verkäufer selektiert und der Button „Abrechnung drucken“ geklickt.
 
-![Abrechnung drucken](Bild24.png "Abrechnung drucken")
+![Abrechnung drucken](pics/Bild24.png "Abrechnung drucken")
 
 Nachdem Klick öffnet sich ein Dialog. Hier ist der Dateipfad beschrieben wo das Dokument gespeichert wurde.
 Auf dem Desktop wird ein Ordner namens "Basar Abrechnungen" erstellt. Hier befindet sich dann für jeden Verkäufer
@@ -204,7 +209,7 @@ jeweils eine PDF und eine Excel Datei mit einer Übersicht seiner verkauften Art
 Um alle Abrechnungen zu drucken, benötigt es einen Klick auf „Alle Abrechnungen drucken“.
 Nach dem Klick öffnet sich ein Fenster, hier kann der Drucker ausgewählt werden.
 
-![Alle Abrechnungen drucken](Bild25.png "Alle Abrechnungen drucken")
+![Alle Abrechnungen drucken](pics/Bild25.png "Alle Abrechnungen drucken")
 
 Außerdem werden wie oben bei "Abrechnung drucken" beschrieben, für jeden Verkäufer automatisch 
 eine PDF und eine Excel Datei mit einer Übersicht seiner verkauften Artikel angelegt und im Ordner gespeichert.
@@ -220,17 +225,17 @@ Hier sind Statistiken zu finden wie :
 * Anteil des Kindergartens
 * Einnahmen und Auszahlungsbeträge an die jeweiligen Verkäufer
 
-![Interne Abrechnung drucken](Bild26.png "Interne Abrechnung drucken")
+![Interne Abrechnung drucken](pics/Bild26.png "Interne Abrechnung drucken")
 
 ###Info
 
 Ein Klick auf Info öffnet das Informationsfenster.
 
-![Info Fenster](Bild27.png "Info Fenster")
+![Info Fenster](pics/Bild27.png "Info Fenster")
 
 Im Infofeld befinden sich die Kontaktdaten des Ansprechpartners und zusätzlich ein Link welcher die Hilfe Datei im Browser öffnet.
 
-![Kontakt](Bild28.png "Kontakt")
+![Kontakt](pics/Bild28.png "Kontakt")
 
 ###Shortcuts
 
@@ -238,7 +243,9 @@ Um die Bedienung zu vereinfachen, befinden sich in der Anwendung folgende Shortc
 
 * Strg - 1 Ansicht Verkäufer
 	* Wechselt in die Ansicht "Verkäufer"
-* Strg - 2 Anischt Verkäufe
+* Strg - 2 Ansicht Verkäufe
 	* Wechselt in die Ansicht "Verkäufe"
 * Strg - 3 Ansicht Abrechnungen
 	* Wechselt in die Ansicht "Abrechnungen"
+* Strg - 4 Administration
+    * hier kann man die Anwendung zurücksetzen
