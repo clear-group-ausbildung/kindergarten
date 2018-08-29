@@ -33,5 +33,5 @@ und klicken diese doppelt. Die Anwendung startet
 						   Wenn Sie es schließen schließt sich auch die Anwendung daher lassen Sie es einfach im Hintergrund laufen **</span>
 
 ###Benutzerhandbuch
-Eine Anleitung zur Bedienung der Anwendung finden Sie in Hilfe.html
+Eine Anleitung zur Bedienung der Anwendung finden Sie
 unter kindergarten-2.1.0 -> hilfe -> Benutzerhandbuch.html

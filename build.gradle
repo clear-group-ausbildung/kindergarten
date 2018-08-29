@@ -98,6 +98,7 @@ distZip {
        include 'Benutzerhandbuch.html'
        include 'HowTo.html'
        include 'Installation.html'
+       include 'Readme.txt'
        include 'pics' 
    }
    
