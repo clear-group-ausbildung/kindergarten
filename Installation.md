@@ -35,8 +35,8 @@ Bestätigen Sie mit "OK".
 
 Diese Datei sorgt dafür das zur Laufzeit der Anwendung keine Meldung "Warnung" im Hintergrund ausgegeben wird.
 
-<span style="color:red"> **Alle oben genannten Punkte müssen nur bei der erst durchführung asugeführt werden. 
-							Möchten Sie das Programm erneut verwenden benötigen	Sie keine erneute Installation der JRE und auch keine erneute Ausführung der Prefs.reg Datei ist notwendig.**</span>
+<span style="color:red"> **Alle oben genannten Punkte müssen nur bei der ersten Durchführung ausgeführt werden. 
+							Möchten Sie das Programm erneut verwenden benötigen	Sie keine erneute Installation der JRE und auch keine erneute Ausführung der Prefs.reg Datei.**</span>
 
 ###Anwendung Starten
 

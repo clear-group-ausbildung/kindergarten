@@ -96,7 +96,6 @@ distZip {
    into(project.name + '-' + project.version){
    		from '.'
    		include 'Readme.txt'
-   		include 'Prefs.reg'
    }
    into(project.name + '-' + project.version + '/hilfe') {
        from '.'
@@ -109,6 +108,7 @@ distZip {
        from './JRE'
        include '32bit.exe'
        include '64bit.exe'
+       include 'Prefs.reg'
    }
    into(project.name + '-' + project.version + '/hilfe' + '/pics') {
       from './pics'
@@ -143,5 +143,7 @@ distZip {
       include 'start.png'
       include 'version.png'
       include 'reset.png'
+      include 'Registrierungseditor1.png'
+      include 'Registrierungseditor2.png'
    }
 }

@@ -113,7 +113,7 @@ Mit Klick auf „Neu“ öffnet sich eine neue Maske.
 Hier trägt man nun die Daten des jeweiligen Verkaufes ein.
 Mit der Tabulator Taste (Die Taste links von Q mit den 2 Pfeilen) ist es hier möglich schneller in das nächste Feld zu wechseln.
 Wurden alle Felder mit den jeweiligen Daten befüllt, fügt man mit Klick auf „Hinzufügen“ oder
-mit dem betätigen der Entertaste den verkauften Artikel hinzu.
+mit dem betätigen der Enter Taste den verkauften Artikel hinzu.
 Danach können weiterhin beliebig viele Artikel erfasst werden.
 
 ![Artikel hinzufügen Oberfläche](pics/Bild14.png "Artikel hinzufügen Oberfläche")
