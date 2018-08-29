@@ -229,7 +229,6 @@ public final class Dialogs {
 			try {
 				Desktop.getDesktop().browse(htmlFile.toURI());
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}	
 		}
@@ -260,7 +259,6 @@ public final class Dialogs {
 				try {
 					Desktop.getDesktop().browse(htmlFile.toURI());
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}	
 			}
@@ -291,9 +289,8 @@ public final class Dialogs {
 				try {
 					Desktop.getDesktop().browse(htmlFile.toURI());
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}	
+				}
 			}
 		});
 	  

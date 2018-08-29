@@ -413,8 +413,8 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
 		return file = new File(Files.createFile(pathToFile).toString());
     }
     
-    private void writeLog(PurchaseBean existingBean, PurchaseBean importetBean) {		
-	    VendorService vService = VendorService.getInstance();
+    private void writeLog(PurchaseBean existingBean, PurchaseBean importetBean) {
+    	VendorService vService = VendorService.getInstance();
 	    VendorNumberService vendorNumberService = VendorNumberService.getInstance();
 	    VendorBean vendor = vService.findByVendorNumber(vendorNumberService.findByVendorNumber(existingBean.getVendorNumber()).getVendorNumber());
 
@@ -436,7 +436,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
 		for (String logMessageExist : logMessages) {
 			filewriter.write("                              " + "Verkäufername | Verkäufernummer | Artikelnummer | Preis");
 			filewriter.write(System.getProperty("line.separator"));
-			filewriter.write(logMessageExist.replace("ADDSPACE", "             ")); //TODO schönere Lösung als 100 Spaces?
+			filewriter.write(logMessageExist.replace("ADDSPACE", "             "));
 			filewriter.write(System.getProperty("line.separator"));
 			filewriter.write(System.getProperty("line.separator"));
 		}	
