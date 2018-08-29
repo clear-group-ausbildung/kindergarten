@@ -98,8 +98,13 @@ distZip {
        include 'Benutzerhandbuch.html'
        include 'HowTo.html'
        include 'Installation.html'
-       include 'pics'
-       
+       include 'pics' 
+   }
+   
+       into(project.name + '-' + project.version + '/JRE') {
+       from './JRE'
+       include '32bit.exe'
+       include '64bit.exe'
    }
    
        into(project.name + '-' + project.version + '/hilfe' + '/pics') {
