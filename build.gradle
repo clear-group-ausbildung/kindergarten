@@ -93,23 +93,25 @@ distZip {
        include 'abrechnung_template.xlsx'
        include 'abrechnung_intern_template.xlsx'
    }
-       into(project.name + '-' + project.version + '/hilfe') {
+   into(project.name + '-' + project.version){
+   		from '.'
+   		include 'Readme.txt'
+   		include 'Prefs.reg'
+   }
+   into(project.name + '-' + project.version + '/hilfe') {
        from '.'
        include 'Benutzerhandbuch.html'
        include 'HowTo.html'
        include 'Installation.html'
-       include 'Readme.txt'
        include 'pics' 
    }
-   
-       into(project.name + '-' + project.version + '/JRE') {
+   into(project.name + '-' + project.version + '/JRE') {
        from './JRE'
        include '32bit.exe'
        include '64bit.exe'
    }
-   
-       into(project.name + '-' + project.version + '/hilfe' + '/pics') {
-       from './pics'
+   into(project.name + '-' + project.version + '/hilfe' + '/pics') {
+      from './pics'
 	  include 'Bild1.png'
       include 'Bild2.png'
       include 'Bild3.png'

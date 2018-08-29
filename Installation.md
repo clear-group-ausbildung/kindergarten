@@ -22,10 +22,26 @@ Unter Systemtyp:
 
 Klicken Sie doppelt auf die Version die Sie brauchen und führen Sie die Installation durch.
 
+Nachdem Sie die Installation erfolgreich beendet haben, machen Sie einen Doppelklick auf die Datei "Prefs.reg".
+Es öffnet sich folgendes Fenster:
+
+![RegistrierungseditorYesNo](pics/Registrierungseditor1.png "RegistrierungseditorYesNo")
+
+Bestätigen Sie mit "Ja" es öffnet sich ein neues Fenster:
+
+![RegistrierungseditorOK](pics/Registrierungseditor2.png "RegistrierungseditorOK")
+
+Bestätigen Sie mit "OK".
+
+Diese Datei sorgt dafür das zur Laufzeit der Anwendung keine Meldung "Warnung" im Hintergrund ausgegeben wird.
+
+<span style="color:red"> **Alle oben genannten Punkte müssen nur bei der erst durchführung asugeführt werden. 
+							Möchten Sie das Programm erneut verwenden benötigen	Sie keine erneute Installation der JRE und auch keine erneute Ausführung der Prefs.reg Datei ist notwendig.**</span>
+
 ###Anwendung Starten
 
 Um die Anwendung zu starten öffnen Sie kindergarten-2.1.0 und navigieren über bin -> zur kindergarten.bat Datei
-und klicken diese doppelt. Die Anwendung startet
+und klicken diese doppelt. Die Anwendung startet.
 
 ![Start](pics/start.png "Systemsteuerung")
 
