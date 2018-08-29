@@ -429,7 +429,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
     //Message the shows in the Log Data
     private void writeIntoLogData(List<String> logMessages) throws IOException {
     	file = createNewFile();
-		System.out.println("File = " + file);
 		FileWriter filewriter = new FileWriter(file);
 		filewriter.write("Automatisch erstellte Datei. Zeigt alle Artikel welche Doppelt importiert wurden!" + 
 						System.getProperty("line.separator") + System.getProperty("line.separator"));

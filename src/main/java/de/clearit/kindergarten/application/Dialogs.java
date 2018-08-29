@@ -45,9 +45,6 @@ public final class Dialogs {
 
   private static final ResourceMap RESOURCES = Application.getResourceMap(Dialogs.class);
   private final static String lineSeparator = System.getProperty("line.separator");
-  private final static String urlHelp = RESOURCES.getString("dialogs.about.help");
-  private final static String urlHowTo = RESOURCES.getString("dialogs.about.howTo");
-  private final static String urlInstall = RESOURCES.getString("dialogs.about.install");
   
   // Instance Creation ******************************************************
 
@@ -227,7 +224,8 @@ public final class Dialogs {
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			File htmlFile = new File(urlHelp);
+			String newPath = System.getProperty("user.dir").replace("bin", "hilfe\\Benutzerhandbuch.html");
+			File htmlFile = new File(newPath);
 			try {
 				Desktop.getDesktop().browse(htmlFile.toURI());
 			} catch (IOException e1) {
@@ -257,6 +255,7 @@ public final class Dialogs {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				String urlHowTo = System.getProperty("user.dir").replace("bin", "hilfe\\HowTo.html");
 				File htmlFile = new File(urlHowTo);
 				try {
 					Desktop.getDesktop().browse(htmlFile.toURI());
@@ -287,6 +286,7 @@ public final class Dialogs {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				String urlInstall = System.getProperty("user.dir").replace("bin", "hilfe\\Installation.html");
 				File htmlFile = new File(urlInstall);
 				try {
 					Desktop.getDesktop().browse(htmlFile.toURI());

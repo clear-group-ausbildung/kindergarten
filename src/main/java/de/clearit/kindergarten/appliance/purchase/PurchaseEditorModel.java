@@ -226,7 +226,6 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     final Runnable cancelOp = new WrappedOperation(commitCallback, CommandValue.CANCEL, operation);
     TextComponentUtils.commitImmediately();
     if (!isChanged() && !isBuffering()) { // Test for searching
-      System.out.println("Nichts geaendert");
       cancelOp.run();
       return;
     }
