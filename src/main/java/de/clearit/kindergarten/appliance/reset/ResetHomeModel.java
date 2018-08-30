@@ -17,7 +17,11 @@ import com.jgoodies.desktop.DesktopFrame;
 import com.jgoodies.desktop.spec.ToolBarSpec;
 
 import de.clearit.kindergarten.desktop.DefaultAppliance;
+import de.clearit.kindergarten.domain.PurchaseBean;
+import de.clearit.kindergarten.domain.PurchaseService;
 import de.clearit.kindergarten.domain.VendorBean;
+import de.clearit.kindergarten.domain.VendorNumberBean;
+import de.clearit.kindergarten.domain.VendorNumberService;
 import de.clearit.kindergarten.domain.VendorService;
 
 public class ResetHomeModel extends DefaultAppliance{
@@ -25,7 +29,9 @@ public class ResetHomeModel extends DefaultAppliance{
 	  private static final Logger LOGGER = LoggerFactory.getLogger(ResetHomeModel.class);
 
 	  private static ResetHomeModel instance;
-	  private final VendorService SERVICE = VendorService.getInstance();
+	  private final VendorService VSERVICE = VendorService.getInstance();
+	  private final PurchaseService PSERVICE = PurchaseService.getInstance();
+	  private final VendorNumberService VNBSERVICE = VendorNumberService.getInstance();
 
 	  // Instance Creation ******************************************************
 
@@ -65,15 +71,22 @@ public class ResetHomeModel extends DefaultAppliance{
 
 	    resetApplication() {
 	      super(BlockingScope.APPLICATION);
-	      int reply = JOptionPane.showConfirmDialog(new JFrame(), "Sind sie Sicher?", "Titel", JOptionPane.YES_NO_OPTION);
-	      //remove all existing Beans!
-	      
+	      int reply = JOptionPane.showConfirmDialog(new JFrame(), "Sind Sie sicher das Sie alle Vorhandenen Daten unwiederruflich entfernen möchten?", "Titel", JOptionPane.YES_NO_OPTION);
+	      //remove all existing Beans! 
 	      if(reply == JOptionPane.YES_OPTION) {
-			  ArrayList<VendorBean> allVendors = new ArrayList<VendorBean>(SERVICE.getAll());
+			  ArrayList<VendorBean> allVendors = new ArrayList<VendorBean>(VSERVICE.getAll());
+			  ArrayList<PurchaseBean> allPurchases = new ArrayList<PurchaseBean>(PSERVICE.getAll());
+			  ArrayList<VendorNumberBean> allVendorNumbers = new ArrayList<VendorNumberBean>(VNBSERVICE.getAll());
 		      for (VendorBean VendorBean : allVendors) {
-				SERVICE.delete(VendorBean);
+		    	  VSERVICE.delete(VendorBean);
 			  }
-		      JOptionPane.showMessageDialog(new JFrame(), "Alle Verkäufer wurden erfolgreich entfernt!", "Erfolgreicher Reset", JOptionPane.NO_OPTION);
+		      for(PurchaseBean PurchaseBean : allPurchases) {
+		    	  PSERVICE.delete(PurchaseBean);
+		      }
+		      for(VendorNumberBean VendorNumberBean : allVendorNumbers) {
+		    	  VNBSERVICE.delete(VendorNumberBean);
+		      }
+		      JOptionPane.showMessageDialog(new JFrame(), "Alle Verkäufer und Artikel wurden erfolgreich entfernt!", "Erfolgreicher Reset", JOptionPane.NO_OPTION);
 	      }
 	  }
 	    @Override
