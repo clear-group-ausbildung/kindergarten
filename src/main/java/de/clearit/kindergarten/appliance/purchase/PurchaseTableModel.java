@@ -39,7 +39,6 @@ public class PurchaseTableModel extends AbstractTableAdapter<PurchaseBean> {
    
    switch (columnIndex) {
    case 0:
-       System.out.println(purchaseEntity.getVendorNumber());
      return purchase.getVendorNumber(); 
    case 1:
        //return vendorOfPurchase.getLastName() + ", " + vendorOfPurchase.getFirstName();

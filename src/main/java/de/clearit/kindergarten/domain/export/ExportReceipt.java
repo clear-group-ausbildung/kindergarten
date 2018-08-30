@@ -211,9 +211,7 @@ public class ExportReceipt {
 
   private void createItemRows(PayoffSoldItemsData pPayoffSoldItemData, Table table) {
     Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
-    for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {
-      System.out.println("Entry.GetKex() ( ValueOf ) = " + String.valueOf(entry.getKey()));
-      
+    for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {      
       table.addCell(getFormattedCell(String.valueOf(entry.getKey()))); // Artikelnummer
       table.addCell(getFormattedCell(formatCurrency(entry.getValue()))); // Preis
     }

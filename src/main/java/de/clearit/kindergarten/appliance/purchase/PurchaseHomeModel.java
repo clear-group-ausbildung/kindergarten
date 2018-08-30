@@ -225,21 +225,16 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   }
   
   private void filterPurchases() {
-	  
 	    VendorBean selectedVendor = getVendorList().getSelection();
-	    
 	    if(selectedVendor != null){
 	    List<PurchaseVendorEntity> filteredOrAllPurchases = new ArrayList<>();
-
 	    if (alleVerkaeufer().equals(selectedVendor)) {
 	      filteredOrAllPurchases.addAll(transformToPurchaseVendorEntity(SERVICE.getAll()));
 	    } else {
 	      // 1. Hole alle Purchases vom Service
 	      List<PurchaseBean> allPurchases = SERVICE.getAll();
-
 	      // 2. Filtere dabei nach Purchases, bei welchem die VendorNumber == eine der
 	      // VendorNumbers des selektierten Vendors aus der ComboBox ist
-
 	      List<PurchaseBean> filteredPurchases = allPurchases.stream().filter(bean -> selectedVendor.getVendorNumbers()
 	          .stream().map(VendorNumberBean::getVendorNumber).collect(Collectors.toList()).contains(bean
 	              .getVendorNumber())).collect(Collectors.toList());
@@ -268,20 +263,15 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
 		  {
 			  vendorsToBeSorted.addAll(SERVICE.getAll());
 		  }
-
 		  //Sortierung nach Name und VendorNumber
 		  else
 		  {
 			  List <PurchaseVendorEntity> entityList = new ArrayList<>();
-
 			  Comparator<PurchaseVendorEntity> sortByNameAndVendorNumberAndItemNumber = Comparator.comparing(PurchaseVendorEntity::getVendorFullName)
 	              .thenComparing(PurchaseVendorEntity::getVendorNumber).thenComparing(PurchaseVendorEntity::getItemNumber);
-
 			  List<PurchaseBean> allBeans = SERVICE.getAll();
-
 			  entityList = transformToPurchaseVendorEntity(allBeans);
 			  Collections.sort(entityList, sortByNameAndVendorNumberAndItemNumber);
-
 			  vendorsToBeSorted.addAll(transformToPurchaseBean(entityList));
 		  }
 
@@ -366,7 +356,6 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
       {
 	      List<PurchaseBean> allBeans = SERVICE.getAll();
 	      List<PurchaseBean> beansToRemove = new ArrayList<>();
-	      
 	      for(int resultCount = 0; resultCount < result.size(); resultCount++) {
 	    	  PurchaseBean resultBean = result.get(resultCount);
 	    	  for(int allBeansCount = 0; allBeansCount<allBeans.size(); allBeansCount++) {
