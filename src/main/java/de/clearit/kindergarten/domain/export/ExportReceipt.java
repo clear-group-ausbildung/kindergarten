@@ -100,7 +100,7 @@ public class ExportReceipt {
    */
   public void createReceipt(VendorBean pVendor) {
     try {
-      wb = new XSSFWorkbook(new FileInputStream("./abrechnung_template.xlsx"));
+      wb = new XSSFWorkbook(new FileInputStream("abrechnung_template.xlsx"));
       sheet = wb.getSheetAt(0);
       createStyles();
 
@@ -123,7 +123,7 @@ public class ExportReceipt {
   }
 
   private void createPDF(PayoffDataReceipt payoffData) throws IOException {
-    PdfReader reader = new PdfReader("./abrechnung_template.pdf");
+    PdfReader reader = new PdfReader("abrechnung_template.pdf");
     PdfWriter writer = new PdfWriter(getDateiname(payoffData).replace("xlsx", "pdf"));
     pdfDocument = new PdfDocument(reader, writer);
 
@@ -232,7 +232,7 @@ public class ExportReceipt {
 
   private void setFont() {
     try {
-      font = PdfFontFactory.createFont("./Calibri.ttf", PdfEncodings.IDENTITY_H, true);
+      font = PdfFontFactory.createFont("Calibri.ttf", PdfEncodings.IDENTITY_H, true);
     } catch (IOException e) {
       LOGGER.debug("Error - Font not found");
       LOGGER.error(e.getMessage());

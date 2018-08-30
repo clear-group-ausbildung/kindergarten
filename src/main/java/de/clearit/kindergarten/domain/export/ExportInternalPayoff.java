@@ -59,7 +59,7 @@ public class ExportInternalPayoff {
    */
   public void createInternalPayoff() {
     try {
-      wb = new XSSFWorkbook(new FileInputStream("./abrechnung_intern_template.xlsx"));
+      wb = new XSSFWorkbook(new FileInputStream("abrechnung_intern_template.xlsx"));
       sheet = wb.getSheetAt(0);
       createStyles();
 

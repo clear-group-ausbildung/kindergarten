@@ -92,6 +92,8 @@ distZip {
        include 'kindergarten.sqlite'
        include 'abrechnung_template.xlsx'
        include 'abrechnung_intern_template.xlsx'
+       include 'abrechnung_template.pdf'
+       include 'Calibri.ttf'
    }
    into(project.name + '-' + project.version){
    		from '.'
