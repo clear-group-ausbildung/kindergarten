@@ -156,14 +156,13 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     if(vendor.getFirstName().isEmpty()){
     	 String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", vendor.getLastName());
     	 TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
-    	    pane.setPreferredWidth(PreferredWidth.MEDIUM);
-    	    pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
-    	    if (pane.getCommitValue() == CommandValue.YES) {
-    	        SERVICE.delete(vendor);
-    	        postChangeHandler.onPostDelete();
-    }
-   }
-    else{
+    	 pane.setPreferredWidth(PreferredWidth.MEDIUM);
+    	 pane.showDialog(e, RESOURCES.getString("deleteItem.title"));
+    	 if (pane.getCommitValue() == CommandValue.YES) {
+    	     SERVICE.delete(vendor);
+    	     postChangeHandler.onPostDelete();
+    	 }
+    }else{
     	 String mainInstruction = RESOURCES.getString("deleteItem.mainInstruction", vendor.getLastName()+", "+vendor.getFirstName());
     	 TaskPane pane = new TaskPane(MessageType.QUESTION, mainInstruction, CommandValue.YES, CommandValue.NO);
     	    pane.setPreferredWidth(PreferredWidth.MEDIUM);
@@ -172,15 +171,13 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
     	        SERVICE.delete(vendor);
     	        postChangeHandler.onPostDelete();
       }
-
     }
   }
 
   private final class ImportVendorsTask extends Task<List<VendorBean>, Void> {
-
 	    private final TaskPane progressPane;
 	    private final File importFile;
-
+	    
 	    ImportVendorsTask() {
 	      super(BlockingScope.APPLICATION);
 	      importFile = getImportPath();
@@ -235,11 +232,9 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 
 	      return fileChooser.getSelectedFile();
 	    }
-
 	  }
 
 	  private final class ExportVendorsTask extends Task<Void, Void> {
-
 	    private final TaskPane progressPane;
 	    private final List<VendorBean> vendorList;
 	    private final String exportPath;
@@ -297,7 +292,5 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 	      }
 	      return null;
 	    }
-
 	  }
-
 }
