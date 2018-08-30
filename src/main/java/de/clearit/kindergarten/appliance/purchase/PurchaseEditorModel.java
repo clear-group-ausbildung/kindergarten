@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventObject;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +35,8 @@ import com.jgoodies.uif2.util.TextComponentUtils;
 import de.clearit.kindergarten.application.Dialogs;
 import de.clearit.kindergarten.domain.PurchaseBean;
 import de.clearit.kindergarten.domain.PurchaseService;
+import de.clearit.kindergarten.domain.VendorNumberBean;
+import de.clearit.kindergarten.domain.VendorNumberService;
 
 public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> implements FormPaneModel {
 
@@ -122,8 +125,8 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     }
   }
 
-  // Check Bean Not Null ******************************************************
-  private Boolean checkBeanContent() {
+// Check Bean Not Null ******************************************************
+private Boolean checkBeanContent() {
     boolean state = false;
 
     Pattern p = Pattern.compile("^[0-9,;]+$");
@@ -131,7 +134,9 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     String vendorNumber = PurchaseAppliance.getInstance().getView().getVendorNumber().getText();
     String itemNumber = PurchaseAppliance.getInstance().getView().getItemNumber().getText();
     String itemPrice = PurchaseAppliance.getInstance().getView().getItemPrice().getText();
-
+    List<PurchaseBean> allPurchaseBeans = PurchaseService.getInstance().getAll();
+    List<PurchaseBean> newCreatetBeans = getSelectionInList().getList();
+    List<VendorNumberBean> allVendorNumberBeans = VendorNumberService.getInstance().getAll();
     Matcher match = p.matcher(itemPrice);
     if(vendorNumber.equals("") && itemNumber.equals("") && !match.matches()) {
     	//Close View by Pressing Enter in the Editor View
@@ -142,9 +147,41 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
     	final Runnable acceptOp = new WrappedOperation(commitCallback, CommandValue.OK, CloseRequestHandler.NO_OPERATION);
     	acceptOp.run();
     }else {
-	    if (vendorNumber.matches(REGEX_NUMERIC) && itemNumber.matches(REGEX_NUMERIC) && match.matches()) {
-	      state = true;
-	      PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
+    	 if (vendorNumber.matches(REGEX_NUMERIC) && itemNumber.matches(REGEX_NUMERIC) && match.matches()) {
+   	      state = false;
+   	      PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
+   	      for (int i = 0; i < allPurchaseBeans.size(); i++) {
+   		    if(vendorNumber.equals(allPurchaseBeans.get(i).getVendorNumber().toString()) && itemNumber.equals(allPurchaseBeans.get(i).getItemNumber().toString())) {
+   		     	JOptionPane.showMessageDialog(new JFrame(), "Dieser Artikel ist bereits vorhanden!\n" + "Verkäufernummer: " + allPurchaseBeans.get(i).getVendorNumber()
+   		     			+ " Artikelnummer: " + allPurchaseBeans.get(i).getItemNumber());
+   		     PurchaseAppliance.getInstance().getView().setVendorNumber(null);
+	    	 PurchaseAppliance.getInstance().getView().setItemNumber(null);
+	    	 PurchaseAppliance.getInstance().getView().setItemPrice(null);
+		     PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();	
+   		     return false;
+   		    }
+   	      }
+   	      for(PurchaseBean purchaseBean : newCreatetBeans) {
+   	    	  if(purchaseBean.getVendorNumber().toString().equals(vendorNumber) && purchaseBean.getItemNumber().toString().equals(itemNumber)) {
+   	    		  JOptionPane.showMessageDialog(new JFrame(), "Dieser Artikel ist bereits vorhanden!\n" + "Verkäufernummer: "
+   	    				  + vendorNumber + " Artikelnummer: " + itemNumber);
+   	    		PurchaseAppliance.getInstance().getView().setVendorNumber(null);
+   	    		PurchaseAppliance.getInstance().getView().setItemNumber(null);
+   	    		PurchaseAppliance.getInstance().getView().setItemPrice(null);
+   		        PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
+   	    		return false;
+   	    	  }
+   	      }
+   	      for(VendorNumberBean vendorNumberBean : allVendorNumberBeans) {
+   	    	  if(vendorNumberBean.getVendorNumber() == Integer.parseInt(vendorNumber) ) {
+   	    		  return true;
+   	    	  }
+   	      }if(!state) {
+   	    	JOptionPane.showMessageDialog(new JFrame(), "Die Verkäufernummer (" + vendorNumber + ") auf die Sie diesen Artikel erfassen möchten ist nicht vorhanden!\n " + 
+   	    			  "Bitt überprüfen Sie die Verkäufernummer!");
+   	    	PurchaseAppliance.getInstance().getView().setVendorNumber(null);
+	        PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
+   	      }
 	    } else {
 	      JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befuellen!");
 	      if (!vendorNumber.matches(REGEX_NUMERIC)) {
@@ -169,7 +206,7 @@ public class PurchaseEditorModel extends UIFPresentationModel<PurchaseBean> impl
 	        }
 	      }
 	    }
-    }
+    }       
     return state;
   }
 
