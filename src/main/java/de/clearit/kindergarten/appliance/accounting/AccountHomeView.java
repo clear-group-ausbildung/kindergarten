@@ -59,7 +59,7 @@ public class AccountHomeView extends AbstractView{
 	    HomeViewBuilder builder = new HomeViewBuilder();
 	    builder.setTitle(RESOURCES.getString("vendorHome.mainInstruction"));
 	    builder.setListView(table);
-	    builder.setListBar(model.getActionMap(), "---", AccountHomeModel.ACTION_PRINT_RECEIPT, AccountHomeModel.ACTION_PRINT_ALL_RECEIPTS, AccountHomeModel.ACTION_PRINT_INTERNAL_RECEIPT);
+	    builder.setListBar(model.getActionMap(), "---", AccountHomeModel.ACTION_CREATE_RECEIPT, AccountHomeModel.ACTION_CREATE_PDF_FILES, AccountHomeModel.ACTION_PRINT_ALL_RECEIPTS);
 	    builder.setPreview(preview.getPanel());
 
 	    return builder.getPanel();

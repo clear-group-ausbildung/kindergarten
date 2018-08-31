@@ -1,6 +1,7 @@
 package de.clearit.kindergarten.appliance.accounting;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 import javax.swing.ListModel;
 
@@ -26,9 +27,9 @@ import de.clearit.kindergarten.domain.print.PrintingService;
 public class AccountHomeModel extends AbstractHomeModel<VendorBean>{
 	 private static final long serialVersionUID = 1L;
 
-	  public static final String ACTION_PRINT_RECEIPT = "printReceipt";
+	  public static final String ACTION_CREATE_RECEIPT = "createReceipt";
 	  public static final String ACTION_PRINT_ALL_RECEIPTS = "printAllReceipts";
-	  public static final String ACTION_PRINT_INTERNAL_RECEIPT = "printInternalReceipt";
+	  public static final String ACTION_CREATE_PDF_FILES = "createPDFFiles";
 
 	  private static final Logger LOGGER = LoggerFactory.getLogger(AccountHomeModel.class);
 	  private static final ResourceMap RESOURCES = Application.getResourceMap(AccountHomeModel.class);
@@ -56,7 +57,7 @@ public class AccountHomeModel extends AbstractHomeModel<VendorBean>{
 
 	  // Presentation Logic *****************************************************
 	  protected void handleSelectionChange(boolean hasSelection) {
-		setActionEnabled(ACTION_PRINT_RECEIPT, hasSelection);
+		setActionEnabled(ACTION_CREATE_RECEIPT, hasSelection);
 	  }
 
 	  // Actions ****************************************************************
@@ -66,9 +67,9 @@ public class AccountHomeModel extends AbstractHomeModel<VendorBean>{
 	  }
 	
 	  @Action(enabled = false)
-	  public Task<Void, Void> printReceipt(ActionEvent e) {
+	  public Task<Void, Void> createReceipt(ActionEvent e) {
 	    LOGGER.debug("Printing receipt\u2026");
-	    return new PrintSingleReceiptTask(getSelection());
+	    return new CreateSingleReceiptTask(getSelection());
 	  }
 
 	  @Action
@@ -78,17 +79,17 @@ public class AccountHomeModel extends AbstractHomeModel<VendorBean>{
 	  }
 
 	  @Action
-	  public Task<Void, Void> printInternalReceipt(ActionEvent e) {
-		  LOGGER.debug("Printing internal receipt\u2026");
-		  return new PrintInternalReceiptTask();
+	  public Task<Void, Void> createPDFFiles(ActionEvent e){
+		  LOGGER.debug("Printing all receipts from one Page");
+		  return new CreatePDFFiles();
 	  }
-
-	  private final class PrintSingleReceiptTask extends Task<Void, Void> {
+	  
+	  private final class CreateSingleReceiptTask extends Task<Void, Void> {
 
 	    private final TaskPane progressPane;
 	    private final VendorBean vendor;
 
-	    PrintSingleReceiptTask(VendorBean vendor) {
+	    CreateSingleReceiptTask(VendorBean vendor) {
 	      super(BlockingScope.APPLICATION);
 	      progressPane = new TaskPane(MessageType.INFORMATION, "Drucke Beleg", CommandValue.OK);
 	      progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
@@ -125,31 +126,24 @@ public class AccountHomeModel extends AbstractHomeModel<VendorBean>{
 
 	    PrintAllReceiptsTask() {
 	      super(BlockingScope.APPLICATION);
-	      progressPane = new TaskPane(MessageType.INFORMATION, "Drucke alle Belege", CommandValue.OK);
+	      progressPane = new TaskPane(MessageType.INFORMATION, "Erstelle alle Belege.", CommandValue.OK);
 	      progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
 	      progressPane.setProgressIndeterminate(true);
 	      progressPane.setProgressVisible(true);
 	      progressPane.setVisible(true);
 	      ExportExcel.getInstance().createExcelForAllVendors();
-	      PrintingService.printAllExportedFiles();
+	      try {
+			PrintingService.printAllExportedFiles();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    }
 
 	    @Override
 	    protected Void doInBackground() {
 	      return null;
 	    }
-
-	    @Override
-	    protected void succeeded(Void result) {
-	      super.succeeded(result);
-	      progressPane.setVisible(false);
-	      String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";
-	      TaskPane pane = new TaskPane(MessageType.INFORMATION, RESOURCES.getString("printReceipt.all.main", path),
-	          CommandValue.OK);
-	      pane.setPreferredWidth(PreferredWidth.MEDIUM);
-	      pane.showDialog(getEventObject(), RESOURCES.getString("printReceipt.all.title"));
-	    }
-
 	  }
 
 	  private final class PrintInternalReceiptTask extends Task<Void, Void> {
@@ -170,14 +164,37 @@ public class AccountHomeModel extends AbstractHomeModel<VendorBean>{
 	    protected Void doInBackground() {
 	      return null;
 	    }
-
-	    @Override
-	    protected void succeeded(Void result) {
-	      super.succeeded(result);
-	      progressPane.setVisible(false);
-	      TaskPane pane = new TaskPane(MessageType.INFORMATION, "Die interne Abrechnung wurde erstellt.", CommandValue.OK);
-	      pane.setPreferredWidth(PreferredWidth.MEDIUM);
-	      pane.showDialog(getEventObject(), "Abrechnung erstellt");
-	    }
 	  }
+	  
+	  private final class CreatePDFFiles extends Task<Void, Void>{
+
+		private final TaskPane progressPane;
+		  
+		CreatePDFFiles() {
+			super(BlockingScope.APPLICATION);
+			progressPane = new TaskPane(MessageType.INFORMATION, "Erstelle alle Belege.", CommandValue.OK);
+		    progressPane.setPreferredWidth(PreferredWidth.MEDIUM);
+		    progressPane.setProgressIndeterminate(true);
+		    progressPane.setProgressVisible(true);
+		    progressPane.setVisible(true);
+		    ExportExcel.getInstance().createExcelForAllVendors();
+		    new PrintInternalReceiptTask();
+		}
+
+		@Override
+		protected Void doInBackground() throws Exception {
+			return null;
+		}
+		
+		@Override
+		protected void succeeded(Void result) {
+			super.succeeded(result);
+		    progressPane.setVisible(false);
+		    String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen";
+		    TaskPane pane = new TaskPane(MessageType.INFORMATION, RESOURCES.getString("printReceipt.all.main", path),
+		        CommandValue.OK);
+		    pane.setPreferredWidth(PreferredWidth.MEDIUM);
+		    pane.showDialog(getEventObject(), RESOURCES.getString("printReceipt.all.title"));
+		}
+	  }	  
 }
