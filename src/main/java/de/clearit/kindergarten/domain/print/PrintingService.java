@@ -54,7 +54,11 @@ public class PrintingService {
   private static void sendToPrinter() throws IOException {
 	  final String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen/Gesamt Abrechnung.pdf";
 	  PDFMergerUtility pdfMerger = new PDFMergerUtility();
-	  System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
+	  //If u remove this, u got a Message in the console:
+	  //INFO To get higher rendering speed on JDK8 or later,
+	  //INFO use the option -Dsun.java2d.cmm=sun.java2d.cmm.kcms.KcmsServiceProvider
+	  //INFO or call System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider") 
+	  System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider"); 
 	  if(allPDFFiles.size() != 0) {
 		  for (File file : allPDFFiles) {
 			pdfMerger.addSource(file);
