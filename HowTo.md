@@ -15,9 +15,13 @@ Siehe [Kapitel 1](Benutzerhandbuch.html#erfassung-der-verkufer)
 Ist die Erfassung auf diesem Rechner abgeschlossen, exportieren Sie die vollständigen Verkäufer-Daten und __kopieren__ diese auf einen USB-Stick.
 <span style="color:red"> **WICHTIG! Die Verkäuferdaten dürfen ab diesem Zeitpunkt unter keinen Umständen mehr geändert werden sodass an allen PC's mit einheitlichen Daten gearbeitet werden kann!**</span>
 
+Siehe [Kapitel 1.4](Benutzerhandbuch.html#import-und-export-von-kundendaten)
+
 ###**Schritt 3**
 
 Gehen Sie daraufhin mit dem USB-Stick auf welchem Sie die Verkäuferdaten exportiert haben zu <span style="color:red">** ALLEN anderen Rechnern **</span>  auf denen die Anwendung benutzt werden soll und importieren jeweils die Verkäuferdaten.
+
+Siehe [Kapitel 1.4](Benutzerhandbuch.html#import-und-export-von-kundendaten)
 
 Jetzt kann der Basar beginnen und die verkauften Artikel können auf den Rechnern erfasst werden.
 
@@ -25,7 +29,9 @@ Jetzt kann der Basar beginnen und die verkauften Artikel können auf den Rechner
 
 Nach dem Basar müssen die Artikeldaten von jedem Computer exportiert werden. Dies geschieht unter "Artikel exportieren".
 <span style="color:red"> **Die Artikeldaten dürfen ab diesem Zeitpunkt ebenfalls unter keinen Umständen mehr geändert werden!**</span>
-Nun geht man wieder mit einem USB-Stick zu _jedem_ einzelnen Rechner und exportiert auf diesen die jeweiligen Artikeldaten. Damit habt Ihr auf dem USB-Stick einen vollständigen Datensatz.
+Nun geht man wieder mit einem USB-Stick zu _jedem_ einzelnen Rechner und exportiert auf diesen die jeweiligen Artikeldaten. Damit habt Ihr auf dem USB-Stick alle Verkaufsdaten.
+
+Siehe [Kapitel 2.2](Benutzerhandbuch.html#import-und-export-von-artikeln)
 
 ###**Schritt 5**
 
@@ -36,11 +42,15 @@ Sollten Sie sich beim Eintragen eines Artikels vertippt haben und dadurch einen 
 
 In diesem Fall wird eine Doppelte Artikel.txt Datei angelegt die genauer anzeigt welche Einträge Konflikte auslösen, sprich welche Einträge durch einen Import doppelt vorhanden sind. Öffnen Sie hierzu den Ordner kindergarten-2.1.0 -> und darin den Ordner bin -> hier liegt Doppelte Artikel.txt. Darin finden Sie eine Auflistung von bereits vorhandenen Artikeln verglichen mit den Artikeln die nicht importiert wurden mit Artikelnummer Verkäufernummer und Preis. Diese werden nicht importiert sondern nur in der Datei zum Überprüfen aufgelistet. 
 
+Siehe [Kapitel 2.2](Benutzerhandbuch.html#import-und-export-von-artikeln)
+
 ###**Schritt 6**
 
-Nachdem alle Dateien zusammen importiert wurden befindet sich auf diesem Rechner der vollständige Datensatz. Mit diesem können Sie zum Erstellen der Abrechnungen übergehen.
+Nachdem alle Dateien zusammen importiert wurden befindet sich auf diesem Rechner alle Verkaufsdaten. Mit diesem können Sie zum Erstellen der Abrechnungen übergehen.
 
 Zum Schluss werden vom vollständigen Datensatz Abrechnungen erstellt. Für jeden Verkäufer wird hierbei eine PDF und eine Excel Datei angelegt. Aus diesen können Sie entnehmen welcher Betrag an den jeweiligen Verkäufer auszuzahlen ist und welcher Betrag an den Kindergarten geht.
+
+Siehe [Kapitel 3](Benutzerhandbuch.html#abrechnung)
 
 ###**Schritt 7**
 
