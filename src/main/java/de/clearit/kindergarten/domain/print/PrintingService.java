@@ -52,12 +52,14 @@ public class PrintingService {
   
   @SuppressWarnings("deprecation")
   private static void sendToPrinter() throws IOException {
+	  final String path = System.getProperty("user.home") + "/Desktop/Basar Abrechnungen/Gesamt Abrechnung.pdf";
 	  PDFMergerUtility pdfMerger = new PDFMergerUtility();
+	  System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
 	  if(allPDFFiles.size() != 0) {
 		  for (File file : allPDFFiles) {
 			pdfMerger.addSource(file);
 		  }
-		  pdfMerger.setDestinationFileName(System.getProperty("user.home") + "/Desktop/Basar Abrechnungen/Gesamt Abrechnung.pdf");
+		  pdfMerger.setDestinationFileName(path);
 		  pdfMerger.mergeDocuments();
 		  
 		  File pdfToPrint = new File(pdfMerger.getDestinationFileName());
@@ -71,7 +73,7 @@ public class PrintingService {
 			  LOGGER.debug("Error - No default print service found");
 		  }else {
 			  int reply = JOptionPane.showConfirmDialog(null, "Sie sind dabei ALLE Abrechnungen zu drucken. Möchten Sie fortfahren?" , "Alle Abrechnunge Drucken",JOptionPane.YES_NO_OPTION);
-			  if(reply == JOptionPane.YES_OPTION) { 
+			  if(reply == JOptionPane.YES_OPTION) {
 				  javax.print.PrintService service = ServiceUI.printDialog(null, 200, 200, services, defaultService, flavor, attributes);
 				  if(service != null) {
 			  		DocPrintJob docPrintJob = service.createPrintJob();
@@ -87,11 +89,13 @@ public class PrintingService {
 			        }catch (IOException e) {
 			          LOGGER.error(e.getMessage());
 			        }
-				  }else {
-					  JOptionPane.showMessageDialog(new JFrame(), "Keine Verkäufer erfasst Drucken nicht möglich!");
 				  }
+			  }else {
+				  JOptionPane.showMessageDialog(new JFrame(), "Gesamtabrechnung wurde erstellt!\n" + path);
 			  }
 		  }
+	  }else {
+		  JOptionPane.showMessageDialog(new JFrame(), "Keine Verkäufer erfasst Drucken nicht möglich!", "Fehler", JOptionPane.ERROR_MESSAGE);
 	  }
   }
 }
