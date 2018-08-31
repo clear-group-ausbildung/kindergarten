@@ -60,4 +60,4 @@ und klicken diese doppelt. Die Anwendung startet.
 
 ###Benutzerhandbuch
 Eine Anleitung zur Bedienung der Anwendung finden Sie
-unter kindergarten-2.1.0 -> hilfe -> Benutzerhandbuch.html oder klicken Sie auf [Benutzerhandbuch](pics/Benutzerhandbuch.html).
+unter kindergarten-2.1.0 -> hilfe -> Benutzerhandbuch.html oder klicken Sie auf [Benutzerhandbuch](Benutzerhandbuch.html).
