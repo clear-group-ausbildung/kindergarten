@@ -147,5 +147,8 @@ distZip {
       include 'reset.png'
       include 'Registrierungseditor1.png'
       include 'Registrierungseditor2.png'
+      include 'ExcelIntern.png'
+      include 'ExcelMaxMustermann.png'
+      
    }
 }
