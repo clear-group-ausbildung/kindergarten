@@ -1055,48 +1055,69 @@ body .markdown-body
 .codehilite .vi{color:teal}
 .codehilite .il{color:#009999}
 .codehilite .gc{color:#999;background-color:#EAF2F5}
-</style><title>Installation</title></head><body><article class="markdown-body"><h1 id="installationshinweise">Installationshinweise<a class="headerlink" href="#installationshinweise" title="Permanent link"></a></h1>
+</style><title>Installation</title></head><body><article class="markdown-body"><h1 id="installationshinweise">Installationshandbuch<a class="headerlink" href="#installationshinweise" title="Permanent link"></a></h1>
+<h3>Inhaltsverzeichnis</h3>	
 <ul>
 <li><a href="#erste-schritte"><strong>1. Erste Schritte</strong></a>  </li>
 <li><a href="#java-runtime-environment-installieren"><strong>2. Java Runtime Environment installieren</strong></a></li>
-<li><a href="#anwendung-starten"><strong>3. Anwendung Starten</strong></a>        </li>
-<li><a href="#benutzerhandbuch"><strong>4. Benutzerhandbuch</strong></a></li>
+<li><a href="#Vorbereiten-des-Betriebssystems"><strong>3. Vorbereiten des Betriebssystems</strong></a>        </li>
+<li><a href="#anwendung-starten"><strong>4. Anwendung Starten</strong></a>        </li>
+<li><a href="#benutzerhandbuch"><strong>5. Benutzerhandbuch</strong></a></li>
 </ul>
+
+<p><span style="color:red"> <strong>Alle unten genannten Punkte müssen nur bei der ersten Installation auf einem Gerät ausgeführt werden.
+                            Möchten Sie das Programm erneut auf demselben Gerät verwenden benötigen Sie keine erneute Installation
+              der JRE und auch keine erneute Ausführung der Prefs.reg Datei.</strong></span></p>
+
+
 <h3 id="erste-schritte">1. Erste Schritte<a class="headerlink" href="#erste-schritte" title="Permanent link"></a></h3>
-<p>Entpacken Sie die Datei kindergarten-2.1.0.zip mit einem Rechtsklick auf die Datei -&gt; hier entpacken&hellip;
-Der Ordner kindergarten-2.1.0 wird erstellt</p>
+<p>Verbinden Sie den USB-Sick mit einem freien USB-Port an Ihrem Computer. Kopieren Sie jetzt die Datei "kindergarten-2.1.0.zip" vom USB-Stick auf Ihren Computer. Entpacken Sie die Datei kindergarten-2.1.0.zip mit einem Rechtsklick auf die Datei -&gt; hier entpacken&hellip;
+Der Ordner kindergarten-2.1.0 wird erstellt.</p>
 <h3 id="java-runtime-environment-installieren">2. Java Runtime Environment installieren<a class="headerlink" href="#java-runtime-environment-installieren" title="Permanent link"></a></h3>
 <p>Bevor Sie die Anwendung starten können müssen Sie die beigelegte Java Runtime Environment (JRE) installieren.
 Dazu öffnen Sie den Ordner kindergarten-2.1.0 und darin den Ordner JRE.
-Hier befinden sich 2 verschiedene Dateien : 32bit.exe und 64bit.exe
-Sie dürfen <span style="color:red"> <strong>Nur 1 von beiden </strong></span> verwenden.
-Welche Sie brauchen entnehmen Sie aus der Systemsteuerung ihres PC&rsquo;s wie folgt beschrieben:</p>
-<p>Öffnen Sie über den Windows-Button (früher &ldquo;Start&rdquo;) die &ldquo;Systemsteuerung&rdquo;.
-Oder Tippen Sie in das Suchfeld neben dem Windows-Button &ldquo;Systemsteuerung&rdquo; ein.
-Öffnen Sie den Reiter &ldquo;System&rdquo;.
-Hier bekommen Sie im ersten Absatz alle Infos zu Ihrem Betriebssystem aufgelistet, darunter auch die Windows-Version 32 Bit oder 64 Bit.</p>
-<p>Unter Systemtyp:</p>
-<p><img alt="Systemsteuerung" src="pics/version.png" title="Systemsteuerung" /></p>
-<p>Öffnen Sie hierzu den Ordner kindergarten-2.1.0 und darin den Ordner JRE.
+Hier befinden sich zwei verschiedene Dateien : 32bit.exe und 64bit.exe.
+<span style="color:red"> <strong>Sie dürfen nur eine von beiden verwenden.</strong></span>
+Verwenden Sie die 32bit.exe, wenn Sie ein 32-Bit-Betriebssystem haben. Haben Sie ein 64-Bit-Betriebssystem, verwenden Sie die 64bit.exe. Die Information auf welchem Betriebssystemtyp Ihr Rechner läuft erhalten Sie im Abschnitt "System" der Systemsteuerung. Diese können Sie über folgenen Weg erreichen:</p>
+
+<ul>
+<li>Öffnen Sie über den Windows-Button (früher “Start”) die “Systemsteuerung”. Oder Tippen Sie in das Suchfeld neben dem Windows-Button “Systemsteuerung” ein.</li>
+ <li>Öffnen Sie den Reiter “System”.</li>
+ <li> Hier bekommen Sie im ersten Absatz alle Infos zu Ihrem Betriebssystem aufgelistet, darunter auch ob Ihre Windows-Version eine 32 Bit oder 64 eine Bit version ist.</li> 
+</ul>
+
+
+<p><img alt="Systemtyp" src="pics/version.png" title="Systemtyp" /></p>
+<p>Wie im Bild markiert können Sie unter "Systemtyp" die Version Ihres Betriebssystems nachlesen.</p> 
+<p>Nachdem Sie die Information über Ihr Betriebssystemtypen in Erfahrung gebracht haben, öffnen Sie den Ordner kindergarten-2.1.0 und darin den Ordner JRE.
 Klicken Sie doppelt auf die Version die Sie brauchen und führen Sie die Installation durch.</p>
-<p>Nachdem Sie die Installation erfolgreich beendet haben, machen Sie einen Doppelklick auf die Datei &ldquo;Prefs.reg&rdquo;.
+
+<h3 id="Vorbereiten-des-Betriebssystems">3. Vorbereiten des Betriebssystems<a class="headerlink" href="#Vorbereiten-des-Betriebssystems" title="Permanent link"></a></h3>
+<p>Nachdem Sie die Installation erfolgreich beendet haben, klicken Sie Doppelt auf die Datei &ldquo;Prefs.reg&rdquo;.
 In der Registrierung Ihres Betriebssystems wird dadurch ein Schlüssel gesetzt der für das Benutzen der Anwendung notwendig ist.</p>
-<p>Es öffnet sich folgendes Fenster:</p>
+
 <p><img alt="RegistrierungseditorYesNo" src="pics/Registrierungseditor1.png" title="RegistrierungseditorYesNo" /></p>
-<p>Bestätigen Sie mit &ldquo;Ja&rdquo; es öffnet sich ein neues Fenster:</p>
+<p>Es öffnet sich das oben angezeigte Fenster, bestätigen Sie hier mit Ja.</p>
+
 <p><img alt="RegistrierungseditorOK" src="pics/Registrierungseditor2.png" title="RegistrierungseditorOK" /></p>
-<p>Bestätigen Sie mit &ldquo;OK&rdquo;.</p>
-<p><span style="color:red"> <strong>Alle oben genannten Punkte müssen nur bei der ersten Installation auf einem Gerät ausgeführt werden.
-                            Möchten Sie das Programm erneut auf demselben Gerät verwenden benötigen Sie keine erneute Installation
-              der JRE und auch keine erneute Ausführung der Prefs.reg Datei.</strong></span></p>
+<p>Es öffnet sich ein neues Fenster. Bestätigen Sie mit &ldquo;OK&rdquo;.</p>
+
+
 <p>Nach dem Sie die Installation wie bisher beschrieben durchgeführt haben können Sie die
 die Anwendung starten.</p>
-<h3 id="anwendung-starten">3. Anwendung Starten<a class="headerlink" href="#anwendung-starten" title="Permanent link"></a></h3>
+<h3 id="anwendung-starten">4. Anwendung Starten<a class="headerlink" href="#anwendung-starten" title="Permanent link"></a></h3>
 <p>Um die Anwendung zu starten öffnen Sie den Ordner kindergarten-2.1.0 und navigieren über bin -&gt; zur kindergarten.bat Datei
 und klicken diese doppelt. Die Anwendung startet.</p>
-<p><img alt="Start" src="pics/start.png" title="Systemsteuerung" /></p>
+<p><img alt="Start" src="pics/start.png" title="Starten der Anwendung" /></p>
+<p>Es öffnen sich zwei Fenster. Das Programm und ein schwarzes Konsolenfenster. 
+<p><img alt="cmd" src="pics/cmd.png" title="Konsolenfenster" /></p>
 <p><span style="color:red"> <strong>Achtung! Das schwarze Fenster welches sich hier gleichzeitig öffnet ist normal und notwendig.
                            Wenn Sie es schließen schließt sich auch die Anwendung daher lassen Sie es einfach im Hintergrund geöffnet.</strong></span></p>
-<h3 id="benutzerhandbuch">4. Benutzerhandbuch<a class="headerlink" href="#benutzerhandbuch" title="Permanent link"></a></h3>
+
+<h3 id="benutzerhandbuch">5. Benutzerhandbuch<a class="headerlink" href="#benutzerhandbuch" title="Permanent link"></a></h3>
 <p>Eine Anleitung zur Bedienung der Anwendung finden Sie
-unter kindergarten-2.1.0 -&gt; hilfe -&gt; Benutzerhandbuch.html oder klicken Sie auf <a href="Benutzerhandbuch.html">Benutzerhandbuch</a>.</p></article></body></html>
+unter kindergarten-2.1.0 -&gt; hilfe -&gt; Benutzerhandbuch.html oder klicken Sie auf <a href="Benutzerhandbuch.html">Benutzerhandbuch</a>.</p>
+<p> Alternativ können Sie das Benutzerhandbuch aus dem Programm heraus starten, indem Sie in den "bin" Ordner gehen. Dort
+finden Sie eine Datei namens "kindergarten.bat", öffnen Sie diese per Mausklick. Innerhalb des Programmes müssen Sie auf den Reiter "Hilfe" gehen. Es öffnet sich ein weiteres
+ Fenster. In diesem Fenster können Sie nun auf "Benutzerhandbuch" klicken, für eine funktionale Beschreibung des Programmes.</p>
+</article></body></html>
