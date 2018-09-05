@@ -284,7 +284,7 @@ public final class Dialogs {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String urlInstall = System.getProperty("user.dir").replace("bin", "hilfe\\Installation.html");
+				String urlInstall = System.getProperty("user.dir").replace("bin", "hilfe\\Installationshandbuch.html");
 				File htmlFile = new File(urlInstall);
 				try {
 					Desktop.getDesktop().browse(htmlFile.toURI());
