@@ -150,6 +150,7 @@ distZip {
       include 'ExcelIntern.PNG'
       include 'ExcelMaxMustermann.PNG'
       include 'BildHilfe.png'
+      include 'BildVKErfassung.PNG'
       
    }
 }
