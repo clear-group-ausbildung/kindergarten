@@ -103,7 +103,7 @@ distZip {
        from '.'
        include 'Benutzerhandbuch.html'
        include 'HowTo.html'
-       include 'Installation.html'
+       include 'Installationshandbuch.html'
        include 'pics' 
    }
    into(project.name + '-' + project.version + '/JRE') {
@@ -151,6 +151,7 @@ distZip {
       include 'ExcelMaxMustermann.PNG'
       include 'BildHilfe.png'
       include 'BildVKErfassung.PNG'
+      include 'cmd.png'
       
    }
 }
