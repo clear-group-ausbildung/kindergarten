@@ -1,34 +1,42 @@
-Kindergarten Kassenverwaltung(R) Version 2.1.0 28/08/2018
-
-
+Kindergarten Kassenverwaltung(R) Version 2.1.0 2018-08-28
 
 Installation:
---------------
+---------------
 
-- Um Hilfe zur Installation und zum Start der Anwendung zubekommen klicken Sie auf den Ordner "hilfe". In diesem Ordner liegt eine Datei namens "Installation.html" welche Ihnen 
-genauere Anweisungen und Informationen zum Starten der Anwendung gibt.
+Eine Beschreibung der notwendigen Schritte zur Installation und der Ausführung der Anwendung finden Sie in der Datei "Installation.html" im Ordner "hilfe".
 
-=================================================================================================================
+=================================================================================
 
 Funktionen / Features:
------------------------
+------------------------------
 
-- Für eine genauere Beschreibung der Funktionen des Programms, können Sie das Programm starten, indem Sie in den "bin" Ordner gehen. Dort
-finden Sie eine Datei namens "kindergarten.bat", öffnen Sie diese per Mausklick. Innerhalb des Programmes müssen Sie auf den Reiter "Hilfe" gehen. Es öffnet sich ein weiteres
- Fenster. In diesem Fenster können Sie nun auf "Benutzerhandbuch" klicken, für eine funktionale Beschreibung des Programmes.
+Die Beschreibung des Funktionsumfangs der Anwendung befindet sich im Benutzerhandbuch, welches Sie über zwei Wege erreichen können.
 
-- Alternativ können Sie auch das Benutzerhandbuch in dem "hilfe" Ordner öffnen. Klicken Sie dazu einfach auf den Ordner "hilfe" und auf die sich darin enthaltene Datei 
-"Benutzerhandbuch.html".
-=================================================================================================================
+Variante A) Öffnen des Benutzerhandbuchs aus der Anwendung heraus:
+1. Starten Sie die Anwendung durch Doppelklick auf die Datei "kindergarten.bat" im Ordner "bin".
+2. Klicken Sie im linken Navigationsbereich der Anwendung auf "Hilfe".
+3. Klicken Sie in dem neu geöffneten Fenster auf "Benutzerhandbuch".
+
+Variante B) Öffnen des Benutzerhandbuchs ohne Start der Anwendung:
+1. Öffnen Sie den Ordner "hilfe".
+2. Öffnen Sie die Datei "Benutzerhandbuch.html".
+
+=================================================================================
 
 Bedienung / Benutzung:
------------------------
+--------------------------------
 
-- Für eine genauere Beschreibung des Arbeitsablaufs mit dem Kassenprogramm, können Sie das Programm starten indem Sie in den "bin" Order gehen. Dort
-finden Sie eine Datei namens "kindergarten.bat", öffnen Sie diese per Mausklick. Innerhalb des Programms müssen Sie auf den Reiter "Hilfe" gehen. Es öffnet sich ein weiteres
- Fenster. In diesem Fenster können Sie nun auf "HowTo" klicken, für eine genauere Beschreibung des vorgeschriebenen Arbeitsablaufes mit dem Programm. 
+Die Beschreibung des Arbeitsablaufs mit der Anwendung befindet sich im HowTo, welches Sie über zwei Wege erreichen können.
 
-- Alternativ können Sie auch das HowTo in dem "hilfe" Ordner öffnen. Klicken Sie dazu einfach auf den Ordner "hilfe" und auf die sich darin enthaltene Datei
-"HowTo.html". 
-=================================================================================================================
+Variante A) Öffnen des HowTo aus der Anwendung heraus:
+1. Starten Sie die Anwendung durch Doppelklick auf die Datei "kindergarten.bat" im Ordner "bin".
+2. Klicken Sie im linken Navigationsbereich der Anwendung auf "Hilfe".
+3. Klicken Sie in dem neu geöffneten Fenster auf "HowTo".
+
+Variante B) Öffnen des HowTo ohne Start der Anwendung:
+1. Öffnen Sie den Ordner "hilfe".
+2. Öffnen Sie die Datei "HowTo.html".
+
+=================================================================================
+
 Copyright 2018 ClearGroup
