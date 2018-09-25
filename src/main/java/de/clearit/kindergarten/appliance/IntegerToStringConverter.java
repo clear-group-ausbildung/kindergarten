@@ -17,7 +17,7 @@ public class IntegerToStringConverter extends AbstractConverter {
       Integer integerValue = Integer.valueOf((String) newValue);
       subject.setValue(integerValue);
     } catch (NumberFormatException e) {
-      System.err.println(e.getMessage());
+      //System.err.println(e.getMessage());
     }
   }
 

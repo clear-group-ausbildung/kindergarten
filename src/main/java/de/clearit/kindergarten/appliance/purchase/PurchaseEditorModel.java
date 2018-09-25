@@ -178,12 +178,12 @@ private Boolean checkBeanContent() {
    	    	  }
    	      }if(!state) {
    	    	JOptionPane.showMessageDialog(new JFrame(), "Die Verkäufernummer (" + vendorNumber + ") auf die Sie diesen Artikel erfassen möchten ist nicht vorhanden!\n " + 
-   	    			  "Bitt überprüfen Sie die Verkäufernummer!");
+   	    			  "Bitte überprüfen Sie die Verkäufernummer!");
    	    	PurchaseAppliance.getInstance().getView().setVendorNumber(null);
 	        PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();
    	      }
 	    } else {
-	      JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befuellen!");
+	      JOptionPane.showMessageDialog(new JFrame(), "Falsche Eingabe. Bitte alle Felder richtig befüllen!");
 	      if (!vendorNumber.matches(REGEX_NUMERIC)) {
 	        PurchaseAppliance.getInstance().getView().setVendorNumber(null);
 	        PurchaseAppliance.getInstance().getView().getVendorNumber().requestFocusInWindow();

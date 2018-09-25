@@ -22,7 +22,7 @@ public class DoubleToStringConverter extends AbstractConverter {
       BigDecimal bigDecimalValue = new BigDecimal(inputWithDot);
       subject.setValue(bigDecimalValue);
     } catch (NumberFormatException e) {
-      System.err.println(e.getMessage());
+      //System.err.println(e.getMessage());
     }
   }
 

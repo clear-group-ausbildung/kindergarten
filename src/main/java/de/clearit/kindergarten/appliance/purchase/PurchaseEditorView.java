@@ -126,7 +126,6 @@ public class PurchaseEditorView extends AbstractView {
   public JTextField getItemPrice() {
     return (JTextField) itemPriceField;
   }
-  
   public void setItemPrice(String itemPrice) {
     ((JTextField) itemPriceField).setText(itemPrice);
   }
