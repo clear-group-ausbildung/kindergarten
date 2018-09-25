@@ -39,6 +39,7 @@ public class PrintingService {
 
   public static void printAllExportedFiles() throws IOException {
     List<VendorBean> vendorList = VendorService.getInstance().getAll();
+    allPDFFiles.clear();
     vendorList.forEach(PrintingService::createFile);
     //Creates one File for printing
     sendToPrinter();
