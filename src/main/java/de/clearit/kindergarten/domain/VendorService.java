@@ -176,24 +176,13 @@ public final class VendorService extends AbstractResourceService<VendorBean, Ven
 		super.create(bean);
 		LOGGER.exiting(VendorService.class.getSimpleName(), "createAsNew(VendorBean bean)");
 	}
-	
-	
-	
+
 	/**
 	 * import Vendors from a JSON File
 	 * @param bean
 	 */
 	public void importVendors(VendorBean bean) {
-		List<VendorBean> allVendors = getAll();
-		boolean check = true;
-		for(int i = 0; i < allVendors.size(); i++) {
-			if(bean.getLastName().equals(allVendors.get(i).getLastName()) || bean.getFirstName().equals(allVendors.get(i).getFirstName())) {
-				check = false;
-			}
-		}
-		if(check) {
 			createAsNew(bean);
-		}
 	}
 
 	/**
