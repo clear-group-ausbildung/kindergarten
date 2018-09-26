@@ -207,7 +207,7 @@ public final class VendorHomeModel extends AbstractHomeModel<VendorBean> {
 		      LOGGER.debug("# Vendor elements to create: {}", result.size());
 		      Observable<VendorBean> observableVendors = Observable.fromIterable(result);	
 		      long beginNanos = System.nanoTime();
-		      observableVendors.subscribe(vendorBean -> SERVICE.importVendors(vendorBean), Observable::error, () -> {
+		      observableVendors.subscribe(vendorBean -> SERVICE.createVendor(vendorBean), Observable::error, () -> {
 		        SERVICE.flush();
 		        LOGGER.debug("Finished Import after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
 		        progressPane.setVisible(false);
