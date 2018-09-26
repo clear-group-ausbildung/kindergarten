@@ -10,7 +10,7 @@ import de.clearit.kindergarten.domain.entity.VendorNumber;
 import de.clearit.kindergarten.utils.CollectorUtils;
 
 /**
- * The service for the Vendor resource.
+ * The service for the VendorNumber resource.
  */
 public final class VendorNumberService extends AbstractResourceService<VendorNumberBean, VendorNumber> {
 
@@ -105,10 +105,22 @@ public final class VendorNumberService extends AbstractResourceService<VendorNum
         .singletonCollector());
   }
 
+  /**
+   * Checks if the given {@code vendorNumber} is already existing.
+   * 
+   * @param vendorNumber
+   *          the vendor number
+   * @return {@code true} if the vendor number is already existing, else
+   *         {@code false}
+   */
   public boolean isVendorNumberExisting(Integer vendorNumber) {
     try {
       findByVendorNumber(vendorNumber);
-    } catch (IllegalStateException e) {
+    } // Hier wird eine IllegalStateException gefangen, da findByVendorNumber durch
+      // die Verwendung von Streams mit einer solchen Exception aussteigt wenn kein
+      // Filterresultat vorliegt. Fachlich bedeutet dies fuer uns, das keine vendor
+      // number gefunden wurde (== existiert noch nicht)
+    catch (IllegalStateException e) {
       return false;
     }
     return true;
