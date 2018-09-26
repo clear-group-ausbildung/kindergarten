@@ -49,13 +49,12 @@ import de.clearit.kindergarten.domain.VendorBean;
 import de.clearit.kindergarten.domain.VendorNumberBean;
 import de.clearit.kindergarten.domain.VendorNumberService;
 import de.clearit.kindergarten.domain.VendorService;
-import de.clearit.kindergarten.domain.entity.PurchaseVendorEntity;
 import io.reactivex.Observable;
 
 /**
  * The home model for the purchase.
  */
-public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implements PostChangeHandler  {
+public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implements PostChangeHandler {
 
   private static final long serialVersionUID = 1L;
 
@@ -72,7 +71,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   private final transient ValueModel itemSumModel = new ValueHolder(0.0);
   private final transient ValueModel kindergartenProfitModel = new ValueHolder(0.0);
   private final transient ValueModel vendorPayoutModel = new ValueHolder(0.0);
-  
+
   // Instance Creation ******************************************************
 
   private PurchaseHomeModel() {
@@ -97,13 +96,12 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   public SelectionInList<VendorBean> getVendorList() {
     return vendorList;
   }
-  
-  public SelectionInList<String> getSortList()
-  {
-	  sortList.getList().add(0, "Chronologisch");
-	  sortList.getList().add(1, "Nach Verkäufer und Verkäufernummer");
-	  sortList.setSelectionIndex(0);
-	  return sortList;
+
+  public SelectionInList<String> getSortList() {
+    sortList.getList().add(0, "Chronologisch");
+    sortList.getList().add(1, "Nach Verkï¿½ufer und Verkï¿½ufernummer");
+    sortList.setSelectionIndex(0);
+    return sortList;
   }
 
   public ValueModel getItemCountModel() {
@@ -146,8 +144,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   @Action
   public void newItem(final ActionEvent e) {
     final String title = RESOURCES.getString("newPurchase.title");
-    //editItem(e, title, new PurchaseBean(), true);
-    editItem(e, title, new PurchaseVendorEntity(), true);
+    editItem(e, title, new PurchaseBean(), true);
   }
 
   @Action(enabled = false)
@@ -212,7 +209,7 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
 
   private void refreshSummary() {
     List<PurchaseBean> purchaseBeanList = getSelectionInList().getList();
-	itemCountModel.setValue(SERVICE.getItemCountByPurchases(purchaseBeanList));
+    itemCountModel.setValue(SERVICE.getItemCountByPurchases(purchaseBeanList));
     itemSumModel.setValue(SERVICE.getItemSumByPurchases(purchaseBeanList));
     kindergartenProfitModel.setValue(SERVICE.getKindergartenProfitByPurchases(purchaseBeanList));
     vendorPayoutModel.setValue(SERVICE.getVendorPayoutByPurchases(purchaseBeanList));
@@ -223,95 +220,58 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
     alleVerkaeufer.setLastName("Alle");
     return alleVerkaeufer;
   }
-  
-  private void filterPurchases() {
-	    VendorBean selectedVendor = getVendorList().getSelection();
-	    if(selectedVendor != null){
-	    List<PurchaseVendorEntity> filteredOrAllPurchases = new ArrayList<>();
-	    if (alleVerkaeufer().equals(selectedVendor)) {
-	      filteredOrAllPurchases.addAll(transformToPurchaseVendorEntity(SERVICE.getAll()));
-	    } else {
-	      // 1. Hole alle Purchases vom Service
-	      List<PurchaseBean> allPurchases = SERVICE.getAll();
-	      // 2. Filtere dabei nach Purchases, bei welchem die VendorNumber == eine der
-	      // VendorNumbers des selektierten Vendors aus der ComboBox ist
-	      List<PurchaseBean> filteredPurchases = allPurchases.stream().filter(bean -> selectedVendor.getVendorNumbers()
-	          .stream().map(VendorNumberBean::getVendorNumber).collect(Collectors.toList()).contains(bean
-	              .getVendorNumber())).collect(Collectors.toList());
 
-	      // 3. Fuege die gefilterten Suchergebnisse der Ergebnisliste hinzu
-	      filteredOrAllPurchases.addAll(transformToPurchaseVendorEntity(filteredPurchases));
-	    }
-	    // 4. Leere die Tabelle der Purchases
-	    getSelectionInList().getList().clear();
-	    // 5. Fuege der Tabelle die Ergebnisliste mit den gefilterten Surchergebnissen
-	    // hinzu
-	    getSelectionInList().getList().addAll(filteredOrAllPurchases);
-	    // 6. Aktualisiere die Daten in der Gesamtberechnung rechts oben
-	    refreshSummary();
-	  }
+  private void filterPurchases() {
+    VendorBean selectedVendor = getVendorList().getSelection();
+    if (selectedVendor != null) {
+      List<PurchaseBean> filteredOrAllPurchases = new ArrayList<>();
+      if (alleVerkaeufer().equals(selectedVendor)) {
+        filteredOrAllPurchases.addAll(SERVICE.getAll());
+      } else {
+        // 1. Hole alle Purchases vom Service
+        List<PurchaseBean> allPurchases = SERVICE.getAll();
+        // 2. Filtere dabei nach Purchases, bei welchem die VendorNumber == eine der
+        // VendorNumbers des selektierten Vendors aus der ComboBox ist
+        List<PurchaseBean> filteredPurchases = allPurchases.stream().filter(bean -> selectedVendor.getVendorNumbers()
+            .stream().map(VendorNumberBean::getVendorNumber).collect(Collectors.toList()).contains(bean
+                .getVendorNumber())).collect(Collectors.toList());
+
+        // 3. Fuege die gefilterten Suchergebnisse der Ergebnisliste hinzu
+        filteredOrAllPurchases.addAll(filteredPurchases);
+      }
+      // 4. Leere die Tabelle der Purchases
+      getSelectionInList().getList().clear();
+      // 5. Fuege der Tabelle die Ergebnisliste mit den gefilterten Surchergebnissen
+      // hinzu
+      getSelectionInList().getList().addAll(filteredOrAllPurchases);
+      // 6. Aktualisiere die Daten in der Gesamtberechnung rechts oben
+      refreshSummary();
+    }
   }
 
-	
-	 private void sortPurchases()
-	  {
-		  String selectedSortMode = sortList.getSelection();
-		  List<PurchaseBean> vendorsToBeSorted = new ArrayList<>();
+  private void sortPurchases() {
+    String selectedSortMode = sortList.getSelection();
+    List<PurchaseBean> purchasesToBeSorted = new ArrayList<>();
 
-		  // Chronologische Sortierung
-		  if (selectedSortMode.equals(sortList.getElementAt(0)))
-		  {
-			  vendorsToBeSorted.addAll(SERVICE.getAll());
-		  }
-		  //Sortierung nach Name und VendorNumber
-		  else
-		  {
-			  List <PurchaseVendorEntity> entityList = new ArrayList<>();
-			  Comparator<PurchaseVendorEntity> sortByNameAndVendorNumberAndItemNumber = Comparator.comparing(PurchaseVendorEntity::getVendorFullName)
-	              .thenComparing(PurchaseVendorEntity::getVendorNumber).thenComparing(PurchaseVendorEntity::getItemNumber);
-			  List<PurchaseBean> allBeans = SERVICE.getAll();
-			  entityList = transformToPurchaseVendorEntity(allBeans);
-			  Collections.sort(entityList, sortByNameAndVendorNumberAndItemNumber);
-			  vendorsToBeSorted.addAll(transformToPurchaseBean(entityList));
-		  }
+    // Chronologische Sortierung
+    if (selectedSortMode.equals(sortList.getElementAt(0))) {
+      purchasesToBeSorted.addAll(SERVICE.getAll());
+    }
+    // Sortierung nach Name und VendorNumber
+    else {
+      // FIXME: Erstes Sortierkriterium: FullName (==
+      // VendorBean.getVendorNameDisplayString())
+      Comparator<PurchaseBean> sortByNameAndVendorNumberAndItemNumber = Comparator.comparing(
+          PurchaseBean::getVendorNumber).thenComparing(PurchaseBean::getVendorNumber).thenComparing(
+              PurchaseBean::getItemNumber);
+      purchasesToBeSorted.addAll(SERVICE.getAll());
+      Collections.sort(purchasesToBeSorted, sortByNameAndVendorNumberAndItemNumber);
+    }
 
-	    getSelectionInList().getList().clear();
-	    getSelectionInList().getList().addAll(vendorsToBeSorted);
-	  }
+    getSelectionInList().getList().clear();
+    getSelectionInList().getList().addAll(purchasesToBeSorted);
+  }
 
-		private List<PurchaseVendorEntity> transformToPurchaseVendorEntity(List<PurchaseBean> purchaseBeans)
-		{
-			List<PurchaseVendorEntity> entityList = new ArrayList<>();
-			for(PurchaseBean purchase : purchaseBeans) {
-				  PurchaseVendorEntity entity = new PurchaseVendorEntity();
-				  entity.setId(purchase.getId());
-				  entity.setItemNumber(purchase.getItemNumber());
-				  entity.setItemPrice(purchase.getItemPrice());
-				  entity.setVendorNumber(purchase.getVendorNumber());
-				  VendorBean vendorBean = VendorService.getInstance().findByVendorNumber(purchase.getVendorNumber());
-				  if (vendorBean != null) {
-	          entity.setVendorFullName(vendorBean.getLastName() + ", " + vendorBean.getFirstName());
-	        }
-				  entityList.add(entity);
-			  }
-			return entityList;
-		}
-
-		private List<PurchaseBean> transformToPurchaseBean(List<PurchaseVendorEntity> entityList) {
-	    List<PurchaseBean> purchaseBeanList = new ArrayList<>();	    
-	    for(PurchaseVendorEntity entity: entityList) {
-	      //Downcasting
-	      PurchaseBean purchaseBean = new PurchaseBean();
-	      purchaseBean.setId(entity.getId());
-	      purchaseBean.setItemNumber(entity.getItemNumber());
-	      purchaseBean.setItemPrice(entity.getItemPrice());
-	      purchaseBean.setVendorNumber(entity.getVendorNumber());
-	      purchaseBeanList.add(purchaseBean);
-	    }
-
-	    return purchaseBeanList;
-	  }
-		
   private void refreshVendorList() {
     vendorList.getList().clear();
     vendorList.getList().add(alleVerkaeufer());
@@ -320,10 +280,10 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
   }
 
   private final class ImportPurchasesTask extends Task<List<PurchaseBean>, Void> {
-	  
-	private File file;
-	private Path pathToFile = Paths.get("Doppelte Artikel.txt");
-	private List<String>logMessages = new ArrayList<>();
+
+    private File file;
+    private Path pathToFile = Paths.get("Doppelte Artikel.txt");
+    private List<String> logMessages = new ArrayList<>();
     private final TaskPane progressPane;
     private final File importFile;
 
@@ -336,110 +296,114 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
       progressPane.setProgressVisible(true);
       progressPane.setVisible(true);
     }
-    
+
     @Override
     protected List<PurchaseBean> doInBackground() throws FileNotFoundException {
-    	if (importFile != null)
-		{
-	    	return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
-	          new TypeToken<List<PurchaseBean>>() {
-	          }.getType());
-		}
-		return null;
+      if (importFile != null) {
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().fromJson(new FileReader(importFile),
+            new TypeToken<List<PurchaseBean>>() {
+            }.getType());
+      }
+      return null;
     }
 
     @Override
     protected void succeeded(List<PurchaseBean> result) {
       super.succeeded(result);
-      
-      if (result != null)
-      {
-	      List<PurchaseBean> allBeans = SERVICE.getAll();
-	      List<PurchaseBean> beansToRemove = new ArrayList<>();
-	      for(int resultCount = 0; resultCount < result.size(); resultCount++) {
-	    	  PurchaseBean resultBean = result.get(resultCount);
-	    	  for(int allBeansCount = 0; allBeansCount<allBeans.size(); allBeansCount++) {
-	    		  PurchaseBean existingBean = allBeans.get(allBeansCount);
-	    		  if(existingBean.getItemNumber().equals(resultBean.getItemNumber()) && existingBean.getVendorNumber().equals(resultBean.getVendorNumber())) {
-	    			  beansToRemove.add(resultBean);
-	    			  writeLog(existingBean, resultBean);
-	    		  }
-	    	  }
-	      }
-	      if(beansToRemove.isEmpty()) {
-	    	  JOptionPane.showMessageDialog(null, "Import erfolgreich!");
-	      }else {
-	    	  for(PurchaseBean bean : beansToRemove) {
-			  result.remove(bean);
-	    	  }
-		      try {
-		    	writeIntoLogData(logMessages);
-		      } catch (IOException e) {
-				e.printStackTrace();
-		      }
-	      }
-	      LOGGER.debug("# Purchase elements to create: {}", result.size());
-	      Observable<PurchaseBean> observablePurchases = Observable.fromIterable(result);
-	      long beginNanos = System.nanoTime();
-	      observablePurchases.subscribe(purchaseBean -> SERVICE.toEntity(purchaseBean).saveIt(), Observable::error, () -> {
-	        SERVICE.flush();
-	        LOGGER.debug("Finished Import after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
-	        progressPane.setVisible(false);
-	        refreshSummary();
-	        String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
-	        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
-	        pane.setPreferredWidth(PreferredWidth.MEDIUM);
-	        pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
-	      });
-	    }
+
+      if (result != null) {
+        List<PurchaseBean> allBeans = SERVICE.getAll();
+        List<PurchaseBean> beansToRemove = new ArrayList<>();
+        for (int resultCount = 0; resultCount < result.size(); resultCount++) {
+          PurchaseBean resultBean = result.get(resultCount);
+          for (int allBeansCount = 0; allBeansCount < allBeans.size(); allBeansCount++) {
+            PurchaseBean existingBean = allBeans.get(allBeansCount);
+            if (existingBean.getItemNumber().equals(resultBean.getItemNumber()) && existingBean.getVendorNumber()
+                .equals(resultBean.getVendorNumber())) {
+              beansToRemove.add(resultBean);
+              writeLog(existingBean, resultBean);
+            }
+          }
+        }
+        if (beansToRemove.isEmpty()) {
+          JOptionPane.showMessageDialog(null, "Import erfolgreich!");
+        } else {
+          for (PurchaseBean bean : beansToRemove) {
+            result.remove(bean);
+          }
+          try {
+            writeIntoLogData(logMessages);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+        LOGGER.debug("# Purchase elements to create: {}", result.size());
+        Observable<PurchaseBean> observablePurchases = Observable.fromIterable(result);
+        long beginNanos = System.nanoTime();
+        observablePurchases.subscribe(purchaseBean -> SERVICE.toEntity(purchaseBean).saveIt(), Observable::error,
+            () -> {
+              SERVICE.flush();
+              LOGGER.debug("Finished Import after {} ms", (System.nanoTime() - beginNanos) / 1_000_000);
+              progressPane.setVisible(false);
+              refreshSummary();
+              String mainInstruction = RESOURCES.getString("importPurchases.message.text", result.size());
+              TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+              pane.setPreferredWidth(PreferredWidth.MEDIUM);
+              pane.showDialog(getEventObject(), RESOURCES.getString("importPurchases.message.title"));
+            });
+      }
     }
-    //TODO START
-    //Evtl eine andere Lösung als jedes mal die Datei zu löschen?
-    private File createNewFile() throws IOException{
-    	if(Files.exists(pathToFile)) {
-    		Files.delete(pathToFile);
-    	}
-		return file = new File(Files.createFile(pathToFile).toString());
+
+    // TODO START
+    // Evtl eine andere Lï¿½sung als jedes mal die Datei zu lï¿½schen?
+    private File createNewFile() throws IOException {
+      if (Files.exists(pathToFile)) {
+        Files.delete(pathToFile);
+      }
+      return file = new File(Files.createFile(pathToFile).toString());
     }
-    
+
     private void writeLog(PurchaseBean existingBean, PurchaseBean importetBean) {
-    	VendorService vService = VendorService.getInstance();
-	    VendorNumberService vendorNumberService = VendorNumberService.getInstance();
-	    VendorBean vendor = vService.findByVendorNumber(vendorNumberService.findByVendorNumber(existingBean.getVendorNumber()).getVendorNumber());
+      VendorService vService = VendorService.getInstance();
+      VendorNumberService vendorNumberService = VendorNumberService.getInstance();
+      VendorBean vendor = vService.findByVendorNumber(vendorNumberService.findByVendorNumber(existingBean
+          .getVendorNumber()).getVendorNumber());
 
-	    String vendorName = vendor.getFirstName() + " " + vendor.getLastName();
-	    String logMessageExist = "Bereits Vorhandener Artikel   " + vendorName + " " + "ADDSPACE" + existingBean.getVendorNumber().toString() + " " + "ADDSPACE" + 
-	    		existingBean.getItemNumber().toString() + " " + "ADDSPACE" + existingBean.getItemPrice().toString() + System.getProperty("line.separator") + 
-	    		"Importierter Artikel          " + vendorName + "ADDSPACE" + " " + importetBean.getVendorNumber().toString() + "ADDSPACE" + " " + 
-	    		importetBean.getItemNumber().toString() + "ADDSPACE" + " " + importetBean.getItemPrice().toString();
-	    logMessages.add(logMessageExist);
+      String vendorName = vendor.getFirstName() + " " + vendor.getLastName();
+      String logMessageExist = "Bereits Vorhandener Artikel   " + vendorName + " " + "ADDSPACE" + existingBean
+          .getVendorNumber().toString() + " " + "ADDSPACE" + existingBean.getItemNumber().toString() + " " + "ADDSPACE"
+          + existingBean.getItemPrice().toString() + System.getProperty("line.separator")
+          + "Importierter Artikel          " + vendorName + "ADDSPACE" + " " + importetBean.getVendorNumber().toString()
+          + "ADDSPACE" + " " + importetBean.getItemNumber().toString() + "ADDSPACE" + " " + importetBean.getItemPrice()
+              .toString();
+      logMessages.add(logMessageExist);
     }
 
-    //Message the shows in the Log Data
+    // Message the shows in the Log Data
     private void writeIntoLogData(List<String> logMessages) throws IOException {
-    	file = createNewFile();
-		FileWriter filewriter = new FileWriter(file);
-		filewriter.write("Automatisch erstellte Datei. Zeigt alle Artikel welche Doppelt importiert wurden!" + 
-						System.getProperty("line.separator") + System.getProperty("line.separator"));
-		
-		for (String logMessageExist : logMessages) {
-			filewriter.write("                              " + "Verkäufername | Verkäufernummer | Artikelnummer | Preis");
-			filewriter.write(System.getProperty("line.separator"));
-			filewriter.write(logMessageExist.replace("ADDSPACE", "             "));
-			filewriter.write(System.getProperty("line.separator"));
-			filewriter.write(System.getProperty("line.separator"));
-		}	
-    	filewriter.flush();
-    	filewriter.close();
-    	
-    	String messageForPane = "<html>Import Erfolgreich, allerdings sind Artikel doppelt vorhanden!<br>"
-    							+ "<b>Siehe: " + file.getAbsolutePath() +"</b>";
-    	JLabel label = new JLabel(messageForPane);
-    	JOptionPane.showMessageDialog(null, label);
-    	
+      file = createNewFile();
+      FileWriter filewriter = new FileWriter(file);
+      filewriter.write("Automatisch erstellte Datei. Zeigt alle Artikel welche Doppelt importiert wurden!" + System
+          .getProperty("line.separator") + System.getProperty("line.separator"));
+
+      for (String logMessageExist : logMessages) {
+        filewriter.write("                              " + "Verkï¿½ufername | Verkï¿½ufernummer | Artikelnummer | Preis");
+        filewriter.write(System.getProperty("line.separator"));
+        filewriter.write(logMessageExist.replace("ADDSPACE", "             "));
+        filewriter.write(System.getProperty("line.separator"));
+        filewriter.write(System.getProperty("line.separator"));
+      }
+      filewriter.flush();
+      filewriter.close();
+
+      String messageForPane = "<html>Import Erfolgreich, allerdings sind Artikel doppelt vorhanden!<br>" + "<b>Siehe: "
+          + file.getAbsolutePath() + "</b>";
+      JLabel label = new JLabel(messageForPane);
+      JOptionPane.showMessageDialog(null, label);
+
     }
-    //TODO END
-    
+    // TODO END
+
     private File getImportPath() {
       final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
       fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));
@@ -489,31 +453,29 @@ public class PurchaseHomeModel extends AbstractHomeModel<PurchaseBean> implement
     @Override
     protected void succeeded(Void result) {
       super.succeeded(result);
-      if (result != null)
-      {
-      progressPane.setVisible(false);
-      String mainInstruction = RESOURCES.getString("exportPurchases.message.text", purchaseList.size(), exportPath);
-      TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
-      pane.setPreferredWidth(PreferredWidth.MEDIUM);
-      pane.showDialog(getEventObject(), RESOURCES.getString("exportPurchases.message.title"));
+      if (result != null) {
+        progressPane.setVisible(false);
+        String mainInstruction = RESOURCES.getString("exportPurchases.message.text", purchaseList.size(), exportPath);
+        TaskPane pane = new TaskPane(MessageType.INFORMATION, mainInstruction, CommandValue.OK);
+        pane.setPreferredWidth(PreferredWidth.MEDIUM);
+        pane.showDialog(getEventObject(), RESOURCES.getString("exportPurchases.message.title"));
       }
     }
 
     private String getExportPath() {
-    	final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
-    	fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-    	fileChooser.setDialogTitle("Speichern unter...");
-    	fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));
-    	fileChooser.setAcceptAllFileFilterUsed(false);
-    	fileChooser.setVisible(true);
-    	fileChooser.showSaveDialog(null);
-    	fileChooser.setVisible(false);
+      final JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
+      fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+      fileChooser.setDialogTitle("Speichern unter...");
+      fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON", "json"));
+      fileChooser.setAcceptAllFileFilterUsed(false);
+      fileChooser.setVisible(true);
+      fileChooser.showSaveDialog(null);
+      fileChooser.setVisible(false);
 
-    	if (fileChooser.getSelectedFile() != null)
-    	{
-    		return fileChooser.getSelectedFile().toString();
-    	}
-    	return null;
+      if (fileChooser.getSelectedFile() != null) {
+        return fileChooser.getSelectedFile().toString();
+      }
+      return null;
     }
 
   }

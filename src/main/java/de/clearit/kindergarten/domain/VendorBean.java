@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import com.google.common.base.Strings;
 import com.google.gson.annotations.Expose;
 import com.jgoodies.binding.beans.Model;
 
@@ -122,6 +123,22 @@ public final class VendorBean extends Model {
     List<VendorNumberBean> oldValue = getVendorNumbers();
     vendorNumbers = newValue;
     firePropertyChange(PROPERTY_VENDOR_NUMBERS, oldValue, newValue);
+  }
+
+  /**
+   * Returns a formatted string to dispay the vendor name in the format:
+   * <lastName>, <firstName>. If no firstName is set, this part will be omitted.
+   * 
+   * @return
+   */
+  public String getVendorNameDisplayString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(lastName);
+    if (!Strings.isNullOrEmpty(firstName)) {
+      builder.append(", ");
+      builder.append(firstName);
+    }
+    return builder.toString();
   }
 
   /**
