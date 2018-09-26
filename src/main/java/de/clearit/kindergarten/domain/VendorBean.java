@@ -124,6 +124,11 @@ public final class VendorBean extends Model {
     firePropertyChange(PROPERTY_VENDOR_NUMBERS, oldValue, newValue);
   }
 
+  /**
+   * Returns a comma-separated string, listing all vendor numbers of the vendor.
+   * 
+   * @return the formatted string of vendor numbers
+   */
   public String getVendorNumbersDisplayString() {
     String formattedString = "";
     if (CollectionUtils.isNotEmpty(vendorNumbers)) {
