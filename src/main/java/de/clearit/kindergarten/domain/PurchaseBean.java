@@ -52,7 +52,7 @@ public class PurchaseBean extends Model {
    *          the vendor number
    */
   public PurchaseBean(Integer itemNumber, BigDecimal itemPrice, Integer vendorNumber) {
-	this(null, itemNumber, itemPrice, vendorNumber);
+    this(null, itemNumber, itemPrice, vendorNumber);
   }
 
   /**
