@@ -1,7 +1,6 @@
 package de.clearit.kindergarten.domain.export;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,15 +15,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -40,7 +30,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 
 import com.itextpdf.forms.PdfAcroForm;
 import com.itextpdf.forms.fields.PdfFormField;
@@ -134,20 +123,6 @@ public class ExportReceipt {
     pdfDocument.close();
   }
 
-  private void createPDF(String fileOutName) throws IOException, ParserConfigurationException, TransformerException {
-    Document doc = ExcelToHtmlConverter.process(new File(fileOutName));
-
-    DOMSource domSource = new DOMSource(doc);
-    StreamResult streamResult = new StreamResult(new File("./abrechnung.html"));
-
-    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    Transformer serializer = transformerFactory.newTransformer();
-    serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-    serializer.setOutputProperty(OutputKeys.INDENT, "no");
-    serializer.setOutputProperty(OutputKeys.METHOD, "html");
-    serializer.transform(domSource, streamResult);
-  }
-
   private void fillInPDFPlaceholders(PayoffDataReceipt pPayoffData) {
     com.itextpdf.layout.Document doc = new com.itextpdf.layout.Document(pdfDocument);
 
@@ -161,13 +136,13 @@ public class ExportReceipt {
 
     fields.get("date").setValue(now.format(formatter), font, 11);
     fields.get("vendorID").setValue(pPayoffData.getVendorNumberList().stream().map(Object::toString).collect(Collectors
-      .joining(", ")), font, 11); //TODO: Bold
+        .joining(", ")), font, 11); // TODO: Bold
     fields.get("lastName").setValue(pPayoffData.getLastName(), font, 11);
     fields.get("firstName").setValue(pPayoffData.getFirstName(), font, 11);
     fields.get("totalSoldItems").setValue(String.valueOf(pPayoffData.getTotalSoldItems()), font, 11);
     fields.get("turnover").setValue(formatCurrency(pPayoffData.getTurnover()), font, 11);
     fields.get("profit").setValue(formatCurrency(pPayoffData.getProfit()), font, 11);
-    fields.get("payment").setValue(formatCurrency(pPayoffData.getPayment()), font, 14);  //TODO: Bold
+    fields.get("payment").setValue(formatCurrency(pPayoffData.getPayment()), font, 14); // TODO: Bold
     fields.get("soldItemListStart").setValue("");
     form.flattenFields();
 
@@ -192,9 +167,9 @@ public class ExportReceipt {
     return String.format("%.2f", amountOfMoney) + " \u20AC";
   }
 
-  //TODO: Richtige Positionierung der Tabelle muss implementiert werden
+  // TODO: Richtige Positionierung der Tabelle muss implementiert werden
   private Table createPDFSoldItemList(List<PayoffSoldItemsData> pPayoffSoldItemDataList) {
-    Table table = new Table(new float[]{1, 15});
+    Table table = new Table(new float[] { 1, 15 });
     table.setBorder(Border.NO_BORDER);
     for (PayoffSoldItemsData payoffSoldItemData : pPayoffSoldItemDataList) {
       table.addCell(getFormattedCell(1, 2, ""));
@@ -211,7 +186,7 @@ public class ExportReceipt {
 
   private void createItemRows(PayoffSoldItemsData pPayoffSoldItemData, Table table) {
     Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
-    for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {      
+    for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {
       table.addCell(getFormattedCell(String.valueOf(entry.getKey()))); // Artikelnummer
       table.addCell(getFormattedCell(formatCurrency(entry.getValue()))); // Preis
     }
@@ -224,7 +199,7 @@ public class ExportReceipt {
   }
 
   private com.itextpdf.layout.element.Cell getFormattedCell(int rowspan, int colspan, String content) {
-    com.itextpdf.layout.element.Cell cell = new com.itextpdf.layout.element.Cell(rowspan,colspan);
+    com.itextpdf.layout.element.Cell cell = new com.itextpdf.layout.element.Cell(rowspan, colspan);
     cell.add(new Paragraph(new Text(content).setFont(font).setFontSize(11)));
     cell.setBorder(Border.NO_BORDER);
     return cell;
@@ -329,7 +304,7 @@ public class ExportReceipt {
     int colIndexPrice = pColIndex + 1;
     Map<Integer, Double> soldItemMap = pPayoffSoldItemData.getSoldItemNumbersPricesMap();
     for (Entry<Integer, Double> entry : soldItemMap.entrySet()) {
-        XSSFRow tempRow = sheet.createRow(pRowCount);
+      XSSFRow tempRow = sheet.createRow(pRowCount);
 
       XSSFCell numberCell = tempRow.createCell(pColIndex);
       numberCell.setCellValue(entry.getKey());
